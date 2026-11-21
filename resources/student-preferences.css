@@ -1,0 +1,61 @@
+.student-profile .profile-photo-box{padding:18px;border:1px dashed #c2a15c;border-radius:14px;text-align:center;margin-bottom:20px}.profile-photo-box img,.photo-placeholder{display:grid;place-items:center;width:128px;height:128px;object-fit:cover;border-radius:18px;margin:0 auto 14px;background:#14304a;color:#fff0c7}.profile-photo-box input{max-width:100%}.student-profile input,.student-profile select{min-height:40px}.settings-form input[type=range]{accent-color:#c49c4d}.settings-form .btn+.btn{margin-left:10px}html[data-theme=light]{--cream:#243345;--navy:#f4ead5;--glass:#fff8e8;--gold:#79551f}html[data-theme=light] #work{background:#f6eedf;color:#243345}html[data-theme=light] .workhead{background:#e8d9bb;color:#263d53}html[data-theme=light] .workarea,html[data-theme=light] .card{background:#fff9ed;color:#243345}html[data-theme=light] .workarea h1,html[data-theme=light] .brand{color:#765322;text-shadow:none}html[data-theme=light] .muted{color:#526075}.gst-passage-body,.gst-question-copy{font-size:var(--reading-size,19px)}
+
+.gst-template-passage{font-size:var(--reading-size,19px)!important}html[data-theme=light] .gst-book-canvas[data-scene] .gst-paper{color:#17283a}
+/* Utility pages keep the book artwork and parchment in either appearance mode. */
+.gst-book-canvas .gst-paper.gst-utility-paper{display:flex!important;flex-direction:column;padding:24px 28px!important;background:linear-gradient(105deg,#fff0cc,#fff4d9 55%,#ffedc8)!important;color:#283546!important;overflow:hidden;font-family:Georgia,serif}.gst-utility-paper h2{font-size:30px;color:#49301c;margin:0 0 14px}.gst-utility-content{overflow-y:auto;min-height:0;flex:1;scrollbar-width:thin;scrollbar-color:#ad813c transparent}.gst-utility-content .card{padding:0;background:transparent!important;border:0;box-shadow:none;color:#283546!important}.gst-utility-content .settings-form{max-width:none}.gst-utility-content .settings-form label{font-size:17px;margin:10px 0 4px;color:#49301c}.gst-utility-content input,.gst-utility-content select{background:#fff9e9!important;color:#283546!important;border:1px solid #b9995d;min-height:34px;font:17px Georgia}.gst-utility-content input[type=checkbox]{min-height:0;accent-color:#947037}.gst-utility-content .settings-form button{margin-top:12px;font-size:16px;padding:8px 14px}.gst-utility-content .profile-photo-box{padding:10px;margin-bottom:10px;background:transparent}.gst-utility-content .profile-photo-box img,.gst-utility-content .photo-placeholder{width:82px;height:82px;background:#e9d4a5;color:#634726;border:1px dashed #ad813c}.gst-showing-utility .gst-page-hotspots,.gst-showing-utility .gst-painted-next,.gst-showing-utility .gst-welcome-next{display:none!important}
+/* Full utility spreads align inside the embossed page borders of the stationary book. */
+.gst-utility-form{display:contents;pointer-events:auto}
+.gst-book-canvas.gst-showing-utility{background-image:url('gst-book/assessment-clean-welcome.png')!important}
+.gst-book-canvas.gst-showing-utility .gst-utility-paper{position:absolute!important;display:flex!important;flex-direction:column;top:65px!important;width:455px!important;height:640px!important;padding:24px 18px 18px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:hidden;text-align:left;justify-content:flex-start!important;color:#49301c}
+.gst-book-canvas.gst-showing-utility .gst-utility-paper.gst-left{left:485px!important}
+.gst-book-canvas.gst-showing-utility .gst-utility-paper.gst-right{left:1005px!important}
+.gst-utility-paper:before,.gst-utility-paper:after{display:none!important}
+.gst-showing-utility .gst-utility-paper h2{font:700 32px/1.2 'Palatino Linotype',Palatino,Georgia,serif;letter-spacing:.3px;margin:0 0 24px;padding:0 0 12px;border-bottom:1px solid #b68d4d66;color:#49301c}
+.gst-showing-utility .gst-utility-content{display:flex;flex-direction:column;gap:20px;overflow:auto;padding:0 4px 4px;min-height:0}
+.gst-showing-utility .gst-utility-field{display:flex;flex-direction:column;gap:7px}
+.gst-showing-utility .gst-utility-field label{display:block;font:19px/1.35 Georgia,serif;margin:0;color:#634726}
+.gst-showing-utility .gst-utility-field input:not([type=checkbox]),.gst-showing-utility .gst-utility-field select{width:100%;height:43px;min-height:43px;border-radius:8px;padding:7px 10px;background:#fff8e9!important;color:#283546;font:19px Georgia,serif}
+.gst-showing-utility .gst-utility-field input[type=checkbox]{width:20px;height:20px;vertical-align:middle;margin-right:8px}
+.gst-showing-utility .profile-photo-box{margin:0;padding:14px;border:1px dashed #b68d4d;border-radius:14px;text-align:center}
+.gst-showing-utility .profile-photo-box img,.gst-showing-utility .photo-placeholder{width:125px;height:125px;margin:0 auto 10px;object-fit:cover;border-radius:14px;background:#ead9b5;color:#634726}
+.gst-showing-utility .profile-photo-box label{display:block;margin:4px 0 8px;font:18px Georgia,serif}
+.gst-showing-utility .profile-photo-box input{max-width:100%;font:15px Georgia,serif;background:transparent!important;border:0}
+.gst-utility-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.gst-utility-actions button{font:17px Georgia,serif;padding:10px 15px;margin:0!important}
+.gst-utility-paper [role=status]{font:16px/1.4 Georgia,serif;margin:0}
+.gst-utility-leaf{position:absolute;z-index:15;transform-style:preserve-3d;pointer-events:none;will-change:transform}
+.gst-utility-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:linear-gradient(95deg,#e8c998,#fff4d9 8%,#fff1d2 92%,#e5c58c);border-radius:8px;overflow:hidden;transform:translateZ(.2px)}
+.gst-utility-face-back{transform:rotateY(180deg) translateZ(.2px)}
+.gst-utility-rest{position:absolute;inset:0;z-index:14;pointer-events:none}
+.gst-utility-turning{perspective:2000px!important;perspective-origin:980px 390px!important}
+/* Full-height settings: accessible sliding switches and continuous reading controls. */
+.gst-book-canvas[data-utility=settings] .gst-utility-content{gap:0;justify-content:space-between;overflow:hidden}
+.preference-row{padding:15px 0;border-bottom:1px solid #b68d4d35;min-width:0}
+.preference-row label{display:flex!important;align-items:center;justify-content:space-between;gap:12px;margin:0 0 9px!important;font-family:Georgia,serif}
+.preference-title{font:600 20px/1.3 Georgia,serif;color:#49301c}
+.preference-detail{display:block;font:15px/1.4 Georgia,serif;color:#85643d;margin-top:7px}
+.preference-row output{font:17px Georgia,serif;color:#7d5829;white-space:nowrap}
+.preference-row input[type=range]{appearance:none;-webkit-appearance:none;width:100%;height:6px;min-height:0!important;padding:0;border:0;border-radius:6px;background:#d5bc89!important;accent-color:#a67b32;cursor:pointer;margin:12px 0}
+.preference-row input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#a67b32;border:2px solid #fff5d9;box-shadow:0 1px 3px #6f4f2738}
+.preference-row input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:#a67b32;border:2px solid #fff5d9}
+.preference-switch-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.preference-switch-row label{display:block!important;margin:0!important;flex:1;cursor:pointer}
+.preference-switch{appearance:none;-webkit-appearance:none;display:block;flex:0 0 62px;width:62px!important;height:32px!important;min-height:32px!important;margin:0!important;border:1px solid #bba16e!important;border-radius:24px!important;background:#d1c0a0!important;position:relative;cursor:pointer;transition:background .2s}
+.preference-switch:before{content:'';position:absolute;width:24px;height:24px;left:3px;top:3px;border-radius:50%;background:#fff8e9;box-shadow:0 1px 3px #5a412840;transition:transform .2s}
+.preference-switch:checked{background:#9d7535!important;border-color:#8b632a!important}
+.preference-switch:checked:before{transform:translateX(30px)}
+.preference-switch:focus-visible,.preference-row input[type=range]:focus-visible{outline:2px solid #88662f;outline-offset:4px}
+.gst-book-canvas[data-utility=settings] .gst-utility-paper h2{margin-bottom:9px}
+.gst-book-canvas[data-utility=settings] .gst-utility-actions{margin-top:12px;gap:9px;flex-wrap:nowrap}
+.gst-book-canvas[data-utility=settings] .gst-utility-actions button{padding:9px 12px;font-size:16px;white-space:nowrap}
+.gst-template-passage{line-height:var(--reading-line-height,1.55)!important}
+.reading{line-height:var(--reading-line-height,1.55)}
+html.reading-high-contrast .gst-template-passage,html.reading-high-contrast .gst-template-title,html.reading-high-contrast .gst-template-question-text,html.reading-high-contrast .gst-template-option-text{color:#17110b!important;text-shadow:none!important;font-weight:600}
+html.reading-high-contrast .reading{color:#17110b!important}
+.gst-book-canvas[data-utility=profile] .gst-utility-content{justify-content:space-between}
+@media(prefers-reduced-motion:reduce){.preference-switch,.preference-switch:before{transition:none}}
+/* Full embossed sheet, including its ornamented edges, turns around the spine. */
+.gst-utility-face{border-radius:0;background-color:#fff3d5;box-shadow:none;overflow:hidden}
+.gst-utility-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#68431d55,transparent 24%,#76512618);opacity:0}
+.gst-utility-turning{perspective:2400px!important;perspective-origin:980px 385px!important}
+.gst-book-canvas:has(.gst-utility-leaf) .gst-page-hotspots,.gst-book-canvas:has(.gst-utility-leaf) .gst-painted-next,.gst-book-canvas:has(.gst-utility-leaf) .gst-welcome-next,.gst-book-canvas:has(.gst-utility-leaf) .gst-review-return{visibility:hidden!important}

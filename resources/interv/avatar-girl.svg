@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<defs>
+<radialGradient id="bg" cx=".5" cy=".38" r=".7"><stop offset="0" stop-color="#bfe6ff"/><stop offset="1" stop-color="#5aa6e0"/></radialGradient>
+<linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdcc0"/><stop offset="1" stop-color="#f3bd96"/></linearGradient>
+<linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e46f9e"/><stop offset="1" stop-color="#b2426f"/></linearGradient>
+<linearGradient id="hair" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3423"/><stop offset="1" stop-color="#3a2016"/></linearGradient>
+</defs>
+<rect width="200" height="200" fill="url(#bg)"/>
+<path d="M44 74c-6 40-4 86 6 126h100c10-40 12-86 6-126z" fill="url(#hair)"/>
+<path d="M30 200c4-38 32-58 70-58s66 20 70 58z" fill="url(#shirt)"/>
+<path d="M84 142q16 14 32 0" stroke="#fff" stroke-width="5" fill="none"/>
+<rect x="86" y="118" width="28" height="28" rx="10" fill="#f0b98e"/>
+<ellipse cx="100" cy="88" rx="43" ry="49" fill="url(#skin)"/>
+<path d="M52 98c-8-50 20-74 50-74s58 22 48 74c-4-22-12-38-26-46-14 14-40 22-62 22-4 8-8 16-10 24z" fill="url(#hair)"/>
+<path d="M64 58c14-18 46-22 64-8-16-4-34 0-48 10z" fill="#7a4b33"/>
+<ellipse cx="82" cy="96" rx="7" ry="8.5" fill="#2b1a12"/><ellipse cx="118" cy="96" rx="7" ry="8.5" fill="#2b1a12"/>
+<circle cx="84.5" cy="93" r="2.6" fill="#fff"/><circle cx="120.5" cy="93" r="2.6" fill="#fff"/>
+<path d="M74 87l-4-3M126 87l4-3" stroke="#2b1a12" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M73 81q9-5 18 0M109 81q9-5 18 0" stroke="#4a2a1c" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+<path d="M98 102q2 7-2 10" stroke="#d99a72" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M80 117q20 20 40 0q-20 8-40 0z" fill="#c2464f"/><path d="M84 118q16 7 32 0" stroke="#fff" stroke-width="4" fill="none"/>
+<ellipse cx="70" cy="111" rx="8" ry="5" fill="#ff8f8f" opacity=".5"/><ellipse cx="130" cy="111" rx="8" ry="5" fill="#ff8f8f" opacity=".5"/>
+<circle cx="57" cy="108" r="3" fill="#fff"/><circle cx="143" cy="108" r="3" fill="#fff"/>
+</svg>

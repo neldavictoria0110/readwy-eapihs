@@ -1,0 +1,11 @@
+.assessment-summary-screen{position:relative;width:100%;height:var(--landscape-height);overflow:hidden;background:#081b2f}
+.assessment-summary-board{position:absolute;left:0;top:0;width:1672px;height:941px;transform-origin:0 0}
+.assessment-summary-art{display:block;width:100%;height:100%;pointer-events:none;user-select:none}
+.summary-live{position:absolute;color:#231d14;font-family:Georgia,serif;line-height:1.32;white-space:pre-line;background:transparent;pointer-events:none;overflow-wrap:anywhere}
+.summary-center{text-align:center}
+.summary-badge{color:#fff5d7;text-align:center;font-weight:700}
+.summary-on-navy{color:#fff0d4}
+.summary-bar{position:absolute;height:11px;border-radius:6px;pointer-events:none}
+.summary-image-control{position:absolute;z-index:4;padding:0;border:0;background:transparent;color:transparent;font-size:0;cursor:pointer}
+.summary-image-control:hover,.summary-image-control:focus{background:transparent;border:0;box-shadow:none;outline:none}
+.summary-image-control:focus-visible{outline:2px solid #e3bd71;outline-offset:-4px}

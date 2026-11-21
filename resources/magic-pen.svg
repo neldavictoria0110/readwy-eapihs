@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 520">
+<defs>
+<linearGradient id="goldL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#f7cf6a"/><stop offset=".7" stop-color="#d99a2b"/><stop offset="1" stop-color="#9c5d12"/></linearGradient>
+<linearGradient id="goldR" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a3"/><stop offset=".45" stop-color="#e9b246"/><stop offset="1" stop-color="#8a4e0c"/></linearGradient>
+<linearGradient id="blueEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fd3ff"/><stop offset=".5" stop-color="#1f6fe0"/><stop offset="1" stop-color="#173a9c"/></linearGradient>
+<linearGradient id="shaft" x1="0" x2="1"><stop offset="0" stop-color="#7a4a0c"/><stop offset=".5" stop-color="#fff2c4"/><stop offset="1" stop-color="#7a4a0c"/></linearGradient>
+<linearGradient id="band" x1="0" x2="1"><stop offset="0" stop-color="#0f2a7a"/><stop offset=".45" stop-color="#4fa3ff"/><stop offset="1" stop-color="#0b1f5e"/></linearGradient>
+<linearGradient id="nib" x1="0" x2="1"><stop offset="0" stop-color="#1b1b26"/><stop offset=".45" stop-color="#5d6478"/><stop offset=".55" stop-color="#9aa3b8"/><stop offset="1" stop-color="#14141c"/></linearGradient>
+<radialGradient id="aura"><stop offset="0" stop-color="#fff2b0" stop-opacity=".85"/><stop offset=".55" stop-color="#5fb4ff" stop-opacity=".25"/><stop offset="1" stop-color="#1f6fe0" stop-opacity="0"/></radialGradient>
+<radialGradient id="tip"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#fff2a8" stop-opacity=".9"/><stop offset="1" stop-color="#ffcf4d" stop-opacity="0"/></radialGradient>
+<path id="st" d="M0-6L1.4-1.4 6 0 1.4 1.4 0 6-1.4 1.4-6 0-1.4-1.4Z"/>
+</defs>
+<ellipse cx="62" cy="170" rx="56" ry="170" fill="url(#aura)"><animate attributeName="opacity" values=".5;.95;.5" dur="2.8s" repeatCount="indefinite"/></ellipse>
+<g>
+<animateTransform attributeName="transform" type="rotate" values="-1.5 60 400;1.5 60 400;-1.5 60 400" dur="3.2s" repeatCount="indefinite"/>
+<!-- blue glow along the inner edges, like the writing-test quill -->
+<path d="M60 392 C44 360 30 300 26 236 C22 160 34 84 66 8 C64 90 62 220 60 392Z" fill="url(#blueEdge)" opacity=".9"/>
+<path d="M60 392 C76 350 92 290 96 222 C100 150 92 80 70 8 C66 90 62 220 60 392Z" fill="url(#blueEdge)" opacity=".75"/>
+<!-- golden vanes -->
+<path d="M60 388 C46 352 34 296 31 234 C28 160 40 88 66 10 C62 92 61 220 60 388Z" fill="url(#goldL)" stroke="#8a4e0c" stroke-width="1"/>
+<path d="M60 388 C74 348 87 290 90 224 C93 152 86 84 68 10 C64 92 62 220 60 388Z" fill="url(#goldR)" stroke="#8a4e0c" stroke-width="1"/>
+<!-- barbs -->
+<g fill="none" stroke="#8a4e0c" stroke-opacity=".55" stroke-width="1.2" stroke-linecap="round">
+<path d="M64 52 L44 78"/><path d="M63 86 L38 118"/><path d="M63 120 L34 156"/><path d="M62 156 L32 196"/><path d="M62 194 L32 236"/><path d="M61 232 L34 276"/><path d="M61 270 L38 314"/><path d="M60 308 L44 346"/>
+<path d="M66 50 L82 76"/><path d="M65 84 L87 114"/><path d="M64 118 L89 152"/><path d="M63 154 L90 190"/><path d="M63 190 L89 228"/><path d="M62 228 L86 268"/><path d="M61 266 L80 306"/><path d="M61 304 L72 340"/>
+</g>
+<g fill="none" stroke="#fff6d6" stroke-opacity=".7" stroke-width="1.4" stroke-linecap="round">
+<path d="M63 70 L47 92"/><path d="M62 140 L40 170"/><path d="M62 212 L40 246"/><path d="M65 104 L82 128"/><path d="M63 176 L84 206"/><path d="M62 250 L80 280"/>
+</g>
+<!-- notches that split the feather, as on a real quill -->
+<path d="M34 156 l-8 5 M90 190 l8 4 M34 276 l-7 4 M86 268 l7 5" stroke="#8a4e0c" stroke-width="2" stroke-linecap="round"/>
+<!-- shaft -->
+<path d="M68 8 C63 90 61 230 60 400" fill="none" stroke="url(#shaft)" stroke-width="4" stroke-linecap="round"/>
+</g>
+<!-- sparkles -->
+<use href="#st" x="22" y="110" fill="#fff6c8"><animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite"/></use>
+<use href="#st" x="100" y="150" fill="#9fe0ff"><animate attributeName="opacity" values="1;0;1" dur="1.4s" repeatCount="indefinite"/></use>
+<use href="#st" x="18" y="268" fill="#9fe0ff"><animate attributeName="opacity" values=".2;1;.2" dur="2.2s" repeatCount="indefinite"/></use>
+<use href="#st" x="98" y="300" fill="#fff6c8"><animate attributeName="opacity" values="1;.2;1" dur="1.6s" repeatCount="indefinite"/></use>
+<!-- blue band and dark nib -->
+<path d="M52 394 L68 394 L69 418 L51 418Z" fill="url(#band)" stroke="#0b1f5e" stroke-width="1"/>
+<path d="M51 404 h18" stroke="#9fd4ff" stroke-width="1.4"/>
+<path d="M51 418 L69 418 Q70 450 64 478 L60 510 L56 478 Q50 450 51 418Z" fill="url(#nib)" stroke="#0e0e14" stroke-width="1"/>
+<path d="M60 446 L60 508" stroke="#0e0e14" stroke-width="1.4"/>
+<circle cx="60" cy="442" r="3" fill="#0e0e14"/>
+<path d="M55 424 Q53 452 57 476" stroke="#c9d3ea" stroke-width="1.6" fill="none" opacity=".7"/>
+<circle cx="60" cy="510" r="12" fill="url(#tip)"><animate attributeName="r" values="9;15;9" dur="1s" repeatCount="indefinite"/></circle>
+<use href="#st" x="49" y="500" fill="#fff6c8"><animate attributeName="opacity" values="0;1;0" dur="1.2s" repeatCount="indefinite"/></use>
+<use href="#st" x="72" y="496" fill="#9fe0ff"><animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/></use>
+</svg>

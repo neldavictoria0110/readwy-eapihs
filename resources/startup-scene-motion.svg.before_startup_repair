@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 851 1847">
+<defs>
+ <image id="art" href="startup-slide-backdrop.png" width="851" height="1847"/>
+ <clipPath id="moon"><circle cx="702" cy="289" r="73"/></clipPath>
+ <clipPath id="book"><path d="M299 431 322 397 342 370 Q389 349 432 369 Q472 348 520 375 L565 433 Q493 422 432 434 Q368 420 299 431Z"/></clipPath>
+ <clipPath id="title"><path d="M76 417H771V593H76Z"/></clipPath>
+ <clipPath id="banner"><path d="M114 590H726V762H114Z"/></clipPath>
+ <clipPath id="flowers"><path d="M0 879 Q58 861 102 916 L166 1016 194 1095 164 1245 94 1380 65 1535 223 1655 385 1769 465 1847H0Z M851 1575Q747 1590 698 1654L620 1743 474 1847H851Z"/></clipPath>
+ <clipPath id="train"><path d="M172 974 178 944 192 937 205 919 229 919 228 942 268 941 296 948 306 956 681 1038 683 1067 306 1019 172 998Z"/></clipPath>
+ <clipPath id="rail"><path d="M153 859H719V1073L153 1004Z"/></clipPath>
+ <filter id="breeze" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".007 .012" numOctaves="1" seed="8"><animate attributeName="baseFrequency" values=".007 .012;.009 .014;.007 .012" dur="8s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+ <filter id="ripple" x="-2%" y="-3%" width="104%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".013" numOctaves="1" seed="3"><animate attributeName="baseFrequency" values=".013;.017;.013" dur="5s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" scale="2"/></filter>
+ <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+ <radialGradient id="moonlight"><stop stop-color="#e5f8ff" stop-opacity="0"/><stop offset=".65" stop-color="#d2f3ff" stop-opacity=".13"/><stop offset="1" stop-color="#c6e9ff" stop-opacity="0"/></radialGradient>
+
+ <filter id="gold-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  5 0 -4 0 -.05"/><feComponentTransfer><feFuncA type="linear" slope="3" intercept="0"/></feComponentTransfer></filter>
+ <mask id="letter-ink" maskUnits="userSpaceOnUse" x="76" y="417" width="695" height="176" style="mask-type:alpha"><use href="#art" filter="url(#gold-ink)"/></mask>
+ <filter id="letter-bloom" x="-12%" y="-15%" width="124%" height="130%"><feGaussianBlur in="SourceGraphic" stdDeviation="2" result="bloom"/><feMerge><feMergeNode in="bloom"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="water-current" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".012 .075" numOctaves="2" seed="12" result="noise"><animate attributeName="baseFrequency" values=".012 .075;.015 .065;.012 .075" dur="10s" repeatCount="indefinite"/></feTurbulence><feOffset in="noise" result="flow"><animate attributeName="dx" values="-12;12;-12" dur="12s" repeatCount="indefinite"/></feOffset><feDisplacementMap in="SourceGraphic" in2="flow" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>
+ <clipPath id="water"><path d="M290 1207Q520 1200 851 1202V1391H290Z M260 1574H760L650 1682 550 1772 460 1817 365 1740 260 1680Z M805 1230H851V1572L805 1587Z"/></clipPath>
+<clipPath id="fall-letter-0"><rect x="76" y="417" width="187" height="176"/></clipPath><clipPath id="fall-letter-1"><rect x="263" y="435" width="91" height="158"/></clipPath><clipPath id="fall-letter-2"><rect x="354" y="435" width="100" height="158"/></clipPath><clipPath id="fall-letter-3"><rect x="454" y="435" width="111" height="158"/></clipPath><clipPath id="fall-letter-4"><rect x="565" y="435" width="101" height="158"/></clipPath><clipPath id="fall-letter-5"><rect x="666" y="435" width="105" height="158"/></clipPath><clipPath id="banner-shape"><path d="M139 616Q422 567 702 617L686 651 724 678 690 713 675 759 600 726Q421 699 232 730L162 757 151 714 114 679 153 663Z"/></clipPath></defs>
+<style>
+ .train{animation:travel 25s linear infinite}
+ .book{animation:bookglow 4.5s ease-in-out infinite}
+ .banner{animation:bannerlight 6s ease-in-out infinite}
+ .moon-disc{transform-origin:702px 289px;animation:moonturn 150s linear infinite}
+ .letter-light{animation:letterpulse 5s ease-in-out infinite}
+ .wake{fill:none;stroke:#a9e6f8;stroke-width:1.5;opacity:0;transform-box:fill-box;transform-origin:center;animation:waterwake 8s ease-out infinite}
+ .wake.second{animation-delay:-4s}
+ @keyframes moonturn{to{transform:rotate(360deg)}}
+ @keyframes letterpulse{0%,100%{opacity:.08}35%{opacity:.3}65%{opacity:.12}}
+ @keyframes waterwake{0%{opacity:0;transform:translate(0,4px) scale(.6)}25%{opacity:.24}100%{opacity:0;transform:translate(-55px,-7px) scale(1.8,1.2)}}
+ .moon-halo{animation:moonpulse 6s ease-in-out infinite}
+ .steam{animation:steam 3.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+ .steam.two{animation-delay:-1.2s}.steam.three{animation-delay:-2.4s}
+ @keyframes travel{0%{transform:translate(540px,71px);opacity:0}6%{opacity:1}92%{opacity:1}100%{transform:translate(-560px,-74px);opacity:0}}
+ @keyframes moonpulse{0%,100%{opacity:.35}50%{opacity:1}}
+ @keyframes bookglow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.22)}}
+ @keyframes bannerlight{0%,100%{filter:brightness(1)}50%{filter:brightness(1.09)}}
+ @keyframes steam{0%{transform:translate(0,0) scale(.5);opacity:0}20%{opacity:.6}100%{transform:translate(55px,-64px) scale(2.4);opacity:0}}
+
+ .falling-letter{opacity:1}
+ .title-staged .falling-letter,.title-staged .banner-entrance,.title-staged .settled-letter-glow{opacity:0}
+ .title-playing .falling-letter{animation:letter-land 1.65s both;animation-delay:var(--letter-delay);transform-origin:425px 500px}
+ .title-playing .banner-entrance{transform-origin:420px 675px;animation:banner-spin 1.5s 3.3s both}
+ .title-playing .settled-letter-glow{animation:glow-arrives .6s 3.3s forwards}
+ @keyframes letter-land{0%{opacity:0;transform:translateY(-280px) rotate(-9deg)}18%{opacity:1}75%{opacity:1;transform:translateY(8px) rotate(1deg)}90%{opacity:1;transform:translateY(-4px) rotate(-.5deg)}100%{opacity:1;transform:translateY(0) rotate(0)}}
+ @keyframes banner-spin{0%{opacity:0;transform:rotate(-360deg) scale(.7)}15%{opacity:1}100%{opacity:1;transform:rotate(0) scale(1)}}
+ @keyframes glow-arrives{to{opacity:1}}
+ @media(prefers-reduced-motion:reduce){.title-staged .falling-letter,.title-staged .banner-entrance,.title-staged .settled-letter-glow{opacity:1}}
+ @media(prefers-reduced-motion:reduce){*{animation:none!important}animate,animateTransform{display:none}.train{display:none}}
+</style>
+<image href="startup-slide-title-plate.png" width="851" height="1847"/>
+<g clip-path="url(#moon)"><g class="moon-disc"><use href="#art"/></g></g>
+<circle class="moon-halo" cx="702" cy="289" r="112" fill="url(#moonlight)"/>
+<g class="book" clip-path="url(#book)"><g filter="url(#ripple)"><use href="#art"/></g></g>
+<g class="falling-letter" style="--letter-delay:0.00s"><g clip-path="url(#fall-letter-0)" mask="url(#letter-ink)"><use href="#art"/></g></g><g class="falling-letter" style="--letter-delay:0.32s"><g clip-path="url(#fall-letter-1)" mask="url(#letter-ink)"><use href="#art"/></g></g><g class="falling-letter" style="--letter-delay:0.64s"><g clip-path="url(#fall-letter-2)" mask="url(#letter-ink)"><use href="#art"/></g></g><g class="falling-letter" style="--letter-delay:0.96s"><g clip-path="url(#fall-letter-3)" mask="url(#letter-ink)"><use href="#art"/></g></g><g class="falling-letter" style="--letter-delay:1.28s"><g clip-path="url(#fall-letter-4)" mask="url(#letter-ink)"><use href="#art"/></g></g><g class="falling-letter" style="--letter-delay:1.60s"><g clip-path="url(#fall-letter-5)" mask="url(#letter-ink)"><use href="#art"/></g></g>
+<g class="settled-letter-glow" filter="url(#letter-bloom)"><g mask="url(#letter-ink)"><rect class="letter-light" style="animation-delay:-0.0s" x="76" y="417" width="187" height="176" fill="#ffbf35"/><rect class="letter-light" style="animation-delay:-0.6s" x="263" y="417" width="91" height="176" fill="#ffbf35"/><rect class="letter-light" style="animation-delay:-1.2s" x="354" y="417" width="100" height="176" fill="#ffbf35"/><rect class="letter-light" style="animation-delay:-1.7999999999999998s" x="454" y="417" width="111" height="176" fill="#ffbf35"/><rect class="letter-light" style="animation-delay:-2.4s" x="565" y="417" width="101" height="176" fill="#ffbf35"/><rect class="letter-light" style="animation-delay:-3.0s" x="666" y="417" width="105" height="176" fill="#ffbf35"/></g></g>
+<g class="banner-entrance"><g class="banner" clip-path="url(#banner-shape)"><g filter="url(#ripple)"><use href="#art"/></g></g></g>
+<g clip-path="url(#rail)"><g class="train"><g clip-path="url(#train)"><use href="#art"/></g><g fill="#f3faff" filter="url(#glow)"><ellipse class="steam" cx="217" cy="921" rx="18" ry="11"/><ellipse class="steam two" cx="217" cy="921" rx="18" ry="11"/><ellipse class="steam three" cx="217" cy="921" rx="18" ry="11"/></g></g></g>
+<g clip-path="url(#water)"><g filter="url(#water-current)"><image href="startup-slide-empty-rail.png" width="851" height="1847"/></g><g class="wake"><path d="M430 1290q40-13 80 0m-70 6q30-8 60 0m-47 6q17-4 34 0"/></g><g class="wake second"><path d="M420 1624q45-14 90 0m-78 7q33-9 66 0m-52 7q20-5 40 0"/></g></g>
+<g clip-path="url(#flowers)"><g filter="url(#breeze)"><use href="#art"/></g></g>
+</svg>

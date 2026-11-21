@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<defs>
+<radialGradient id="bg" cx=".5" cy=".38" r=".7"><stop offset="0" stop-color="#bfe6ff"/><stop offset="1" stop-color="#5aa6e0"/></radialGradient>
+<linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2b545"/><stop offset="1" stop-color="#c7861f"/></linearGradient>
+</defs>
+<rect width="200" height="200" fill="url(#bg)"/>
+<path d="M30 200c4-38 32-58 70-58s66 20 70 58z" fill="url(#shirt)"/>
+<circle cx="100" cy="86" r="42" fill="#fff6e0" stroke="#173a66" stroke-width="5"/>
+<path d="M100 44a42 42 0 0 1 42 42h-84a42 42 0 0 1 42-42z" fill="#21466a"/>
+<path d="M58 86h84" stroke="#173a66" stroke-width="5"/>
+<path d="M70 52l30-14 30 14-30 12z" fill="#173a66"/><path d="M130 52v16" stroke="#e8b33d" stroke-width="4" stroke-linecap="round"/>
+<circle cx="84" cy="100" r="6" fill="#173a66"/><circle cx="116" cy="100" r="6" fill="#173a66"/>
+<path d="M86 114q14 10 28 0" stroke="#173a66" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+</svg>

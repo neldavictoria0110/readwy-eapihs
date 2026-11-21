@@ -1,0 +1,43 @@
+/* Keep the ink and pen on the same curved baseline inside the parchment. */
+(()=>{
+ const text=document.getElementById('journeyTitleText'),clip=document.getElementById('titleInkReveal');
+ const pen=document.getElementById('journeyPen');
+ const backdrop=document.querySelector('.journey-backdrop');
+ const back=document.querySelector('.journey>.back');
+ function revealStage(piece,i){
+  piece.classList.add('is-revealed');stages[i]?.classList.add('is-revealed');
+  if(i===pieces.length-1)back.hidden=false;
+ }
+ const pieces=[...document.querySelectorAll('.map-piece')],stages=[...document.querySelectorAll('.stage')];
+ function revealMap(progress){pieces.forEach((piece,i)=>{if(progress>i/pieces.length){revealStage(piece,i)}})}
+ let started=false;
+ async function write(){
+  if(started)return;started=true;
+  await document.fonts.ready;
+  const count=text.getNumberOfChars();
+  if(!count)return;
+  const positions=Array.from({length:count},(_,i)=>({start:text.getStartPositionOfChar(i),end:text.getEndPositionOfChar(i)}));
+  const left=Math.min(...positions.map(p=>p.start.x))-3;
+  const right=Math.max(...positions.map(p=>p.end.x))+3;
+  clip.setAttribute('x',left);
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){clip.setAttribute('width',right-left);pen.style.display='none';backdrop.classList.add('is-visible');revealMap(1);return}
+  let start;
+  function tick(now){
+   start??=now;
+   const progress=Math.min(count,(now-start)/85),index=Math.min(count-1,Math.floor(progress));
+   const fraction=progress>=count?1:progress-index;
+   const a=positions[index].start,b=positions[index].end;
+   const x=a.x+(b.x-a.x)*fraction,y=a.y+(b.y-a.y)*fraction;
+   clip.setAttribute('width',progress>=count?right-left:Math.max(0,x-left+2));
+   const angle=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+   pen.style.opacity=progress<count?'1':'0';
+   pen.setAttribute('transform',`translate(${x} ${y+Math.sin(fraction*Math.PI*2)*2}) rotate(${angle-18})`);
+   if(progress<count)requestAnimationFrame(tick);else{pen.classList.add('finished');backdrop.classList.add('is-visible');pieces.forEach((piece,i)=>setTimeout(()=>revealStage(piece,i),2000+i*750))}
+  }
+  setTimeout(()=>requestAnimationFrame(tick),180);
+ }
+ window.startJourneyTitle=write;
+ if(new URLSearchParams(location.search).get('launchHold')!=='1'){
+  if(document.readyState==='complete')write();else window.addEventListener('load',write,{once:true});
+ }
+})();

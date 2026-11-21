@@ -1,0 +1,203 @@
+/* InterV motion: living backdrops, train transitions and hover lift. */
+.ivd-screen{background:#0d2a55 url("resources/interv/anim/transit-bg.webp") center/cover no-repeat!important}
+.ivd-board>img,.ivp-board>img{image-rendering:auto}
+/* layer order: artwork < living layer < hotspots < live text < boards/panels */
+.iva{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.ivd-board>.ivd-live,.ivp-board>.ivd-live{z-index:4}
+.ivp-dyn{z-index:3}.ivp-boardbox,.ivp-input{z-index:5}
+.iva-clone{position:absolute;will-change:transform}
+.iva-body{-webkit-mask-image:radial-gradient(closest-side,#000 72%,transparent 100%);mask-image:radial-gradient(closest-side,#000 72%,transparent 100%);animation:ivBreath 4.6s ease-in-out infinite}
+.iva-head{-webkit-mask-image:radial-gradient(closest-side,#000 78%,transparent 100%);mask-image:radial-gradient(closest-side,#000 78%,transparent 100%);animation:ivHead 7.5s ease-in-out infinite}
+.iva.talk .iva-head{animation:ivNod .9s ease-in-out infinite}
+.iva-eye{position:absolute;border-radius:50%;overflow:hidden}
+.iva-eye>i{position:absolute;left:-6%;right:-6%;top:-4%;height:108%;border-radius:0 0 50% 50%/0 0 22% 22%;box-shadow:inset 0 -.18em 0 #3b2416,0 .1em .15em rgba(40,20,10,.35);transform:translateY(-102%);animation:ivBlink 5.2s infinite}
+.iva-eye1>i{animation:ivWink 10.4s infinite}
+.iva-mouth{position:absolute;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,#5c0f1e,#2a0509 70%);opacity:0}
+.iva-jaw{-webkit-mask-image:radial-gradient(closest-side,#000 70%,transparent 100%);mask-image:radial-gradient(closest-side,#000 70%,transparent 100%);transform-origin:20% 10%}
+.iva.talk .iva-jaw{animation:ivJaw .22s ease-in-out infinite alternate}
+.iva.talk .iva-mouth{animation:ivMouth .22s ease-in-out infinite alternate}
+.iva-hand{-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:ivWave 7s ease-in-out infinite}
+.iva.talk .iva-hand{animation:ivWaveTalk 1.6s ease-in-out infinite}
+.iva-banner{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);animation:ivSway 5.5s ease-in-out infinite}
+.iva-train{-webkit-mask-image:radial-gradient(closest-side,#000 82%,transparent 100%);mask-image:radial-gradient(closest-side,#000 82%,transparent 100%);animation:ivRock 2.4s ease-in-out infinite}
+.iva-lamp{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,236,170,.75) 0,rgba(255,200,110,.32) 30%,rgba(255,180,80,.1) 52%,transparent 70%);mix-blend-mode:screen;animation:ivFlicker 3.4s ease-in-out infinite}
+.iva-glint{position:absolute;opacity:0;animation:ivTwinkle 4s ease-in-out infinite}
+.iva-glint::before,.iva-glint::after{content:"";position:absolute;left:50%;top:50%;width:100%;height:9%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,#fff,rgba(255,236,170,.85) 40%,transparent)}
+.iva-glint::after{transform:translate(-50%,-50%) rotate(90deg)}
+.iva-sweep{position:absolute;left:-40%;top:-20%;width:30%;height:75%;background:linear-gradient(100deg,transparent,rgba(255,250,225,.22) 45%,rgba(255,255,255,.32) 50%,rgba(255,250,225,.22) 55%,transparent);mix-blend-mode:screen;transform:skewX(-18deg);animation:ivSweep 11s ease-in-out infinite}
+.iva-dust{position:absolute;width:.42%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,244,200,.95),rgba(255,220,140,0) 70%);opacity:0;transform:scale(var(--s));animation:ivDust 12s linear infinite}
+.iva-clock{position:absolute;border-radius:50%}
+.iva-clock i{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:2px}
+.iva-sec{width:1.4%;height:42%;margin-left:-.7%;background:#b3261e;animation:ivTick 60s steps(60) infinite}
+.iva-min{width:3%;height:34%;margin-left:-1.5%;background:#2b1a10;opacity:.0;animation:ivTick 3600s linear infinite}
+@keyframes ivBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.006,1.012)}}
+@keyframes ivHead{0%,100%{transform:rotate(0)}22%{transform:rotate(-1.1deg)}48%{transform:rotate(0)}70%{transform:rotate(.9deg) translateY(-.4%)}}
+@keyframes ivNod{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(-.8deg) translateY(.6%)}}
+@keyframes ivBlink{0%,92%,100%{transform:translateY(-102%)}95%,97%{transform:translateY(0)}}
+@keyframes ivWink{0%,46%,51%,72%,81%,100%{transform:translateY(-102%)}47.5%,48.5%{transform:translateY(0)}74%,79%{transform:translateY(-4%)}}
+@keyframes ivJaw{from{transform:translateY(0) rotate(0)}to{transform:translateY(9%) rotate(2.5deg)}}
+@keyframes ivMouth{from{opacity:.15}to{opacity:.85}}
+@keyframes ivWave{0%,58%,100%{transform:rotate(0)}64%{transform:rotate(-5deg)}70%{transform:rotate(3deg)}76%{transform:rotate(-4deg)}82%{transform:rotate(2deg)}88%{transform:rotate(0)}}
+@keyframes ivWaveTalk{0%,100%{transform:rotate(0)}30%{transform:rotate(-4deg)}65%{transform:rotate(2.5deg)}}
+@keyframes ivSway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+@keyframes ivRock{0%,100%{transform:translateY(0)}50%{transform:translateY(.35%)}}
+@keyframes ivFlicker{0%,100%{opacity:.85;transform:scale(1)}20%{opacity:1;transform:scale(1.06)}35%{opacity:.7}55%{opacity:.95;transform:scale(.97)}70%{opacity:.78}}
+@keyframes ivTwinkle{0%,100%{opacity:0;transform:scale(.3) rotate(0)}12%{opacity:1;transform:scale(1) rotate(25deg)}26%{opacity:0;transform:scale(.4) rotate(45deg)}}
+@keyframes ivSweep{0%,30%{left:-40%}70%,100%{left:120%}}
+@keyframes ivDust{0%{opacity:0;transform:translate(0,0) scale(var(--s))}10%{opacity:.8}90%{opacity:.6}100%{opacity:0;transform:translate(3vw,-38vh) scale(var(--s))}}
+@keyframes ivTick{to{transform:rotate(360deg)}}
+/* bubble text pops in when Ollie speaks */
+g[data-g="bubble"] text{transform-box:fill-box;transform-origin:center;animation:ivPop .38s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes ivPop{from{opacity:0;transform:scale(.85) translateY(4px)}to{opacity:1;transform:none}}
+g[data-g="ring"],.ivd-ring{animation:ivFadeIn .9s ease-out both}
+@keyframes ivFadeIn{from{opacity:0}to{opacity:1}}
+/* hover: the painted button itself lifts and floats */
+.ivd-hit.ivh:hover,.ivd-hit.ivh:focus-visible,.ivd-hit.ivh-idle{background:var(--ivh-img) var(--ivh-pos)/var(--ivh-size) no-repeat!important;box-shadow:0 .7vh 1.4vh rgba(2,17,51,.5)!important;animation:ivFloat 1.15s ease-in-out infinite}
+.ivd-hit.ivh-idle:not(:hover){animation:ivIdle 3.6s ease-in-out infinite;box-shadow:none!important}
+.ivd-hit.ivh-small:hover{animation-name:ivFloatSmall}
+.ivd-hit.ivh:active{animation:none;transform:scale(.97) translateY(1px)}
+.ivd-hit:focus-visible{outline:2px solid #fff2ae;outline-offset:2px}
+@keyframes ivFloat{0%,100%{transform:translateY(0) scale(1.035) rotate(0)}25%{transform:translateY(-.45vh) scale(1.05) rotate(-.7deg)}75%{transform:translateY(-.15vh) scale(1.045) rotate(.7deg)}}
+@keyframes ivFloatSmall{0%,100%{transform:translateY(0) scale(1.08) rotate(0)}25%{transform:translateY(-.4vh) scale(1.12) rotate(-4deg)}75%{transform:translateY(-.1vh) scale(1.1) rotate(4deg)}}
+@keyframes ivIdle{0%,70%,100%{transform:none}78%{transform:translateY(-.5vh) scale(1.03)}86%{transform:translateY(0) scale(1.01)}92%{transform:translateY(-.25vh) scale(1.02)}}
+.ivb-opt,.ivp-btn,.ivp-pill,.ivp-gcard,.ivb-say,.ivb-pass{transition:transform .2s}
+.ivb-opt:hover:not(:disabled),.ivp-btn:hover,.ivp-pill:hover,.ivp-gcard:hover,.ivb-say:hover,.ivb-pass:hover{animation:ivFloatSmall 1.2s ease-in-out infinite}
+.ivb-opt:hover:not(:disabled),.ivp-gcard:hover{animation-name:ivFloatSoft}
+@keyframes ivFloatSoft{0%,100%{transform:translateY(0)}50%{transform:translateY(-.35vh) rotate(-.4deg)}}
+/* ---------- train transition ---------- */
+.ivt{position:absolute;inset:0;z-index:40;overflow:hidden;pointer-events:all;--h:min(24%,15vw)}
+#app:has(.ivt){position:relative}
+.ivt-cover{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,20,52,.35),rgba(6,20,52,.15) 45%,rgba(6,20,52,.8)),url("resources/interv/anim/transit-bg.webp") center/cover #0d2a55;will-change:clip-path}
+.ivt-streaks{position:absolute;inset:0;opacity:.35;background:repeating-linear-gradient(180deg,transparent 0 3.2vh,rgba(255,236,170,.0) 3.2vh,rgba(255,236,170,.55) 3.35vh,transparent 3.5vh 7vh);background-size:60vw 100%;animation:ivStreak .45s linear infinite;-webkit-mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}
+@keyframes ivStreak{to{background-position:60vw 0}}
+.ivt-sign{position:absolute;left:50%;top:22%;transform:translateX(-50%);padding:1.4vh 4vh 1.7vh;border-radius:1.6vh;background:linear-gradient(#173a86,#0b2257);border:.35vh solid #e3b24c;box-shadow:inset 0 0 0 .6vh rgba(11,34,87,.6),inset 0 0 0 .75vh rgba(227,178,76,.55),0 2vh 4vh rgba(0,0,0,.55);text-align:center;color:#ffe9a6;font-family:Georgia,"Times New Roman",serif;white-space:nowrap;animation:ivSign .5s cubic-bezier(.2,1.3,.4,1) both}
+.ivt-sign small{display:block;font:700 1.6vh/1.2 "Segoe UI",sans-serif;letter-spacing:.4em;text-transform:uppercase;color:#cfe0ff}
+.ivt-sign b{display:block;font-size:4.6vh;letter-spacing:.03em;text-shadow:0 .3vh .8vh rgba(0,0,0,.6)}
+@keyframes ivSign{from{opacity:0;transform:translateX(-50%) scale(.85)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+.ivt-rail{position:absolute;left:0;right:0;top:86%;height:2.6%;background:linear-gradient(180deg,transparent 0 22%,#e1e6ef 22%,#8c93a3 44%,#3c4150 52%,transparent 52%),repeating-linear-gradient(90deg,#3b2618 0 1.4vh,#5e3e26 1.4vh 1.7vh,transparent 1.7vh 3.6vh);filter:drop-shadow(0 .4vh .6vh rgba(0,0,0,.6))}
+.ivt-train{position:absolute;left:0;bottom:13.6%;height:var(--h);display:flex;align-items:flex-end;gap:1.2%;will-change:transform}
+.ivt-coach{position:relative;flex:none;height:78%;aspect-ratio:1.9;border-radius:1.4vh 1.4vh .6vh .6vh;background:linear-gradient(180deg,#0b1d4f 0,#3c66c7 6%,#1f4aa8 14%,#173a86 45%,#0e275f 82%,#081a45 100%);box-shadow:inset 0 0 0 .35vh #e3b24c,inset 0 -1.8vh 0 #071538,0 1.6vh 2.6vh rgba(0,0,0,.55);animation:ivCoach .5s ease-in-out infinite alternate}
+.ivt-coach:nth-child(2n){animation-delay:.18s}
+.ivt-roof{position:absolute;left:-2%;right:-2%;top:-7%;height:12%;border-radius:40% 40% .6vh .6vh/100% 100% .6vh .6vh;background:linear-gradient(180deg,#2e3a5e,#0c1330)}
+.ivt-wins{position:absolute;left:8%;right:8%;top:17%;height:34%;display:flex;gap:6%}
+.ivt-wins b{flex:1;border-radius:12% 12% 5% 5%;background:radial-gradient(ellipse at 50% 65%,#fff4cc,#f8cd70 55%,#c17d22);box-shadow:inset 0 0 0 .3vh #0b1d4f,inset 0 0 0 .5vh #d9a441,0 0 1.6vh rgba(255,200,110,.5)}
+.ivt-coach em{position:absolute;left:50%;top:60%;transform:translateX(-50%);padding:.15em .7em;border-radius:.6vh;background:#0a173d;border:.25vh solid #e3b24c;font:700 1.5vh Georgia,serif;font-style:normal;letter-spacing:.2em;color:#ffe08a}
+.ivt-bogie{position:absolute;bottom:-12%;display:flex;gap:.5vh}.ivt-bogie.a{left:9%}.ivt-bogie.b{right:9%}
+.ivt-bogie u{display:block;width:3.2vh;height:3.2vh;border-radius:50%;background:radial-gradient(circle,#ffe08a 0 14%,#5a4216 16% 20%,transparent 22%),repeating-conic-gradient(#10131f 0 15deg,#3c4458 15deg 30deg);box-shadow:0 0 0 .3vh #2a2f40,inset 0 0 0 .4vh #c99a3a;animation:ivSpin .4s linear infinite}
+.ivt-engine{flex:none;height:100%;aspect-ratio:150/86;overflow:visible}
+.ivt-engine .ivt-w{transform-box:fill-box;transform-origin:center;animation:ivSpin .4s linear infinite}
+.ivt-puff{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(245,247,252,.9),rgba(215,220,232,.5) 55%,rgba(200,205,220,0) 72%);animation:ivPuff 1.35s ease-out forwards}
+@keyframes ivSpin{to{transform:rotate(360deg)}}
+@keyframes ivCoach{to{transform:translateY(-.25vh)}}
+@keyframes ivPuff{from{transform:translate(0,0) scale(.35);opacity:.95}to{transform:translate(-6vh,-9vh) scale(2.6);opacity:0}}
+@media (prefers-reduced-motion: reduce){.iva *,.iva,.ivd-hit,.ivb-opt,.ivp-btn,.ivp-gcard{animation:none!important}.iva-eye>i{transform:translateY(-102%)}}
+html.reduced-motion .iva *{animation:none!important}
+
+/* ---------- Simple train transition (motion.js ivTransit) ---------- */
+#app:has(.ivd-screen){position:relative}
+.ivt2-old{position:absolute!important;inset:0;z-index:38;pointer-events:none;opacity:1;transition:opacity .4s ease}
+.ivt2-old.out{opacity:0}
+.ivt2{position:absolute;inset:0;z-index:40;pointer-events:none;overflow:hidden;--th:min(15vh,11vw)}
+.ivt2-rail{position:absolute;left:0;right:0;bottom:calc(var(--th)*.5);height:calc(var(--th)*.09);background:linear-gradient(180deg,#e9edf3 0 30%,#8a909a 30% 60%,#3c4048 60%);box-shadow:0 calc(var(--th)*.05) 0 0 rgba(58,36,22,.85);opacity:0;animation:ivt2Rail .95s ease forwards}
+.ivt2-train{position:absolute;left:0;bottom:calc(var(--th)*.56);height:var(--th);display:flex;align-items:flex-end;gap:calc(var(--th)*.05);will-change:transform;filter:drop-shadow(0 calc(var(--th)*.08) calc(var(--th)*.1) rgba(0,0,0,.45));animation:ivt2Fwd .9s cubic-bezier(.5,.05,.4,1) forwards}
+.ivt2.back .ivt2-train{flex-direction:row-reverse;animation-name:ivt2Back}
+.ivt2.back .ivt-engine{transform:scaleX(-1)}
+.ivt2-train .ivt-engine{height:calc(var(--th)*.98);width:auto;flex:none}
+.ivt2-coach{position:relative;flex:none;width:calc(var(--th)*1.55);height:calc(var(--th)*.8);border-radius:calc(var(--th)*.12) calc(var(--th)*.12) calc(var(--th)*.05) calc(var(--th)*.05);background:linear-gradient(180deg,#2a5cc4,#173f95 55%,#0d2766);box-shadow:inset 0 0 0 calc(var(--th)*.03) #e2b24c;margin-bottom:calc(var(--th)*.1)}
+.ivt2-coach span{position:absolute;left:8%;right:8%;top:14%;height:34%;display:flex;gap:7%}
+.ivt2-coach span b{flex:1;border-radius:18%;background:radial-gradient(circle at 50% 60%,#fff4c8,#f6c56a 60%,#b9781f)}
+.ivt2-coach em{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);font:700 calc(var(--th)*.12) Georgia,serif;letter-spacing:.12em;color:#ffe08a;font-style:normal}
+.ivt2-coach i{position:absolute;bottom:calc(var(--th)*-.1);width:calc(var(--th)*.2);height:calc(var(--th)*.2);border-radius:50%;background:radial-gradient(circle,#f3dc98 0 18%,#2b2b30 20% 100%);box-shadow:0 0 0 calc(var(--th)*.02) #c99a3a}
+.ivt2-coach i:first-of-type{left:12%}.ivt2-coach i:last-of-type{right:12%}
+.ivt2-sign{position:absolute;left:50%;bottom:calc(var(--th)*1.75);transform:translateX(-50%);padding:.35em 1.1em;border-radius:99px;background:rgba(10,30,78,.88);border:2px solid #e2b24c;color:#dbe6ff;font:600 clamp(12px,1.6vw,20px) "Baloo 2","Segoe UI",sans-serif;white-space:nowrap;opacity:0;animation:ivt2Sign .95s ease forwards}
+.ivt2-sign b{color:#ffe08a}
+@keyframes ivt2Fwd{from{transform:translateX(-105%)}to{transform:translateX(105vw)}}
+@keyframes ivt2Back{from{transform:translateX(105vw)}to{transform:translateX(-105%)}}
+@keyframes ivt2Rail{0%,100%{opacity:0}20%,75%{opacity:.95}}
+@keyframes ivt2Sign{0%,100%{opacity:0}18%,70%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.ivt2{display:none}.ivt2-old{transition:none}}
+
+/* ---------- Animated train transition (motion.js ivTransit): transform/opacity only ---------- */
+.ivt3{position:fixed;inset:0;z-index:2147482000;pointer-events:none;overflow:hidden;--th:min(30vh,19vw);font-size:var(--th)}
+.ivt3-veil{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 70%,rgba(255,236,190,.25),rgba(8,24,60,.45));opacity:0;animation:ivt3Veil 1.4s ease forwards}
+.ivt3-rail{position:absolute;left:0;right:0;bottom:calc(12% - .1em);height:.07em;background:linear-gradient(180deg,#f2f4f8 0 28%,#8a909a 28% 58%,#3c4048 58%);box-shadow:0 .035em 0 #5a3a24;opacity:0;animation:ivt3Veil 1.4s ease forwards}
+.ivt3-train{position:absolute;left:0;bottom:12%;display:flex;align-items:flex-end;will-change:transform;filter:drop-shadow(0 .05em .06em rgba(0,0,0,.45));animation:ivt3Fwd 1.4s cubic-bezier(.22,.12,.55,.92) forwards}
+.ivt3.back .ivt3-train{animation-name:ivt3Back}
+.ivt3-engine{position:relative;flex:none;height:1em}
+.ivt3-engine svg{display:block;height:100%;width:auto}
+.ivt3.back .ivt3-engine svg{transform:scaleX(-1)}
+.ivt3 .ivt-w{transform-box:fill-box;transform-origin:center;animation:ivt3Spin .32s linear infinite}
+.ivt3-steam{position:absolute;left:74%;top:6%;width:0;height:0}
+.ivt3.back .ivt3-steam{left:26%}
+.ivt3-puff{position:absolute;left:-.09em;top:-.09em;width:.18em;height:.18em;border-radius:50%;background:radial-gradient(circle,#ffffff,rgba(235,240,250,.75) 55%,rgba(235,240,250,0) 72%);opacity:0;animation:ivt3Puff .9s ease-out infinite;animation-delay:calc(var(--k) * .18s)}
+.ivt3.back .ivt3-puff{animation-name:ivt3PuffBack}
+.ivt3-coach{position:relative;flex:none;width:1.7em;height:.8em;margin-bottom:.1em;border-radius:.12em .12em .04em .04em;background:linear-gradient(180deg,#2f63cf,#1b4aa6 55%,#0e2a6e);box-shadow:inset 0 0 0 .025em #e2b24c,inset 0 -.1em 0 #0a1f55;animation:ivt3Bob .28s ease-in-out infinite alternate;animation-delay:var(--d)}
+.ivt3-roof{position:absolute;left:-3%;right:-3%;top:-.07em;height:.1em;border-radius:.5em .5em .03em .03em;background:linear-gradient(#5a5f6c,#23262e)}
+.ivt3-wins{position:absolute;left:7%;right:7%;top:16%;height:34%;display:flex;gap:6%}
+.ivt3-wins b{flex:1;border-radius:.03em;background:radial-gradient(ellipse at 50% 60%,#fff6cf,#f6c56a 60%,#b9781f);box-shadow:inset 0 0 0 .012em #0e2a6e}
+.ivt3-coach em{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);padding:.01em .12em;border-radius:.03em;background:#0e2a6e;box-shadow:0 0 0 .01em #e2b24c;color:#ffe08a;font:700 .1em Georgia,serif;letter-spacing:.14em;font-style:normal;white-space:nowrap}
+.ivt3-bogie{position:absolute;bottom:-.1em;display:flex;gap:.03em}.ivt3-bogie.a{left:9%}.ivt3-bogie.b{right:9%}
+.ivt3-w{display:block;width:.18em;height:.18em;border-radius:50%;background:radial-gradient(circle,#f3dc98 0 14%,#2b2b30 16% 62%,#c99a3a 64% 72%,#1a1a1d 74%),conic-gradient(#3b3b42 0 25%,#55555e 0 50%,#3b3b42 0 75%,#55555e 0);animation:ivt3Spin .32s linear infinite}
+.ivt3.back .ivt3-w,.ivt3.back .ivt-w{animation-direction:reverse}
+.ivt3-link{flex:none;align-self:flex-end;width:.09em;height:.035em;margin-bottom:.32em;border-radius:.02em;background:linear-gradient(90deg,#c99a3a,#ffe08a,#c99a3a)}
+.ivt3-sign{position:absolute;left:50%;top:5%;display:grid;justify-items:center;gap:.02em;padding:.05em .22em .07em;border-radius:.07em;background:linear-gradient(#173f95,#0e2a6e);box-shadow:0 0 0 .02em #e2b24c,0 .05em .08em rgba(0,0,0,.4);color:#ffe9a6;white-space:nowrap;transform-origin:50% -40%;animation:ivt3Sign 1.4s cubic-bezier(.3,.7,.3,1) forwards}
+.ivt3-sign::before,.ivt3-sign::after{content:"";position:absolute;top:-.5em;width:.012em;height:.5em;background:#c99a3a}.ivt3-sign::before{left:18%}.ivt3-sign::after{right:18%}
+.ivt3-sign small{font:700 .065em "Baloo 2",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#cfdcff}
+.ivt3-sign b{font:800 .13em Georgia,serif;color:#ffe08a;text-shadow:0 .02em 0 #000}
+.ivt3-arrive .ivx,.ivt3-arrive .ivp-gpanel,.ivt3-arrive .ivp-panel{animation:ivt3Pop .6s cubic-bezier(.2,1.35,.4,1) .78s both}
+@keyframes ivt3Fwd{from{transform:translateX(-102%)}to{transform:translateX(104vw)}}
+@keyframes ivt3Back{from{transform:translateX(104vw)}to{transform:translateX(-102%)}}
+@keyframes ivt3Veil{0%,100%{opacity:0}22%,72%{opacity:1}}
+@keyframes ivt3Spin{to{transform:rotate(360deg)}}
+@keyframes ivt3Bob{to{transform:translateY(-.012em)}}
+@keyframes ivt3Puff{0%{opacity:0;transform:translate(0,0) scale(.4)}15%{opacity:.95}100%{opacity:0;transform:translate(-.55em,-.7em) scale(2.4)}}
+@keyframes ivt3PuffBack{0%{opacity:0;transform:translate(0,0) scale(.4)}15%{opacity:.95}100%{opacity:0;transform:translate(.55em,-.7em) scale(2.4)}}
+@keyframes ivt3Sign{0%{transform:translate(-50%,-180%) rotate(-8deg)}22%{transform:translate(-50%,0) rotate(4deg)}32%{transform:translate(-50%,0) rotate(-2deg)}42%,78%{transform:translate(-50%,0) rotate(0)}100%{transform:translate(-50%,-180%) rotate(0)}}
+@keyframes ivt3Pop{from{opacity:0;transform:scale(.9) translateY(3%)}}
+@media(prefers-reduced-motion:reduce){.ivt3{display:none}.ivt3-arrive .ivx,.ivt3-arrive .ivp-gpanel,.ivt3-arrive .ivp-panel{animation:none}}
+
+/* ---------- Departure-board flip (motion.js ivTransit) ---------- */
+.ivt4-leave .ivx,.ivt4-leave .ivp-gpanel,.ivt4-leave .ivp-panel,.ivt4-leave .ivp-legacy{animation:ivt4OutF .2s cubic-bezier(.5,0,.75,0) forwards;transform-origin:50% 100%}
+.ivt4-leave.ivt4-back .ivx,.ivt4-leave.ivt4-back .ivp-gpanel,.ivt4-leave.ivt4-back .ivp-panel,.ivt4-leave.ivt4-back .ivp-legacy{animation-name:ivt4OutB;transform-origin:50% 0}
+.ivt4-leave .ivd-live g[data-g]:not([data-g="bonus"]),.ivt4-leave .ivd-live>text{transition:opacity .18s ease;opacity:0}
+.ivt4-leave .ivd-hit{pointer-events:none}
+.ivt4-arrive .ivx,.ivt4-arrive .ivp-gpanel,.ivt4-arrive .ivp-panel,.ivt4-arrive .ivp-legacy{animation:ivt4InF .55s cubic-bezier(.2,.9,.3,1.06) both;transform-origin:50% 0}
+.ivt4-arrive.ivt4-back .ivx,.ivt4-arrive.ivt4-back .ivp-gpanel,.ivt4-arrive.ivt4-back .ivp-panel,.ivt4-arrive.ivt4-back .ivp-legacy{animation-name:ivt4InB;transform-origin:50% 100%}
+.ivt4-arrive .ivd-live g[data-g]:not([data-g="bonus"]){animation:ivt4Text .45s ease .12s both}
+@keyframes ivt4OutF{to{opacity:0;transform:perspective(1600px) rotateX(78deg) scale(.97)}}
+@keyframes ivt4OutB{to{opacity:0;transform:perspective(1600px) rotateX(-78deg) scale(.97)}}
+@keyframes ivt4InF{0%{opacity:0;transform:perspective(1600px) rotateX(-82deg)}55%{opacity:1}80%{transform:perspective(1600px) rotateX(6deg)}100%{transform:none}}
+@keyframes ivt4InB{0%{opacity:0;transform:perspective(1600px) rotateX(82deg)}55%{opacity:1}80%{transform:perspective(1600px) rotateX(-6deg)}100%{transform:none}}
+@keyframes ivt4Text{from{opacity:0;transform:translateY(-8px)}}
+@media(prefers-reduced-motion:reduce){.ivt4-leave .ivx,.ivt4-arrive .ivx,.ivt4-leave .ivp-gpanel,.ivt4-arrive .ivp-gpanel,.ivt4-arrive .ivd-live g[data-g]{animation:none}}
+
+/* ---------- Scroll roll transition (replaces the board flip) ---------- */
+.ivt4-leave .ivx,.ivt4-leave .ivp-gpanel,.ivt4-leave .ivp-panel,.ivt4-leave .ivp-legacy,
+.ivt4-leave.ivt4-back .ivx,.ivt4-leave.ivt4-back .ivp-gpanel,.ivt4-leave.ivt4-back .ivp-panel,.ivt4-leave.ivt4-back .ivp-legacy{animation:ivt5Up .3s cubic-bezier(.55,0,.75,.2) forwards!important;transform:none!important}
+.ivt4-arrive .ivx,.ivt4-arrive .ivp-gpanel,.ivt4-arrive .ivp-panel,.ivt4-arrive .ivp-legacy,
+.ivt4-arrive.ivt4-back .ivx,.ivt4-arrive.ivt4-back .ivp-gpanel,.ivt4-arrive.ivt4-back .ivp-panel,.ivt4-arrive.ivt4-back .ivp-legacy{animation:ivt5Down .56s cubic-bezier(.25,.7,.3,1) both!important;transform:none!important}
+@keyframes ivt5Up{from{clip-path:inset(0 0 0 0)}to{clip-path:inset(0 0 calc(100% - 6px) 0)}}
+@keyframes ivt5Down{from{clip-path:inset(0 0 calc(100% - 6px) 0)}to{clip-path:inset(0 0 0 0)}}
+.ivt5-rod{position:absolute;z-index:41;height:22px;margin-top:-11px;border-radius:11px;pointer-events:none;background:linear-gradient(180deg,#fff3c4 0%,#f1c45a 22%,#c98a12 55%,#8a5a0c 85%,#5e3c06 100%);box-shadow:0 6px 10px rgba(6,20,52,.45),inset 0 1px 0 #fff8}
+.ivt5-rod::before,.ivt5-rod::after{content:"";position:absolute;top:-5px;width:16px;height:32px;border-radius:7px;background:linear-gradient(90deg,#173f95,#2a5cc4 50%,#0e2a6e);box-shadow:inset 0 0 0 2px #e2b24c}
+.ivt5-rod::before{left:-8px}.ivt5-rod::after{right:-8px}
+@media(prefers-reduced-motion:reduce){.ivt5-rod{display:none}}
+
+/* ---------- Rolled-ticket transition (motion.js ivTransit, like the journey ticket's paper roll) ---------- */
+.ivt6-leave .ivd-live g[data-g]:not([data-g="bonus"]):not([data-g="bubble"]){transition:opacity .3s ease;opacity:0}
+.ivt6-leave .ivd-hit,.ivt6-leave .ivbar{pointer-events:none}
+.ivt6-arrive .ivd-live g[data-g]:not([data-g="bonus"]):not([data-g="bubble"]){animation:ivt4Text .45s ease .25s both}
+.ivt6-roll{position:absolute;z-index:41;pointer-events:none;will-change:left,width}
+.ivt6-body{position:absolute;inset:0;border-radius:50%/6%;overflow:hidden;background:#173f95;box-shadow:.4em .6em 1em rgba(2,17,51,.55)}
+.ivt6-skin{position:absolute;top:0;bottom:0;left:0;width:400%;background:linear-gradient(#e2b24c 0 3%,transparent 3% 97%,#e2b24c 97%),repeating-linear-gradient(90deg,#2a5cc4 0 18px,#6f9be6 18px 19px,#1d4597 19px 34px,#e2b24c 34px 36px,#2a5cc4 36px 52px)}
+.ivt6-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,10,35,.75),rgba(20,40,90,.25) 18%,rgba(255,255,255,.35) 42%,rgba(255,255,255,.05) 60%,rgba(2,10,35,.45) 85%,rgba(2,8,25,.85))}
+.ivt6-end{position:absolute;left:0;right:0;height:6%;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,#dbe8fb 0 2px,#2a5cc4 2px 3px);box-shadow:inset 0 0 0 2px #e2b24c}
+.ivt6-end.t{top:-3%}.ivt6-end.b{bottom:-3%;filter:brightness(.7)}
+@media(prefers-reduced-motion:reduce){.ivt6-roll{display:none}}
+
+/* Roll v3: only the old activity frame stays visible over the new page while it rolls away. */
+.ivt7-old{visibility:hidden!important;opacity:1!important;transition:none!important;pointer-events:none}
+.ivt7-old .ivt7-keep{visibility:visible!important;animation:none!important}
+.ivt7-old .ivt7-keep *{animation-play-state:paused}
+.ivx-plate{display:none!important}
+

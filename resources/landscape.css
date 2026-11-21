@@ -1,0 +1,29 @@
+/* One design coordinate system for every current and future page. */
+:root{--landscape-width:1920px;--landscape-height:1080px;--display-scale:1}
+html,body{width:100vw;height:100dvh;min-height:0;overflow:hidden}
+#readwy-viewport{position:fixed;inset:0;width:100vw;height:100dvh;overflow:hidden;background:#061526}
+html #landscape-shell,html[data-display-portrait] #landscape-shell,html:not([data-display-portrait]) #landscape-shell{position:absolute;inset:auto;left:var(--display-left,0px);top:var(--display-top,0px);width:var(--landscape-width);height:var(--landscape-height);transform:rotate(var(--display-rotate,0deg)) scale(var(--display-scale));transform-origin:top left;overflow:hidden}
+#app{width:100%;height:100%;min-height:0}
+html[data-startup-portrait] #landscape-shell{width:var(--landscape-width);height:var(--landscape-height)}
+/* Artwork and its controls keep their existing shared coordinate space. */
+.screen .illustration,.screen.startup-screen .illustration,.screen.subject-screen .illustration,.welcome-panel-overlay{background-size:contain}
+/* Keep the fullscreen control in the same scaled coordinate system. */
+#landscape-shell>.display-fullscreen{position:absolute}
+/* Preserve ARAL's original painting and percentage hit areas together inside the canvas. */
+.aral-board{position:absolute;left:50%;top:50%;width:min(100%,calc(var(--landscape-height) * 1586 / 992));height:min(100%,calc(var(--landscape-width) * 992 / 1586));transform:translate(-50%,-50%)}
+.aral-art,.aral-living-owl{object-fit:contain}
+/* GST fills the stage with its original painting; no generated side scenery. */
+.gst-book-screen{background:#152b36}
+
+/* READwy full-screen on every device: painted scenes fill the device-shaped canvas.
+   Each button is a percentage of its scene, so it stays on its painted target. */
+.story-board,.startup-morph-board,.book-content-board{width:100%;height:100%}
+.story-backdrop{object-fit:fill}
+.journey-wide-art{width:100%;height:100%;margin-inline:0}
+.journey-wide-art>img{object-fit:fill}
+.screen .illustration,.screen.startup-screen .illustration,.screen.subject-screen .illustration,.welcome-panel-overlay{background-size:100% 100%}
+.aral-board{width:100%;height:100%}
+.aral-art,.aral-living-owl{object-fit:fill}
+.sra-welcome-board{width:100%;height:100%}
+.sra-welcome-board>img{object-fit:fill}
+.orst-themed-screen .orst-interface-backdrop{object-fit:fill}

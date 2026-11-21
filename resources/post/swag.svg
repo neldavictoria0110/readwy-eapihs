@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" preserveAspectRatio="none">
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c4"/><stop offset=".22" stop-color="#ffd85a"/><stop offset=".5" stop-color="#f6b81f"/><stop offset=".78" stop-color="#d98a00"/><stop offset="1" stop-color="#9a5c00"/></linearGradient>
+<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7a4500" stop-opacity=".55"/><stop offset=".18" stop-color="#fff" stop-opacity="0"/><stop offset=".42" stop-color="#fffbe0" stop-opacity=".55"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset=".82" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#7a4500" stop-opacity=".55"/></linearGradient>
+<linearGradient id="rod" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0b8"/><stop offset=".4" stop-color="#c8902a"/><stop offset="1" stop-color="#6a4208"/></linearGradient>
+<radialGradient id="knot" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#fff8d0"/><stop offset=".45" stop-color="#f2b11e"/><stop offset="1" stop-color="#7a4800"/></radialGradient>
+<filter id="tex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6 .08" numOctaves="2" seed="3" result="n"/><feColorMatrix in="n" values="0 0 0 0 .5 0 0 0 0 .35 0 0 0 0 0 0 0 0 .22 0" result="t"/><feComposite in="t" in2="SourceGraphic" operator="in" result="tt"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="tt"/></feMerge></filter>
+<clipPath id="c"><path d="M0 12 L240 12 Q120 150 0 12 Z"/></clipPath>
+</defs>
+<g filter="url(#tex)"><path d="M0 12 L240 12 Q120 150 0 12 Z" fill="url(#g)"/></g>
+<g clip-path="url(#c)">
+<rect width="240" height="120" fill="url(#sheen)"/>
+<path d="M6 16 Q120 128 234 16" fill="none" stroke="#8a5200" stroke-opacity=".55" stroke-width="5"/>
+<path d="M10 19 Q120 122 230 19" fill="none" stroke="#fff6c8" stroke-opacity=".7" stroke-width="2.5"/>
+<path d="M18 15 Q120 104 222 15" fill="none" stroke="#8a5200" stroke-opacity=".5" stroke-width="5"/>
+<path d="M22 18 Q120 98 218 18" fill="none" stroke="#fff6c8" stroke-opacity=".65" stroke-width="2.2"/>
+<path d="M34 14 Q120 80 206 14" fill="none" stroke="#8a5200" stroke-opacity=".45" stroke-width="4.5"/>
+<path d="M38 17 Q120 74 202 17" fill="none" stroke="#fff6c8" stroke-opacity=".6" stroke-width="2"/>
+<path d="M54 14 Q120 56 186 14" fill="none" stroke="#8a5200" stroke-opacity=".4" stroke-width="4"/>
+<path d="M58 16 Q120 50 182 16" fill="none" stroke="#fff6c8" stroke-opacity=".55" stroke-width="1.8"/>
+</g>
+<path d="M0 12 Q120 150 240 12" fill="none" stroke="#7a4600" stroke-width="2.2"/>
+<path d="M2 18 Q120 156 238 18" fill="none" stroke="#e8a018" stroke-width="5" stroke-dasharray="1.6 4.4" stroke-linecap="round"/>
+<path d="M4 22 Q120 162 236 22" fill="none" stroke="#b87400" stroke-width="3" stroke-dasharray="1 5.4" stroke-linecap="round"/>
+<rect x="0" y="2" width="240" height="11" rx="5.5" fill="url(#rod)"/>
+<rect x="0" y="3.5" width="240" height="2.5" fill="#fff7d6" opacity=".7"/>
+<g><path d="M-1 22 l0 26" stroke="#c8902a" stroke-width="2.5"/><path d="M-7 46 q7 -10 14 0 l-2 22 h-10z" fill="url(#knot)" stroke="#7a4800"/><path d="M-6 68 h12" stroke="#7a4800" stroke-width="2" stroke-dasharray="1 2"/></g>
+<g><path d="M241 22 l0 26" stroke="#c8902a" stroke-width="2.5"/><path d="M234 46 q7 -10 14 0 l-2 22 h-10z" fill="url(#knot)" stroke="#7a4800"/><path d="M235 68 h12" stroke="#7a4800" stroke-width="2" stroke-dasharray="1 2"/></g>
+<circle cx="0" cy="14" r="13" fill="url(#knot)" stroke="#7a4800" stroke-width="1.5"/><circle cx="240" cy="14" r="13" fill="url(#knot)" stroke="#7a4800" stroke-width="1.5"/>
+<circle cx="-3" cy="10" r="4" fill="#fffbe0" opacity=".8"/><circle cx="237" cy="10" r="4" fill="#fffbe0" opacity=".8"/>
+</svg>
