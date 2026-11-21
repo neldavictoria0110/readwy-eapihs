@@ -87,17 +87,36 @@
     }
   }
 
-  // 3. A Firebase session replaces the user with fewer fields; keep the saved details.
+  // 3. A Firebase session replaces the user with fewer fields. Keep the full
+  //    sign-up record from Firestore and the learner's local edits, and save it
+  //    under the account email so every later Profile screen finds it.
   const baseFirebase = window.readwySetFirebaseSession;
   if (typeof baseFirebase === 'function') {
     window.readwySetFirebaseSession = (authUser, profile) => {
       baseFirebase(authUser, profile);
       const now = getUser();
       if (!now || now.role !== 'student') return;
+      const email = emailKey(now.email || profile?.email || authUser?.email);
       const stored = readJson('user');
-      const same = stored && emailKey(stored.accountEmail || stored.email) === emailKey(now.email);
-      user = complete(fillFrom(same ? stored : {}, now));
+      const same = stored && emailKey(stored.accountEmail || stored.email) === email;
+      const cloud = profile && profile.role === 'student' ? {
+        name: profile.name, lrn: profile.lrn, grade: profile.grade,
+        section: profile.section, learningArea: profile.learningArea,
+        teacherUid: profile.teacherUid, classCode: profile.classCode,
+        email: profile.email || now.email, role: 'student',
+        uid: profile.uid || authUser?.uid
+      } : {};
+      // Local edits win over the stored cloud copy; both win over empty values.
+      const merged = withNames(fillFrom(fillFrom(cloud, now), same ? stored : {}));
+      if (email) {
+        merged.accountEmail = email;
+        const all = profiles();
+        all[email] = { ...(all[email] || {}), ...merged };
+        writeJson('studentProfiles', all);
+      }
+      user = complete(merged);
       writeJson('user', user);
+      refreshVisible(user);
     };
   }
 
@@ -168,13 +187,28 @@
   wrapRender('ivRenderProfile', () => document.querySelector('.ivprof form'));
   wrapRender('renderProfile', () => document.querySelector('form.student-profile'));
 
+  // GST builds its Profile spread asynchronously after a page flip, so also
+  // upgrade any matching form as soon as it appears in the document.
+  const PROFILE_FORMS = '#xgTkForm.xg-tk-fields, form.student-profile, .ivprof form';
+  let formQueued = false;
+  const scanForms = () => {
+    formQueued = false;
+    document.querySelectorAll(PROFILE_FORMS).forEach(upgrade);
+  };
+  if (typeof MutationObserver !== 'undefined' && document.documentElement &&
+      typeof requestAnimationFrame === 'function') {
+    new MutationObserver(() => {
+      if (!formQueued) { formQueued = true; requestAnimationFrame(scanForms); }
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+
   // Save handlers copy fields by hand; hand them the chosen gender first.
   const takeGender = form => {
     const u = getUser();
     if (u && form?.elements?.gender) u.gender = form.elements.gender.value;
   };
   document.addEventListener('submit', event => {
-    if (event.target.id === 'xgTkForm' || event.target.classList?.contains('student-profile')) takeGender(event.target);
+    if (event.target.id === 'xgTkForm' || event.target.id === 'gstUtilityForm' || event.target.classList?.contains('student-profile')) takeGender(event.target);
   }, true);
   document.addEventListener('click', event => {
     const saveButton = event.target.closest?.('.ivprof [data-save]');

@@ -128,12 +128,18 @@
     };
     const frame = now => {
       if (!canvas.isConnected) return;
+      if (document.hidden || reduceMotion()) {
+        ctx.clearRect(0, 0, w, h);
+        setTimeout(() => requestAnimationFrame(frame), 500);
+        return;
+      }
+      if (now - last < 1000 / 30) { requestAnimationFrame(frame); return; }
       const dt = Math.min(.05, (now - last) / 1000); last = now;
       // fade what was drawn before: soft light trails
       ctx.globalCompositeOperation = 'destination-out';
       ctx.fillStyle = 'rgba(0,0,0,.22)'; ctx.fillRect(0, 0, w, h);
       ctx.globalCompositeOperation = 'lighter';
-      const reduce = reduceMotion();
+      const reduce = false;
       tips().forEach(([x, y], k) => {
         const breathe = .75 + .25 * Math.sin(now / 420 + k * 1.7);
         const g = ctx.createRadialGradient(x, y, 0, x, y, w * .045 * breathe);

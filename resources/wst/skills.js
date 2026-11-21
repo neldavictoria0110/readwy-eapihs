@@ -250,10 +250,10 @@ function rubric61HTML(){const pts=[['Part A · Writing Skills','20 multiple-choi
  <h3>What the total means</h3><table style="border-collapse:collapse;width:100%;font-size:.85em"><tr style="background:#1d3466;color:#fff"><th style="padding:5px">Total (of 40)</th><th style="padding:5px">Level of proficiency</th><th style="padding:5px">Descriptor</th><th style="padding:5px">Writer level</th></tr>${bands.map((b,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:5px;text-align:center">${b.lo}–${b.hi}</td><td style="padding:5px">${b.k}</td><td style="padding:5px">${b.d}</td><td style="padding:5px">${b.w}</td></tr>`).join('')}</table>
  <p style="font-size:.8em;color:#5b5f6e">Sources: Education Northwest, 6+1 Trait® Writing Rubrics, Grades 3–12 (2021); DepEd Order No. 8, s. 2015 (transmutation and descriptors); DepEd Order No. 73, s. 2012 (levels of proficiency); writer levels adapted from the Phil-IRI (independent, instructional, frustration). Part A is a READwy screening test, not a nationally normed test.</p>`}
 /* toolbar chip: which part of the WST the learner is in */
-setInterval(()=>{try{const bar=document.getElementById('wstbar');if(!bar)return;let c=bar.querySelector('.wpart');
+setInterval(()=>{try{if(document.hidden)return;const bar=document.getElementById('wstbar');if(!bar)return;let c=bar.querySelector('.wpart');
  if(!c){c=document.createElement('span');c.className='wpart';c.style.cssText='display:none;margin-left:.8em;padding:.15em .8em;border-radius:99px;background:linear-gradient(180deg,#ffd75e,#f0b323);color:#2b1a00;font:800 .82em "Source Sans 3",sans-serif;letter-spacing:.06em;white-space:nowrap';bar.querySelector('.brand')?.after(c)}
  const sc=typeof S!=='undefined'?S.scene:'',txt=document.getElementById('wsk')&&!ST.skillsDone?'PART A · WRITING SKILLS':['explore','plan','write','review'].includes(sc)?'PART B · WRITING ACTIVITY':'';
- if(c.textContent!==txt){c.textContent=txt;c.style.display=txt?'':'none'}}catch(e){}},400);
+ if(c.textContent!==txt){c.textContent=txt;c.style.display=txt?'':'none'}}catch(e){}},800);
 (()=>{const install=()=>{
  if(typeof show==='function'&&!show.wsk){const o=show;show=function(name){wskClose();const r=o.apply(this,arguments);return r};show.wsk=1}
  if(typeof resultHTML==='function'&&!resultHTML.wsk){const o=resultHTML;resultHTML=function(r){const rec=pLoad('wst_submission_'+G,null);if(rec&&rec.traits&&rec.status!=='needs-review')return nextStepsHTML()+partBHTML(rec);return nextStepsHTML()+o.apply(this,arguments)};resultHTML.wsk=1}

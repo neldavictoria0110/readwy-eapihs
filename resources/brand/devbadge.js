@@ -62,7 +62,7 @@ function busyIn(B,H){let lift=0,hit=false;
  const scan=(doc,ox,oy,depth,k=1)=>{let list;try{list=doc.querySelectorAll('button,a[href],input,select,textarea,[role=button],[onclick],.hit,.opt,.tab,h1,h2,h3,p,label,li,td,th,.chip,.clock,.lbl,iframe')}catch(e){return}
   for(const el of list){if(el.id==='rwBadge'||el.closest('#rwBadge,#rwDev'))continue;const r=el.getBoundingClientRect();if(!r.width||!r.height)continue;
    const L=r.left*k+ox,T=r.top*k+oy,R=r.right*k+ox,Bm=r.bottom*k+oy;if(!(L<B.r&&R>B.l&&T<B.b&&Bm>B.t))continue;
-   if(el.tagName==='IFRAME'){if(depth<2){try{const kk=k*(r.width/(el.clientWidth||r.width));scan(el.contentDocument,L+el.clientLeft*kk,T+el.clientTop*kk,depth+1,kk)}catch(e){}}continue}
+   if(el.tagName==='IFRAME'){if(depth<2&&!matchMedia('(pointer:coarse)').matches){try{const kk=k*(r.width/(el.clientWidth||r.width));scan(el.contentDocument,L+el.clientLeft*kk,T+el.clientTop*kk,depth+1,kk)}catch(e){}}continue}
    if((R-L)*(Bm-T)>innerWidth*innerHeight*.35)continue; // large containers do not count
    const cs=(doc.defaultView||window).getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity===0)continue;
    hit=true;if(T>H*.4)lift=Math.max(lift,H-T+8)}};
@@ -187,5 +187,5 @@ function screensHTML(){SCR=[];let title='';devFrames(true);
  d.querySelector('[data-exit]').onclick=()=>{sessionStorage.removeItem(DEVKEY);const u2=read('user');if(u2&&u2.dev){try{localStorage.removeItem(STORE+'user')}catch(e){}}close();paint();location.href='index.html?view=startup'}}
 /* on the login page, open the Login or Sign-up card the developer asked for */
 (()=>{let v='';try{v=sessionStorage.getItem('readwy-dev-goto')||'';sessionStorage.removeItem('readwy-dev-goto')}catch(e){}if(!v)return;
- const tryOpen=(n=0)=>{try{if(typeof chooseReadwyRole==='function'&&typeof mode!=='undefined'){if(mode==='role')chooseReadwyRole('student');if(v==='signup')setTimeout(()=>{try{if(mode!=='signup')toggle()}catch(e){}},1300);return}}catch(e){}if(n<60)setTimeout(()=>tryOpen(n+1),250)};tryOpen()})();mount();setInterval(()=>{if(!btn.isConnected&&document.body)document.body.appendChild(btn);paint()},1500);
+ const tryOpen=(n=0)=>{try{if(typeof chooseReadwyRole==='function'&&typeof mode!=='undefined'){if(mode==='role')chooseReadwyRole('student');if(v==='signup')setTimeout(()=>{try{if(mode!=='signup')toggle()}catch(e){}},1300);return}}catch(e){}if(n<60)setTimeout(()=>tryOpen(n+1),250)};tryOpen()})();mount();setInterval(()=>{if(document.hidden)return;if(!btn.isConnected&&document.body)document.body.appendChild(btn);paint()},5000);
 })();

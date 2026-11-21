@@ -15,7 +15,7 @@
 .rw-lock-note{margin:.4em 0;font:italic 600 .92em/1.35 Georgia,serif;color:#7a5a12}`;
   document.head.append(style);
 
-  const FORMS = '#xgTkForm.xg-tk-fields, form.student-profile, .ivprof form, form[onsubmit*="saveProfile"]';
+  const FORMS = '#xgTkForm.xg-tk-fields, form.student-profile, .gst-utility-form, .ivprof form, form[onsubmit*="saveProfile"]';
   function lock(form) {
     if (form.dataset.rwLocked) return;
     form.dataset.rwLocked = '1';
