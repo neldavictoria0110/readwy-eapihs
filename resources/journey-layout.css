@@ -1,0 +1,76 @@
+/* Full-screen station and page layout guard.
+   Every information panel gets its own band of the screen so the announcement,
+   clock, back button, station frame and boarding ticket cannot sit on top of
+   one another on a phone. The decorative station art stays behind the bands. */
+:root{
+ --rw-pf-header:clamp(118px,21dvh,190px);
+ --rw-pf-title:clamp(34px,6dvh,62px);
+ --rw-pf-gap:clamp(6px,1.2dvh,14px);
+}
+@media(max-aspect-ratio:1/1){:root{--rw-pf-header:clamp(150px,29dvh,250px);--rw-pf-title:clamp(28px,5dvh,48px)}}
+
+/* The platform scene is the full viewport, never a second nested frame. */
+.pf{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden!important}
+
+/* Top band: platform sign, departure time, announcement and brand sit side by side. */
+.pf .pf-top{
+ position:absolute!important;left:0!important;right:0!important;top:0!important;bottom:auto!important;
+ height:var(--rw-pf-header)!important;box-sizing:border-box!important;
+ display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ gap:var(--rw-pf-gap)!important;align-items:stretch!important;
+ padding:calc(6px + env(safe-area-inset-top)) clamp(8px,2vw,26px) 4px!important;
+ z-index:8!important;
+}
+.pf .pf-left,.pf .pf-right{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:var(--rw-pf-gap)!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;
+}
+.pf .pf-psign,.pf .pf-clock,.pf .pf-announce,.pf .pf-brand{
+ position:relative!important;inset:auto!important;width:auto!important;min-width:0!important;max-width:100%!important;
+ height:100%!important;max-height:100%!important;box-sizing:border-box!important;overflow:hidden!important;
+}
+.pf .pf-psign small,.pf .pf-announce b,.pf .pf-clock small{
+ display:block!important;font-size:clamp(8px,.78vw,12px)!important;line-height:1.2!important;letter-spacing:.12em!important;
+}
+.pf .pf-psign b,.pf .pf-clock b{font-size:clamp(16px,1.8vw,28px)!important;line-height:1.1!important}
+.pf .pf-announce{font-size:clamp(10px,.9vw,14px)!important;line-height:1.35!important}
+.pf .pf-announce .pf-line{display:block;max-height:5.5em;overflow:hidden}
+.pf .pf-listen,.pf .pf-go{min-height:28px;font-size:clamp(10px,.85vw,14px)!important;padding:.35em .8em!important}
+
+/* Title sits directly under the top band, not over the announcement or ticket. */
+.pf .pf-cap{
+ position:absolute!important;left:50%!important;right:auto!important;top:calc(var(--rw-pf-header) + 2px)!important;bottom:auto!important;
+ width:min(88vw,900px)!important;height:var(--rw-pf-title)!important;transform:translateX(-50%)!important;
+ box-sizing:border-box!important;text-align:center!important;overflow:hidden!important;z-index:7!important;
+}
+.pf .pf-cap b{font-size:clamp(19px,2.3vw,34px)!important;line-height:1.1!important}
+.pf .pf-cap i{font-size:clamp(10px,.9vw,14px)!important;line-height:1.2!important}
+
+/* The station window occupies its own middle band. */
+.tw-plat .tw-frame,
+.tw-plat .tw-alt .tw-frame{left:7vw!important;right:7vw!important;top:calc(var(--rw-pf-header) + var(--rw-pf-title) + var(--rw-pf-gap))!important;bottom:calc(var(--rw-pf-header) + 2 * var(--rw-pf-gap))!important;z-index:2!important}
+.tw-plat .tw-table,.tw-plat .tw-alt .tw-table{height:calc(var(--rw-pf-header) + var(--rw-pf-gap))!important;z-index:1!important}
+
+/* Boarding ticket occupies the bottom band and scrolls inside itself if needed. */
+.pf .pf-ticket,.tw-plat .pf-ticket{
+ top:auto!important;bottom:calc(6px + env(safe-area-inset-bottom))!important;left:50%!important;
+ width:min(96vw,1320px)!important;max-width:96vw!important;
+ max-height:calc(100dvh - var(--rw-pf-header) - var(--rw-pf-title) - 3 * var(--rw-pf-gap) - 12px)!important;
+ overflow:auto!important;box-sizing:border-box!important;z-index:6!important;
+}
+.pf .pf-ticket:not(.in){transform:translate(-50%,130%) rotate(-1deg)!important}
+.pf .pf-ticket.in,.tw-plat .pf-ticket.in{transform:translate(-50%,0) rotate(-1deg)!important}
+.pf .tk-card,.pf .pf-stub{overflow:visible}
+.tw-plat .pf-dest{min-height:42px}
+.tw-plat .pf-go{min-height:36px}
+
+/* Keep any visible back control out of the announcement band. */
+.journey>.back,main>.back,#rwStage .back{
+ position:fixed!important;top:auto!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;
+ left:8px!important;z-index:40!important;max-width:34vw;white-space:nowrap;
+}
+
+/* GST and other landscape book scenes keep their own controls in separate rows. */
+.gst-book-canvas[data-scene="test"] .gst-backdrop-toolbar,
+.gst-book-canvas[data-scene="results"] .gst-backdrop-toolbar{top:calc(100% - 112px)!important;height:104px!important}
+.gst-book-canvas[data-scene="test"] .gst-page-hotspots{top:calc(100% - 214px)!important;height:96px!important}

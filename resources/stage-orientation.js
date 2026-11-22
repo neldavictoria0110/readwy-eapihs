@@ -1,5 +1,5 @@
 (()=>{
- const names={gst:'GST — General Skills Test',orst:'ORST — Oral Reading',wst:'Writing Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'SRA Program',reports:'Post-Test — Assessment Reports'};
+ const names={gst:'GST — Group Screening Test',orst:'ORST — Oral Reading',wst:'Writing Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'SRA Program',reports:'Post-Test — Assessment Reports'};
  const program=new URLSearchParams(location.search).get('program');
  if(!Object.prototype.hasOwnProperty.call(names,program)){location.replace('index.html?view=map');return}
  let opening=false,timer;

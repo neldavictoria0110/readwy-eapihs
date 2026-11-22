@@ -11,7 +11,7 @@ const abs=h=>new URL(h,location.href).href;
 const isJourney=h=>{try{return new URL(h,location.href).searchParams.get('view')==='map'}catch(e){return false}};
 let topGo=null;try{if(window.top!==window&&window.top.location.origin===location.origin&&window.top.readwyTrainGo)topGo=window.top.readwyTrainGo}catch(e){}
 const reduce=()=>matchMedia('(prefers-reduced-motion:reduce)').matches||document.documentElement.classList.contains('reduced-motion');
-const labelOf=h=>{try{const u=new URL(h,location.href),m=u.searchParams.get('journeyModule');return isJourney(h)?'Your Learning Journey':({gst:'General Skills Test',orst:'Oral Reading Screening Test',wst:'Writing Screening Test',srst:'Silent Reading Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'SRA Program',reports:'Post-Test'})[m]||'Reading Express'}catch(e){return 'Reading Express'}};
+const labelOf=h=>{try{const u=new URL(h,location.href),m=u.searchParams.get('journeyModule');return isJourney(h)?'Your Learning Journey':({gst:'Group Screening Test',orst:'Oral Reading Screening Test',wst:'Writing Screening Test',srst:'Silent Reading Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'SRA Program',reports:'Post-Test'})[m]||'Reading Express'}catch(e){return 'Reading Express'}};
 
 /* Pages inside the frame hand navigation to the top window. */
 window.readwyGo=function(href,label){if(topGo)return topGo(abs(href),label);return window.readwyTrainGo(abs(href),label)};
