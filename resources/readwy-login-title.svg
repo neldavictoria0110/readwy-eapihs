@@ -82,6 +82,14 @@
     animation:none!important;opacity:1!important;transform:none!important;
   }
 }
+/* Mobile safety class is added by the parent app when a phone needs a still title. */
+.rw-mobile-safe *{animation:none!important;transition:none!important;filter:none!important}
+.rw-mobile-safe .falling-letter,.rw-mobile-safe .title-staged .falling-letter,
+.rw-mobile-safe .banner-entrance,.rw-mobile-safe .title-staged .banner-entrance,
+.rw-mobile-safe .settled-letter-glow,.rw-mobile-safe .title-staged .settled-letter-glow{
+  opacity:1!important;transform:none!important;
+}
+.rw-mobile-safe .train,.rw-mobile-safe .wake,.rw-mobile-safe .steam{display:none!important}
 </style>
 
 <g class="book" clip-path="url(#rt-book)"><g filter="url(#rt-ripple)"><use href="#rt-art"/></g></g>

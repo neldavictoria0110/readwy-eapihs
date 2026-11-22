@@ -1,6 +1,7 @@
 /* READwy HD station layer: the animated Victorian station used by the login, sign-up and startup screens. */
 (()=>{
  if(window.readwyStationLayer)return;
+ const safe=()=>typeof window.readwyMobileSafetyActive==='function'&&window.readwyMobileSafetyActive();
  const IMG='resources/station-hall-hd.webp',CLEAN_IMG='resources/station-journey.webp',ART='resources/readwy-title-cutout.png',IW=1672,IH=941;
  const css=`
 .rs-wrap{position:absolute;inset:0;overflow:hidden;background:#140d08;z-index:0;pointer-events:none}
@@ -72,7 +73,10 @@
 .rs-bird path{transform-origin:30px 16px;animation:rsFlap .32s ease-in-out infinite alternate}.rs-bird path+path{animation-delay:-.32s}
 @keyframes rsFlap{to{transform:scaleY(-.6)}}
 .rs-shade{position:absolute;inset:0;background:radial-gradient(130% 100% at 50% 45%,#0000 55%,#0008 100%),linear-gradient(#0006,#0000 22%)}
-@media(prefers-reduced-motion:reduce){.rs-cam,.rs-banner,.rs-sign,.rs-glow,.rs-rays i,.rs-floor,.rs-blink,.rs-dt{animation:none!important}}`;
+@media(prefers-reduced-motion:reduce){.rs-cam,.rs-banner,.rs-sign,.rs-glow,.rs-rays i,.rs-floor,.rs-blink,.rs-dt{animation:none!important}}
+ html.rw-mobile-safe .rs-cam,html.rw-mobile-safe .rs-banner,html.rw-mobile-safe .rs-sign,html.rw-mobile-safe .rs-blink,html.rw-mobile-safe .rs-dt{animation:none!important;transform:none!important}
+ html.rw-mobile-safe .rs-fx,html.rw-mobile-safe .rs-bird,html.rw-mobile-safe .rs-rays,html.rw-mobile-safe .rs-glow,html.rw-mobile-safe .rs-floor{display:none!important}
+ html.rw-mobile-safe .rs-wrap::before{filter:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transform:none!important}`;
  const ensureStyles=()=>{
   let st=document.getElementById('readwyStationLayerCSS');
   if(!st){st=document.createElement('style');st.id='readwyStationLayerCSS';st.textContent=css}
@@ -82,8 +86,9 @@
  const piece=(cls,x,y,w,h,poly,orig,inner='')=>`<div class="rs-piece ${cls}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;background-position:${-x}px ${-y}px;clip-path:polygon(${poly});transform-origin:${orig}">${inner}</div>`;
  window.readwyStationLayer=(host,o={})=>{
   ensureStyles();
-  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const wrap=document.createElement('div');wrap.className='rs-wrap';if(o.shade===false)wrap.classList.add('rs-clear-shade');if(o.loginFrames===true)wrap.classList.add('rs-startup-login-frames');wrap.setAttribute('aria-hidden','true');
+  if(safe())document.documentElement.classList.add('rw-mobile-safe');
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches||safe();
+  const wrap=document.createElement('div');wrap.className='rs-wrap';if(safe()){wrap.classList.add('rs-mobile-safe');document.documentElement.classList.add('rw-mobile-safe')}if(o.shade===false)wrap.classList.add('rs-clear-shade');if(o.loginFrames===true)wrap.classList.add('rs-startup-login-frames');wrap.setAttribute('aria-hidden','true');
   const sg=o.sign||{small:'THE READING EXPRESS',big:'PLATFORM 7½',blink:'● NOW BOARDING'},bd=o.board||{small:'WELCOME ABOARD',big:'The Reading Express',text:'Departing daily for the Enchanted Academy of Reading.'};
   wrap.innerHTML=`<div class="rs-stage"><div class="rs-cam">
 <img class="rs-bg" src="${o.loginFrames===true?CLEAN_IMG:IMG}" alt="" draggable="false">
@@ -108,6 +113,10 @@ ${piece('rs-sign r',1336,236,200,212,'0 0,100% 0,100% 100%,0 100%','50% 0',`<div
   fit();addEventListener('resize',fit);new ResizeObserver(fit).observe(wrap);
   const countEl=wrap.querySelector('.rs-count'),timeEl=wrap.querySelector('.rs-time');
   let left=120;const clock=()=>{if(!wrap.isConnected)return;left=left<=0?120:left-1;countEl.textContent=`${String(Math.floor(left/60)).padStart(2,'0')}:${String(left%60).padStart(2,'0')}`;const d=new Date();timeEl.textContent=`Station time ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};clock();const ci=setInterval(()=>{if(!wrap.isConnected)clearInterval(ci);else clock()},1000);
+  if(safe()){
+   wrap.querySelectorAll('.rs-fx,.rs-bird,.rs-rays,.rs-glow,.rs-floor').forEach(el=>el.remove());
+   return wrap;
+  }
   const cv=wrap.querySelector('.rs-fx'),ctx=cv.getContext('2d'),parts=[],dust=[];for(let i=0;i<80;i++)dust.push({x:700+Math.random()*900,y:40+Math.random()*560,v:4+Math.random()*10,a:Math.random()*6.28,r:.8+Math.random()*1.8});
   let last=performance.now(),lastDraw=0,chuff=0,hiss=0;
   const loop=now=>{if(!wrap.isConnected)return;if(document.hidden){last=now;setTimeout(()=>requestAnimationFrame(loop),500);return}if(now-lastDraw<1000/30){requestAnimationFrame(loop);return}lastDraw=now;const dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,IW,IH);
