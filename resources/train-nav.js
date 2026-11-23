@@ -156,12 +156,13 @@ window.readwyTrainGo=async function(href,label,opts={}){
    const accel=now-t0<350?2.6:7;v+=(target-v)*Math.min(1,dt*accel);
    x+=dir*v*dt;
    const off=place();
+   try{nf.contentWindow.postMessage({rw:'moving'},'*')}catch(e){} // the arriving page waits (e.g. the ARAL train stays off-screen)
    if(now-lastPuff>95&&v>vmax*.15){lastPuff=now;const ex=dir>0?x+len-T.ew*.73:x+T.ew*.73,ey=T.base-T.eh*.86;if(ex>-T.h&&ex<W+T.h){const p=document.createElement('i');p.className='rw-puff';const sz=T.h*.32;p.style.setProperty('--rw-dx',String(-dir*T.h*.9));Object.assign(p.style,{left:ex-sz/2+'px',top:ey-sz/2+'px',width:sz+'px',height:sz+'px'});layer.appendChild(p);setTimeout(()=>p.remove(),1350)}}
    if(dir>0?x>=end:x<=end){res();return}
    requestAnimationFrame(step)};
   requestAnimationFrame(step)});
  // commit: the new page is now the live page
- nf.style.transform='none';nf.classList.remove('moving');nf.classList.add('active');nf.style.zIndex=1;layer.remove();
+ nf.style.transform='none';nf.classList.remove('moving');nf.classList.add('active');try{nf.contentWindow.postMessage({rw:'arrived'},'*')}catch(e){}nf.style.zIndex=1;layer.remove();
  if(prev){prev.classList.remove('active');try{prev.src='about:blank'}catch(e){}setTimeout(()=>prev.remove(),50)}
  document.documentElement.classList.add('rw-hosted');
  try{document.querySelectorAll('body>audio,body>video').forEach(m=>m.pause());window.speechSynthesis?.cancel()}catch(e){}

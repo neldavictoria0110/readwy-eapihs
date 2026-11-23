@@ -127,6 +127,15 @@
   // Like the Reading Express between pages: the engine rolls in from the left and slows to a stop,
   // pauses with steam puffing, then pulls away and every carriage passes before the train leaves on the right.
   let trainRAF = 0;
+  // The Reading Express transition tells this page it is still sliding in ('moving') and when it has arrived.
+  let rwMovingAt = -1e9;
+  if (typeof addEventListener === 'function') addEventListener('message', e => { const d = e.data; if (d && d.rw === 'moving') rwMovingAt = performance.now(); else if (d && d.rw === 'arrived') rwMovingAt = -1e9; });
+  const offstage = () => safe(() => {
+    if (performance.now() - rwMovingAt < 400) return true;
+    if (document.hidden || document.documentElement.classList.contains('program-loading')) return true;
+    const fr = window.frameElement; // inside the transition's page frame: wait until that frame is the live page
+    return !!(fr && fr.classList.contains('rw-frame') && !fr.classList.contains('active'));
+  }, false);
   function startTrain() {
     cancelAnimationFrame(trainRAF);
     const view = document.querySelector('.at-view'); if (!view) return;
@@ -153,6 +162,9 @@
     let t0 = 0, moving = null;
     const step = now => {
       if (!loop.isConnected) return;
+      // Wait off-screen (left) until the learner can actually see this page: it is loaded hidden behind
+      // the Reading Express transition, so the train must not start rolling before it arrives.
+      if (offstage()) { t0 = 0; loop.style.transform = 'translate3d(' + (-trainW - 20) + 'px,0,0)'; if (moving !== false) { moving = false; loop.classList.remove('at-moving'); } trainRAF = requestAnimationFrame(step); return; }
       if (!t0) t0 = now;
       const [x, m] = at(((now - t0) / 1000) % lap);
       loop.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
