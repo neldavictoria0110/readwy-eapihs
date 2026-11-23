@@ -93,27 +93,11 @@
   }
 
   /* ---------- the train ---------- */
-  const ENGINE = `<li class="at-engine" aria-hidden="true"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMax meet">
-<defs><linearGradient id="atBoiler" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4a30"/><stop offset=".3" stop-color="#3e2614"/><stop offset=".75" stop-color="#22140a"/><stop offset="1" stop-color="#3a2414"/></linearGradient>
-<linearGradient id="atGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2b8"/><stop offset=".5" stop-color="#d9a233"/><stop offset="1" stop-color="#7a4a0c"/></linearGradient>
-<linearGradient id="atCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a2433"/><stop offset="1" stop-color="#4a0f1a"/></linearGradient>
-<radialGradient id="atGlow"><stop offset="0" stop-color="#fffbe0"/><stop offset=".45" stop-color="#ffd76a" stop-opacity=".8"/><stop offset="1" stop-color="#ffb02e" stop-opacity="0"/></radialGradient>
-<radialGradient id="atSteam"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#eef1f6" stop-opacity=".7"/><stop offset="1" stop-color="#dfe4ec" stop-opacity="0"/></radialGradient>
-<clipPath id="atCabWin"><rect x="196" y="112" width="70" height="62" rx="9"/></clipPath></defs>
-<g class="at-steam">${[0, 1, 2, 3].map(k => `<circle cx="78" cy="84" r="20" fill="url(#atSteam)" style="animation-delay:${k * .4}s"/>`).join('')}</g>
-<rect x="62" y="90" width="32" height="62" fill="url(#atBoiler)"/><rect x="54" y="82" width="48" height="14" rx="5" fill="url(#atGold)"/>
-<rect x="18" y="150" width="172" height="86" rx="40" fill="url(#atBoiler)"/>${[60, 110, 160].map(x => `<rect x="${x}" y="148" width="9" height="90" rx="3" fill="url(#atGold)"/>`).join('')}
-<path d="M120 150q20-36 40 0z" fill="url(#atGold)"/>
-<circle cx="22" cy="192" r="34" fill="#1a1a1e" stroke="url(#atGold)" stroke-width="5"/><circle cx="22" cy="192" r="13" fill="url(#atGold)"/>
-<circle cx="10" cy="146" r="10" fill="#fff6d0" stroke="url(#atGold)" stroke-width="3"/><circle class="at-lamp" cx="4" cy="146" r="28" fill="url(#atGlow)"/>
-<rect x="184" y="92" width="108" height="150" rx="8" fill="url(#atCab)" stroke="#1e1008" stroke-width="3"/><rect x="176" y="82" width="124" height="16" rx="6" fill="#1c1410"/>
-<rect x="196" y="112" width="70" height="62" rx="9" fill="#2a1a10"/><g clip-path="url(#atCabWin)"><svg x="192" y="104" width="78" height="84" viewBox="120 0 280 290" preserveAspectRatio="xMidYMin slice"><image href="${typeof ARAL_STATION_IMG !== 'undefined' ? ARAL_STATION_IMG : 'resources/aral/station/'}conductor-full.webp" width="411" height="603"/></svg></g>
-<rect x="196" y="112" width="70" height="62" rx="9" fill="none" stroke="#e0b25a" stroke-width="4"/><rect x="190" y="206" width="96" height="6" fill="#e0b25a"/>
-<path d="M4 238h288" stroke="#1d1410" stroke-width="10"/><path d="M-4 236l22-20h10l-12 20z" fill="#7a1220" stroke="#e0b25a" stroke-width="2"/>
-<g class="at-wheel" style="transform-origin:78px 258px"><circle cx="78" cy="258" r="34" fill="#151518" stroke="#c9973f" stroke-width="4"/>${[0, 45, 90, 135].map(a => `<path d="M78 228v60" stroke="#d9b25a" stroke-width="4" transform="rotate(${a} 78 258)"/>`).join('')}<circle cx="78" cy="258" r="9" fill="#e8c879"/></g>
-<g class="at-wheel" style="transform-origin:156px 258px"><circle cx="156" cy="258" r="34" fill="#151518" stroke="#c9973f" stroke-width="4"/>${[0, 45, 90, 135].map(a => `<path d="M156 228v60" stroke="#d9b25a" stroke-width="4" transform="rotate(${a} 156 258)"/>`).join('')}<circle cx="156" cy="258" r="9" fill="#e8c879"/></g>
-<g class="at-wheel" style="transform-origin:238px 268px"><circle cx="238" cy="268" r="24" fill="#151518" stroke="#c9973f" stroke-width="4"/>${[0, 60, 120].map(a => `<path d="M238 246v44" stroke="#d9b25a" stroke-width="3" transform="rotate(${a} 238 268)"/>`).join('')}<circle cx="238" cy="268" r="7" fill="#e8c879"/></g>
-<rect x="70" y="252" width="92" height="10" rx="4" fill="url(#atGold)"/></svg></li>`;
+  // Same locomotive as the Reading Express transition train (train-nav.js), in the ARAL brown and gold.
+  const ENGINE = `<li class="at-engine" aria-hidden="true"><svg viewBox="0 0 110 78" preserveAspectRatio="xMidYMax meet"><defs><linearGradient id="atBoiler" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a0e06"/><stop offset=".18" stop-color="#8a5a30"/><stop offset=".35" stop-color="#5a3418"/><stop offset=".8" stop-color="#2e1a0b"/><stop offset="1" stop-color="#120903"/></linearGradient><linearGradient id="atCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4a26"/><stop offset=".3" stop-color="#4a2c16"/><stop offset="1" stop-color="#1a0e06"/></linearGradient><linearGradient id="atBr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e7ae"/><stop offset=".35" stop-color="#9a7428"/><stop offset=".6" stop-color="#f3dc98"/><stop offset="1" stop-color="#7a5a1f"/></linearGradient><radialGradient id="atLamp"><stop offset="0" stop-color="#fffbe6"/><stop offset=".5" stop-color="#ffd67a"/><stop offset="1" stop-color="#ffb84a" stop-opacity="0"/></radialGradient><radialGradient id="atSteam"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#eef1f6" stop-opacity=".7"/><stop offset="1" stop-color="#dfe4ec" stop-opacity="0"/></radialGradient></defs>
+<g class="at-steam">${[0, 1, 2, 3].map(k => `<circle cx="30" cy="10" r="6" fill="url(#atSteam)" style="animation-delay:${k * .4}s"/>`).join('')}</g>
+<path d="M23 14h14l-2 18H25Z" fill="url(#atBoiler)"/><rect x="21" y="12" width="18" height="4" rx="1.5" fill="url(#atBr)"/><rect x="8" y="30" width="66" height="28" rx="13" fill="url(#atBoiler)"/><rect x="26" y="30" width="3" height="28" fill="url(#atBr)"/><rect x="48" y="30" width="3" height="28" fill="url(#atBr)"/><ellipse cx="44" cy="30" rx="7" ry="4" fill="url(#atBr)"/><rect x="68" y="16" width="38" height="44" rx="5" fill="url(#atCab)"/><rect x="64" y="12" width="46" height="6" rx="3" fill="#1c0e06"/><rect x="75" y="22" width="24" height="15" rx="2" fill="#ffe3a0" stroke="url(#atBr)" stroke-width="2"/><circle class="at-lamp" cx="5" cy="40" r="10" fill="url(#atLamp)"/><circle cx="7" cy="40" r="4" fill="url(#atBr)"/><path d="M8 54 L0 64 H16Z" fill="url(#atBr)"/>
+<g class="at-wheel"><circle cx="26" cy="64" r="10" fill="#141418" stroke="url(#atBr)" stroke-width="2.5"/><path d="M26 54v20M16 64h20M19 57l14 14M33 57 19 71" stroke="#8a6a26" stroke-width="1.5"/><circle cx="26" cy="64" r="2.5" fill="url(#atBr)"/></g><g class="at-wheel"><circle cx="52" cy="64" r="10" fill="#141418" stroke="url(#atBr)" stroke-width="2.5"/><path d="M52 54v20M42 64h20M45 57l14 14M59 57 45 71" stroke="#8a6a26" stroke-width="1.5"/><circle cx="52" cy="64" r="2.5" fill="url(#atBr)"/></g><g class="at-wheel"><circle cx="88" cy="66" r="8" fill="#141418" stroke="url(#atBr)" stroke-width="2.5"/><path d="M88 58v16M80 66h16" stroke="#8a6a26" stroke-width="1.5"/><circle cx="88" cy="66" r="2" fill="url(#atBr)"/></g><rect x="24" y="62" width="30" height="3" rx="1.5" fill="url(#atBr)"/></svg></li>`;
 
   // item: {plate, small, title, lines[], img, state, action, lock, go, label}
   function carHTML(it, k) {
@@ -280,10 +264,10 @@
  background:linear-gradient(#0000 0,#0000 86%,#1b120a 86%,#120c06 100%);mask-image:linear-gradient(90deg,#0000,#000 4%,#000 96%,#0000);-webkit-mask-image:linear-gradient(90deg,#0000,#000 4%,#000 96%,#0000)}
 .at-track{position:absolute;left:0;right:0;bottom:4.2%;height:1.4cqh;pointer-events:none;
  background:linear-gradient(#b9a37f,#6d5a40) top/100% 30% no-repeat,repeating-linear-gradient(90deg,#4a3420 0 1.6cqw,#0000 1.6cqw 3.4cqw) bottom/100% 70% no-repeat}
-.at-loop{position:absolute;inset:0 auto 0 0;display:flex;margin:0;padding:0;list-style:none;width:max-content;will-change:transform;transform:translateX(-100%)}
+.at-loop{position:absolute;z-index:1;inset:0 auto calc(4.2% + 1.1cqh) 0;display:flex;margin:0;padding:0;list-style:none;width:max-content;will-change:transform;transform:translateX(-100%)}
 .at-set{display:flex;height:100%}
-.at-cars{display:flex;align-items:flex-end;gap:1.2cqw;height:100%;margin:0;padding:1.4cqh 1.2cqw 4.6%;list-style:none}
-.at-engine{flex:0 0 auto;height:72%;aspect-ratio:1;position:relative}
+.at-cars{display:flex;align-items:flex-end;gap:1.2cqw;height:100%;margin:0;padding:1.4cqh 1.2cqw 0;list-style:none}
+.at-engine{flex:0 0 auto;width:clamp(170px,17cqw,290px);aspect-ratio:110/78;position:relative;margin-left:-.6cqw}
 .at-engine svg{width:100%;height:100%;overflow:visible;display:block;transform:scaleX(-1)}
 .at-car{position:relative;flex:0 0 auto;height:100%;width:clamp(190px,18.5cqw,320px);display:flex}
 .at-car::after{content:'';position:absolute;right:-1.3cqw;bottom:7%;width:1.4cqw;height:1cqh;border-radius:.4cqh;background:linear-gradient(#5b5b60,#1d1d20);box-shadow:0 0 0 .12cqh #c9973f}
@@ -306,9 +290,10 @@
 .at-wheels i{height:100%;aspect-ratio:1;border-radius:50%;border:.28cqh solid #c9973f;background:radial-gradient(circle,#e8c879 0 18%,transparent 20%),repeating-conic-gradient(#d9b25a 0 8deg,#151518 8deg 45deg)}
 .at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation:atSpin .9s linear infinite}
 @keyframes atSpin{to{rotate:360deg}}
+.at-wheel{transform-box:fill-box;transform-origin:center}
 .at-loop.at-moving .at-engine .at-wheel{animation-direction:reverse} /* the engine drawing is mirrored */
 .at-steam circle{animation:atPuff 1.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
-@keyframes atPuff{0%{transform:translate(0,0) scale(.4);opacity:0}25%{opacity:1}100%{transform:translate(40px,-70px) scale(1.6);opacity:0}}
+@keyframes atPuff{0%{transform:translate(0,0) scale(.4);opacity:0}25%{opacity:1}100%{transform:translate(16px,-26px) scale(2.2);opacity:0}}
 .at-car.next>button{animation:atGlow 1.8s ease-in-out infinite}
 .at-car.next .at-go{background:linear-gradient(#ffd76a,#f5a623)}
 .at-car.done .at-go{background:#dff5e6;color:#14623d}
@@ -316,7 +301,7 @@
 .at-car.locked .at-go{background:#3a2a1c;color:#ffd9c9}
 .at-stamp{position:absolute;z-index:3;left:50%;top:44%;translate:-50% -50%;rotate:-13deg;padding:.2em .6em;border:.2em double currentColor;border-radius:.4em;background:#fff6e8e0;font:900 clamp(13px,1.45cqw,24px)/1 'Courier New',Courier,monospace;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;pointer-events:none;box-shadow:0 .2cqh .6cqh #0005}
 /* round rubber stamp, same shape as the PLATFORM 7½ stamp on the journey ticket */
-.at-seal{position:absolute;z-index:3;left:50%;top:42%;translate:-50% -50%;rotate:-16deg;display:grid;place-items:center;align-content:center;gap:.25em;width:clamp(92px,10cqw,150px);aspect-ratio:1;border-radius:50%;border:.18em solid #b3261e;box-shadow:inset 0 0 0 .22em #fff6e8,inset 0 0 0 .32em #b3261e,0 .3cqh .8cqh #0006;background:radial-gradient(circle,#fff8ecf2 0 62%,#fff1dde6 100%);color:#b3261e;font:900 clamp(11px,1.05cqw,17px)/1 'Courier New',Courier,monospace;text-align:center;text-transform:uppercase;pointer-events:none}
+.at-seal{position:absolute;z-index:3;left:50%;top:60%;translate:-50% -50%;rotate:-16deg;display:grid;place-items:center;align-content:center;gap:.25em;width:clamp(92px,10cqw,150px);aspect-ratio:1;border-radius:50%;border:.18em solid #b3261e;box-shadow:inset 0 0 0 .22em #fff6e8,inset 0 0 0 .32em #b3261e,0 .3cqh .8cqh #0006;background:radial-gradient(circle,#fff8ecf2 0 62%,#fff1dde6 100%);color:#b3261e;font:900 clamp(11px,1.05cqw,17px)/1 'Courier New',Courier,monospace;text-align:center;text-transform:uppercase;pointer-events:none}
 .at-seal small{font-size:.72em;letter-spacing:.08em;max-width:80%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .at-seal b{font-size:1.32em;letter-spacing:.1em;padding:.14em 0;border-top:.12em solid currentColor;border-bottom:.12em solid currentColor}
 .at-stamp.done{color:#1f8f57;top:30%}
