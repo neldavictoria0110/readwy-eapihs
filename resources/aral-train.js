@@ -134,19 +134,19 @@
     loop.querySelectorAll('.at-set.at-copy').forEach(n => n.remove());
     const trainW = loop.getBoundingClientRect().width, viewW = view.clientWidth;
     if (!trainW || !viewW) return;
-    const cruise = Math.max(60, viewW / 9);      // px per second once rolling
+    const cruise = Math.max(30, viewW / 22);     // slow, steady speed: about 22 seconds to cross the frame
     const stopX = viewW * 0.62 - trainW;         // engine front pauses a little past the middle
-    const ENTER = 1.6, PAUSE = 1.1, SPEEDUP = 1.4, GAP = 0.7; // seconds
-    const enterDist = stopX + trainW;
-    const enterV = 2 * enterDist / ENTER;        // arrives fast and brakes evenly to a stop
-    const accelDist = cruise * SPEEDUP / 2;
-    const cruiseTime = Math.max(0, (viewW - stopX - accelDist) / cruise);
-    const lap = ENTER + PAUSE + SPEEDUP + cruiseTime + GAP;
+    const BRAKE = 2.4, PAUSE = 1.2, SPEEDUP = 2.4, GAP = 1; // seconds
+    const rampDist = cruise * BRAKE / 2;         // distance used to ease to a stop / back up to speed
+    const inTime = Math.max(0, (stopX + trainW - rampDist) / cruise); // slow roll in from the left edge
+    const outTime = Math.max(0, (viewW - stopX - rampDist) / cruise); // slow roll out to the right
+    const lap = inTime + BRAKE + PAUSE + SPEEDUP + outTime + GAP;
     const at = t => {
-      if (t < ENTER) return [-trainW + enterV * t - enterV * t * t / (2 * ENTER), true];
-      t -= ENTER; if (t < PAUSE) return [stopX, false];
+      if (t < inTime) return [-trainW + cruise * t, true];
+      t -= inTime; if (t < BRAKE) return [stopX - rampDist + cruise * t - cruise * t * t / (2 * BRAKE), true];
+      t -= BRAKE; if (t < PAUSE) return [stopX, false];
       t -= PAUSE; if (t < SPEEDUP) return [stopX + cruise * t * t / (2 * SPEEDUP), true];
-      t -= SPEEDUP; if (t < cruiseTime) return [stopX + accelDist + cruise * t, true];
+      t -= SPEEDUP; if (t < outTime) return [stopX + rampDist + cruise * t, true];
       return [viewW + 10, false];
     };
     loop.classList.add('at-run');
@@ -288,7 +288,7 @@
 .at-go{position:relative;margin-top:auto;margin-bottom:2.6cqh;padding:.35em 1.1em;border-radius:999px;background:#fffaf0;color:#2b1a0b;font:900 clamp(12px,1.1cqw,17px)/1.2 system-ui,sans-serif;box-shadow:0 .3cqh .6cqh #0006}
 .at-wheels{flex:0 0 auto;display:flex;justify-content:space-between;padding:0 12%;margin-top:-1.6cqh;height:3.6cqh;position:relative;z-index:1}
 .at-wheels i{height:100%;aspect-ratio:1;border-radius:50%;border:.28cqh solid #c9973f;background:radial-gradient(circle,#e8c879 0 18%,transparent 20%),repeating-conic-gradient(#d9b25a 0 8deg,#151518 8deg 45deg)}
-.at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation:atSpin .9s linear infinite}
+.at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation:atSpin 2.4s linear infinite}
 @keyframes atSpin{to{rotate:360deg}}
 .at-wheel{transform-box:fill-box;transform-origin:center}
 .at-loop.at-moving .at-engine .at-wheel{animation-direction:reverse} /* the engine drawing is mirrored */
