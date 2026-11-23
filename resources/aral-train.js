@@ -1,5 +1,9 @@
-/* ARAL Program: stops shown as a train, and one-step-at-a-time locking.
-   - A platform's stops (activities) are drawn as train carriages, one colour per stop, each with its activity title.
+/* ARAL Program: a moving train inside the station frame, and one-step-at-a-time locking.
+   - Weeks, platforms (sessions) and stops (activities) are tall train carriages pulled by a steam engine.
+     The train rolls through the centre frame: carriages come in on the right and leave on the left, in a loop.
+     It pauses while the pointer or finger is on it (or with the pause button), so any carriage can be tapped.
+   - Each carriage carries its picture, number, title, progress and its own Continue / Review button,
+     and is coloured with the colours of the picture it carries.
    - Weeks, platforms and stops open in order: the next one unlocks only when everything before it is finished.
      Finished items stay open for review. Teachers and the developer view are never locked.
    Loaded after the app's own scripts (see copy-index.cjs), so it wraps the final versions of the ARAL functions. */
@@ -13,14 +17,13 @@
     return !!(u && (u.role === 'teacher' || u.dev)) || safe(() => sessionStorage.getItem('readwy-dev-view') === '1', false);
   };
   const esc = s => (typeof h === 'function' ? h(s) : String(s ?? '').replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`));
+  const reducedMotion = () => safe(() => matchMedia('(prefers-reduced-motion: reduce)').matches, false) ||
+    document.documentElement.classList.contains('reduced-motion');
 
   /* ---------- progress and lock rules ---------- */
   const weeks = () => Object.keys(typeof ARAL_WEEKS !== 'undefined' ? ARAL_WEEKS : {}).map(Number).filter(w => w >= 1).sort((a, b) => a - b);
-  function weekComplete(w) {
-    const p = safe(() => aralWeekProgress(w), []);
-    const total = p.reduce((c, x) => c + x.total, 0), done = p.reduce((c, x) => c + x.done, 0);
-    return total > 0 && done === total;
-  }
+  const weekCounts = w => { const p = safe(() => aralWeekProgress(w), []); return {total: p.reduce((c, x) => c + x.total, 0), done: p.reduce((c, x) => c + x.done, 0)}; };
+  function weekComplete(w) { const c = weekCounts(w); return c.total > 0 && c.done === c.total; }
   function weekLocked(w) {
     if (unlockedRole() || weekComplete(w)) return false;
     return weeks().filter(k => k < w).some(k => !weekComplete(k));
@@ -48,76 +51,170 @@
   }
   window.aralTrainLocked = function (el) {
     say(el?.dataset?.lock || 'Finish the stop before this one first.');
-    if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      el.classList.remove('at-shake'); void el.offsetWidth; el.classList.add('at-shake');
-    }
+    if (el && !reducedMotion()) { el.classList.remove('at-shake'); void el.offsetWidth; el.classList.add('at-shake'); }
   };
   const weekMsg = w => `🔒 Week ${w} opens after you finish every stop of Week ${weeks().filter(k => k < w).find(k => !weekComplete(k)) ?? w - 1}.`;
   const sessionMsg = s => { const keys = aralSessionKeys(aralView.week || 1), first = keys.find(k => k < s && !sessionDone(k)); return `🔒 Platform ${s} opens after you finish Platform ${first ?? s - 1}.`; };
   const stopMsg = (s, i) => { let j = 0; while (j < i && submitted(s, j)) j++; return `🔒 Finish Stop ${aralBoardTaskNumber(s, j)} first. Then Stop ${aralBoardTaskNumber(s, i)} opens.`; };
 
-  /* ---------- the stops page: a train of carriages ---------- */
-  const CARS = [
-    ['ruby', '#b3243a'], ['emerald', '#1f8f57'], ['sapphire', '#2a5db0'],
-    ['amber', '#d9780f'], ['amethyst', '#7a48b0'], ['diamond', '#178a9e'], ['gold', '#a8741c']
-  ];
-  function carHTML(s, i, a, state) {
-    const num = aralBoardTaskNumber(s, i), [name, colour] = CARS[i % CARS.length];
-    const does = safe(() => aralDoes(a), []).slice(0, 2).join(' · ');
-    const go = state === 'done' ? '✓ Review' : state === 'next' ? '▶ Board now' : state === 'locked' ? '🔒 Locked' : '★ Start';
-    const click = state === 'locked' ? 'aralTrainLocked(this)' : `aralBoardOpenTask(${s},${i})`;
-    const label = state === 'locked' ? `Stop ${num}: ${a.title} (locked)` : `${state === 'done' ? 'Review' : 'Start'} Stop ${num}: ${a.title}`;
-    return `<li class="at-car ${state}" style="--i:${i};--car:${colour}" data-car="${name}">` +
-      `<button type="button" onclick="${click}" aria-label="${esc(label)}"${state === 'locked' ? ` aria-disabled="true" data-lock="${esc(stopMsg(s, i))}"` : ''}>` +
+  /* ---------- carriage colours come from the picture the carriage carries ---------- */
+  const FALLBACK = [['#e0475b', '#9c1c33'], ['#2fbf7a', '#14704a'], ['#4a86e8', '#1d4597'], ['#f2a23a', '#b5600c'], ['#9b6be0', '#5a2f9c'], ['#2bb3c4', '#11707e'], ['#d8a93c', '#8a6114']];
+  function pictureColours(url, k) {
+    const svg = safe(() => decodeURIComponent(String(url).split(',').slice(1).join(',')), '');
+    const stops = [...svg.matchAll(/stop-color="(#[0-9a-fA-F]{3,8}|rgb[^"]+)"/g)].map(m => m[1]);
+    return stops.length >= 2 ? [stops[0], stops[1]] : FALLBACK[k % FALLBACK.length];
+  }
+
+  /* ---------- the train ---------- */
+  const ENGINE = `<li class="at-engine" aria-hidden="true"><svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMax meet">
+<defs><linearGradient id="atBoiler" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4a30"/><stop offset=".3" stop-color="#3e2614"/><stop offset=".75" stop-color="#22140a"/><stop offset="1" stop-color="#3a2414"/></linearGradient>
+<linearGradient id="atGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2b8"/><stop offset=".5" stop-color="#d9a233"/><stop offset="1" stop-color="#7a4a0c"/></linearGradient>
+<linearGradient id="atCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a2433"/><stop offset="1" stop-color="#4a0f1a"/></linearGradient>
+<radialGradient id="atGlow"><stop offset="0" stop-color="#fffbe0"/><stop offset=".45" stop-color="#ffd76a" stop-opacity=".8"/><stop offset="1" stop-color="#ffb02e" stop-opacity="0"/></radialGradient>
+<radialGradient id="atSteam"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#eef1f6" stop-opacity=".7"/><stop offset="1" stop-color="#dfe4ec" stop-opacity="0"/></radialGradient>
+<clipPath id="atCabWin"><rect x="196" y="112" width="70" height="62" rx="9"/></clipPath></defs>
+<g class="at-steam">${[0, 1, 2, 3].map(k => `<circle cx="78" cy="84" r="20" fill="url(#atSteam)" style="animation-delay:${k * .4}s"/>`).join('')}</g>
+<rect x="62" y="90" width="32" height="62" fill="url(#atBoiler)"/><rect x="54" y="82" width="48" height="14" rx="5" fill="url(#atGold)"/>
+<rect x="18" y="150" width="172" height="86" rx="40" fill="url(#atBoiler)"/>${[60, 110, 160].map(x => `<rect x="${x}" y="148" width="9" height="90" rx="3" fill="url(#atGold)"/>`).join('')}
+<path d="M120 150q20-36 40 0z" fill="url(#atGold)"/>
+<circle cx="22" cy="192" r="34" fill="#1a1a1e" stroke="url(#atGold)" stroke-width="5"/><circle cx="22" cy="192" r="13" fill="url(#atGold)"/>
+<circle cx="10" cy="146" r="10" fill="#fff6d0" stroke="url(#atGold)" stroke-width="3"/><circle class="at-lamp" cx="4" cy="146" r="28" fill="url(#atGlow)"/>
+<rect x="184" y="92" width="108" height="150" rx="8" fill="url(#atCab)" stroke="#1e1008" stroke-width="3"/><rect x="176" y="82" width="124" height="16" rx="6" fill="#1c1410"/>
+<rect x="196" y="112" width="70" height="62" rx="9" fill="#2a1a10"/><g clip-path="url(#atCabWin)"><svg x="192" y="104" width="78" height="84" viewBox="120 0 280 290" preserveAspectRatio="xMidYMin slice"><image href="${typeof ARAL_STATION_IMG !== 'undefined' ? ARAL_STATION_IMG : 'resources/aral/station/'}conductor-full.webp" width="411" height="603"/></svg></g>
+<rect x="196" y="112" width="70" height="62" rx="9" fill="none" stroke="#e0b25a" stroke-width="4"/><rect x="190" y="206" width="96" height="6" fill="#e0b25a"/>
+<path d="M4 238h288" stroke="#1d1410" stroke-width="10"/><path d="M-4 236l22-20h10l-12 20z" fill="#7a1220" stroke="#e0b25a" stroke-width="2"/>
+<g class="at-wheel" style="transform-origin:78px 258px"><circle cx="78" cy="258" r="34" fill="#151518" stroke="#c9973f" stroke-width="4"/>${[0, 45, 90, 135].map(a => `<path d="M78 228v60" stroke="#d9b25a" stroke-width="4" transform="rotate(${a} 78 258)"/>`).join('')}<circle cx="78" cy="258" r="9" fill="#e8c879"/></g>
+<g class="at-wheel" style="transform-origin:156px 258px"><circle cx="156" cy="258" r="34" fill="#151518" stroke="#c9973f" stroke-width="4"/>${[0, 45, 90, 135].map(a => `<path d="M156 228v60" stroke="#d9b25a" stroke-width="4" transform="rotate(${a} 156 258)"/>`).join('')}<circle cx="156" cy="258" r="9" fill="#e8c879"/></g>
+<g class="at-wheel" style="transform-origin:238px 268px"><circle cx="238" cy="268" r="24" fill="#151518" stroke="#c9973f" stroke-width="4"/>${[0, 60, 120].map(a => `<path d="M238 246v44" stroke="#d9b25a" stroke-width="3" transform="rotate(${a} 238 268)"/>`).join('')}<circle cx="238" cy="268" r="7" fill="#e8c879"/></g>
+<rect x="70" y="252" width="92" height="10" rx="4" fill="url(#atGold)"/></svg></li>`;
+
+  // item: {plate, small, title, lines[], img, state, action, lock, go, label}
+  function carHTML(it, k) {
+    const [c1, c2] = pictureColours(it.img, k);
+    const locked = it.state === 'locked';
+    return `<li class="at-car ${it.state}" style="--c1:${c1};--c2:${c2}">` +
+      `<button type="button" onclick="${locked ? 'aralTrainLocked(this)' : it.action}" aria-label="${esc(it.label + (locked ? ' (locked)' : ''))}"${locked ? ` aria-disabled="true" data-lock="${esc(it.lock)}"` : ''}>` +
       `<span class="at-roof" aria-hidden="true"></span>` +
-      `<span class="at-body"><span class="at-plate">STOP ${num}</span>` +
-      `<span class="at-windows" aria-hidden="true"><i></i><i></i><i></i></span>` +
-      `<b class="at-title">${esc(a.title)}</b>${does ? `<span class="at-does">${does}</span>` : ''}` +
-      `<span class="at-go">${go}</span></span>` +
-      `<span class="at-wheels" aria-hidden="true"><i></i><i></i><i></i><i></i></span>` +
-      (state === 'done' ? '<span class="at-stamp done" aria-hidden="true">Arrived</span>' : '') +
-      (state === 'locked' ? '<span class="at-stamp lock" aria-hidden="true">Locked</span>' : '') +
+      `<span class="at-body"><span class="at-plate">${esc(it.plate)}</span>` +
+      `<span class="at-window"><img src="${it.img}" alt="" draggable="false"></span>` +
+      (it.small ? `<small class="at-small">${esc(it.small)}</small>` : '') +
+      `<b class="at-title">${esc(it.title)}</b>` +
+      (it.lines || []).filter(Boolean).map(l => `<span class="at-line">${esc(l)}</span>`).join('') +
+      `<span class="at-go">${locked ? '🔒 Locked' : it.go}</span></span>` +
+      `<span class="at-wheels" aria-hidden="true"><i></i><i></i></span>` +
+      (it.state === 'done' ? '<span class="at-stamp done" aria-hidden="true">Arrived</span>' : '') +
+      (locked ? '<span class="at-stamp lock" aria-hidden="true">Locked</span>' : '') +
       `</button></li>`;
   }
+  function trainBoard(items) {
+    const focus = Math.max(0, items.findIndex(it => it.state === 'next'));
+    return `<div class="at-view" data-focus="${focus}"><ol class="at-loop"><li class="at-set"><ol class="at-cars">${ENGINE}${items.map(carHTML).join('')}</ol></li></ol>` +
+      `<div class="at-track" aria-hidden="true"></div>` +
+      `<button type="button" class="at-pause" onclick="aralTrainPause(this)" aria-label="Pause the train" aria-pressed="false">⏸</button></div>`;
+  }
+  window.aralTrainPause = function (btn) {
+    const view = btn.closest('.at-view'), paused = view.classList.toggle('at-paused');
+    btn.textContent = paused ? '▶' : '⏸';
+    btn.setAttribute('aria-pressed', String(paused));
+    btn.setAttribute('aria-label', paused ? 'Start the train' : 'Pause the train');
+  };
+
+  // Make the loop seamless: repeat the carriage set until it fills the frame, then roll one set-width per cycle.
+  function startTrain() {
+    const view = document.querySelector('.at-view'); if (!view) return;
+    const loop = view.querySelector('.at-loop'), first = loop.querySelector('.at-set');
+    loop.querySelectorAll('.at-set.at-copy').forEach(n => n.remove());
+    const setW = first.getBoundingClientRect().width, viewW = view.clientWidth;
+    if (!setW || !viewW) return;
+    if (reducedMotion()) { view.classList.add('at-still'); return; }
+    view.classList.remove('at-still');
+    const copies = Math.ceil(viewW / setW) + 1;
+    for (let c = 0; c < copies; c++) {
+      const copy = first.cloneNode(true);
+      copy.classList.add('at-copy'); copy.setAttribute('aria-hidden', 'true'); copy.inert = true;
+      copy.querySelectorAll('button').forEach(b => b.tabIndex = -1);
+      loop.append(copy);
+    }
+    const speed = Math.max(40, viewW / 14); // px per second: a carriage crosses the frame in about 14 seconds
+    const dur = setW / speed;
+    // Start with the learner's next carriage in the middle of the frame.
+    const cars = first.querySelectorAll('.at-car'), target = cars[Number(view.dataset.focus) || 0];
+    let offset = target ? target.offsetLeft + target.offsetWidth / 2 - viewW / 2 : 0;
+    offset = ((offset % setW) + setW) % setW;
+    loop.style.setProperty('--shift', setW + 'px');
+    loop.style.setProperty('--dur', dur.toFixed(2) + 's');
+    loop.style.animationDelay = (-(offset / setW) * dur).toFixed(2) + 's';
+    loop.classList.remove('at-run'); void loop.offsetWidth; loop.classList.add('at-run');
+  }
+  let observer = null;
+  function afterRender() {
+    requestAnimationFrame(() => {
+      startTrain();
+      const view = document.querySelector('.at-view');
+      if (!view || typeof ResizeObserver === 'undefined') return;
+      observer?.disconnect();
+      let lastW = view.clientWidth, timer = 0;
+      observer = new ResizeObserver(() => { if (Math.abs(view.clientWidth - lastW) < 2) return; lastW = view.clientWidth; clearTimeout(timer); timer = setTimeout(startTrain, 120); });
+      observer.observe(view);
+    });
+  }
+  const goText = (state, started) => state === 'done' ? '✓ Review' : state === 'locked' ? '🔒 Locked' : started ? '▶ Continue' : state === 'next' ? '▶ Board now' : '★ Start';
+
+  /* ---------- page 1: the eight weeks ---------- */
+  renderAralStart = function () {
+    setOwl('work'); nav.innerHTML = '';
+    const ws = weeks(), counts = ws.map(weekCounts), done = counts.map(c => c.total > 0 && c.done === c.total), next = done.indexOf(false);
+    const items = ws.map((w, k) => {
+      const W = ARAL_WEEKS[w], state = done[k] ? 'done' : weekLocked(w) ? 'locked' : k === next ? 'next' : 'todo';
+      return {plate: `WEEK ${w}`, title: W.title, lines: [`${aralSessionKeys(w).length} sessions`, `${counts[k].done} of ${counts[k].total} stops`],
+        img: safe(() => aralScene(ARAL_SCENE.week[k]), ''), state, action: `aralWeek(${w})`, lock: weekMsg(w),
+        go: goText(state, counts[k].done > 0), label: `Week ${w}: ${W.title}`};
+    });
+    const all = counts.reduce((a, c) => a + c.done, 0);
+    app.innerHTML = aralStation({label: 'Reading Express · ARAL Program', title: '8-Week Learning Journey', sub: 'Every week is a new station. Every activity is a stop.',
+      say: all ? `Welcome back, reader! You have cleared ${all} stops so far. Week ${next < 0 ? ws[ws.length - 1] : ws[next]} is waiting for you!` : 'Hello, reader! I’m Tala. Each week is a carriage on our reading train. Let’s board Week 1!',
+      plate: true, back: "go('map')", board: aralRail(done, ws.length, 'weeks completed') + trainBoard(items)});
+    afterRender();
+    setTimeout(() => safe(() => readwyOwlAuto('aral')), 900);
+  };
+
+  /* ---------- page 2: a week's platforms (sessions) ---------- */
+  renderAralWeek = function () {
+    setOwl('work'); nav.innerHTML = '';
+    const w = aralView.week || 1, W = ARAL_WEEKS[w], keys = aralSessionKeys(w), prog = keys.map(aralSessionProgress),
+      done = prog.map(p => p.total > 0 && p.done === p.total), next = done.indexOf(false);
+    const items = keys.map((s, k) => {
+      const state = done[k] ? 'done' : sessionLocked(s) ? 'locked' : k === next ? 'next' : 'todo';
+      const img = safe(() => w === 1 ? aralScene(ARAL_SCENE.session[s]) : aralStopURL(s, 0, W.sessions[s].activities[0]), '');
+      return {plate: `PLATFORM ${s}`, small: `Session ${s}`, title: W.sessions[s].title, lines: [`${prog[k].done} of ${prog[k].total} stops`],
+        img, state, action: `aralOpenSession(${s})`, lock: sessionMsg(s), go: goText(state, prog[k].done > 0), label: `Platform ${s}: ${W.sessions[s].title}`};
+    });
+    const total = prog.reduce((c, p) => c + p.done, 0), nx = next < 0 ? keys[0] : keys[next];
+    app.innerHTML = aralStation({label: `Week ${w} Station`, title: esc(W.title), sub: `${keys.length} platforms · one session each`,
+      say: next < 0 ? `Amazing! You finished every session of Week ${w}!` : total ? `Nice riding! Platform ${nx} is waiting for you.` : `Week ${w} has ${keys.length} platforms. Start at Platform ${keys[0]}, ${W.sessions[keys[0]].title}!`,
+      back: 'aralShow(1)', board: aralRail(done, keys.length, 'sessions completed') + trainBoard(items)});
+    afterRender();
+  };
+
+  /* ---------- page 3: a platform's stops (activities) ---------- */
   renderAralTaskMenu = function () {
     const s = aralTaskMenu.session || 1, week = aralW()[s], acts = week.activities, n = acts.length;
     setOwl('work'); nav.innerHTML = '';
     const done = acts.map((_, i) => submitted(s, i)), count = done.filter(Boolean).length, next = done.indexOf(false), all = count === n;
-    const cars = acts.map((a, i) => carHTML(s, i, a, done[i] ? 'done' : i === next ? 'next' : stopLocked(s, i) ? 'locked' : 'todo')).join('');
+    const items = acts.map((a, i) => {
+      const num = aralBoardTaskNumber(s, i), state = done[i] ? 'done' : i === next && !stopLocked(s, i) ? 'next' : stopLocked(s, i) ? 'locked' : 'todo';
+      return {plate: `STOP ${num}`, small: `Activity ${num}`, title: a.title, lines: [safe(() => aralDoes(a), []).slice(0, 3).join(' · ')],
+        img: safe(() => aralStopURL(s, i, a), ''), state, action: `aralBoardOpenTask(${s},${i})`, lock: stopMsg(s, i),
+        go: goText(state, false), label: `Stop ${num}: ${a.title}`};
+    });
     const msg = all ? `Hooray! You cleared all ${n} stops of Platform ${s}. Tap any carriage to look back.`
       : count ? `Great riding! ${n - count} stop${n - count === 1 ? '' : 's'} left. Board Stop ${aralBoardTaskNumber(s, next)} next.`
       : `All aboard! Platform ${s} has ${n} carriages. Start with Stop ${aralBoardTaskNumber(s, 0)}. Each carriage opens after you finish the one before it.`;
-    app.innerHTML = aralStation({
-      label: `Platform ${s} · Week ${aralView.week || 1} · Session ${s}`, title: esc(week.title),
+    app.innerHTML = aralStation({label: `Platform ${s} · Week ${aralView.week || 1} · Session ${s}`, title: esc(week.title),
       sub: `${week.pages ? `Workbook pages ${esc(week.pages)} · ` : ''}${n} stops`, say: msg, back: 'aralShow(6)',
-      board: aralRail(done, n, 'stops cleared') + `<ol class="at-train">${cars}</ol>`,
-      foot: `<button type="button" class="st-depart" onclick="aralBoardContinue()">${all ? 'Review Stop 1' : '▶ Board the next stop'}</button>`
-    });
+      board: aralRail(done, n, 'stops cleared') + trainBoard(items)});
+    afterRender();
   };
-
-  /* ---------- weeks and platforms: lock the ones not yet reached ---------- */
-  function lockTickets(isLocked, message) {
-    [...document.querySelectorAll('.st-tickets .st-ticket')].forEach((t, k) => {
-      if (!isLocked(k)) return;
-      t.classList.remove('next', 'todo'); t.classList.add('locked');
-      t.dataset.lock = message(k);
-      t.setAttribute('onclick', 'aralTrainLocked(this)');
-      t.setAttribute('aria-disabled', 'true');
-      t.setAttribute('aria-label', (t.getAttribute('aria-label') || '').replace(/ \(locked\)$/, '') + ' (locked)');
-      const go = t.querySelector('.st-go'); if (go) go.textContent = '🔒 Locked';
-      if (!t.querySelector('.at-stamp')) t.insertAdjacentHTML('beforeend', '<span class="at-stamp lock" aria-hidden="true">Locked</span>');
-    });
-  }
-  { const original = renderAralStart; renderAralStart = function () {
-    const r = original.apply(this, arguments);
-    safe(() => { const ws = weeks(); lockTickets(k => weekLocked(ws[k]), k => weekMsg(ws[k])); });
-    return r;
-  }; }
-  { const original = renderAralWeek; renderAralWeek = function () {
-    const r = original.apply(this, arguments);
-    safe(() => { const keys = aralSessionKeys(aralView.week || 1); lockTickets(k => sessionLocked(keys[k]), k => sessionMsg(keys[k])); });
-    return r;
-  }; }
 
   /* ---------- guards: every way into a week, platform or stop checks the lock ---------- */
   { const original = aralWeek; aralWeek = function (w) {
@@ -146,44 +243,62 @@
   const css = document.createElement('style');
   css.dataset.source = 'resources/aral-train.js';
   css.textContent = `
-.at-train{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3.4cqh 2.2cqw;margin:0;padding:2.2cqh 1cqw 2.6cqh;list-style:none;align-content:center;scrollbar-color:#c9973f #2a1a0e}
-.at-car{position:relative;display:flex;min-width:0;animation:atArrive .8s cubic-bezier(.18,.85,.25,1) calc(var(--i)*.09s) both}
-.at-car:not(:nth-child(3n)):not(:last-child)::after{content:'';position:absolute;z-index:0;right:-2.3cqw;bottom:3.6cqh;width:2.4cqw;height:.9cqh;border-radius:.4cqh;background:linear-gradient(#5b5b60,#1d1d20);box-shadow:0 0 0 .12cqh #c9973f}
-.at-car>button{position:relative;z-index:1;appearance:none;border:0;background:none;padding:0;margin:0;cursor:pointer;flex:1;min-width:0;display:flex;flex-direction:column;color:#fff;font:inherit;text-align:center;filter:drop-shadow(0 .9cqh 1.1cqh #000b);transition:transform .2s ease,filter .2s ease}
-.at-car>button:hover,.at-car>button:focus-visible{transform:translateY(-.7cqh)}
+/* the old train that crossed the bottom of the station is replaced by the train in the frame */
+.st-screen .st-track,.st-screen .st-train-lane{display:none!important}
+.at-view{position:relative;flex:1;min-height:max(300px,46cqh);overflow:hidden;margin:1cqh -1.6cqw 0;padding:0;
+ background:linear-gradient(#0000 0,#0000 86%,#1b120a 86%,#120c06 100%);mask-image:linear-gradient(90deg,#0000,#000 4%,#000 96%,#0000);-webkit-mask-image:linear-gradient(90deg,#0000,#000 4%,#000 96%,#0000)}
+.at-track{position:absolute;left:0;right:0;bottom:4.2%;height:1.4cqh;pointer-events:none;
+ background:linear-gradient(#b9a37f,#6d5a40) top/100% 30% no-repeat,repeating-linear-gradient(90deg,#4a3420 0 1.6cqw,#0000 1.6cqw 3.4cqw) bottom/100% 70% no-repeat}
+.at-loop{position:absolute;inset:0 auto 0 0;display:flex;margin:0;padding:0;list-style:none;width:max-content;will-change:transform}
+.at-loop.at-run{animation:atRoll var(--dur,40s) linear infinite}
+.at-view:hover .at-loop,.at-view:focus-within .at-loop,.at-view.at-paused .at-loop{animation-play-state:paused}
+.at-set{display:flex;height:100%}
+.at-cars{display:flex;align-items:flex-end;gap:1.2cqw;height:100%;margin:0;padding:1.4cqh 1.2cqw 4.6%;list-style:none}
+.at-view.at-still{overflow-x:auto;mask-image:none;-webkit-mask-image:none}
+.at-view.at-still .at-loop{position:relative;height:100%}
+@keyframes atRoll{from{transform:translateX(0)}to{transform:translateX(calc(-1 * var(--shift,0px)))}}
+.at-engine{flex:0 0 auto;height:72%;aspect-ratio:1;position:relative}
+.at-engine svg{width:100%;height:100%;overflow:visible;display:block}
+.at-car{position:relative;flex:0 0 auto;height:100%;width:clamp(190px,18.5cqw,320px);display:flex}
+.at-car::before{content:'';position:absolute;left:-1.3cqw;bottom:7%;width:1.4cqw;height:1cqh;border-radius:.4cqh;background:linear-gradient(#5b5b60,#1d1d20);box-shadow:0 0 0 .12cqh #c9973f}
+.at-car>button{position:relative;appearance:none;border:0;background:none;padding:0;margin:0;cursor:pointer;flex:1;min-width:0;display:flex;flex-direction:column;color:#fff;font:inherit;text-align:center;
+ filter:drop-shadow(0 .9cqh 1.1cqh #000b);transition:transform .2s ease,filter .2s ease}
+.at-car>button:hover,.at-car>button:focus-visible{transform:translateY(-.8cqh)}
 .at-car>button:focus-visible{outline:.25cqw solid #ffd76a;outline-offset:.4cqw;border-radius:1cqw}
-.at-roof{height:1.9cqh;margin:0 5%;border-radius:1.4cqw 1.4cqw 0 0;background:linear-gradient(#6a5444,#241810);box-shadow:inset 0 .3cqh 0 #ffffff22}
-.at-body{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:.8cqh;padding:1.3cqh 1cqw 1.5cqh;border-radius:.8cqw;
- background:linear-gradient(180deg,color-mix(in srgb,var(--car) 62%,#fff) 0,var(--car) 18%,color-mix(in srgb,var(--car) 72%,#000) 100%);
- border:.22cqw solid #e0b25a;box-shadow:inset 0 -1.1cqh 0 #00000033,inset 0 .3cqh 0 #ffffff55}
-.at-body::after{content:'';position:absolute;left:4%;right:4%;bottom:2.2cqh;height:.45cqh;border-radius:9px;background:#e0b25a;opacity:.8}
-.at-plate{font:900 clamp(10px,1.05cqw,17px)/1.2 Cinzel,Georgia,serif;letter-spacing:.12em;padding:.15em .8em;border-radius:999px;background:#1d1408;color:#ffd76a;border:.12cqw solid #e0b25a}
-.at-windows{display:flex;gap:.7cqw;width:100%;justify-content:center}
-.at-windows i{flex:1;max-width:2.8cqw;aspect-ratio:3/4;border-radius:.6cqw .6cqw .25cqw .25cqw;background:linear-gradient(#fff4cc,#f3b04c);border:.16cqw solid #e0b25a;box-shadow:inset 0 0 .7cqw #b86b12}
-.at-title{font:800 clamp(12px,1.3cqw,21px)/1.2 system-ui,'Segoe UI',sans-serif;text-shadow:0 .1em .25em #000a;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.4em;overflow-wrap:anywhere}
-.at-does{font:600 clamp(10px,.9cqw,14px)/1.25 system-ui,sans-serif;opacity:.95}
-.at-go{margin-top:auto;margin-bottom:1.4cqh;padding:.3em 1em;border-radius:999px;background:#fffaf0;color:#2b1a0b;font:900 clamp(11px,1.05cqw,16px)/1.2 system-ui,sans-serif;box-shadow:0 .3cqh .6cqh #0006}
-.at-wheels{display:flex;justify-content:space-between;padding:0 9%;margin-top:-1.3cqh;height:3cqh;position:relative;z-index:1}
-.at-wheels i{width:3cqh;height:3cqh;border-radius:50%;border:.25cqh solid #c9973f;background:radial-gradient(circle,#e8c879 0 18%,transparent 20%),repeating-conic-gradient(#d9b25a 0 8deg,#151518 8deg 45deg);animation:atRoll .8s linear calc(var(--i)*.09s) both}
+.at-roof{flex:0 0 auto;height:2.2cqh;margin:0 6%;border-radius:1.6cqw 1.6cqw 0 0;background:linear-gradient(#6a5444,#241810);box-shadow:inset 0 .3cqh 0 #ffffff22}
+.at-body{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;gap:.9cqh;padding:1.4cqh 1cqw 0;border-radius:.9cqw;overflow:hidden;
+ background:linear-gradient(160deg,var(--c1) 0%,var(--c2) 100%);border:.25cqw solid #e0b25a;box-shadow:inset 0 -1.4cqh 0 #00000038,inset 0 .35cqh 0 #ffffff55,inset 0 0 2cqw #0000002a}
+.at-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,#ffffff0d 0 .5cqw,#0000 .5cqw 3cqw);pointer-events:none}
+.at-plate{position:relative;font:900 clamp(11px,1.15cqw,19px)/1.2 Cinzel,Georgia,serif;letter-spacing:.12em;padding:.2em .9em;border-radius:999px;background:#1d1408;color:#ffd76a;border:.12cqw solid #e0b25a;box-shadow:0 .2cqh .5cqh #0006}
+.at-window{position:relative;flex:0 1 auto;width:100%;aspect-ratio:5/3;max-height:34%;min-height:0;border-radius:.8cqw;overflow:hidden;border:.25cqw solid #e0b25a;box-shadow:inset 0 0 1cqw #0008,0 .3cqh .6cqh #0005;background:#0003}
+.at-window img{width:100%;height:100%;object-fit:cover;display:block}
+.at-small{position:relative;font:800 clamp(10px,.9cqw,14px)/1.1 system-ui,'Segoe UI',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#fff3c9;opacity:.95}
+.at-title{position:relative;font:800 clamp(13px,1.35cqw,22px)/1.2 system-ui,'Segoe UI',sans-serif;text-shadow:0 .1em .25em #000b;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.at-line{position:relative;font:700 clamp(11px,.95cqw,15px)/1.25 system-ui,sans-serif;padding:.15em .7em;border-radius:999px;background:#00000038;text-shadow:0 1px 2px #0008}
+.at-go{position:relative;margin-top:auto;margin-bottom:2.6cqh;padding:.35em 1.1em;border-radius:999px;background:#fffaf0;color:#2b1a0b;font:900 clamp(12px,1.1cqw,17px)/1.2 system-ui,sans-serif;box-shadow:0 .3cqh .6cqh #0006}
+.at-wheels{flex:0 0 auto;display:flex;justify-content:space-between;padding:0 12%;margin-top:-1.6cqh;height:3.6cqh;position:relative;z-index:1}
+.at-wheels i{height:100%;aspect-ratio:1;border-radius:50%;border:.28cqh solid #c9973f;background:radial-gradient(circle,#e8c879 0 18%,transparent 20%),repeating-conic-gradient(#d9b25a 0 8deg,#151518 8deg 45deg)}
+.at-loop.at-run .at-wheels i,.at-loop.at-run .at-wheel{animation:atSpin 1.1s linear infinite}
+.at-view:hover .at-wheels i,.at-view:hover .at-wheel,.at-view:focus-within .at-wheels i,.at-view:focus-within .at-wheel,.at-view.at-paused .at-wheels i,.at-view.at-paused .at-wheel{animation-play-state:paused}
+@keyframes atSpin{to{rotate:-360deg}}
+.at-steam circle{animation:atPuff 1.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes atPuff{0%{transform:translate(0,0) scale(.4);opacity:0}25%{opacity:1}100%{transform:translate(40px,-70px) scale(1.6);opacity:0}}
+.at-view.at-paused .at-steam circle,.at-view:hover .at-steam circle{animation-play-state:paused}
 .at-car.next>button{animation:atGlow 1.8s ease-in-out infinite}
 .at-car.next .at-go{background:linear-gradient(#ffd76a,#f5a623)}
 .at-car.done .at-go{background:#dff5e6;color:#14623d}
 .at-car.locked>button{cursor:not-allowed;filter:grayscale(.85) brightness(.72) drop-shadow(0 .9cqh 1.1cqh #000b)}
-.at-car.locked .at-windows i{background:linear-gradient(#6b6b6b,#3b3b3b);box-shadow:none}
-.at-stamp{position:absolute;z-index:3;left:50%;top:46%;translate:-50% -50%;rotate:-13deg;padding:.2em .6em;border:.2em double currentColor;border-radius:.4em;background:#fff6e8d9;font:900 clamp(12px,1.35cqw,22px)/1 'Courier New',Courier,monospace;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;pointer-events:none;box-shadow:0 .2cqh .6cqh #0005}
+.at-stamp{position:absolute;z-index:3;left:50%;top:44%;translate:-50% -50%;rotate:-13deg;padding:.2em .6em;border:.2em double currentColor;border-radius:.4em;background:#fff6e8e0;font:900 clamp(13px,1.45cqw,24px)/1 'Courier New',Courier,monospace;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;pointer-events:none;box-shadow:0 .2cqh .6cqh #0005}
 .at-stamp.lock{color:#b3261e}
 .at-stamp.done{color:#1f8f57;top:30%}
-.st-ticket{position:relative}
-.st-ticket.locked{cursor:not-allowed;filter:grayscale(.85) brightness(.75);animation:none!important}
-.st-ticket.locked .st-go{background:#7a6a5a!important}
+.at-pause{position:absolute;z-index:4;right:1.2cqw;top:1cqh;width:clamp(32px,2.8cqw,46px);aspect-ratio:1;border-radius:50%;border:.15cqw solid #e0b25a;background:#1d1408d9;color:#ffd76a;font:900 clamp(13px,1.2cqw,20px)/1 system-ui;cursor:pointer;box-shadow:0 .3cqh .6cqh #0007}
+.at-view.at-still .at-pause{display:none}
 .at-shake{animation:atShake .45s ease both!important}
-@keyframes atArrive{0%{transform:translateX(70cqw);opacity:0}70%{transform:translateX(-.6cqw);opacity:1}85%{transform:translateX(.25cqw)}100%{transform:none;opacity:1}}
-@keyframes atRoll{from{rotate:-540deg}to{rotate:0deg}}
 @keyframes atGlow{0%,100%{filter:drop-shadow(0 0 .2cqw #ffd76a) drop-shadow(0 .9cqh 1.1cqh #000b)}50%{filter:drop-shadow(0 0 1.4cqw #ffcf4d) drop-shadow(0 .9cqh 1.1cqh #000b)}}
 @keyframes atShake{0%,100%{translate:0}20%{translate:-.8cqw}40%{translate:.8cqw}60%{translate:-.5cqw}80%{translate:.5cqw}}
-@media (max-width:760px){.at-train{grid-template-columns:repeat(2,minmax(0,1fr))}.at-car:not(:nth-child(3n)):not(:last-child)::after{display:none}.at-car:nth-child(odd):not(:last-child)::after{display:block}}
-@media (prefers-reduced-motion:reduce){.at-car,.at-wheels i,.at-car.next>button{animation:none!important}}
-html.reduced-motion .at-car,html.reduced-motion .at-wheels i,html.reduced-motion .at-car.next>button{animation:none!important}`;
+@media (max-width:760px){.at-car{width:clamp(170px,46vw,240px)}}
+@media (prefers-reduced-motion:reduce){.at-loop,.at-wheels i,.at-wheel,.at-steam circle,.at-car.next>button{animation:none!important}}
+html.reduced-motion .at-loop,html.reduced-motion .at-wheels i,html.reduced-motion .at-wheel,html.reduced-motion .at-steam circle,html.reduced-motion .at-car.next>button{animation:none!important}`;
   document.head.append(css);
 
   // If the learner is already on an ARAL page when this loads, redraw it with the new look and locks.
