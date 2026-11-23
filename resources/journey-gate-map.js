@@ -10,9 +10,18 @@
   // Worked out here from the learner's saved GST, so the ticket is right as soon as the learner enters
   // (same rules as journey-gate.js). Only "program finished" needs the app's saved check.
   const NAMES = {aral: 'ARAL Program', interv: 'InterV Program', sra: 'SRA Program'};
+  // Exploration period (SY 2026–2027): same date as journey-gate.js — change both together.
+  const EXPLORE_UNTIL = Date.parse('2027-06-01T00:00:00+08:00');
+  const STAMPED = ['gst', 'orst', 'wst', 'reports'];
   const gate = (() => {
     if (u.role === 'teacher') return null;
     const grade = Number(u.grade) || 7;
+    if (Date.now() < EXPLORE_UNTIL) {
+      const msg = 'The GST, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and SRA programs.';
+      return {exploring: true,
+        open: {gst: false, orst: false, wst: false, aral: true, interv: true, sra: true, reports: false},
+        messages: {gst: msg, orst: msg, wst: msg, reports: 'The Post-Test opens with the GST at the start of School Year 2027–2028 (June 1, 2027).'}};
+    }
     if (grade >= 11) {
       const msg = `For Grade ${grade}, the open journeys are InterV and SRA.`;
       return {open: {gst: false, orst: false, wst: false, aral: false, interv: true, sra: true, reports: false},
@@ -50,6 +59,16 @@ a.stage.rw-yours::after{content:'★ Your program';position:absolute;right:4%;bo
 .pf-dest.rw-locked .hole::after{content:'🔒';display:grid;place-items:center;width:100%;height:100%;font-size:.75em;line-height:1}
 .pf-dest.rw-yours{box-shadow:0 0 0 3px #e2b33c,0 0 14px #f3cf6a99!important}
 .pf-dest.rw-yours::after{content:'★ Yours';display:block;margin-top:2px;color:#8a5a00;font:800 10px/1 system-ui,sans-serif}
+/* Exploration period: a red rubber "LOCKED" ticket stamp pressed over GST, ORST, WST and the Post-Test (no padlock badge). */
+a.stage.rw-stamped::after,.pf-dest.rw-stamped .hole::after{content:none}
+a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) brightness(.9);-webkit-backdrop-filter:grayscale(.6) brightness(.9)}
+.pf-dest.rw-stamped{opacity:.8;filter:grayscale(.5)}
+.rw-stamp{position:absolute;left:50%;top:50%;z-index:6;translate:-50% -50%;rotate:-14deg;display:grid;justify-items:center;gap:.12em;padding:.28em .6em .32em;
+ border:.18em double #b3261e;border-radius:.4em;background:rgba(255,244,228,.78);color:#b3261e;
+ font:900 clamp(13px,4.6vw,24px)/1 'Courier New',Courier,monospace;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+ box-shadow:0 0 0 .06em rgba(179,38,30,.35),0 2px 6px #0005;text-shadow:0 0 1px rgba(179,38,30,.6);pointer-events:none}
+.rw-stamp small{font-size:.42em;letter-spacing:.12em;font-weight:800}
+.pf-dest .rw-stamp{font-size:clamp(8px,.75vw,11px);border-width:.2em;padding:.25em .4em;rotate:-12deg;filter:none}
 .rw-gate-note{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));z-index:99999;translate:-50% 0;width:min(92vw,520px);padding:12px 16px;border-radius:14px;
  background:#1d1408f2;border:2px solid #d9b45a;color:#fff4d6;font:600 15px/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 10px 24px #000a}`;
   document.head.append(style);
@@ -80,6 +99,16 @@ a.stage.rw-yours::after{content:'★ Your program';position:absolute;right:4%;bo
     const locked = !gate.open[program];
     el.classList.toggle('rw-locked', locked);
     el.classList.toggle('rw-yours', !locked && program === gate.program);
+    const stamped = locked && !!gate.exploring && STAMPED.includes(program);
+    el.classList.toggle('rw-stamped', stamped);
+    const stamp = el.querySelector(':scope>.rw-stamp');
+    if (stamped && !stamp) {
+      const s = document.createElement('span');
+      s.className = 'rw-stamp';
+      s.setAttribute('aria-hidden', 'true');
+      s.innerHTML = 'Locked<small>SY 2027–2028</small>';
+      el.append(s);
+    } else if (!stamped && stamp) stamp.remove();
     if (locked) el.setAttribute('aria-disabled', 'true'); else el.removeAttribute('aria-disabled');
     const label = (el.getAttribute('aria-label') || '').replace(/ \(locked\)$/, '');
     if (label) el.setAttribute('aria-label', locked ? label + ' (locked)' : label);
