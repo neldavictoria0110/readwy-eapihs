@@ -1,0 +1,116 @@
+/* Smoothness pass: pause decoration while a tab is hidden or reduced motion is
+   chosen, and keep long decorative transitions short on phones and tablets. */
+html.rw-page-hidden *,
+html.rw-page-hidden *::before,
+html.rw-page-hidden *::after,
+html.reduced-motion *,
+html.reduced-motion *::before,
+html.reduced-motion *::after {
+  animation-play-state: paused !important;
+  transition-duration: .01ms !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-play-state: paused !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* iPhone / low-power safety mode: keep UI responsive, stop expensive continuous effects. */
+html.rw-mobile-safe .rs-fx,
+html.rw-mobile-safe .rs-bird,
+html.rw-mobile-safe .rs-rays,
+html.rw-mobile-safe .rs-glow,
+html.rw-mobile-safe .rs-floor,
+html.rw-mobile-safe .hd-fx,
+html.rw-mobile-safe .hd-bird,
+html.rw-mobile-safe .hd-glow,
+html.rw-mobile-safe .hd-fall,
+html.rw-mobile-safe .hd-floor,
+html.rw-mobile-safe .hd-steam,
+html.rw-mobile-safe .pf-steam,
+html.rw-mobile-safe .tw-streak,
+html.rw-mobile-safe .spark,
+html.rw-mobile-safe .page-sparkles,
+html.rw-mobile-safe .dust {
+  display: none !important;
+  animation: none !important;
+}
+html.rw-mobile-safe .rs-cam,
+html.rw-mobile-safe .rs-banner,
+html.rw-mobile-safe .rs-clockhand,
+html.rw-mobile-safe .rs-pendulum,
+html.rw-mobile-safe .rs-loco,
+html.rw-mobile-safe .rs-smoke,
+html.rw-mobile-safe .rs-steam,
+html.rw-mobile-safe .tw-glass,
+html.rw-mobile-safe .tw-scene,
+html.rw-mobile-safe .hd-stage,
+html.rw-mobile-safe .hd-blink {
+  animation: none !important;
+  transition: none !important;
+}
+html.rw-mobile-safe *,
+html.rw-mobile-safe *::before,
+html.rw-mobile-safe *::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  scroll-behavior: auto !important;
+}
+html.rw-mobile-safe .rs-wrap,
+html.rw-mobile-safe .hd-scene,
+html.rw-mobile-safe .pf,
+html.rw-mobile-safe .tw-plat,
+html.rw-mobile-safe .chapter-paper,
+html.rw-mobile-safe .welcome-ribbon {
+  filter: none !important;
+}
+@media (max-width: 900px), (pointer: coarse) {
+  .enchanted-map-source,
+  .enchanted-map-destination,
+  .enchanted-map-gate,
+  .welcome-ribbon,
+  .chapter-paper {
+    animation-duration: 1200ms !important;
+  }
+  .enchanted-map-source,
+  .enchanted-map-destination,
+  .enchanted-map-gate,
+  .welcome-ribbon,
+  .chapter-paper,
+  .welcome-ribbon *,
+  .chapter-paper * {
+    filter: none !important;
+  }
+  .rs-cam,
+  .iva-body,
+  .iva-head,
+  .iva-sweep,
+  .iva-dust,
+  .aral-living-owl,
+  .aral-owl-blinks,
+  .aral-eyelid,
+  .gst-owl-actor.is-speaking,
+  .gst-live-lids,
+  .gst-live-wand,
+  .gst-backdrop-toolbar:before,
+  .gst-backdrop-toolbar:after,
+  .wst-station-glimmer i,
+  .wst-brand-emblem,
+  .bob,
+  .breathe,
+  .sway,
+  .glow,
+  .rays,
+  .puff,
+  .spark,
+  .lid,
+  .hit .lift,
+  .nextchip {
+    animation-duration: 2.4s !important;
+  }
+  .car {
+    transition-duration: 560ms !important;
+  }
+}

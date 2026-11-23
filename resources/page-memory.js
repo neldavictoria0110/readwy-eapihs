@@ -63,9 +63,12 @@ function startReadwy(){
   restored=true;
  }else if(new URLSearchParams(location.search).get('journeyModule')){
   // A programme route owns this document. Never let a stale saved login/startup
-  // page repaint over the GST or other station screen.
+  // page repaint over the requested station screen.
+  const requestedModule=new URLSearchParams(location.search).get('journeyModule');
+  const moduleMap={gst:'gst',orst:'orst',wst:'wst',srst:'wst',aral:'aral',interv:'interv',sra:'sra',reports:'reports'};
   user=load('user',null);
-  page='work';activeModule='gst';
+  activeModule=moduleMap[requestedModule]||'gst';
+  page=activeModule==='wst'?'wst':'work';
   restored=true;
   render();
  }else if(requestedView==='login'||requestedView==='startup'){
