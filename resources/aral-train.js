@@ -60,11 +60,36 @@
   const stopMsg = (s, i) => { let j = 0; while (j < i && submitted(s, j)) j++; return `🔒 Finish Stop ${aralBoardTaskNumber(s, j)} first. Then Stop ${aralBoardTaskNumber(s, i)} opens.`; };
 
   /* ---------- carriage colours come from the picture the carriage carries ---------- */
-  const FALLBACK = [['#e0475b', '#9c1c33'], ['#2fbf7a', '#14704a'], ['#4a86e8', '#1d4597'], ['#f2a23a', '#b5600c'], ['#9b6be0', '#5a2f9c'], ['#2bb3c4', '#11707e'], ['#d8a93c', '#8a6114']];
+  // Bright jewel tones that sit well on the dark-brown and gold train. Each carriage takes the jewel nearest
+  // the hue of its picture, and no two carriages in one train share a colour.
+  const JEWELS = [
+    { h: 352, c: ['#ff4d6a', '#a3123a'] }, // ruby
+    { h: 24, c: ['#ff8c2e', '#b8420a'] },  // tangerine
+    { h: 46, c: ['#f7b500', '#9a5800'] },  // sunflower
+    { h: 145, c: ['#2ed47f', '#0b7a45'] }, // emerald
+    { h: 186, c: ['#1fc8dc', '#0a6f82'] }, // teal
+    { h: 214, c: ['#3d8bff', '#1a43b0'] }, // sapphire
+    { h: 268, c: ['#a463ff', '#5523b5'] }, // violet
+    { h: 326, c: ['#ff4fae', '#a3166a'] }, // magenta
+  ];
+  let usedJewels = new Set();
+  function hueOf(c) {
+    let m = /^#([0-9a-f]{3,8})$/i.exec(c), r, g, b;
+    if (m) { let x = m[1]; if (x.length < 6) x = [...x.slice(0, 3)].map(d => d + d).join(''); [r, g, b] = [0, 2, 4].map(i => parseInt(x.slice(i, i + 2), 16) / 255); }
+    else { m = String(c).match(/[d.]+/g); if (!m || m.length < 3) return null; [r, g, b] = m.slice(0, 3).map(v => +v / 255); }
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+    if (d < .08) return null; // grey: no hue to follow
+    const h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    return (h * 60 + 360) % 360;
+  }
   function pictureColours(url, k) {
     const svg = safe(() => decodeURIComponent(String(url).split(',').slice(1).join(',')), '');
-    const stops = [...svg.matchAll(/stop-color="(#[0-9a-fA-F]{3,8}|rgb[^"]+)"/g)].map(m => m[1]);
-    return stops.length >= 2 ? [stops[0], stops[1]] : FALLBACK[k % FALLBACK.length];
+    const hue = [...svg.matchAll(/stop-color="(#[0-9a-fA-F]{3,8}|rgb[^"]+)"/g)].map(m => hueOf(m[1])).find(x => x != null);
+    const gap = j => hue == null ? ((j - k) % JEWELS.length + JEWELS.length) % JEWELS.length : Math.min(Math.abs(JEWELS[j].h - hue), 360 - Math.abs(JEWELS[j].h - hue));
+    if (usedJewels.size >= JEWELS.length) usedJewels = new Set();
+    const pick = JEWELS.map((_, j) => j).filter(j => !usedJewels.has(j)).sort((x, y) => gap(x) - gap(y))[0];
+    usedJewels.add(pick);
+    return JEWELS[pick].c;
   }
 
   /* ---------- the train ---------- */
@@ -110,6 +135,7 @@
   }
   function trainBoard(items) {
     const focus = Math.max(0, items.findIndex(it => it.state === 'next'));
+    usedJewels = new Set();
     return `<div class="at-view" data-focus="${focus}"><ol class="at-loop"><li class="at-set"><ol class="at-cars">${items.map(carHTML).reverse().join('')}${ENGINE}</ol></li></ol>` +
       `<div class="at-track" aria-hidden="true"></div></div>`;
   }
