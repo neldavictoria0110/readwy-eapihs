@@ -140,30 +140,18 @@
       `<div class="at-track" aria-hidden="true"></div></div>`;
   }
 
-  // Make the loop seamless: repeat the carriage set until it fills the frame, then roll one set-width per cycle.
+  // One train, engine first: it rolls in from the left edge, crosses the frame, leaves on the right, then comes again.
   function startTrain() {
     const view = document.querySelector('.at-view'); if (!view) return;
-    const loop = view.querySelector('.at-loop'), first = loop.querySelector('.at-set');
+    const loop = view.querySelector('.at-loop');
     loop.querySelectorAll('.at-set.at-copy').forEach(n => n.remove());
-    const setW = first.getBoundingClientRect().width, viewW = view.clientWidth;
-    if (!setW || !viewW) return;
-        const copies = Math.ceil(viewW / setW) + 1;
-    for (let c = 0; c < copies; c++) {
-      const copy = first.cloneNode(true);
-      copy.classList.add('at-copy'); copy.setAttribute('aria-hidden', 'true'); copy.inert = true;
-      copy.querySelectorAll('button').forEach(b => b.tabIndex = -1);
-      loop.append(copy);
-    }
+    const trainW = loop.getBoundingClientRect().width, viewW = view.clientWidth;
+    if (!trainW || !viewW) return;
     const speed = Math.max(40, viewW / 14); // px per second: a carriage crosses the frame in about 14 seconds
-    const dur = setW / speed;
-    // Start with the learner's next carriage in the middle of the frame.
-    const cars = first.querySelectorAll('.at-car'), target = cars[cars.length - 1 - (Number(view.dataset.focus) || 0)]; // carriages are drawn last-to-first
-    let offset = target ? target.offsetLeft + target.offsetWidth / 2 - viewW / 2 : 0;
-    offset = ((offset % setW) + setW) % setW;
-    loop.style.setProperty('--shift', setW + 'px');
-    loop.style.setProperty('--dur', dur.toFixed(2) + 's');
-    // the loop runs from translateX(-setW) to 0, so the target is centred at t = (setW - offset) / setW of a cycle
-    loop.style.animationDelay = (-((setW - offset) / setW) * dur).toFixed(2) + 's';
+    loop.style.setProperty('--from', -trainW + 'px');
+    loop.style.setProperty('--to', viewW + 'px');
+    loop.style.setProperty('--dur', ((trainW + viewW) / speed).toFixed(2) + 's');
+    loop.style.animationDelay = '0s';
     loop.classList.remove('at-run'); void loop.offsetWidth; loop.classList.add('at-run');
   }
   let observer = null;
@@ -269,11 +257,11 @@
  background:linear-gradient(#0000 0,#0000 86%,#1b120a 86%,#120c06 100%);mask-image:linear-gradient(90deg,#0000,#000 4%,#000 96%,#0000);-webkit-mask-image:linear-gradient(90deg,#0000,#000 4%,#000 96%,#0000)}
 .at-track{position:absolute;left:0;right:0;bottom:4.2%;height:1.4cqh;pointer-events:none;
  background:linear-gradient(#b9a37f,#6d5a40) top/100% 30% no-repeat,repeating-linear-gradient(90deg,#4a3420 0 1.6cqw,#0000 1.6cqw 3.4cqw) bottom/100% 70% no-repeat}
-.at-loop{position:absolute;inset:0 auto 0 0;display:flex;margin:0;padding:0;list-style:none;width:max-content;will-change:transform}
+.at-loop{position:absolute;inset:0 auto 0 0;display:flex;margin:0;padding:0;list-style:none;width:max-content;will-change:transform;transform:translateX(-100%)}
 .at-loop.at-run{animation:atRoll var(--dur,40s) linear infinite}
 .at-set{display:flex;height:100%}
 .at-cars{display:flex;align-items:flex-end;gap:1.2cqw;height:100%;margin:0;padding:1.4cqh 1.2cqw 4.6%;list-style:none}
-@keyframes atRoll{from{transform:translateX(calc(-1 * var(--shift,0px)))}to{transform:translateX(0)}}
+@keyframes atRoll{from{transform:translateX(var(--from,-100%))}to{transform:translateX(var(--to,100vw))}}
 .at-engine{flex:0 0 auto;height:72%;aspect-ratio:1;position:relative}
 .at-engine svg{width:100%;height:100%;overflow:visible;display:block;transform:scaleX(-1)}
 .at-car{position:relative;flex:0 0 auto;height:100%;width:clamp(190px,18.5cqw,320px);display:flex}
