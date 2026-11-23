@@ -9,8 +9,16 @@
      InterV – all 25 station tasks complete (intervDashStats)
      SRA    – every text from the learner's starting level to the last level passed (quiz + writing).
    Grades 11–12 keep their existing rule (InterV and SRA only). The developer view is never locked.
-   The result is also saved for the portrait journey map, which shows locks from it. */
+   The result is also saved for the portrait journey map, which shows locks from it.
+
+   Exploration period (School Year 2026–2027): until EXPLORE_UNTIL every learner, in any grade, may explore
+   ARAL, InterV and SRA freely. GST, ORST and WST stay visible but locked (they are taken at the opening of a
+   school year). From EXPLORE_UNTIL (opening of SY 2027–2028) the GST-score rules above apply again by themselves.
+   Change EXPLORE_UNTIL here AND in journey-gate-map.js when DepEd announces the official opening date. */
 (() => {
+  const EXPLORE_UNTIL = Date.parse('2027-06-01T00:00:00+08:00');
+  const exploring = () => Date.now() < EXPLORE_UNTIL;
+  const EXPLORE_MESSAGE = 'The GST, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and SRA programs.';
   const PREFIX = typeof STORE !== 'undefined' ? STORE : 'READwy_new_2026_local_';
   const NAMES = {gst: 'GST', orst: 'ORST', wst: 'WST', aral: 'ARAL Program', interv: 'InterV Program', sra: 'SRA Program', reports: 'Post-Test'};
   const PROGRAMS = ['aral', 'interv', 'sra'];
@@ -49,6 +57,9 @@
   function status() {
     const u = currentUser() || {};
     const grade = Number(u.grade) || (typeof selectedGrade !== 'undefined' ? Number(selectedGrade) : 7);
+    if (exploring()) {
+      return {grade, exploring: true, open: {gst: false, orst: false, wst: false, aral: true, interv: true, sra: true, reports: false}};
+    }
     if (grade >= 11) {
       return {grade, senior: true, open: {gst: false, orst: false, wst: false, aral: false, interv: true, sra: true, reports: false}};
     }
@@ -76,6 +87,9 @@
     return {grade, gst, orst, wst, score, program, screened, programDone, open};
   }
   function message(mod, s = status()) {
+    if (s.exploring) return mod === 'reports'
+      ? 'The Post-Test opens with the GST at the start of School Year 2027–2028 (June 1, 2027).'
+      : EXPLORE_MESSAGE;
     if (s.senior) return `For Grade ${s.grade}, the open journeys are InterV and SRA.`;
     if (mod === 'gst') return `You have already taken the GST (score ${s.score} of 40).`;
     if (!s.gst) return `Take the GST first. Your ${NAMES[mod]} opens after you submit the GST.`;
@@ -103,7 +117,7 @@
     if (typeof showPageStatus === 'function') { try { showPageStatus(text); return; } catch {} }
     window.alert(text);
   }
-  window.readwyJourneyGate = {status, allows, message, publish, programFor, learnerKey};
+  window.readwyJourneyGate = {status, allows, message, publish, programFor, learnerKey, exploring};
 
   // In-app entries to a journey.
   const guard = (name, moduleOf) => {
