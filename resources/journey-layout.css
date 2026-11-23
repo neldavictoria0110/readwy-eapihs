@@ -5,10 +5,10 @@
  --rw-pf-gap:clamp(8px,1.2vw,18px);
  --rw-pf-card-h:clamp(86px,12dvh,118px);
  --rw-pf-header:calc(var(--rw-pf-card-h) + 16px);
- --rw-pf-title:clamp(32px,5.4dvh,54px);
+ --rw-pf-title:0px;
 }
 @media(max-aspect-ratio:1/1){
- :root{--rw-pf-card-h:clamp(74px,10dvh,96px);--rw-pf-header:calc(var(--rw-pf-card-h) * 2 + 22px);--rw-pf-title:clamp(28px,4.8dvh,42px)}
+ :root{--rw-pf-card-h:clamp(74px,10dvh,96px);--rw-pf-header:calc(var(--rw-pf-card-h) * 2 + 22px);--rw-pf-title:0px}
 }
 
 .pf{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden!important}
@@ -59,16 +59,8 @@
 .pf .pf-clock{grid-template-columns:1fr!important;grid-template-areas:none!important;gap:2px!important}
 .pf .pf-clock small,.pf .pf-clock b,.pf .pf-clock span{grid-area:auto!important}
 
-/* Title below the top band, never over it. */
-.pf .pf-cap{
- position:absolute!important;left:50%!important;top:calc(var(--rw-pf-header) + 2px)!important;
- width:min(90vw,920px)!important;height:var(--rw-pf-title)!important;
- transform:translateX(-50%)!important;box-sizing:border-box!important;
- display:flex!important;flex-direction:column!important;justify-content:center!important;
- text-align:center!important;overflow:hidden!important;z-index:7!important;padding:0 12px!important;
-}
-.pf .pf-cap b{font-size:clamp(22px,2.4vw,36px)!important;line-height:1.1!important;margin:2px 0!important}
-.pf .pf-cap small,.pf .pf-cap i{font-size:clamp(11px,.95vw,14px)!important;line-height:1.2!important}
+/* "Your Learning Journey" title removed; keep cap hidden so ticket moves up. */
+.pf .pf-cap{display:none!important;height:0!important;margin:0!important;padding:0!important}
 
 /* Station frame sits in the middle band only. */
 .tw-plat .tw-frame,.tw-plat .tw-alt .tw-frame{
