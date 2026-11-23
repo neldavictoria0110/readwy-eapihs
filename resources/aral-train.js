@@ -105,7 +105,7 @@
       `<span class="at-go">${locked ? '🔒 Locked' : it.go}</span></span>` +
       `<span class="at-wheels" aria-hidden="true"><i></i><i></i></span>` +
       (it.state === 'done' ? '<span class="at-stamp done" aria-hidden="true">Arrived</span>' : '') +
-      (locked ? '<span class="at-stamp lock" aria-hidden="true">Locked</span>' : '') +
+      (locked ? `<span class="at-seal" aria-hidden="true"><small>${esc(it.plate)}</small><b>LOCKED</b><small>★ READwy ★</small></span>` : '') +
       `</button></li>`;
   }
   function trainBoard(items) {
@@ -280,7 +280,10 @@
 .at-car.locked>button{cursor:not-allowed}
 .at-car.locked .at-go{background:#3a2a1c;color:#ffd9c9}
 .at-stamp{position:absolute;z-index:3;left:50%;top:44%;translate:-50% -50%;rotate:-13deg;padding:.2em .6em;border:.2em double currentColor;border-radius:.4em;background:#fff6e8e0;font:900 clamp(13px,1.45cqw,24px)/1 'Courier New',Courier,monospace;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;pointer-events:none;box-shadow:0 .2cqh .6cqh #0005}
-.at-stamp.lock{color:#b3261e}
+/* round rubber stamp, same shape as the PLATFORM 7½ stamp on the journey ticket */
+.at-seal{position:absolute;z-index:3;left:50%;top:42%;translate:-50% -50%;rotate:-16deg;display:grid;place-items:center;align-content:center;gap:.25em;width:clamp(92px,10cqw,150px);aspect-ratio:1;border-radius:50%;border:.18em solid #b3261e;box-shadow:inset 0 0 0 .22em #fff6e8,inset 0 0 0 .32em #b3261e,0 .3cqh .8cqh #0006;background:radial-gradient(circle,#fff8ecf2 0 62%,#fff1dde6 100%);color:#b3261e;font:900 clamp(11px,1.05cqw,17px)/1 'Courier New',Courier,monospace;text-align:center;text-transform:uppercase;pointer-events:none}
+.at-seal small{font-size:.72em;letter-spacing:.08em;max-width:80%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.at-seal b{font-size:1.32em;letter-spacing:.1em;padding:.14em 0;border-top:.12em solid currentColor;border-bottom:.12em solid currentColor}
 .at-stamp.done{color:#1f8f57;top:30%}
 .at-shake{animation:atShake .45s ease both!important}
 @keyframes atGlow{0%,100%{filter:drop-shadow(0 0 .2cqw #ffd76a) drop-shadow(0 .9cqh 1.1cqh #000b)}50%{filter:drop-shadow(0 0 1.4cqw #ffcf4d) drop-shadow(0 .9cqh 1.1cqh #000b)}}
