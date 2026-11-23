@@ -1,11 +1,13 @@
 /* ARAL Program: a moving train inside the station frame, and one-step-at-a-time locking.
    - Weeks, platforms (sessions) and stops (activities) are tall train carriages pulled by a steam engine.
-     The train rolls through the centre frame: carriages come in on the right and leave on the left, in a loop.
-     It pauses while the pointer or finger is on it (or with the pause button), so any carriage can be tapped.
+     The train faces right and rolls through the centre frame left to right: the engine comes in first,
+     then carriage 1, 2, 3 … behind it, and they leave on the right, in a loop.
+     It never stops, so the learner taps a carriage as it rolls by.
    - Each carriage carries its picture, number, title, progress and its own Continue / Review button,
      and is coloured with the colours of the picture it carries.
    - Weeks, platforms and stops open in order: the next one unlocks only when everything before it is finished.
-     Finished items stay open for review. Teachers and the developer view are never locked.
+     Finished items stay open for review. Locked carriages keep their colours under a LOCKED stamp.
+     Teachers and the developer view are never locked.
    Loaded after the app's own scripts (see copy-index.cjs), so it wraps the final versions of the ARAL functions. */
 (() => {
   if (typeof renderAralTaskMenu !== 'function' || typeof aralStation !== 'function') return;
@@ -108,16 +110,9 @@
   }
   function trainBoard(items) {
     const focus = Math.max(0, items.findIndex(it => it.state === 'next'));
-    return `<div class="at-view" data-focus="${focus}"><ol class="at-loop"><li class="at-set"><ol class="at-cars">${ENGINE}${items.map(carHTML).join('')}</ol></li></ol>` +
-      `<div class="at-track" aria-hidden="true"></div>` +
-      `<button type="button" class="at-pause" onclick="aralTrainPause(this)" aria-label="Pause the train" aria-pressed="false">⏸</button></div>`;
+    return `<div class="at-view" data-focus="${focus}"><ol class="at-loop"><li class="at-set"><ol class="at-cars">${items.map(carHTML).reverse().join('')}${ENGINE}</ol></li></ol>` +
+      `<div class="at-track" aria-hidden="true"></div></div>`;
   }
-  window.aralTrainPause = function (btn) {
-    const view = btn.closest('.at-view'), paused = view.classList.toggle('at-paused');
-    btn.textContent = paused ? '▶' : '⏸';
-    btn.setAttribute('aria-pressed', String(paused));
-    btn.setAttribute('aria-label', paused ? 'Start the train' : 'Pause the train');
-  };
 
   // Make the loop seamless: repeat the carriage set until it fills the frame, then roll one set-width per cycle.
   function startTrain() {
@@ -126,9 +121,7 @@
     loop.querySelectorAll('.at-set.at-copy').forEach(n => n.remove());
     const setW = first.getBoundingClientRect().width, viewW = view.clientWidth;
     if (!setW || !viewW) return;
-    if (reducedMotion()) { view.classList.add('at-still'); return; }
-    view.classList.remove('at-still');
-    const copies = Math.ceil(viewW / setW) + 1;
+        const copies = Math.ceil(viewW / setW) + 1;
     for (let c = 0; c < copies; c++) {
       const copy = first.cloneNode(true);
       copy.classList.add('at-copy'); copy.setAttribute('aria-hidden', 'true'); copy.inert = true;
@@ -138,12 +131,13 @@
     const speed = Math.max(40, viewW / 14); // px per second: a carriage crosses the frame in about 14 seconds
     const dur = setW / speed;
     // Start with the learner's next carriage in the middle of the frame.
-    const cars = first.querySelectorAll('.at-car'), target = cars[Number(view.dataset.focus) || 0];
+    const cars = first.querySelectorAll('.at-car'), target = cars[cars.length - 1 - (Number(view.dataset.focus) || 0)]; // carriages are drawn last-to-first
     let offset = target ? target.offsetLeft + target.offsetWidth / 2 - viewW / 2 : 0;
     offset = ((offset % setW) + setW) % setW;
     loop.style.setProperty('--shift', setW + 'px');
     loop.style.setProperty('--dur', dur.toFixed(2) + 's');
-    loop.style.animationDelay = (-(offset / setW) * dur).toFixed(2) + 's';
+    // the loop runs from translateX(-setW) to 0, so the target is centred at t = (setW - offset) / setW of a cycle
+    loop.style.animationDelay = (-((setW - offset) / setW) * dur).toFixed(2) + 's';
     loop.classList.remove('at-run'); void loop.offsetWidth; loop.classList.add('at-run');
   }
   let observer = null;
@@ -251,16 +245,13 @@
  background:linear-gradient(#b9a37f,#6d5a40) top/100% 30% no-repeat,repeating-linear-gradient(90deg,#4a3420 0 1.6cqw,#0000 1.6cqw 3.4cqw) bottom/100% 70% no-repeat}
 .at-loop{position:absolute;inset:0 auto 0 0;display:flex;margin:0;padding:0;list-style:none;width:max-content;will-change:transform}
 .at-loop.at-run{animation:atRoll var(--dur,40s) linear infinite}
-.at-view:hover .at-loop,.at-view:focus-within .at-loop,.at-view.at-paused .at-loop{animation-play-state:paused}
 .at-set{display:flex;height:100%}
 .at-cars{display:flex;align-items:flex-end;gap:1.2cqw;height:100%;margin:0;padding:1.4cqh 1.2cqw 4.6%;list-style:none}
-.at-view.at-still{overflow-x:auto;mask-image:none;-webkit-mask-image:none}
-.at-view.at-still .at-loop{position:relative;height:100%}
-@keyframes atRoll{from{transform:translateX(0)}to{transform:translateX(calc(-1 * var(--shift,0px)))}}
+@keyframes atRoll{from{transform:translateX(calc(-1 * var(--shift,0px)))}to{transform:translateX(0)}}
 .at-engine{flex:0 0 auto;height:72%;aspect-ratio:1;position:relative}
-.at-engine svg{width:100%;height:100%;overflow:visible;display:block}
+.at-engine svg{width:100%;height:100%;overflow:visible;display:block;transform:scaleX(-1)}
 .at-car{position:relative;flex:0 0 auto;height:100%;width:clamp(190px,18.5cqw,320px);display:flex}
-.at-car::before{content:'';position:absolute;left:-1.3cqw;bottom:7%;width:1.4cqw;height:1cqh;border-radius:.4cqh;background:linear-gradient(#5b5b60,#1d1d20);box-shadow:0 0 0 .12cqh #c9973f}
+.at-car::after{content:'';position:absolute;right:-1.3cqw;bottom:7%;width:1.4cqw;height:1cqh;border-radius:.4cqh;background:linear-gradient(#5b5b60,#1d1d20);box-shadow:0 0 0 .12cqh #c9973f}
 .at-car>button{position:relative;appearance:none;border:0;background:none;padding:0;margin:0;cursor:pointer;flex:1;min-width:0;display:flex;flex-direction:column;color:#fff;font:inherit;text-align:center;
  filter:drop-shadow(0 .9cqh 1.1cqh #000b);transition:transform .2s ease,filter .2s ease}
 .at-car>button:hover,.at-car>button:focus-visible{transform:translateY(-.8cqh)}
@@ -279,26 +270,24 @@
 .at-wheels{flex:0 0 auto;display:flex;justify-content:space-between;padding:0 12%;margin-top:-1.6cqh;height:3.6cqh;position:relative;z-index:1}
 .at-wheels i{height:100%;aspect-ratio:1;border-radius:50%;border:.28cqh solid #c9973f;background:radial-gradient(circle,#e8c879 0 18%,transparent 20%),repeating-conic-gradient(#d9b25a 0 8deg,#151518 8deg 45deg)}
 .at-loop.at-run .at-wheels i,.at-loop.at-run .at-wheel{animation:atSpin 1.1s linear infinite}
-.at-view:hover .at-wheels i,.at-view:hover .at-wheel,.at-view:focus-within .at-wheels i,.at-view:focus-within .at-wheel,.at-view.at-paused .at-wheels i,.at-view.at-paused .at-wheel{animation-play-state:paused}
-@keyframes atSpin{to{rotate:-360deg}}
+@keyframes atSpin{to{rotate:360deg}}
+.at-loop.at-run .at-engine .at-wheel{animation-direction:reverse} /* the engine drawing is mirrored */
 .at-steam circle{animation:atPuff 1.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes atPuff{0%{transform:translate(0,0) scale(.4);opacity:0}25%{opacity:1}100%{transform:translate(40px,-70px) scale(1.6);opacity:0}}
-.at-view.at-paused .at-steam circle,.at-view:hover .at-steam circle{animation-play-state:paused}
 .at-car.next>button{animation:atGlow 1.8s ease-in-out infinite}
 .at-car.next .at-go{background:linear-gradient(#ffd76a,#f5a623)}
 .at-car.done .at-go{background:#dff5e6;color:#14623d}
-.at-car.locked>button{cursor:not-allowed;filter:grayscale(.85) brightness(.72) drop-shadow(0 .9cqh 1.1cqh #000b)}
+.at-car.locked>button{cursor:not-allowed}
+.at-car.locked .at-go{background:#3a2a1c;color:#ffd9c9}
 .at-stamp{position:absolute;z-index:3;left:50%;top:44%;translate:-50% -50%;rotate:-13deg;padding:.2em .6em;border:.2em double currentColor;border-radius:.4em;background:#fff6e8e0;font:900 clamp(13px,1.45cqw,24px)/1 'Courier New',Courier,monospace;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;pointer-events:none;box-shadow:0 .2cqh .6cqh #0005}
 .at-stamp.lock{color:#b3261e}
 .at-stamp.done{color:#1f8f57;top:30%}
-.at-pause{position:absolute;z-index:4;right:1.2cqw;top:1cqh;width:clamp(32px,2.8cqw,46px);aspect-ratio:1;border-radius:50%;border:.15cqw solid #e0b25a;background:#1d1408d9;color:#ffd76a;font:900 clamp(13px,1.2cqw,20px)/1 system-ui;cursor:pointer;box-shadow:0 .3cqh .6cqh #0007}
-.at-view.at-still .at-pause{display:none}
 .at-shake{animation:atShake .45s ease both!important}
 @keyframes atGlow{0%,100%{filter:drop-shadow(0 0 .2cqw #ffd76a) drop-shadow(0 .9cqh 1.1cqh #000b)}50%{filter:drop-shadow(0 0 1.4cqw #ffcf4d) drop-shadow(0 .9cqh 1.1cqh #000b)}}
 @keyframes atShake{0%,100%{translate:0}20%{translate:-.8cqw}40%{translate:.8cqw}60%{translate:-.5cqw}80%{translate:.5cqw}}
 @media (max-width:760px){.at-car{width:clamp(170px,46vw,240px)}}
-@media (prefers-reduced-motion:reduce){.at-loop,.at-wheels i,.at-wheel,.at-steam circle,.at-car.next>button{animation:none!important}}
-html.reduced-motion .at-loop,html.reduced-motion .at-wheels i,html.reduced-motion .at-wheel,html.reduced-motion .at-steam circle,html.reduced-motion .at-car.next>button{animation:none!important}`;
+/* The train always rolls, even while the app briefly switches on reduced motion during page loading. */
+.at-loop.at-run{animation-play-state:running!important}`;
   document.head.append(css);
 
   // If the learner is already on an ARAL page when this loads, redraw it with the new look and locks.
