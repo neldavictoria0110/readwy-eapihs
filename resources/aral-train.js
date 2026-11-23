@@ -94,9 +94,9 @@
 
   /* ---------- the train ---------- */
   // Same locomotive as the Reading Express transition train (train-nav.js), in the ARAL brown and gold.
-  const ENGINE = `<li class="at-engine" aria-hidden="true"><svg viewBox="0 0 110 78" preserveAspectRatio="xMidYMax meet"><defs><linearGradient id="atBoiler" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a0e06"/><stop offset=".18" stop-color="#8a5a30"/><stop offset=".35" stop-color="#5a3418"/><stop offset=".8" stop-color="#2e1a0b"/><stop offset="1" stop-color="#120903"/></linearGradient><linearGradient id="atCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4a26"/><stop offset=".3" stop-color="#4a2c16"/><stop offset="1" stop-color="#1a0e06"/></linearGradient><linearGradient id="atBr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e7ae"/><stop offset=".35" stop-color="#9a7428"/><stop offset=".6" stop-color="#f3dc98"/><stop offset="1" stop-color="#7a5a1f"/></linearGradient><radialGradient id="atLamp"><stop offset="0" stop-color="#fffbe6"/><stop offset=".5" stop-color="#ffd67a"/><stop offset="1" stop-color="#ffb84a" stop-opacity="0"/></radialGradient><radialGradient id="atSteam"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#eef1f6" stop-opacity=".7"/><stop offset="1" stop-color="#dfe4ec" stop-opacity="0"/></radialGradient></defs>
+  const ENGINE = `<li class="at-engine" aria-hidden="true"><svg viewBox="0 0 110 78" preserveAspectRatio="xMidYMax meet"><defs><linearGradient id="atBoiler" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e1d4a"/><stop offset=".18" stop-color="#6f93f0"/><stop offset=".35" stop-color="#2f56c8"/><stop offset=".8" stop-color="#17307a"/><stop offset="1" stop-color="#0a1638"/></linearGradient><linearGradient id="atCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0566e"/><stop offset=".3" stop-color="#b3263f"/><stop offset="1" stop-color="#5c0f1f"/></linearGradient><linearGradient id="atBr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e7ae"/><stop offset=".35" stop-color="#9a7428"/><stop offset=".6" stop-color="#f3dc98"/><stop offset="1" stop-color="#7a5a1f"/></linearGradient><radialGradient id="atLamp"><stop offset="0" stop-color="#fffbe6"/><stop offset=".5" stop-color="#ffd67a"/><stop offset="1" stop-color="#ffb84a" stop-opacity="0"/></radialGradient><radialGradient id="atSteam"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#eef1f6" stop-opacity=".7"/><stop offset="1" stop-color="#dfe4ec" stop-opacity="0"/></radialGradient></defs>
 <g class="at-steam">${[0, 1, 2, 3].map(k => `<circle cx="30" cy="10" r="6" fill="url(#atSteam)" style="animation-delay:${k * .4}s"/>`).join('')}</g>
-<path d="M23 14h14l-2 18H25Z" fill="url(#atBoiler)"/><rect x="21" y="12" width="18" height="4" rx="1.5" fill="url(#atBr)"/><rect x="8" y="30" width="66" height="28" rx="13" fill="url(#atBoiler)"/><rect x="26" y="30" width="3" height="28" fill="url(#atBr)"/><rect x="48" y="30" width="3" height="28" fill="url(#atBr)"/><ellipse cx="44" cy="30" rx="7" ry="4" fill="url(#atBr)"/><rect x="68" y="16" width="38" height="44" rx="5" fill="url(#atCab)"/><rect x="64" y="12" width="46" height="6" rx="3" fill="#1c0e06"/><rect x="75" y="22" width="24" height="15" rx="2" fill="#ffe3a0" stroke="url(#atBr)" stroke-width="2"/><circle class="at-lamp" cx="5" cy="40" r="10" fill="url(#atLamp)"/><circle cx="7" cy="40" r="4" fill="url(#atBr)"/><path d="M8 54 L0 64 H16Z" fill="url(#atBr)"/>
+<path d="M23 14h14l-2 18H25Z" fill="url(#atBoiler)"/><rect x="21" y="12" width="18" height="4" rx="1.5" fill="url(#atBr)"/><rect x="8" y="30" width="66" height="28" rx="13" fill="url(#atBoiler)"/><rect x="26" y="30" width="3" height="28" fill="url(#atBr)"/><rect x="48" y="30" width="3" height="28" fill="url(#atBr)"/><ellipse cx="44" cy="30" rx="7" ry="4" fill="url(#atBr)"/><rect x="68" y="16" width="38" height="44" rx="5" fill="url(#atCab)"/><rect x="64" y="12" width="46" height="6" rx="3" fill="#2a0a12"/><rect x="75" y="22" width="24" height="15" rx="2" fill="#ffe3a0" stroke="url(#atBr)" stroke-width="2"/><circle class="at-lamp" cx="5" cy="40" r="10" fill="url(#atLamp)"/><circle cx="7" cy="40" r="4" fill="url(#atBr)"/><path d="M8 54 L0 64 H16Z" fill="url(#atBr)"/>
 <g class="at-wheel"><circle cx="26" cy="64" r="10" fill="#141418" stroke="url(#atBr)" stroke-width="2.5"/><path d="M26 54v20M16 64h20M19 57l14 14M33 57 19 71" stroke="#8a6a26" stroke-width="1.5"/><circle cx="26" cy="64" r="2.5" fill="url(#atBr)"/></g><g class="at-wheel"><circle cx="52" cy="64" r="10" fill="#141418" stroke="url(#atBr)" stroke-width="2.5"/><path d="M52 54v20M42 64h20M45 57l14 14M59 57 45 71" stroke="#8a6a26" stroke-width="1.5"/><circle cx="52" cy="64" r="2.5" fill="url(#atBr)"/></g><g class="at-wheel"><circle cx="88" cy="66" r="8" fill="#141418" stroke="url(#atBr)" stroke-width="2.5"/><path d="M88 58v16M80 66h16" stroke="#8a6a26" stroke-width="1.5"/><circle cx="88" cy="66" r="2" fill="url(#atBr)"/></g><rect x="24" y="62" width="30" height="3" rx="1.5" fill="url(#atBr)"/></svg></li>`;
 
   // item: {plate, small, title, lines[], img, state, action, lock, go, label}
@@ -134,9 +134,9 @@
     loop.querySelectorAll('.at-set.at-copy').forEach(n => n.remove());
     const trainW = loop.getBoundingClientRect().width, viewW = view.clientWidth;
     if (!trainW || !viewW) return;
-    const cruise = Math.max(30, viewW / 22);     // slow, steady speed: about 22 seconds to cross the frame
+    const cruise = Math.max(45, viewW / 14);     // steady speed: about 14 seconds to cross the frame
     const stopX = viewW * 0.62 - trainW;         // engine front pauses a little past the middle
-    const BRAKE = 2.4, PAUSE = 1.2, SPEEDUP = 2.4, GAP = 1; // seconds
+    const BRAKE = 2, PAUSE = 1.2, SPEEDUP = 2, GAP = .8; // seconds
     const rampDist = cruise * BRAKE / 2;         // distance used to ease to a stop / back up to speed
     const inTime = Math.max(0, (stopX + trainW - rampDist) / cruise); // slow roll in from the left edge
     const outTime = Math.max(0, (viewW - stopX - rampDist) / cruise); // slow roll out to the right
@@ -267,7 +267,7 @@
 .at-loop{position:absolute;z-index:1;inset:0 auto calc(4.2% + 1.1cqh) 0;display:flex;margin:0;padding:0;list-style:none;width:max-content;will-change:transform;transform:translateX(-100%)}
 .at-set{display:flex;height:100%}
 .at-cars{display:flex;align-items:flex-end;gap:1.2cqw;height:100%;margin:0;padding:1.4cqh 1.2cqw 0;list-style:none}
-.at-engine{flex:0 0 auto;width:clamp(170px,17cqw,290px);aspect-ratio:110/78;position:relative;margin-left:-.6cqw}
+.at-engine{flex:0 0 auto;width:clamp(210px,21cqw,350px);filter:drop-shadow(0 0 .6cqw #ffd76a99) drop-shadow(0 .6cqh .8cqh #000a);aspect-ratio:110/78;position:relative;margin-left:-.6cqw}
 .at-engine svg{width:100%;height:100%;overflow:visible;display:block;transform:scaleX(-1)}
 .at-car{position:relative;flex:0 0 auto;height:100%;width:clamp(190px,18.5cqw,320px);display:flex}
 .at-car::after{content:'';position:absolute;right:-1.3cqw;bottom:7%;width:1.4cqw;height:1cqh;border-radius:.4cqh;background:linear-gradient(#5b5b60,#1d1d20);box-shadow:0 0 0 .12cqh #c9973f}
@@ -288,7 +288,7 @@
 .at-go{position:relative;margin-top:auto;margin-bottom:2.6cqh;padding:.35em 1.1em;border-radius:999px;background:#fffaf0;color:#2b1a0b;font:900 clamp(12px,1.1cqw,17px)/1.2 system-ui,sans-serif;box-shadow:0 .3cqh .6cqh #0006}
 .at-wheels{flex:0 0 auto;display:flex;justify-content:space-between;padding:0 12%;margin-top:-1.6cqh;height:3.6cqh;position:relative;z-index:1}
 .at-wheels i{height:100%;aspect-ratio:1;border-radius:50%;border:.28cqh solid #c9973f;background:radial-gradient(circle,#e8c879 0 18%,transparent 20%),repeating-conic-gradient(#d9b25a 0 8deg,#151518 8deg 45deg)}
-.at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation:atSpin 2.4s linear infinite}
+.at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation:atSpin 1.6s linear infinite}
 @keyframes atSpin{to{rotate:360deg}}
 .at-wheel{transform-box:fill-box;transform-origin:center}
 .at-loop.at-moving .at-engine .at-wheel{animation-direction:reverse} /* the engine drawing is mirrored */
