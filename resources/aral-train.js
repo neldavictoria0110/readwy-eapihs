@@ -327,4 +327,6 @@
 
   // If the learner is already on an ARAL page when this loads, redraw it with the new look and locks.
   safe(() => { if (typeof activeModule !== 'undefined' && activeModule === 'aral' && document.querySelector('.st-screen') && typeof renderAral === 'function') renderAral(); });
+  // On slow phones the ARAL page can draw before every helper script has loaded; redraw once the page is fully loaded.
+  if (typeof addEventListener === 'function') addEventListener('load', () => safe(() => { if (typeof activeModule !== 'undefined' && activeModule === 'aral' && typeof renderAral === 'function') renderAral(); }));
 })();
