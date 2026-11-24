@@ -1,8 +1,8 @@
-/* The learner's details and photo come from sign-up and can be changed only in the GST profile.
+/* The learner's details and photo come from sign-up and can be changed only in the Reading Check-In profile.
    Every other journey (ORST, WST, Aral, InterV, SRA, post-test and the Student Profile page) shows the
    same details read-only: fields cannot be typed in, there is no Upload photo and no Save button. */
 (() => {
-  const NOTE = '🔒 These details come from your sign-up. You can change them, and your photo, only in the GST profile.';
+  const NOTE = '🔒 These details come from your sign-up. You can change them, and your photo, only in the Reading Check-In profile.';
   const isORST = () => !!document.querySelector('.xo,.xc');
   const inGST = () => !isORST() && !!document.querySelector('.gst-book-screen,.xg-bookzone');
   window.readwyProfileEditable = inGST;
@@ -40,7 +40,7 @@
     const head = root.querySelector('.ivx-meta span');
     if (head) head.textContent = 'Your details from sign-up.';
     const tip = document.getElementById('xoTip');
-    if (tip && root.classList?.contains('xg-tk')) tip.textContent = 'These are your sign-up details. Change them in the GST profile.';
+    if (tip && root.classList?.contains('xg-tk')) tip.textContent = 'These are your sign-up details. Change them in the Reading Check-In profile.';
   }
   let queued = false;
   const scan = () => {

@@ -83,7 +83,7 @@ function screenTheme(){
  if(has('.teacher-portal'))return [[31,75,45],[224,184,77]];               // teacher portal: green rail, gold
  if(has('.hd-sum'))return [[13,31,69],[227,189,113]];                      // assessment summary: navy, gold
  if(has('.xc,.xo'))return [[122,28,30],[242,201,76]];                      // ORST TV carriage: train red, brass
- if(has('.xg,.gst-book-screen'))return [[18,69,48],[243,220,152]];         // GST book: forest green, gold leaf
+ if(has('.xg,.gst-book-screen'))return [[18,69,48],[243,220,152]];         // Reading Check-In book: forest green, gold leaf
  if(has('.wst-express-frame'))return [[11,35,71],[217,174,85]];            // WST: navy toolbar, gold
  if(has('.journey,.pf-dest,.stage'))return [[15,58,39],[201,161,74]];      // journey ticket / map: ticket green, gold
  const mod=moduleNow();
@@ -158,7 +158,7 @@ document.addEventListener('keydown',event=>{
  event.preventDefault();event.stopImmediatePropagation();enterDeveloperAuth();
 },true);
 /* what each grade level has: Grades 7-10 take every assessment; Grades 11-12 start with InterV and SRA only */
-const PROG=[['Journey map','index.html?view=map'],['GST','index.html?journeyModule=gst'],['ORST','index.html?journeyModule=orst'],['WST','index.html?journeyModule=wst'],['ARAL','index.html?journeyModule=aral'],['InterV','index.html?journeyModule=interv'],['Reading Lab','index.html?journeyModule=sra'],['Post-Test','index.html?journeyModule=reports']];
+const PROG=[['Journey map','index.html?view=map'],['Check-In','index.html?journeyModule=gst'],['ORST','index.html?journeyModule=orst'],['WST','index.html?journeyModule=wst'],['ARAL','index.html?journeyModule=aral'],['InterV','index.html?journeyModule=interv'],['Reading Lab','index.html?journeyModule=sra'],['Post-Test','index.html?journeyModule=reports']];
 const BY_GRADE=g=>g>=11?PROG.filter(p=>['Journey map','InterV','Reading Lab'].includes(p[0])):PROG;
 /* screens of the program that is open now (each program lists its own), so any screen can be inspected directly */
 let SCR=[];

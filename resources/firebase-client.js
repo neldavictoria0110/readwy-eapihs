@@ -96,7 +96,7 @@ function recordsFromLocalKey(key, value) {
   if (/^assessment_(7|8|9|10)$/.test(key) && finite(value.score) && finite(value.total) && Number(value.total) > 0) {
     const percent = finite(value.percentage) ? value.percentage : 100 * value.score / value.total;
     rows.push(reportEvent(
-      'GST', 'gst-score', `GST score · Grade ${grade}`, 'completed',
+      'GST', 'gst-score', `Reading Check-In score · Grade ${grade}`, 'completed',
       `Overall result: ${value.score}/${value.total} (${percent.toFixed(1)}%). The digital result does not provide verified objective-category scores; no literal, inferential, or critical breakdown is inferred.`,
       { score: value.score, total: value.total, percent, answered: value.answered, elapsedMs: value.elapsedMs, answerKeyVersion: value.answerKeyVersion, keyNote: 'Passage-reviewed classroom key; not an official published answer key.' },
       value.completedAt || value.submittedAt || value.date, value.score, value.total, percent

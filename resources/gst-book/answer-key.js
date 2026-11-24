@@ -1,6 +1,5 @@
-// Passage-reviewed classroom key, not an official published answer key.
-// See answer-key-review.md for evidence, alternative answers and defective-item credit.
-const GST_ANSWER_KEY_VERSION='gst-reviewed-2026-10-19-v1';
+// READwy Reading Check-In answer key (original READwy items; replaces the DepEd GST items).
+const GST_ANSWER_KEY_VERSION='reading-check-in-2026-11-25-v1';
 const GST_ANSWER_KEYS={
   "7": [
     {
@@ -9,63 +8,55 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "D"
       ],
-      "rationale": "Word and touch are named directly; the second stanza also names sunset gold. D is the best available combination."
+      "rationale": "The poem lists a smile, a glance, a rose, a word, a look, a touch."
     },
     {
       "number": 2,
-      "answer": "D",
+      "answer": "C",
       "accepted": [
-        "A",
-        "D"
+        "C"
       ],
-      "rationale": "Gleams means shines; beams can also mean emits light.",
-      "reviewNote": "Both beams and shines can mean emits light."
+      "rationale": "The repetition stresses how much small moments matter."
     },
     {
       "number": 3,
-      "answer": "B",
+      "answer": "A",
       "accepted": [
-        "B",
-        "D"
+        "A"
       ],
-      "rationale": "The stanza connects small experiences with dreams; B is the closest generalization among the choices.",
-      "reviewNote": "The dream generalization and literal sunset-gold observation are both defensible; the general-truth wording is imprecise."
+      "rationale": "\"For of the human heart, / Not brain, is memory.\""
     },
     {
       "number": 4,
-      "answer": "A",
-      "accepted": [
-        "A",
-        "B"
-      ],
-      "rationale": "Sunset gold uses figurative language; the history comparison can also be read as hyperbole.",
-      "reviewNote": "Both metaphor and hyperbole qualify as figures of speech."
-    },
-    {
-      "number": 5,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "Smiles, glances, a rose and a look mainly appeal to sight."
+      "rationale": "A rose and mignonette are fragrant flowers."
+    },
+    {
+      "number": 5,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "Small personal moments are placed above all of history."
     },
     {
       "number": 6,
       "answer": "B",
       "accepted": [
-        "A",
         "B"
       ],
-      "rationale": "Love, nature and happiness are central; contentment, joy and memory are also supported.",
-      "reviewNote": "Both sets name themes supported by the poem."
+      "rationale": "The speaker fondly reflects on gentle memories."
     },
     {
       "number": 7,
-      "answer": "B",
+      "answer": "C",
       "accepted": [
-        "B"
+        "C"
       ],
-      "rationale": "Joyful and painful experiences sustain and deepen love."
+      "rationale": "The repeated question invites reflection."
     },
     {
       "number": 8,
@@ -73,25 +64,23 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "A"
       ],
-      "rationale": "The opening lines explicitly locate happiness in little things."
+      "rationale": "Memories become part of the heart's own self."
     },
     {
       "number": 9,
-      "answer": "A",
+      "answer": "D",
       "accepted": [
-        "A",
-        "C"
+        "D"
       ],
-      "rationale": "The appreciative mood is cheerful; an optimistic reading is also defensible.",
-      "reviewNote": "Tone is interpretive; both positive descriptions are defensible."
+      "rationale": "The poem ends with little things becoming part of the heart."
     },
     {
       "number": 10,
-      "answer": "B",
+      "answer": "D",
       "accepted": [
-        "B"
+        "D"
       ],
-      "rationale": "The lyric poem expresses feeling rather than narrating a plot."
+      "rationale": "A small, personal act of kindness matches the poem's idea."
     },
     {
       "number": 11,
@@ -99,15 +88,15 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "The first sentence explicitly says plants provide countless things to the biosphere."
+      "rationale": "Paragraph 1: they can live in salty water that would kill most other plants."
     },
     {
       "number": 12,
-      "answer": "D",
+      "answer": "A",
       "accepted": [
-        "D"
+        "A"
       ],
-      "rationale": "The paragraph contrasts the absence of human-like emotions with environmental responses."
+      "rationale": "The comparison creates a picture of tangled roots above the mud."
     },
     {
       "number": 13,
@@ -115,23 +104,23 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "B"
       ],
-      "rationale": "The study specifically describes counting up to five touches."
+      "rationale": "Paragraph 2: the roots slow down waves."
     },
     {
       "number": 14,
-      "answer": "A",
+      "answer": "D",
       "accepted": [
-        "A"
+        "D"
       ],
-      "rationale": "Neural activity is used in this passage to describe plant behavior."
+      "rationale": "Paragraph 3 states this directly."
     },
     {
       "number": 15,
-      "answer": "C",
+      "answer": "D",
       "accepted": [
-        "C"
+        "D"
       ],
-      "rationale": "The trap closes at the second touch, not the third."
+      "rationale": "Young animals grow in the roots and later swim out to sea."
     },
     {
       "number": 16,
@@ -139,87 +128,87 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "The conclusion concerns knowing when best to attack and avoid false starts."
+      "rationale": "Paragraph 4 describes carbon storage as the unseen gift."
     },
     {
       "number": 17,
-      "answer": "C",
+      "answer": "B",
       "accepted": [
-        "C"
+        "B"
       ],
-      "rationale": "The passage expressly limits claims of intelligence comparable to humans."
+      "rationale": "Paragraph 5 names fishponds, roads, and buildings."
     },
     {
       "number": 18,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "Benefits (paragraphs 2-4), then loss and replanting (paragraph 5)."
+    },
+    {
+      "number": 19,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "Communities plant mangrove seedlings, which are young plants."
+    },
+    {
+      "number": 20,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "The informational passage explains a plant trait through a study."
+      "rationale": "The text explains benefits and ends with protecting mangroves."
     },
     {
-      "number": 19,
+      "number": 21,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "The argument reports experimental observations."
-    },
-    {
-      "number": 20,
-      "answer": "B",
-      "accepted": [
-        "B"
-      ],
-      "rationale": "The conclusion describes environmental response and some degree of feeling/intelligence."
-    },
-    {
-      "number": 21,
-      "answer": "A",
-      "accepted": [
-        "A"
-      ],
-      "rationale": "The yellow warning predicts heavy rainfall in an hour; the extra wind/evacuation claims are not stated."
+      "rationale": "Defined in paragraph 1."
     },
     {
       "number": 22,
-      "answer": "B",
-      "accepted": [
-        "B"
-      ],
-      "rationale": "The red-warning paragraph says residents should start evacuating."
-    },
-    {
-      "number": 23,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "Orange/intense rainfall is given as 15 to 30 mm per hour."
-    },
-    {
-      "number": 24,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "The levels distinguish possible, expected and serious flooding."
-    },
-    {
-      "number": 25,
       "answer": "A",
       "accepted": [
         "A"
       ],
-      "rationale": "The paragraphs distinguish rainfall quantities."
+      "rationale": "Paragraph 1 explains this."
     },
     {
-      "number": 26,
+      "number": 23,
       "answer": "B",
       "accepted": [
         "B"
       ],
-      "rationale": "B is the intended increasing-danger sequence yellow to orange to red; darker is imprecise wording."
+      "rationale": "Extreme Caution covers 33 to 41 degrees Celsius."
+    },
+    {
+      "number": 24,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "Extreme Danger: heat stroke is likely."
+    },
+    {
+      "number": 25,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "Stated in the advice paragraph."
+    },
+    {
+      "number": 26,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "Inference: waiting for thirst can be too late on hot days."
     },
     {
       "number": 27,
@@ -227,15 +216,15 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "B"
       ],
-      "rationale": "The yellow-warning advice is to check weather bulletin updates."
+      "rationale": "These are listed as warning signs."
     },
     {
       "number": 28,
-      "answer": "D",
+      "answer": "A",
       "accepted": [
-        "D"
+        "A"
       ],
-      "rationale": "Rainfall advisories concern weather."
+      "rationale": "Caution, Extreme Caution, Danger, Extreme Danger."
     },
     {
       "number": 29,
@@ -243,73 +232,71 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "D"
       ],
-      "rationale": "No emergency telephone numbers appear in the selection."
+      "rationale": "It explains the levels and gives safety tips."
     },
     {
       "number": 30,
+      "answer": "C",
+      "accepted": [
+        "C"
+      ],
+      "rationale": "45 degrees Celsius is in the Danger level."
+    },
+    {
+      "number": 31,
       "answer": "B",
       "accepted": [
         "B"
       ],
-      "rationale": "The article enumerates and describes the three warning categories."
-    },
-    {
-      "number": 31,
-      "answer": "D",
-      "accepted": [
-        "D"
-      ],
-      "rationale": "The infographic states approximately 4.5 pounds per person per day."
+      "rationale": "Stated in the subtitle."
     },
     {
       "number": 32,
-      "answer": "D",
-      "accepted": [
-        "D"
-      ],
-      "rationale": "The RA 9003 panel describes a comprehensive ecological solid waste management program."
-    },
-    {
-      "number": 33,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "The infographic projects 18.05 million tons per year by 2020; C best matches that quantity, although it omits the projection date."
+      "rationale": "420 kilograms, the largest amount."
     },
     {
-      "number": 34,
+      "number": 33,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "The three listed steps are identify, evaluate and manage; recycle is not one of those named steps."
+      "rationale": "The total is 1,000 kilograms."
+    },
+    {
+      "number": 34,
+      "answer": "C",
+      "accepted": [
+        "C"
+      ],
+      "rationale": "420 of 1,000 is 42%, a little less than half."
     },
     {
       "number": 35,
+      "answer": "C",
+      "accepted": [
+        "C"
+      ],
+      "rationale": "150 + 130 = 280 kilograms."
+    },
+    {
+      "number": 36,
       "answer": "A",
       "accepted": [
         "A"
       ],
-      "rationale": "The six bins are plastic, metal, organic, paper, glass and e-waste."
-    },
-    {
-      "number": 36,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "Food scraps belong in the organic category."
+      "rationale": "Biodegradable food scraps can become compost."
     },
     {
       "number": 37,
-      "answer": "A",
+      "answer": "B",
       "accepted": [
-        "A",
-        "C"
+        "B"
       ],
-      "rationale": "Putting waste in the right place supports proper organization and separation.",
-      "reviewNote": "Both organization and separation follow the infographic’s classification message."
+      "rationale": "Residual waste: bags and wrappers."
     },
     {
       "number": 38,
@@ -317,7 +304,7 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "Backyard gardening and buying local products do not directly describe reducing, reusing or recycling materials as the other choices do."
+      "rationale": "1,000 - 420 = 580 kilograms."
     },
     {
       "number": 39,
@@ -325,7 +312,7 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "A"
       ],
-      "rationale": "Rethinking asks whether alternatives or different choices are possible."
+      "rationale": "The credit explains that it is sample data for reading practice."
     },
     {
       "number": 40,
@@ -333,35 +320,25 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "B"
       ],
-      "rationale": "The infographic combines classification, management steps and the Rs to reduce waste."
+      "rationale": "Food scraps are the largest share, so composting them reduces the most."
     }
   ],
   "8": [
     {
       "number": 1,
-      "answer": null,
+      "answer": "D",
       "accepted": [
-        "A",
-        "B",
-        "C",
         "D"
       ],
-      "rationale": "The title personifies Africa, a continent, not a country; a collective or individual human voice is also possible. No option unambiguously identifies the speaker.",
-      "credit": true,
-      "reviewNote": "Africa is a continent, not a country; the speaker choices are not uniquely defensible."
+      "rationale": "The first line names \"Hope\" as the thing with feathers."
     },
     {
       "number": 2,
-      "answer": null,
+      "answer": "A",
       "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
+        "A"
       ],
-      "rationale": "No option means meddle, which means interfere. All students receive credit for this defective item.",
-      "credit": true,
-      "reviewNote": "The correct synonym, interfere, is absent from all four options."
+      "rationale": "Hope is described as if it were a bird, without using like or as."
     },
     {
       "number": 3,
@@ -369,88 +346,79 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "The plea requests acceptance, appreciation and equal treatment."
+      "rationale": "\"That perches in the soul.\""
     },
     {
       "number": 4,
-      "answer": "D",
+      "answer": "B",
       "accepted": [
-        "D"
+        "B"
       ],
-      "rationale": "Poverty is not discussed."
+      "rationale": "Hope works quietly, without needing words."
     },
     {
       "number": 5,
-      "answer": "D",
+      "answer": "A",
       "accepted": [
-        "D"
+        "A"
       ],
-      "rationale": "The God-made-me/God-made-you stanza states individuality; it is stanza five in the source organization."
+      "rationale": "\"And sweetest - in the Gale - is heard.\""
     },
     {
       "number": 6,
       "answer": "D",
       "accepted": [
-        "A",
         "D"
       ],
-      "rationale": "The speaker feels hurt by interference and also speaks angrily.",
-      "reviewNote": "The tone can reasonably be described as angry or hurt."
+      "rationale": "Only a terrible storm could silence the little bird."
     },
     {
       "number": 7,
-      "answer": null,
+      "answer": "C",
       "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
+        "C"
       ],
-      "rationale": "All four choices can express the poem’s individuality, equality or self-determination themes. The NOT question has no uniquely valid option.",
-      "credit": true,
-      "reviewNote": "No clear non-theme is supplied among the overlapping statements of autonomy and equality."
+      "rationale": "\"Never... It asked a crumb - of me.\""
     },
     {
       "number": 8,
-      "answer": "C",
+      "answer": "A",
       "accepted": [
-        "C"
+        "A"
       ],
-      "rationale": "The repeated appeal to be allowed to be oneself emphasizes the theme."
+      "rationale": "They are images of difficult experiences."
     },
     {
       "number": 9,
-      "answer": "D",
+      "answer": "C",
       "accepted": [
-        "C",
-        "D"
+        "C"
       ],
-      "rationale": "The text addresses controlling people; the African context also supports a racial-discrimination reading.",
-      "reviewNote": "Both the colonial/racial context and the explicit controlling behavior are supported."
+      "rationale": "The poem praises hope's steady, free presence."
     },
     {
       "number": 10,
-      "answer": "C",
+      "answer": "B",
       "accepted": [
-        "C"
+        "B"
       ],
-      "rationale": "The poem expresses personal feelings rather than narrating a story."
+      "rationale": "Dickinson's dashes create pauses for thought."
     },
     {
       "number": 11,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "Colorful is the closest listed meaning of vibrant in this festival description."
-    },
-    {
-      "number": 12,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "The passage attributes the festival initiative to parish priests."
+      "rationale": "The answer is stated in paragraph 1 of the passage."
+    },
+    {
+      "number": 12,
+      "answer": "C",
+      "accepted": [
+        "C"
+      ],
+      "rationale": "The answer is stated in paragraph 2 of the passage."
     },
     {
       "number": 13,
@@ -458,23 +426,23 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "A"
       ],
-      "rationale": "A coastal city plausibly earns income through fishing."
+      "rationale": "The answer is stated in paragraph 2 of the passage."
     },
     {
       "number": 14,
-      "answer": "B",
-      "accepted": [
-        "B"
-      ],
-      "rationale": "Celebrations is not a distinct beneficiary like business, religion or tourism."
-    },
-    {
-      "number": 15,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "The text does not assert that all Filipinos are extremely religious."
+      "rationale": "Paragraph 3: sulog, the current of a river."
+    },
+    {
+      "number": 15,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "The answer is stated in paragraph 3 of the passage."
     },
     {
       "number": 16,
@@ -482,33 +450,31 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "D"
       ],
-      "rationale": "People arrive in throngs, from different walks of life, like the whales that arrived in numbers."
+      "rationale": "The answer is stated in paragraph 4 of the passage."
     },
     {
       "number": 17,
-      "answer": "C",
+      "answer": "A",
       "accepted": [
-        "C",
-        "D"
+        "A"
       ],
-      "rationale": "The text describes reunions with loved ones; stronger family ties are also a supported inference.",
-      "reviewNote": "Reuniting families and strengthening family ties are compatible readings."
+      "rationale": "They dance as a form of prayer."
     },
     {
       "number": 18,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "Final paragraph."
+    },
+    {
+      "number": 19,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "Visitors can increase sales of local products."
-    },
-    {
-      "number": 19,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "The broad claim that Filipinos love festivities expresses an evaluative generalization."
+      "rationale": "The dance step becomes a lesson about life."
     },
     {
       "number": 20,
@@ -516,23 +482,23 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "A"
       ],
-      "rationale": "The article supplies information about origins, practices and benefits rather than a procedural sequence."
+      "rationale": "It explains origins, the dance, and its meaning."
     },
     {
       "number": 21,
-      "answer": "C",
+      "answer": "B",
       "accepted": [
-        "C"
+        "B"
       ],
-      "rationale": "The poem connects the Mississippi with Lincoln’s journey to New Orleans."
+      "rationale": "The answer is found in stanza 1 of the poem."
     },
     {
       "number": 22,
-      "answer": "C",
+      "answer": "A",
       "accepted": [
-        "C"
+        "A"
       ],
-      "rationale": "Knowing ancient rivers suggests an ancient or collective speaker."
+      "rationale": "\"So swiftly it flew, the sight / Could not follow it.\""
     },
     {
       "number": 23,
@@ -540,15 +506,15 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "Ancient as the world means as old as the world."
+      "rationale": "\"I breathed a song into the air.\""
     },
     {
       "number": 24,
-      "answer": "C",
+      "answer": "D",
       "accepted": [
-        "C"
+        "D"
       ],
-      "rationale": "Dusky describes a dark or muddy appearance."
+      "rationale": "The answer is found in stanza 3 of the poem."
     },
     {
       "number": 25,
@@ -556,77 +522,71 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "D"
       ],
-      "rationale": "Of the choices, an old man remembering rivers best fits the retrospective voice; the poem’s speaker is also symbolic and collective."
+      "rationale": "The answer is found in the last line of the poem."
     },
     {
       "number": 26,
-      "answer": "D",
+      "answer": "A",
       "accepted": [
-        "D"
+        "A"
       ],
-      "rationale": "The poem does not say the Euphrates was the longest river."
+      "rationale": "Parallel lines invite comparison."
     },
     {
       "number": 27,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "Unbroke means unbroken."
+    },
+    {
+      "number": 28,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "The speaker identifies with ancestral laborers; D is the intended historical reading, not proof that every pyramid worker was enslaved."
-    },
-    {
-      "number": 28,
-      "answer": "B",
-      "accepted": [
-        "B"
-      ],
-      "rationale": "Poverty is not a theme developed by the river images."
+      "rationale": "It lives on in a friend's heart, like kindness."
     },
     {
       "number": 29,
-      "answer": "B",
-      "accepted": [
-        "B",
-        "C"
-      ],
-      "rationale": "The poem uses both river imagery and repeated lines.",
-      "reviewNote": "Both techniques occur repeatedly in the poem."
-    },
-    {
-      "number": 30,
-      "answer": "A",
-      "accepted": [
-        "A",
-        "B"
-      ],
-      "rationale": "River bosom and a river lulling someone to sleep are both figurative.",
-      "reviewNote": "Both quoted lines contain figurative language."
-    },
-    {
-      "number": 31,
-      "answer": "B",
-      "accepted": [
-        "B"
-      ],
-      "rationale": "Fish are not represented among the deforestation subjects in this infographic."
-    },
-    {
-      "number": 32,
-      "answer": "B",
-      "accepted": [
-        "B",
-        "D"
-      ],
-      "rationale": "Carbon dioxide/gas emissions are overlapping descriptions, and deforestation/forest destruction are synonyms rather than distinct cause/effect pairs.",
-      "reviewNote": "Two pairs fail to express a distinct cause-and-effect relationship."
-    },
-    {
-      "number": 33,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "The destruction of 80 percent of forests gives the widest global scale."
+      "rationale": "The song survives in a friend's heart."
+    },
+    {
+      "number": 30,
+      "answer": "C",
+      "accepted": [
+        "C"
+      ],
+      "rationale": "air/where, sight/flight: rhyming couplets."
+    },
+    {
+      "number": 31,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "Stated in the subtitle."
+    },
+    {
+      "number": 32,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "70 students walk."
+    },
+    {
+      "number": 33,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "Read the values from the infographic and work it out: 50 + 40 = 90."
     },
     {
       "number": 34,
@@ -634,15 +594,15 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "The infographic gives the rate of football-field-sized destruction without explaining that rate."
+      "rationale": "Both have 15 students."
     },
     {
       "number": 35,
-      "answer": "A",
+      "answer": "D",
       "accepted": [
-        "A"
+        "D"
       ],
-      "rationale": "It presents causes/purposes, effects and their scale, but no elimination procedure."
+      "rationale": "70 of 200 is 35%."
     },
     {
       "number": 36,
@@ -650,113 +610,97 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "A"
       ],
-      "rationale": "The quoted sentence defines deforestation."
+      "rationale": "Only 10 students come by family car, the smallest number on the chart."
     },
     {
       "number": 37,
       "answer": "B",
       "accepted": [
-        "B",
-        "D"
+        "B"
       ],
-      "rationale": "Presentation can be improved; the absence of dated figures also makes recency a reasonable concern.",
-      "reviewNote": "The prompt does not prescribe an editorial criterion."
+      "rationale": "Stated in the notes."
     },
     {
       "number": 38,
+      "answer": "C",
+      "accepted": [
+        "C"
+      ],
+      "rationale": "Walking 70 + bicycle 15 = 85."
+    },
+    {
+      "number": 39,
       "answer": "B",
       "accepted": [
         "B"
       ],
-      "rationale": "Nothing exempts Asia from responsibility."
-    },
-    {
-      "number": 39,
-      "answer": "A",
-      "accepted": [
-        "A"
-      ],
-      "rationale": "The statistics and examples communicate harmful effects on living things."
+      "rationale": "Most walkers live less than 1 km away."
     },
     {
       "number": 40,
-      "answer": "A",
+      "answer": "B",
       "accepted": [
-        "A",
-        "C"
+        "B"
       ],
-      "rationale": "Both various data and figures/numbers describe the infographic’s communication method.",
-      "reviewNote": "Figures and numbers are part of the various data presented."
+      "rationale": "Walking and biking cost no fare and use no fuel."
     }
   ],
   "9": [
     {
       "number": 1,
-      "answer": "B",
+      "answer": "D",
       "accepted": [
-        "B"
+        "D"
       ],
-      "rationale": "The speaker later describes taking the less-traveled road, although the poem also says the roads were similarly worn."
+      "rationale": "\"Two roads diverged in a yellow wood.\""
     },
     {
       "number": 2,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "Yellow leaves suggest autumn, a season."
-    },
-    {
-      "number": 3,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "Trodden means stepped on."
-    },
-    {
-      "number": 4,
-      "answer": "B",
-      "accepted": [
-        "B",
-        "D"
-      ],
-      "rationale": "Ages and ages is hyperbolic; the road-as-life-choice line also uses figurative symbolism.",
-      "reviewNote": "Both hyperbole and the road/life metaphor qualify."
-    },
-    {
-      "number": 5,
-      "answer": null,
-      "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "rationale": "Nothing establishes distance from home, direction home, companions or days traveled. All options lack evidence.",
-      "credit": true,
-      "reviewNote": "No answer is supported by the poem’s statements about home, companions or trip duration."
-    },
-    {
-      "number": 6,
       "answer": "A",
       "accepted": [
         "A"
       ],
-      "rationale": "The traveler must choose one road and cannot travel both at once."
+      "rationale": "Two roads going separate ways."
+    },
+    {
+      "number": 3,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "\"Sorry I could not travel both.\""
+    },
+    {
+      "number": 4,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "\"Had worn them really about the same.\""
+    },
+    {
+      "number": 5,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "He adds \"I doubted if I should ever come back.\""
+    },
+    {
+      "number": 6,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "The final stanza reflects on the choice years later."
     },
     {
       "number": 7,
-      "answer": null,
+      "answer": "D",
       "accepted": [
-        "A",
-        "B",
-        "C",
         "D"
       ],
-      "rationale": "The reflective, uncertain mood is not adequately represented by the four choices. Award credit rather than forcing a grateful or cheerful interpretation.",
-      "credit": true,
-      "reviewNote": "Reflective/uncertain/nostalgic mood is missing; none is uniquely defensible."
+      "rationale": "The roads are a symbol of decisions."
     },
     {
       "number": 8,
@@ -764,39 +708,39 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "B"
       ],
-      "rationale": "The roads symbolize life choices."
+      "rationale": "The last line stresses the lasting effect of the choice."
     },
     {
       "number": 9,
-      "answer": "D",
+      "answer": "C",
       "accepted": [
-        "D"
+        "C"
       ],
-      "rationale": "The road-choice symbolism conveys the central theme."
+      "rationale": "He calmly reflects on a decision."
     },
     {
       "number": 10,
-      "answer": "C",
+      "answer": "A",
       "accepted": [
-        "C"
+        "A"
       ],
-      "rationale": "Knowing priorities is less directly developed than choices, unconventionality and facing a decision."
+      "rationale": "An important choice that shapes the future."
     },
     {
       "number": 11,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "The selection explicitly calls depression a mental disorder."
-    },
-    {
-      "number": 12,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "Global health guidance best matches WHO’s role among these options."
+      "rationale": "The text explains why sleep matters and how to get enough."
+    },
+    {
+      "number": 12,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "The answer is stated in paragraph 2 of the passage."
     },
     {
       "number": 13,
@@ -804,114 +748,103 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "Sadness, appetite loss and poor concentration are explicitly listed."
+      "rationale": "The answer is stated in paragraph 3 of the passage."
     },
     {
       "number": 14,
-      "answer": null,
+      "answer": "A",
       "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
+        "A"
       ],
-      "rationale": "The passage states sleep/appetite disturbance but does not explain its cause; the options provide unsupported generalizations.",
-      "credit": true,
-      "reviewNote": "The reason for the symptoms is not in the passage; do not score a medical stereotype as a fact."
+      "rationale": "Paragraph 3: biology shifts the inner clock."
     },
     {
       "number": 15,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "The answer is stated in paragraph 4 of the passage."
+    },
+    {
+      "number": 16,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "Mental breakdown is the closest supplied option to burnout, though mental exhaustion would be more precise."
-    },
-    {
-      "number": 16,
-      "answer": "D",
-      "accepted": [
-        "D"
-      ],
-      "rationale": "The last paragraph asks readers to aid those experiencing symptoms."
+      "rationale": "The answer is stated in paragraph 5 of the passage."
     },
     {
       "number": 17,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "Context: staying up all night to study."
+    },
+    {
+      "number": 18,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "The body lists characteristics/symptoms."
-    },
-    {
-      "number": 18,
-      "answer": "B",
-      "accepted": [
-        "B"
-      ],
-      "rationale": "The passage links disrupted sleep/appetite with serious health conditions."
+      "rationale": "Cause and effect in paragraph 2."
     },
     {
       "number": 19,
       "answer": "A",
       "accepted": [
-        "A",
-        "B",
-        "D"
+        "A"
       ],
-      "rationale": "Prevention, treatment and cures are all relevant but not explained by this symptom-focused passage.",
-      "reviewNote": "All three subjects are relevant and absent from the passage."
+      "rationale": "Teens lack sleep (problem), biology and screens (causes), habits (solutions)."
     },
     {
       "number": 20,
-      "answer": "A",
+      "answer": "C",
       "accepted": [
-        "A"
+        "C"
       ],
-      "rationale": "The conclusion calls for awareness and assistance."
+      "rationale": "It explains facts and ends by encouraging better sleep."
     },
     {
       "number": 21,
-      "answer": "D",
-      "accepted": [
-        "D"
-      ],
-      "rationale": "The opening paragraph defines a tsunami."
-    },
-    {
-      "number": 22,
       "answer": "B",
       "accepted": [
         "B"
       ],
-      "rationale": "Underwater landslides/eruptions and meteorite impact are listed causes."
+      "rationale": "The answer is stated in paragraph 1 of the passage."
+    },
+    {
+      "number": 22,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "The answer is stated in paragraph 1 of the passage."
     },
     {
       "number": 23,
-      "answer": "A",
+      "answer": "B",
       "accepted": [
-        "A"
+        "B"
       ],
-      "rationale": "The Ring of Fire is described as geologically active with frequent volcanoes and earthquakes."
+      "rationale": "The answer is stated in paragraph 2 of the passage."
     },
     {
       "number": 24,
-      "answer": "B",
+      "answer": "C",
       "accepted": [
-        "B",
-        "C",
-        "D"
+        "C"
       ],
-      "rationale": "B, C and D are all unstated/contradicted; A is expressly stated. The negative wording does not yield a unique answer.",
-      "reviewNote": "The source repeats the options from Q26 but reverses the prompt."
+      "rationale": "The answer is stated in paragraph 3 of the passage."
     },
     {
       "number": 25,
-      "answer": "A",
+      "answer": "B",
       "accepted": [
-        "A"
+        "B"
       ],
-      "rationale": "The first paragraph supplies the overall introductory topic and definition."
+      "rationale": "The answer is stated in paragraph 3 of the passage."
     },
     {
       "number": 26,
@@ -919,49 +852,47 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "A"
       ],
-      "rationale": "The trough often reaches shore first."
+      "rationale": "The answer is stated in paragraph 4 of the passage."
     },
     {
       "number": 27,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "\"Do not wait for an official warning.\""
+    },
+    {
+      "number": 28,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "The answer is stated in paragraph 5 of the passage."
+    },
+    {
+      "number": 29,
       "answer": "A",
       "accepted": [
         "A"
       ],
-      "rationale": "The last paragraph proposes early-warning systems as a defense."
+      "rationale": "Strong earthquakes make buildings fall over."
     },
     {
-      "number": 28,
-      "answer": "D",
+      "number": 30,
+      "answer": "A",
       "accepted": [
-        "D"
+        "A"
       ],
-      "rationale": "Expanse means a broad extent; wide spread is the closest listed expression."
+      "rationale": "Causes plus safety actions."
     },
     {
-      "number": 29,
+      "number": 31,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "The full passage provides information about tsunamis, including causes, behavior and safety."
-    },
-    {
-      "number": 30,
-      "answer": "D",
-      "accepted": [
-        "D"
-      ],
-      "rationale": "The Nature of Tsunamis covers more of the article than causes or effects alone."
-    },
-    {
-      "number": 31,
-      "answer": "D",
-      "accepted": [
-        "C",
-        "D"
-      ],
-      "rationale": "Both the blood-pressure/bulging explanation and the ballooning-and-rupturing explanation match the infographic.",
-      "reviewNote": "Both describe the stated physical process; option C contains a source typo."
+      "rationale": "The answer is given in the subtitle of the infographic."
     },
     {
       "number": 32,
@@ -969,36 +900,31 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "The infographic explicitly gives 15 percent dying before reaching hospital."
+      "rationale": "15 students sleep 7 hours."
     },
     {
       "number": 33,
       "answer": "C",
       "accepted": [
-        "A",
-        "C",
-        "D"
+        "C"
       ],
-      "rationale": "Prevention would usefully supplement the existing effects; treatment/cure information is also a defensible requested addition.",
-      "reviewNote": "This editorial prompt allows several useful additions; effects are already shown."
+      "rationale": "Read the values from the infographic and work it out: 6 + 12 = 18."
     },
     {
       "number": 34,
-      "answer": "A",
+      "answer": "B",
       "accepted": [
-        "A",
-        "C"
+        "B"
       ],
-      "rationale": "An undetected condition or an unexpected rupture are both plausible concerns, though neither is fully explained by the graphic.",
-      "reviewNote": "Both are plausible concerns; the question does not establish a unique inference."
+      "rationale": "8 hours (11) + 9 or more (6) = 17."
     },
     {
       "number": 35,
-      "answer": "A",
+      "answer": "C",
       "accepted": [
-        "A"
+        "C"
       ],
-      "rationale": "A publication date is absent, while a source URL and subtopic headings are present."
+      "rationale": "33 of 50 students = 66%."
     },
     {
       "number": 36,
@@ -1006,136 +932,113 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "D"
       ],
-      "rationale": "The affected artery is part of the circulatory system."
+      "rationale": "Both have 6 students."
     },
     {
       "number": 37,
-      "answer": null,
-      "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "rationale": "The graphic does not establish methodology, recency, completeness or independent verification. No listed description is adequately supported.",
-      "credit": true,
-      "reviewNote": "A source alone does not prove testing, survey methodology, completeness or recency."
-    },
-    {
-      "number": 38,
-      "answer": "D",
-      "accepted": [
-        "C",
-        "D"
-      ],
-      "rationale": "A feature article can transmit the same information; an informative poster is also a defensible medium.",
-      "reviewNote": "Either medium can carry the same informational message."
-    },
-    {
-      "number": 39,
       "answer": "A",
       "accepted": [
         "A"
       ],
-      "rationale": "The organization moves from definition to types and their details, a general-to-specific pattern."
+      "rationale": "Stated in the notes."
+    },
+    {
+      "number": 38,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "It explains why teens sleep less, including phone use."
+    },
+    {
+      "number": 39,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "33 of 50 sleep less than 8 hours."
     },
     {
       "number": 40,
-      "answer": "D",
+      "answer": "C",
       "accepted": [
-        "D"
+        "C"
       ],
-      "rationale": "The mortality/disability figures show the dangers of aneurysm."
+      "rationale": "The notes mention phone use in bed; the article recommends putting phones away."
     }
   ],
   "10": [
     {
       "number": 1,
-      "answer": "B",
+      "answer": "D",
       "accepted": [
-        "A",
-        "B"
+        "D"
       ],
-      "rationale": "The speaker’s confidence/boldness upsets the oppressor.",
-      "reviewNote": "Boldness matches sassiness, while arrogance matches the poem’s explicit haughtiness question."
+      "rationale": "The poem lists conditions and ends \"you'll be a Man, my son!\""
     },
     {
       "number": 2,
-      "answer": "C",
+      "answer": "A",
       "accepted": [
-        "C"
+        "A"
       ],
-      "rationale": "Trod means stepped on/over in context."
+      "rationale": "Keeping your head is an idiom for staying calm."
     },
     {
       "number": 3,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "The speaker explicitly describes herself as a black ocean and invokes enslaved ancestors."
-    },
-    {
-      "number": 4,
-      "answer": "A",
-      "accepted": [
-        "A",
-        "B"
-      ],
-      "rationale": "Both like dust and like I have oil wells are similes.",
-      "reviewNote": "Both options contain an explicit simile."
-    },
-    {
-      "number": 5,
-      "answer": "A",
-      "accepted": [
-        "A",
-        "D"
-      ],
-      "rationale": "The tone is defiant and also confidently optimistic.",
-      "reviewNote": "Defiance and optimism both describe the sustained voice."
-    },
-    {
-      "number": 6,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "The first stanza’s second and fourth lines rhyme; the pattern is ABCB."
-    },
-    {
-      "number": 7,
       "answer": "B",
       "accepted": [
         "B"
       ],
-      "rationale": "Clear daybreak appeals to sight."
+      "rationale": "Both should be treated \"just the same.\""
+    },
+    {
+      "number": 4,
+      "answer": "C",
+      "accepted": [
+        "C"
+      ],
+      "rationale": "Starting again even with little left."
+    },
+    {
+      "number": 5,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "Keep the common touch: stay connected to ordinary people."
+    },
+    {
+      "number": 6,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "Heart, nerve, and sinew: physical and inner strength."
+    },
+    {
+      "number": 7,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "The repetition builds up to the final reward."
     },
     {
       "number": 8,
-      "answer": null,
+      "answer": "B",
       "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
+        "B"
       ],
-      "rationale": "The actual relationship is bullied speaker addressing a bully. Option A reverses it; none of the other pairs fits.",
-      "credit": true,
-      "reviewNote": "The only adversarial relationship is written in the opposite direction."
+      "rationale": "Make every moment count."
     },
     {
       "number": 9,
-      "answer": null,
+      "answer": "A",
       "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
+        "A"
       ],
-      "rationale": "The direct addressees are oppressors, but every option describes victims/audiences. No option answers the literal question.",
-      "credit": true,
-      "reviewNote": "All options omit the oppressors directly addressed."
+      "rationale": "Staying calm, honest, patient, and persistent."
     },
     {
       "number": 10,
@@ -1143,57 +1046,55 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "The repeated rising lines emphasize resilience."
+      "rationale": "Treat triumph and disaster the same, and keep going."
     },
     {
       "number": 11,
-      "answer": "B",
+      "answer": "D",
       "accepted": [
-        "B"
+        "D"
       ],
-      "rationale": "B most closely repeats the stated capacity for choices and connections."
+      "rationale": "The answer is stated in paragraph 1 of the passage."
     },
     {
       "number": 12,
       "answer": "D",
       "accepted": [
-        "C",
         "D"
       ],
-      "rationale": "C and D contain the same four risk factors, merely in a different order.",
-      "reviewNote": "The options are equivalent sets."
+      "rationale": "\"Our minds deserve the same care.\""
     },
     {
       "number": 13,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "Identifying a de-stressing activity fits constructive coping."
-    },
-    {
-      "number": 14,
       "answer": "B",
       "accepted": [
         "B"
       ],
-      "rationale": "Violence by a spouse is domestic violence."
+      "rationale": "The answer is stated in paragraph 2 of the passage."
     },
     {
-      "number": 15,
+      "number": 14,
       "answer": "A",
       "accepted": [
         "A"
       ],
-      "rationale": "Lack of sleep is the direct counterpart to enough sleep in the analogy."
+      "rationale": "The answer is stated in paragraph 3 of the passage."
     },
     {
-      "number": 16,
+      "number": 15,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "Empathetic means understanding another’s feelings."
+      "rationale": "The answer is stated in paragraph 3 of the passage."
+    },
+    {
+      "number": 16,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "The answer is stated in paragraph 4 of the passage."
     },
     {
       "number": 17,
@@ -1201,125 +1102,111 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "A"
       ],
-      "rationale": "The passage explicitly lists emotional and physical consequences of untreated illness."
+      "rationale": "Context: a classmate who seems troubled."
     },
     {
       "number": 18,
-      "answer": "A",
+      "answer": "C",
       "accepted": [
-        "A"
+        "C"
       ],
-      "rationale": "The conclusion asks readers to act with compassion and spread awareness."
+      "rationale": "The text suggests breaks from social media."
     },
     {
       "number": 19,
-      "answer": "C",
+      "answer": "B",
       "accepted": [
-        "C"
+        "B"
       ],
-      "rationale": "The article covers several kinds of information, not just steps, effects or suggestions."
+      "rationale": "This is the claim the whole text supports."
     },
     {
       "number": 20,
-      "answer": "B",
-      "accepted": [
-        "B",
-        "D"
-      ],
-      "rationale": "The article teaches about mental health and treats it seriously.",
-      "reviewNote": "The tone is both instructional and serious."
-    },
-    {
-      "number": 21,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "Modest is the opposite of arrogant."
-    },
-    {
-      "number": 22,
-      "answer": "A",
-      "accepted": [
-        "A"
-      ],
-      "rationale": "The tapestry depicts abuses by the gods."
-    },
-    {
-      "number": 23,
-      "answer": "B",
-      "accepted": [
-        "A",
-        "B",
-        "C"
-      ],
-      "rationale": "The myth narrates the origin of spiders, explains their spinning and teaches a lesson about pride.",
-      "reviewNote": "The myth has an origin/etiological function and a moral function."
-    },
-    {
-      "number": 24,
-      "answer": "C",
-      "accepted": [
-        "C"
-      ],
-      "rationale": "C is the best available option for Athena’s later resentment of perfect work, but the initial anger is explicitly caused by arrogance, which is missing from the options."
-    },
-    {
-      "number": 25,
       "answer": "D",
       "accepted": [
         "D"
       ],
-      "rationale": "The account only says others considered Athena her tutor; it does not establish that Athena actually taught her."
+      "rationale": "Informs and persuades."
     },
     {
-      "number": 26,
+      "number": 21,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "The answer is stated in paragraph 1 of the passage."
+    },
+    {
+      "number": 22,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "The answer is stated in paragraph 2 of the passage."
+    },
+    {
+      "number": 23,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "A legend likewise provides an origin narrative."
+      "rationale": "The answer is stated in paragraph 4 of the passage."
+    },
+    {
+      "number": 24,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "The answer is stated in paragraph 3 of the passage."
+    },
+    {
+      "number": 25,
+      "answer": "B",
+      "accepted": [
+        "B"
+      ],
+      "rationale": "Paragraph 5: a warning."
+    },
+    {
+      "number": 26,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "Athena found no fault in the weaving, only in its pride."
     },
     {
       "number": 27,
       "answer": "C",
       "accepted": [
-        "C",
-        "D"
+        "C"
       ],
-      "rationale": "Pride/humility/power and vengeance/anger/pride are both supported thematic descriptions.",
-      "reviewNote": "Both theme lists are grounded in the supplied events."
+      "rationale": "Final paragraph."
     },
     {
       "number": 28,
-      "answer": "C",
+      "answer": "B",
       "accepted": [
-        "C",
-        "D"
+        "B"
       ],
-      "rationale": "Athena explicitly exercises power over a human; superiority is also a supported inference.",
-      "reviewNote": "Exercising power and asserting superiority are both supported."
+      "rationale": "A myth that explains why spiders weave."
     },
     {
       "number": 29,
-      "answer": "B",
+      "answer": "C",
       "accepted": [
-        "A",
-        "B",
         "C"
       ],
-      "rationale": "This duplicates Q23 and must receive the same set of accepted responses.",
-      "reviewNote": "Identical wording to Q23; keep scoring consistent."
+      "rationale": "Her arrogance toward the gods."
     },
     {
       "number": 30,
-      "answer": "B",
+      "answer": "A",
       "accepted": [
-        "A",
-        "B"
+        "A"
       ],
-      "rationale": "The false choice between humility and talent is not required by the story; the assertion of one God giving every talent is also not established by this Greek myth.",
-      "reviewNote": "Two absolute/generalized morals are not established by the selection."
+      "rationale": "Pride, not skill, brought punishment."
     },
     {
       "number": 31,
@@ -1327,44 +1214,39 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "D"
       ],
-      "rationale": "Technology and innovation belongs to modernization, not industrialization."
+      "rationale": "The answer is given in the subtitle of the infographic."
     },
     {
       "number": 32,
-      "answer": null,
-      "accepted": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "rationale": "Strategic communications is a vertical cross-cutting strategy beside all four pillars, not assigned to a single one. No all-pillars option is supplied.",
-      "credit": true,
-      "reviewNote": "The visual places strategic communications across all pillars."
-    },
-    {
-      "number": 33,
       "answer": "C",
       "accepted": [
         "C"
       ],
-      "rationale": "Digital databases align most directly with the digital-agriculture strategy under modernization."
+      "rationale": "70 sacks per hectare."
+    },
+    {
+      "number": 33,
+      "answer": "A",
+      "accepted": [
+        "A"
+      ],
+      "rationale": "Notes: 2023 typhoon."
     },
     {
       "number": 34,
-      "answer": "B",
+      "answer": "C",
       "accepted": [
-        "B"
+        "C"
       ],
-      "rationale": "The vision explicitly seeks prosperous farmers and fisherfolk."
+      "rationale": "Read the values from the infographic and work it out: 96 - 70 = 26."
     },
     {
       "number": 35,
-      "answer": "D",
+      "answer": "C",
       "accepted": [
-        "D"
+        "C"
       ],
-      "rationale": "The whole infographic presents agricultural programs/strategies under four pillars."
+      "rationale": "The notes under the chart say 2024."
     },
     {
       "number": 36,
@@ -1372,43 +1254,39 @@ const GST_ANSWER_KEYS={
       "accepted": [
         "C"
       ],
-      "rationale": "Together with partners means cooperation in agricultural business across stakeholders."
+      "rationale": "100 x 50 kg = 5,000 kg."
     },
     {
       "number": 37,
+      "answer": "D",
+      "accepted": [
+        "D"
+      ],
+      "rationale": "102 sacks per hectare."
+    },
+    {
+      "number": 38,
       "answer": "A",
       "accepted": [
         "A"
       ],
-      "rationale": "Food security means families having sufficient food."
+      "rationale": "The harvest rose from 85 sacks per hectare in 2021 to 90 in 2022, an increase of 5."
     },
     {
-      "number": 38,
+      "number": 39,
       "answer": "B",
       "accepted": [
         "B"
       ],
-      "rationale": "The infographic communicates a reform plan and its strategies."
-    },
-    {
-      "number": 39,
-      "answer": "D",
-      "accepted": [
-        "B",
-        "D"
-      ],
-      "rationale": "The four labeled pillars provide structural/logical organization rather than chronology.",
-      "reviewNote": "Both logical and structural arrangement describe the labeled pillar layout."
+      "rationale": "Drop in 2023, then 96 and 102."
     },
     {
       "number": 40,
-      "answer": "C",
+      "answer": "A",
       "accepted": [
-        "A",
-        "C"
+        "A"
       ],
-      "rationale": "Relevance is supported by the agriculture-focused content; its supplied government provenance also makes authenticity a defensible choice.",
-      "reviewNote": "Two positive descriptions have support; no date establishes recency."
+      "rationale": "The credit explains it is a made-up example for reading practice."
     }
   ]
 };

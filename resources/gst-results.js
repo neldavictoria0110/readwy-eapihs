@@ -1,17 +1,17 @@
-/* GST results (Grades 7–10 book, ".xg" without ".xc"):
+/* Reading Check-In results (Grades 7–10 book, ".xg" without ".xc"):
    1. The results page no longer shows which answers are correct (no green numbers, no right/wrong marks
       when reviewing an answer).
    2. While reviewing, a "Results" button returns to the results page from any question.
-   3. "What my score means" opens the placement rules (GST 1–15 ARAL, 16–27 InterV, 28–40 SRA), redrawn
+   3. "What my score means" opens the placement rules (Reading Check-In 1–15 ARAL, 16–27 InterV, 28–40 SRA), redrawn
       sharply from the teacher guide picture, with the learner's own range highlighted. */
 (() => {
   const isGST = () => !document.querySelector('.xc,.xo');
   const PROGRAMS = {
-    aral: {range: 'GST 1–15', level: 'Frustration level', pill: 'ARAL Program',
+    aral: {range: 'Check-In 1–15', level: 'Frustration level', pill: 'ARAL Program',
       text: 'You will start with the ARAL Program. It builds your reading skills step by step, with a teacher guiding you through short lessons and practice.'},
-    interv: {range: 'GST 16–27', level: '', pill: 'InterV Program',
+    interv: {range: 'Check-In 16–27', level: '', pill: 'InterV Program',
       text: 'You will join the InterV Program. Its stations give you focused practice on the reading skills you still need.'},
-    sra: {range: 'GST 28–40', level: '', pill: 'Reading Lab',
+    sra: {range: 'Check-In 28–40', level: '', pill: 'Reading Lab',
       text: 'You will join the Reading Lab. You read texts at your own level and move up as you pass each one.'}
   };
   const programFor = score => (window.readwyJourneyGate?.programFor?.(score)) || (score <= 15 ? 'aral' : score <= 27 ? 'interv' : 'sra');
@@ -91,12 +91,12 @@
     const cards = Object.entries(PROGRAMS).map(([key, p]) =>
       `<div class="xgp-card ${key}${mine === key ? ' you' : mine ? ' dim' : ''}">${mine === key ? '<span class="tag">YOUR SCORE</span>' : ''}<h3>${p.range}</h3><p class="lv">${p.level}</p>${TRAIN}<div class="xgp-pill">${p.pill}</div></div>`).join('');
     const you = has
-      ? `<div class="xgp-you"><div class="sc"><b>${score}/${n}</b><small>YOUR GST</small></div><p>Your score is in the <strong>${PROGRAMS[mine].range.replace('GST ', '')}</strong> range, so your journey is the <strong>${PROGRAMS[mine].pill}</strong>. The ORST and WST open too.</p></div>`
-      : `<div class="xgp-you"><div class="sc"><b>—</b><small>YOUR GST</small></div><p>A missing GST or a score of 0 is <strong>pending review</strong>. Your teacher will check your test before your journey is chosen.</p></div>`;
-    return `<div class="xgp" role="dialog" aria-label="What your GST score means">
+      ? `<div class="xgp-you"><div class="sc"><b>${score}/${n}</b><small>YOUR Reading Check-In</small></div><p>Your score is in the <strong>${PROGRAMS[mine].range.replace('Check-In ', '')}</strong> range, so your journey is the <strong>${PROGRAMS[mine].pill}</strong>. The ORST and WST open too.</p></div>`
+      : `<div class="xgp-you"><div class="sc"><b>—</b><small>YOUR Reading Check-In</small></div><p>A missing Reading Check-In or a score of 0 is <strong>pending review</strong>. Your teacher will check your test before your journey is chosen.</p></div>`;
+    return `<div class="xgp" role="dialog" aria-label="What your Reading Check-In score means">
       <div class="xgp-head"><span class="ic">${BUS}</span><h2>Placement rules</h2><span class="rail">${RAIL}</span></div>
       <div class="xgp-cards">${cards}</div>
-      <p class="xgp-rule">${CHECK}GST determines placement, regardless of ORST and WST results.</p>
+      <p class="xgp-rule">${CHECK}Reading Check-In determines placement, regardless of ORST and WST results.</p>
       ${you}
       <div class="xgp-foot"><button class="xg-btn" type="button" onclick="readwyGstPlacement(false)">◀ Back to results</button><button class="xg-btn gold" type="button" onclick="readwyGo('index.html?view=map')">Back to journey ▶</button></div></div>`;
   }

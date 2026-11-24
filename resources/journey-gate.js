@@ -1,7 +1,7 @@
 /* Learning-journey order (Grades 7–10):
-   Before the GST: only the GST is open.
-   After the GST is submitted: the GST stays open to view results and edit the profile, but its answers
-   are final (it cannot be retaken). ORST, WST and the one program that matches the GST score open together:
+   Before the Reading Check-In: only the Reading Check-In is open.
+   After the Reading Check-In is submitted: the Reading Check-In stays open to view results and edit the profile, but its answers
+   are final (it cannot be retaken). ORST, WST and the one program that matches the Reading Check-In score open together:
      0–16 → ARAL Program, 17–27 → InterV (Intervention Program), 28–40 → SRA Program.
    The Post-Test opens only after every task in that program is finished.
    "Finished" uses each program's own completion rule:
@@ -12,15 +12,15 @@
    The result is also saved for the portrait journey map, which shows locks from it.
 
    Exploration period (School Year 2026–2027): until EXPLORE_UNTIL every learner, in any grade, may explore
-   ARAL, InterV and SRA freely. GST, ORST and WST stay visible but locked (they are taken at the opening of a
-   school year). From EXPLORE_UNTIL (opening of SY 2027–2028) the GST-score rules above apply again by themselves.
+   ARAL, InterV and SRA freely. Reading Check-In, ORST and WST stay visible but locked (they are taken at the opening of a
+   school year). From EXPLORE_UNTIL (opening of SY 2027–2028) the Reading Check-In-score rules above apply again by themselves.
    Change EXPLORE_UNTIL here AND in journey-gate-map.js when DepEd announces the official opening date. */
 (() => {
   const EXPLORE_UNTIL = Date.parse('2027-06-01T00:00:00+08:00');
   const exploring = () => Date.now() < EXPLORE_UNTIL;
-  const EXPLORE_MESSAGE = 'The GST, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and Reading Lab programs.';
+  const EXPLORE_MESSAGE = 'The Reading Check-In, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and Reading Lab programs.';
   const PREFIX = typeof STORE !== 'undefined' ? STORE : 'READwy_new_2026_local_';
-  const NAMES = {gst: 'GST', orst: 'ORST', wst: 'WST', aral: 'ARAL Program', interv: 'InterV Program', sra: 'Reading Lab', reports: 'Post-Test'};
+  const NAMES = {gst: 'Reading Check-In', orst: 'ORST', wst: 'WST', aral: 'ARAL Program', interv: 'InterV Program', sra: 'Reading Lab', reports: 'Post-Test'};
   const PROGRAMS = ['aral', 'interv', 'sra'];
   const currentUser = () => (typeof user !== 'undefined' && user) || null;
   const safe = (fn, fallback = false) => { try { return fn(); } catch { return fallback; } };
@@ -75,7 +75,7 @@
       : program === 'interv' ? safe(() => intervDashStats().pct >= 100)
       : sraFinished();
     const open = {
-      // The GST stays open after submission (results, profile and photo), but it cannot be retaken.
+      // The Reading Check-In stays open after submission (results, profile and photo), but it cannot be retaken.
       gst: true,
       orst: gst,
       wst: gst,
@@ -88,14 +88,14 @@
   }
   function message(mod, s = status()) {
     if (s.exploring) return mod === 'reports'
-      ? 'The Post-Test opens with the GST at the start of School Year 2027–2028 (June 1, 2027).'
+      ? 'The Post-Test opens with the Reading Check-In at the start of School Year 2027–2028 (June 1, 2027).'
       : EXPLORE_MESSAGE;
     if (s.senior) return `For Grade ${s.grade}, the open journeys are InterV and Reading Lab.`;
-    if (mod === 'gst') return `You have already taken the GST (score ${s.score} of 40).`;
-    if (!s.gst) return `Take the GST first. Your ${NAMES[mod]} opens after you submit the GST.`;
+    if (mod === 'gst') return `You have already taken the Reading Check-In (score ${s.score} of 40).`;
+    if (!s.gst) return `Take the Reading Check-In first. Your ${NAMES[mod]} opens after you submit the Reading Check-In.`;
     if (PROGRAMS.includes(mod) || mod === 'reports') {
       if (mod === 'reports') return `The Post-Test opens after you finish every task in the ${NAMES[s.program]}.`;
-      return `Your GST score is ${s.score} of 40, so your journey is the ${NAMES[s.program]}. Only that program is open for you.`;
+      return `Your Reading Check-In score is ${s.score} of 40, so your journey is the ${NAMES[s.program]}. Only that program is open for you.`;
     }
     return 'This stage is not open yet.';
   }
@@ -140,7 +140,7 @@
   window.addEventListener('load', () => { installGuards(); publish(); }, {once: true});
 
   // Keep the map's copy up to date whenever progress is saved.
-  // A submitted GST is final: its answers and score cannot be changed or submitted again.
+  // A submitted Reading Check-In is final: its answers and score cannot be changed or submitted again.
   function gstLocked(key, value) {
     const m = /^(answer|assessment)_(\d+)$/.exec(String(key));
     if (!m || developerView()) return false;

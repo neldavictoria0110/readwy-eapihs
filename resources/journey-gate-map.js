@@ -7,7 +7,7 @@
   const dev = !!u.dev || (() => { try { return sessionStorage.getItem('readwy-dev-view') === '1'; } catch { return false; } })();
   const key = String(u.id || u.lrn || u.email || 'local').trim().toLowerCase();
   const saved = read('journey_gate_' + key);
-  // Worked out here from the learner's saved GST, so the ticket is right as soon as the learner enters
+  // Worked out here from the learner's saved Reading Check-In, so the ticket is right as soon as the learner enters
   // (same rules as journey-gate.js). Only "program finished" needs the app's saved check.
   const NAMES = {aral: 'ARAL Program', interv: 'InterV Program', sra: 'Reading Lab'};
   // Exploration period (SY 2026–2027): same date as journey-gate.js — change both together.
@@ -17,10 +17,10 @@
     if (u.role === 'teacher') return null;
     const grade = Number(u.grade) || 7;
     if (Date.now() < EXPLORE_UNTIL) {
-      const msg = 'The GST, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and Reading Lab programs.';
+      const msg = 'The Reading Check-In, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and Reading Lab programs.';
       return {exploring: true,
         open: {gst: false, orst: false, wst: false, aral: true, interv: true, sra: true, reports: false},
-        messages: {gst: msg, orst: msg, wst: msg, reports: 'The Post-Test opens with the GST at the start of School Year 2027–2028 (June 1, 2027).'}};
+        messages: {gst: msg, orst: msg, wst: msg, reports: 'The Post-Test opens with the Reading Check-In at the start of School Year 2027–2028 (June 1, 2027).'}};
     }
     if (grade >= 11) {
       const msg = `For Grade ${grade}, the open journeys are InterV and Reading Lab.`;
@@ -31,17 +31,17 @@
     const report = read(scoped + 'assessment_' + grade) || read('assessment_' + grade) || {};
     const taken = report.status === 'submitted' && Number.isFinite(Number(report.score));
     if (!taken) {
-      const msg = 'Take the GST first. This stop opens after you submit the GST.';
+      const msg = 'Take the Reading Check-In first. This stop opens after you submit the Reading Check-In.';
       return {open: {gst: true, orst: false, wst: false, aral: false, interv: false, sra: false, reports: false},
         messages: {orst: msg, wst: msg, aral: msg, interv: msg, sra: msg, reports: msg}};
     }
     const score = Number(report.score);
     const program = score <= 16 ? 'aral' : score <= 27 ? 'interv' : 'sra';
     const finished = !!(saved && saved.program === program && saved.programDone);
-    const placed = `Your GST score is ${score} of 40, so your journey is the ${NAMES[program]}. Only that program is open for you.`;
+    const placed = `Your Reading Check-In score is ${score} of 40, so your journey is the ${NAMES[program]}. Only that program is open for you.`;
     return {
       program, score,
-      // GST stays open after submission to see results and edit the profile (it cannot be retaken).
+      // Reading Check-In stays open after submission to see results and edit the profile (it cannot be retaken).
       open: {gst: true, orst: true, wst: true, aral: program === 'aral', interv: program === 'interv', sra: program === 'sra', reports: finished},
       messages: {aral: placed, interv: placed, sra: placed,
         reports: `The Post-Test opens after you finish every task in the ${NAMES[program]}.`}
@@ -59,7 +59,7 @@ a.stage.rw-yours::after{content:'★ Your program';position:absolute;right:4%;bo
 .pf-dest.rw-locked .hole::after{content:'🔒';display:grid;place-items:center;width:100%;height:100%;font-size:.75em;line-height:1}
 .pf-dest.rw-yours{box-shadow:0 0 0 3px #e2b33c,0 0 14px #f3cf6a99!important}
 .pf-dest.rw-yours::after{content:'★ Yours';display:block;margin-top:2px;color:#8a5a00;font:800 10px/1 system-ui,sans-serif}
-/* Exploration period: a red rubber "LOCKED" ticket stamp pressed over GST, ORST, WST and the Post-Test (no padlock badge). */
+/* Exploration period: a red rubber "LOCKED" ticket stamp pressed over Reading Check-In, ORST, WST and the Post-Test (no padlock badge). */
 a.stage.rw-stamped::after,.pf-dest.rw-stamped .hole::after{content:none}
 a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) brightness(.9);-webkit-backdrop-filter:grayscale(.6) brightness(.9)}
 .pf-dest.rw-stamped{opacity:.8;filter:grayscale(.5)}

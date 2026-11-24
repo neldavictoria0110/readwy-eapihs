@@ -1,5 +1,5 @@
 (()=>{
- const names={gst:'GST — Group Screening Test',orst:'ORST — Oral Reading',wst:'Writing Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'Reading Lab',reports:'Post-Test — Assessment Reports'};
+ const names={gst:'Reading Check-In',orst:'ORST — Oral Reading',wst:'Writing Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'Reading Lab',reports:'Post-Test — Assessment Reports'};
  const program=new URLSearchParams(location.search).get('program');
  if(!Object.prototype.hasOwnProperty.call(names,program)){location.replace('index.html?view=map');return}
  let opening=false,timer;
@@ -12,7 +12,7 @@
   await turn.finished;group.style.transform='rotate(-90deg)';turn.cancel();
  }
  async function morphIntoGST(landscapeReady){
-  const frame=document.createElement('iframe');frame.title='GST — Group Screening Test';frame.inert=true;
+  const frame=document.createElement('iframe');frame.title='Reading Check-In';frame.inert=true;
   Object.assign(frame.style,{position:'fixed',inset:'0',width:'100%',height:'100%',border:'0',zIndex:'10',background:'#061526',visibility:'hidden',clipPath:'circle(0px at 50% 50%)'});
   frame.src='index.html?journeyModule=gst&morphHold=1';document.body.appendChild(frame);
   const deadline=performance.now()+20000;

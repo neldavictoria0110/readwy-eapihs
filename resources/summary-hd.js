@@ -1,5 +1,5 @@
 /* Assessment Summary, rebuilt as a sharp HTML page (the old one was a 1672x941 picture stretched to the screen).
-   Two tabs: "Overview" (GST, ORST, WST and the overall recommendation) and "My WST Submission"
+   Two tabs: "Overview" (Reading Check-In, ORST, WST and the overall recommendation) and "My WST Submission"
    (essay, plan and writing level). WST's "View Submission" opens the second tab instead of a pop-up. */
 (() => {
   const font = document.createElement('link');
@@ -119,14 +119,14 @@
 
   function overview(d) {
     const gst = d.gstScored
-      ? `<div class="hd-score"><span class="big">${d.gst.score} / ${d.gst.total}</span><span class="hd-chip" style="background:#2f7d1a">${pct(d.gst.score, d.gst.total)}</span></div>${bar(100 * d.gst.score / d.gst.total, '#2f8f55')}<span class="hd-cap">Recorded GST result</span>`
+      ? `<div class="hd-score"><span class="big">${d.gst.score} / ${d.gst.total}</span><span class="hd-chip" style="background:#2f7d1a">${pct(d.gst.score, d.gst.total)}</span></div>${bar(100 * d.gst.score / d.gst.total, '#2f8f55')}<span class="hd-cap">Recorded Reading Check-In result</span>`
       : `<div class="hd-score"><span class="big none">Not taken</span><span class="hd-chip" style="background:#7a7466">Pending</span></div>${bar(0, '#2f8f55')}<span class="hd-cap">No scored attempt yet</span>`;
     const minutes = Number.isFinite(d.gst.elapsedMs) ? Math.round(d.gst.elapsedMs / 60000) + ' min' : '—';
     const prog = d.gstScored && d.gst.score > 0 ? (window.readwyJourneyGate?.programFor?.(Number(d.gst.score)) || null) : null;
     const PROG = {aral: ['ARAL Program', '#f2b215', '#1b1a14'], interv: ['InterV Program', '#0f7a71', '#fff'], sra: ['Reading Lab', '#1a52c4', '#fff']};
-    const place = prog ? `<div class="hd-place"><small>Your journey (placement)</small><span style="background:${PROG[prog][1]};color:${PROG[prog][2]}">${PROG[prog][0]}</span><em>The GST score decides the program; the ORST and WST open too.</em></div>` : `<div class="hd-place"><small>Your journey (placement)</small><span style="background:#7a7466;color:#fff">Pending</span><em>Your program is chosen after the GST is scored.</em></div>`;
+    const place = prog ? `<div class="hd-place"><small>Your journey (placement)</small><span style="background:${PROG[prog][1]};color:${PROG[prog][2]}">${PROG[prog][0]}</span><em>The Reading Check-In score decides the program; the ORST and WST open too.</em></div>` : `<div class="hd-place"><small>Your journey (placement)</small><span style="background:#7a7466;color:#fff">Pending</span><em>Your program is chosen after the Reading Check-In is scored.</em></div>`;
     const gstBody = gst + `<div class="hd-stats"><div class="hd-stat"><small>Correct</small><b>${d.gstScored ? d.gst.score : '—'}</b></div><div class="hd-stat"><small>Time</small><b>${minutes}</b></div></div>` + place +
-      `<div class="hd-notes">${note('s', 'Strengths', d.gstScored ? `${d.gst.score} correct responses` : 'No scored GST result yet')}${note('i', 'Needs improvement', d.gstScored ? `${d.gst.total - d.gst.score} incorrect or unanswered responses` : 'Complete the GST to record a result.')}${note('n', 'Next step', 'Review the saved GST responses with your teacher.')}</div>`;
+      `<div class="hd-notes">${note('s', 'Strengths', d.gstScored ? `${d.gst.score} correct responses` : 'No scored Reading Check-In result yet')}${note('i', 'Needs improvement', d.gstScored ? `${d.gst.total - d.gst.score} incorrect or unanswered responses` : 'Complete the Reading Check-In to record a result.')}${note('n', 'Next step', 'Review the saved Reading Check-In responses with your teacher.')}</div>`;
 
     const orstBody = `<div class="hd-score"><span class="big${d.oralValid ? '' : ' none'}">${d.oralValid ? esc(d.level) : 'Not taken'}</span><span class="hd-chip" style="background:${d.accuracy === null ? '#7a7466' : '#b77b00'}">${d.accuracy === null ? 'Pending' : d.accuracy.toFixed(1) + '% accuracy'}</span></div>` +
       `${bar(d.accuracy ?? 0, '#c98a00')}<span class="hd-cap">${Number.isFinite(d.oral.comprehension) ? 'Comprehension: ' + d.oral.comprehension.toFixed(1) + '%' : 'Reading level · no comprehension score yet'}</span>` +
@@ -148,8 +148,8 @@
       (d.writing ? `<button class="hd-link" type="button" data-tab-go="submission">Read my submission →</button>` : '') +
       `<div class="hd-notes">${note('n', 'Next step', T40 ? 'Your teacher confirms your WST rating. Your next stop opens on the Journey Map.' : 'Discuss your writing feedback with your teacher.')}</div>`;
 
-    const overall = `GST: ${d.gstScored ? d.gst.score + '/' + d.gst.total : 'not scored'}. ORST: ${d.accuracy === null ? 'not scored' : d.accuracy.toFixed(1) + '% word-reading accuracy'}. WST: ${d.writing?.total40 && d.writing.status !== 'needs-review' ? d.writing.total40.score + '/40 (' + d.writing.total40.writer + ')' : d.wstScored ? d.review.score + '/' + d.review.total : d.writing ? 'submitted, awaiting teacher scoring' : 'not submitted'}. Your teacher reviews the saved attempts for placement.`;
-    return `<div class="hd-over"><div class="hd-cards">${card('gst', 'GST', 'Group Screening Test', gstBody)}${card('orst', 'ORST', 'Oral Reading Screening Test', orstBody)}${card('wst', 'WST', 'Writing Screening Test', wstBody)}</div>
+    const overall = `Reading Check-In: ${d.gstScored ? d.gst.score + '/' + d.gst.total : 'not scored'}. ORST: ${d.accuracy === null ? 'not scored' : d.accuracy.toFixed(1) + '% word-reading accuracy'}. WST: ${d.writing?.total40 && d.writing.status !== 'needs-review' ? d.writing.total40.score + '/40 (' + d.writing.total40.writer + ')' : d.wstScored ? d.review.score + '/' + d.review.total : d.writing ? 'submitted, awaiting teacher scoring' : 'not submitted'}. Your teacher reviews the saved attempts for placement.`;
+    return `<div class="hd-over"><div class="hd-cards">${card('gst', 'Check-In', 'Reading Check-In', gstBody)}${card('orst', 'ORST', 'Oral Reading Screening Test', orstBody)}${card('wst', 'WST', 'Writing Screening Test', wstBody)}</div>
       <section class="hd-rec"><span class="shield">✦</span><div><h3>Overall Recommendation</h3><p>${esc(overall)}</p></div><div class="acts"><span class="hd-chip" style="background:#b77b00;text-align:center">Placement: pending teacher review</span><button class="hd-btn ghost" type="button" data-act="reports">Detailed saved results</button></div></section></div>`;
   }
 
