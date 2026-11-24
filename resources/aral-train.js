@@ -188,7 +188,7 @@
   const goText = (state, started) => state === 'done' ? '✓ Review' : state === 'locked' ? '🔒 Locked' : started ? '▶ Continue' : state === 'next' ? '▶ Board now' : '★ Start';
 
   /* ---------- page 1: the eight weeks ---------- */
-  renderAralStart = function () {
+  renderAral = renderAralStart = function () {
     setOwl('work'); nav.innerHTML = '';
     const ws = weeks(), counts = ws.map(weekCounts), done = counts.map(c => c.total > 0 && c.done === c.total), next = done.indexOf(false);
     const items = ws.map((w, k) => {
