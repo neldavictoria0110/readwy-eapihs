@@ -188,7 +188,7 @@
   const goText = (state, started) => state === 'done' ? '✓ Review' : state === 'locked' ? '🔒 Locked' : started ? '▶ Continue' : state === 'next' ? '▶ Board now' : '★ Start';
 
   /* ---------- page 1: the eight weeks ---------- */
-  renderAral = renderAralStart = function () {
+  renderAralStart = function () { // only the week-list page; renderAral still chooses the page (weeks, platforms, stops, lessons)
     setOwl('work'); nav.innerHTML = '';
     const ws = weeks(), counts = ws.map(weekCounts), done = counts.map(c => c.total > 0 && c.done === c.total), next = done.indexOf(false);
     const items = ws.map((w, k) => {
@@ -328,5 +328,5 @@
   // If the learner is already on an ARAL page when this loads, redraw it with the new look and locks.
   safe(() => { if (typeof activeModule !== 'undefined' && activeModule === 'aral' && document.querySelector('.st-screen') && typeof renderAral === 'function') renderAral(); });
   // On slow phones the ARAL page can draw before every helper script has loaded; redraw once the page is fully loaded.
-  if (typeof addEventListener === 'function') addEventListener('load', () => safe(() => { if (typeof activeModule !== 'undefined' && activeModule === 'aral' && typeof renderAral === 'function') renderAral(); }));
+  if (typeof addEventListener === 'function') addEventListener('load', () => safe(() => { if (typeof activeModule !== 'undefined' && activeModule === 'aral' && document.querySelector('.st-screen') && !(typeof aralLessonView !== 'undefined' && aralLessonView.active) && typeof renderAral === 'function') renderAral(); }));
 })();
