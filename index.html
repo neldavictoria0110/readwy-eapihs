@@ -1,4 +1,14 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>READwy — Enchanted Academy of Reading</title><link rel="icon" href="resources/icons/readwy-192.png"><link rel="manifest" href="manifest.webmanifest"><script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><script data-readwy-update="6d4936e0d5cb">(()=>{try{
+ if(window.top!==window||location.protocol==='file:')return;
+ const mine='6d4936e0d5cb',key='readwy-updated-to';
+ const check=()=>fetch('build.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(b=>{
+  if(!b||!b.id||b.id===mine)return;
+  try{if(sessionStorage.getItem(key)===b.id)return;sessionStorage.setItem(key,b.id)}catch(e){}
+  location.reload();
+ }).catch(()=>{});
+ setTimeout(check,1200);
+ addEventListener('pageshow',e=>{if(e.persisted)check()});
+}catch(e){}})();</script><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>READwy — Enchanted Academy of Reading</title><link rel="icon" href="resources/icons/readwy-192.png"><link rel="manifest" href="manifest.webmanifest"><script>
 (()=>{
  try{
   const coarse=matchMedia('(pointer: coarse)').matches||navigator.maxTouchPoints>0;
