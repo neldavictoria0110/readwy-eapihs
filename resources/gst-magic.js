@@ -61,14 +61,19 @@
       <stop offset="0" stop-color="#241a3a" stop-opacity=".38"/><stop offset=".4" stop-color="#3a2a4a" stop-opacity=".08"/><stop offset="1" stop-color="#120c08" stop-opacity=".18"/>
     </linearGradient>
     <filter id="gmMotion" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation=".45 .15"/></filter>
-    <radialGradient id="gmGold" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#fffbe0"/><stop offset=".5" stop-color="#f6c94a"/><stop offset="1" stop-color="#b8861b"/></radialGradient>
-    <radialGradient id="gmRed" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#ff9a8a"/><stop offset=".6" stop-color="#c0352b"/><stop offset="1" stop-color="#6e1712"/></radialGradient>
-    <radialGradient id="gmHalo"><stop offset="0" stop-color="#fff2a8" stop-opacity=".9"/><stop offset="1" stop-color="#fff2a8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gmLantern" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#fff3c4"/><stop offset=".55" stop-color="#ffb347"/><stop offset="1" stop-color="#e0662b"/></radialGradient>
+    <radialGradient id="gmHalo"><stop offset="0" stop-color="#ffd27a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
     ${rider('gmRiderA', '#3a1418', '#ffb46a')}${rider('gmRiderBright', '#12292a', '#ffd9a0')}
     <g id="gmRiderB"><use href="#gmRiderBright" transform="scale(-1 1)"/></g>
+    <!-- a small bird silhouette (wings flap) and a glowing paper sky lantern: simple generic shapes -->
+    <g id="gmBird"><path d="M-6 0 Q-3 -3 0 0 Q3 -3 6 0" fill="none" stroke="#1d130c" stroke-width="1.1" stroke-linecap="round">
+      <animate attributeName="d" values="M-6 0 Q-3 -3 0 0 Q3 -3 6 0;M-6 -1 Q-3 1 0 0 Q3 1 6 -1;M-6 0 Q-3 -3 0 0 Q3 -3 6 0" dur=".7s" repeatCount="indefinite"/></path></g>
+    <g id="gmLanternG"><circle r="9" fill="url(#gmHalo)"/><path d="M-3.2 -4 H3.2 L2.4 4 H-2.4 Z" fill="url(#gmLantern)"/><path d="M-1 4 V5.6 M1 4 V5.6" stroke="#7a3d12" stroke-width=".5"/></g>
   </defs>
   <rect width="1000" height="100" fill="url(#gmDusk)"/>
   ${stars}
+  ${flight('gmBird', 'M-40 26 C200 18 500 30 1040 20', '24s')}${flight('gmBird', 'M-52 31 C190 24 490 36 1028 26', '24s', '-.6s')}${flight('gmBird', 'M-46 21 C210 13 510 24 1034 15', '24s', '-1.1s')}
+  ${[[180, '19s', '0s'], [520, '23s', '-8s'], [830, '21s', '-14s']].map(([x, dur, begin]) => `<use href="#gmLanternG"><animateMotion dur="${dur}" begin="${begin}" repeatCount="indefinite" path="M${x} 112 C${x - 20} 80 ${x + 25} 45 ${x + 5} -14"/></use>`).join('')}
   ${flight('gmRiderA', 'M-60 62 C200 22 450 76 700 36 S950 56 1060 46', '11s')}
   ${flight('gmRiderB', 'M1060 40 C800 76 560 22 320 56 S80 42 -60 36', '12s', '-3s')}
   ${flight('gmRiderA', 'M-60 30 C250 50 520 14 760 48 S980 26 1060 32', '14s', '-7s')}
