@@ -51,9 +51,11 @@ for (const pageName of ['application', 'train', 'launch', 'map', 'video']) {
 }
 if (developerBadgeCopiesSynced === 0) throw new Error('The embedded developer badge source could not be found.');
 const legacyTeacherDeveloperRoute = /if\(v==='teacher'\)\{teacher\(\);location\.href='index\.html\?journeyModule=reports';return\}/g;
-const legacyStartupTeacherSelection = "function chooseReadwyRole(role){if(flipping||mode!=='role')return;applyReadwyRole(role);turnRoleCard(false)}";
+// Choosing Teacher on the start screen opens the teacher login / sign-up card, the same as Student.
+// (Older builds sent Teacher straight to the developer preview; the developer badge still offers that preview.)
+const legacyStartupTeacherSelection = "function chooseReadwyRole(role){if(flipping||mode!=='role')return;if(role==='teacher'){window.readwyOpenDeveloperTeacherPreview(true);return}applyReadwyRole(role);turnRoleCard(false)}";
 const previousStartupTeacherSelection = "function chooseReadwyRole(role){if(flipping||mode!=='role')return;if(role==='teacher'){window.readwyOpenDeveloperTeacherPreview();return}applyReadwyRole(role);turnRoleCard(false)}";
-const startupTeacherSelection = "function chooseReadwyRole(role){if(flipping||mode!=='role')return;if(role==='teacher'){window.readwyOpenDeveloperTeacherPreview(true);return}applyReadwyRole(role);turnRoleCard(false)}";
+const startupTeacherSelection = "function chooseReadwyRole(role){if(flipping||mode!=='role')return;applyReadwyRole(role);turnRoleCard(false)}";
 let developerRoutesPatched = 0;
 let startupTeacherSelectionsPatched = 0;
 for (const [pageName, pageSource] of Object.entries(pages)) {
@@ -399,6 +401,25 @@ let finalIndex = updatedIndex;
 if (finalIndex.includes(stationSceneTag) && !finalIndex.includes('window.__READWY_MOBILE_SAFETY__')) {
   finalIndex = finalIndex.replace(stationSceneTag, () => mobileSafetyScript + stationSceneTag);
 }
+// Always the newest version, whatever link was used (tinyurl …?v=2, ?v=12, Firebase):
+// every build gets an id, written to build.json. A page that opens (or is restored from the
+// browser's memory) with an older id reloads once. It never reloads in the middle of an activity.
+const updateCheckPattern = /<script data-readwy-update="[a-z0-9]*">[\s\S]*?<\/script>/g;
+finalIndex = finalIndex.replace(updateCheckPattern, '');
+const buildId = require('crypto').createHash('sha1').update(finalIndex).digest('hex').slice(0, 12);
+const updateCheckScript = `<script data-readwy-update="${buildId}">(()=>{try{
+ if(window.top!==window||location.protocol==='file:')return;
+ const mine='${buildId}',key='readwy-updated-to';
+ const check=()=>fetch('build.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(b=>{
+  if(!b||!b.id||b.id===mine)return;
+  try{if(sessionStorage.getItem(key)===b.id)return;sessionStorage.setItem(key,b.id)}catch(e){}
+  location.reload();
+ }).catch(()=>{});
+ setTimeout(check,1200);
+ addEventListener('pageshow',e=>{if(e.persisted)check()});
+}catch(e){}})();</script>`;
+finalIndex = finalIndex.replace('<meta charset="utf-8">', () => '<meta charset="utf-8">' + updateCheckScript);
+if (!finalIndex.includes(`data-readwy-update="${buildId}"`)) throw new Error('Could not add the update check to index.html.');
 fs.writeFileSync(indexPath, finalIndex);
 
 const publicRoot = path.join(root, 'public');
@@ -442,10 +463,6 @@ for (const relativePath of [
   'resources/firebase-client.js',
   'resources/train-line-closeup-final.jpg',
   'resources/journey-stage-parts/book.webp',
-  'resources/en/2022_BEST-Sample-Items_7W_508.pdf',
-  'resources/en/2022_BEST-Sample-Items_8W_508.pdf',
-  'resources/en/2022_BEST-Sample-Items_9W_508.pdf',
-  'resources/en/2022_BEST-Sample-Items_10W_508.pdf',
   'resources/Learning Programs/Aral Workbook.pdf'
 ]) {
   const source = path.join(root, relativePath);
@@ -454,4 +471,6 @@ for (const relativePath of [
   fs.copyFileSync(source, destination);
 }
 fs.copyFileSync(indexPath, path.join(publicRoot, 'index.html'));
-console.log('synchronized embedded app and teacher-report resources for Firebase Hosting');
+// build.json tells open pages which version is current (see the update check above). Copy it to render/ too.
+fs.writeFileSync(path.join(publicRoot, 'build.json'), JSON.stringify({ id: buildId, builtAt: new Date().toISOString() }) + '\n');
+console.log('synchronized embedded app and teacher-report resources for Firebase Hosting (build ' + buildId + ')');
