@@ -1,0 +1,27 @@
+.sra-welcome-screen{position:relative;width:100%;height:var(--landscape-height);overflow:hidden;background:#1a291b}
+.sra-welcome-board{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100%,calc(var(--landscape-height) * 4 / 3));height:min(100%,calc(var(--landscape-width) * 3 / 4))}
+.sra-welcome-board>img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.sra-start-hit{position:absolute;left:31%;top:80.5%;width:39.5%;height:11%;padding:0;border:0;border-radius:60px;background:transparent;cursor:pointer}
+.sra-start-hit:focus-visible{outline:3px solid #ffe2a4;outline-offset:3px}
+#app:has(.sra-welcome-screen)~#nav{display:none}
+/* Ruby palette is scoped to SRA, including its reading activities. */
+.sra-welcome-screen:not(.interv-welcome-screen){background:#3b1020}
+.sra-start-hit:focus-visible{outline-color:#a51e4b}
+#app:has(#sraReading) .workarea{--gold:#f4c7d2;--border:#a83258;color:#fff2f5}
+#app:has(#sraReading) .panel{background:linear-gradient(#57132c,#300d1b);border-color:#b95173}
+#app:has(#sraReading) .notice{background:#681b36;color:#fff0f3;border-color:#c46c88}
+#app:has(#sraReading) .reading{background:#fff5f2;color:#401226;border-color:#c78398}
+#app:has(#sraReading) .forminput{background:#fff4f4;color:#641831;border-color:#b7486a}
+#app:has(#sraReading) a{color:#f5bed0}
+#app:has(#sraReading) .btn{background:linear-gradient(#b83560,#791632);border-color:#e7a3b8;color:#fff7f9;box-shadow:0 4px 0 #4b0b20}
+/* Journey navigation follows the button in the replacement ruby artwork. */
+.sra-journey-hit{position:absolute;left:76%;top:1.5%;width:23%;height:10%;padding:0;border:0;border-radius:45px;background:transparent;cursor:pointer;z-index:2}
+.sra-journey-hit:focus-visible{outline:3px solid #a51e4b;outline-offset:3px}
+
+/* Preserve the supplied SRA app in an isolated, full-size document. */
+.sra-express-screen{position:relative;width:100%;height:100%;overflow:hidden;background:#070e16}
+.sra-express-frame{display:block;width:100%;height:100%;border:0;background:#070e16}
+.sra-express-journey{position:absolute;z-index:2;right:16px;top:14px;padding:9px 16px;border:1px solid #d1b372;border-radius:20px;background:#10282be8;color:#fff0cc;font:700 17px/1.2 Georgia,serif;cursor:pointer}
+.sra-express-journey:hover{background:#294537}
+.sra-express-journey:focus-visible{outline:3px solid #ffe0a0;outline-offset:3px}
+#app:has(.sra-express-screen)~#nav,#app:has(.sra-express-screen)~#roamingOwl{display:none!important}

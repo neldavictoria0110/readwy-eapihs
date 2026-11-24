@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <!-- An old wizard on a broomstick, flying right, lit from behind by the sunset (orange rim light). -->
+  <defs>
+    <linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a0703c"/><stop offset=".45" stop-color="#6b4422"/><stop offset="1" stop-color="#3a2210"/>
+    </linearGradient>
+    <linearGradient id="straw" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5a3c14"/><stop offset=".6" stop-color="#b48a3c"/><stop offset="1" stop-color="#d9b25e"/>
+    </linearGradient>
+    <linearGradient id="cloak" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2c2a6b"/><stop offset=".55" stop-color="#1b1947"/><stop offset="1" stop-color="#0c0b26"/>
+    </linearGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b3a86"/><stop offset="1" stop-color="#16154a"/>
+    </linearGradient>
+    <radialGradient id="skin" cx=".6" cy=".4" r=".7">
+      <stop offset="0" stop-color="#f1c9a5"/><stop offset=".7" stop-color="#c98f68"/><stop offset="1" stop-color="#8a5a3e"/>
+    </radialGradient>
+    <linearGradient id="beard" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#d8d4cc"/><stop offset="1" stop-color="#9a958c"/>
+    </linearGradient>
+    <linearGradient id="hat" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f2d74"/><stop offset="1" stop-color="#110f36"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".35"/></filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+
+  <!-- soft cast shadow / atmosphere behind the rider -->
+  <ellipse cx="120" cy="112" rx="95" ry="10" fill="#000" opacity=".18" filter="url(#shadow)"/>
+
+  <!-- billowing cloak (behind the body) -->
+  <g>
+    <path d="M118 62 C96 58 70 66 46 60 C30 56 18 64 8 58 C20 72 34 70 44 80 C58 92 82 88 100 96 C108 99 114 94 120 88 Z" fill="url(#cloak)">
+      <animate attributeName="d" dur="1.1s" repeatCount="indefinite"
+        values="M118 62 C96 58 70 66 46 60 C30 56 18 64 8 58 C20 72 34 70 44 80 C58 92 82 88 100 96 C108 99 114 94 120 88 Z;
+                M118 62 C96 60 72 62 48 64 C32 66 18 58 6 66 C20 76 36 74 46 84 C60 94 82 90 100 96 C108 99 114 94 120 88 Z;
+                M118 62 C96 58 70 66 46 60 C30 56 18 64 8 58 C20 72 34 70 44 80 C58 92 82 88 100 96 C108 99 114 94 120 88 Z"/>
+    </path>
+    <path d="M110 66 C90 66 66 70 44 68 M104 78 C84 80 62 78 40 76 M100 88 C84 90 66 86 52 84" stroke="#07061a" stroke-width="1.6" fill="none" opacity=".55"/>
+    <path d="M118 62 C96 58 70 66 46 60 C30 56 18 64 8 58" stroke="#ff9b45" stroke-width="1.4" fill="none" opacity=".75"/>
+  </g>
+
+  <!-- broom: bristles, binding and shaft -->
+  <g>
+    <path d="M58 100 C40 92 20 90 4 96 C18 100 18 104 4 110 C22 114 42 112 60 106 Z" fill="url(#straw)"/>
+    <g stroke="#3e2a0c" stroke-width=".7" opacity=".65" fill="none">
+      <path d="M58 101 C42 96 24 95 8 98"/><path d="M58 103 C40 100 22 101 6 103"/><path d="M58 105 C40 105 22 107 8 108"/><path d="M58 104 C44 108 28 111 12 112"/>
+    </g>
+    <g stroke="#f0cf86" stroke-width=".6" opacity=".7" fill="none">
+      <path d="M56 100 C44 95 30 93 16 95"/><path d="M56 106 C44 108 30 110 18 111"/>
+    </g>
+    <rect x="56" y="98" width="9" height="10" rx="2" fill="#4a2c12"/>
+    <path d="M57 100 h7 M57 103 h7 M57 106 h7" stroke="#c99a52" stroke-width="1"/>
+    <path d="M64 101 L226 94 C230 94 232 96 232 98 C232 100 230 102 226 102 L64 107 Z" fill="url(#shaft)"/>
+    <path d="M70 102 L222 96" stroke="#c8935a" stroke-width=".8" opacity=".6"/>
+    <path d="M100 103 l18 -.6 M150 101 l22 -.8 M190 99 l16 -.6" stroke="#2a170a" stroke-width=".7" opacity=".6"/>
+    <path d="M64 101 L226 94" stroke="#ffb26b" stroke-width=".9" opacity=".7"/>
+  </g>
+
+  <!-- legs and boots tucked under the broom -->
+  <path d="M118 92 C122 102 132 110 146 112 L152 108 C140 104 132 98 128 88 Z" fill="#141238"/>
+  <path d="M144 110 C150 114 160 114 164 110 C160 106 152 106 146 108 Z" fill="#2a1a0e"/>
+  <path d="M146 109 C152 112 158 112 162 110" stroke="#ff9b45" stroke-width=".7" fill="none" opacity=".7"/>
+
+  <!-- body leaning forward in the robe -->
+  <path d="M108 92 C104 76 110 58 126 50 C140 44 154 50 158 62 C162 74 152 90 140 96 C128 100 114 100 108 92 Z" fill="url(#robe)"/>
+  <path d="M126 50 C140 44 154 50 158 62" stroke="#ff9b45" stroke-width="1.3" fill="none" opacity=".8"/>
+  <path d="M118 88 C122 76 128 66 140 60 M128 94 C134 84 142 74 152 70" stroke="#0a0928" stroke-width="1.4" fill="none" opacity=".6"/>
+  <!-- belt with a gold buckle -->
+  <path d="M112 84 C124 88 140 86 152 78" stroke="#6b4a1a" stroke-width="3" fill="none"/>
+  <rect x="129" y="82" width="5" height="5" rx="1" fill="#e2b04a" transform="rotate(-12 131 84)"/>
+
+  <!-- forward arm gripping the broom -->
+  <path d="M148 64 C160 70 170 80 178 90 C181 94 178 98 174 97 C166 90 156 80 146 74 Z" fill="url(#robe)"/>
+  <path d="M148 64 C160 70 170 80 178 90" stroke="#ff9b45" stroke-width="1" fill="none" opacity=".7"/>
+  <ellipse cx="180" cy="96" rx="6" ry="4.6" fill="url(#skin)"/>
+  <path d="M175 94 C178 92 184 92 186 95" stroke="#7a4a30" stroke-width=".7" fill="none"/>
+
+  <!-- long flowing beard, swept back by the wind -->
+  <path d="M170 50 C172 60 168 70 156 76 C146 80 134 80 124 76 C132 74 140 70 146 64 C150 58 156 52 162 48 Z" fill="url(#beard)" filter="url(#soft)">
+    <animate attributeName="d" dur="1.3s" repeatCount="indefinite"
+      values="M170 50 C172 60 168 70 156 76 C146 80 134 80 124 76 C132 74 140 70 146 64 C150 58 156 52 162 48 Z;
+              M170 50 C172 61 166 72 154 77 C144 81 132 82 120 79 C130 76 140 70 146 64 C150 58 156 52 162 48 Z;
+              M170 50 C172 60 168 70 156 76 C146 80 134 80 124 76 C132 74 140 70 146 64 C150 58 156 52 162 48 Z"/>
+  </path>
+  <path d="M164 54 C160 64 150 72 136 76 M168 58 C164 66 156 72 146 76" stroke="#8d887f" stroke-width=".6" fill="none" opacity=".7"/>
+
+  <!-- head: face in profile, nose, eye, moustache -->
+  <path d="M158 34 C168 30 178 34 180 44 C182 50 180 54 176 56 C170 58 162 56 158 50 C155 45 155 38 158 34 Z" fill="url(#skin)"/>
+  <path d="M179 42 C184 44 186 47 182 49 C180 50 178 49 178 48" fill="#d9a07a" stroke="#8a5a3e" stroke-width=".5"/>
+  <ellipse cx="173" cy="42" rx="2.2" ry="1.5" fill="#f4efe6"/><circle cx="174" cy="42" r="1" fill="#1d2a3a"/><circle cx="174.3" cy="41.6" r=".3" fill="#fff"/>
+  <path d="M168 38 C171 36 175 36 177 37" stroke="#e8e4dc" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  <path d="M168 51 C172 49 178 50 181 52 C177 54 171 54 168 51 Z" fill="#eeeae2"/>
+  <path d="M158 34 C168 30 178 34 180 44" stroke="#ffb26b" stroke-width=".9" fill="none" opacity=".75"/>
+  <!-- white hair at the back of the head -->
+  <path d="M158 36 C152 40 150 48 154 54 C150 52 146 46 148 40 Z" fill="#dcd8d0"/>
+
+  <!-- tall pointed hat, bent back by the wind, with a brim and a band -->
+  <path d="M148 34 C156 26 172 24 186 30 C176 32 164 34 148 36 Z" fill="#1a1846"/>
+  <path d="M152 32 C147 22 134 10 116 6 C132 13 152 21 178 29 Z" fill="url(#hat)">
+    <animateTransform attributeName="transform" type="rotate" values="0 158 31;-2 158 31;0 158 31" dur="1.2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M154 30 C156 27 166 26 172 28" stroke="#c9a14a" stroke-width="2.2" fill="none"/>
+  <path d="M148 34 C156 26 172 24 186 30" stroke="#ff9b45" stroke-width=".9" fill="none" opacity=".7"/>
+  <circle cx="134" cy="16" r="1.2" fill="#f6dd8f" opacity=".85"/><circle cx="146" cy="22" r=".9" fill="#f6dd8f" opacity=".75"/>
+</svg>

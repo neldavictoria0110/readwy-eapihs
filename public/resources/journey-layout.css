@@ -1,0 +1,134 @@
+/* Full-screen station/page layout guard.
+   Top information frames share one band, same size, centered, no overlap.
+   Decorative station art stays behind; ticket has no visible right scrollbar. */
+:root{
+ --rw-pf-gap:clamp(8px,1.2vw,18px);
+ --rw-pf-card-h:clamp(86px,12dvh,118px);
+ --rw-pf-header:calc(var(--rw-pf-card-h) + 16px);
+ --rw-pf-title:0px;
+}
+@media(max-aspect-ratio:1/1){
+ :root{--rw-pf-card-h:clamp(74px,10dvh,96px);--rw-pf-header:calc(var(--rw-pf-card-h) * 2 + 22px);--rw-pf-title:0px}
+}
+
+.pf{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden!important}
+
+/* Three equal top frames, centered in one row. */
+.pf .pf-top{
+ position:absolute!important;top:0!important;left:50%!important;right:auto!important;
+ width:min(94vw,1180px)!important;height:var(--rw-pf-header)!important;
+ transform:translateX(-50%)!important;box-sizing:border-box!important;
+ display:flex!important;justify-content:center!important;align-items:flex-start!important;
+ gap:var(--rw-pf-gap)!important;padding:calc(8px + env(safe-area-inset-top)) clamp(8px,2vw,18px) 8px clamp(72px,7vw,110px)!important;
+ z-index:8!important;pointer-events:none!important;
+}
+.pf .pf-left,.pf .pf-right{
+ display:flex!important;gap:var(--rw-pf-gap)!important;align-items:stretch!important;
+ width:auto!important;height:auto!important;min-width:0!important;flex:0 0 auto!important;
+}
+.pf .pf-top>*{pointer-events:auto!important}
+.pf .pf-psign,.pf .pf-clock,.pf .pf-announce{
+ position:relative!important;inset:auto!important;margin:0!important;
+ width:min(30vw,360px)!important;min-width:0!important;max-width:none!important;
+ height:var(--rw-pf-card-h)!important;min-height:var(--rw-pf-card-h)!important;
+ box-sizing:border-box!important;overflow:hidden!important;
+ display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;
+ text-align:center!important;padding:10px 14px!important;border-radius:12px!important;
+}
+.pf .pf-brand,.tw-plat .hd-sign.r{display:none!important} /* avoids duplicate READwy frame/text */
+.pf .pf-psign small,.pf .pf-clock small,.pf .pf-announce b{
+ display:block!important;margin:0 0 4px!important;
+ font:700 clamp(10px,.85vw,13px)/1.15 system-ui,sans-serif!important;
+ letter-spacing:.14em!important;white-space:nowrap!important;
+}
+.pf .pf-psign b,.pf .pf-clock b{
+ display:block!important;margin:0!important;
+ font:700 clamp(24px,2.3vw,34px)/1.05 Georgia,serif!important;
+ letter-spacing:.02em!important;
+}
+.pf .pf-psign span,.pf .pf-clock span,.pf .pf-announce .pf-line{
+ display:block!important;margin-top:4px!important;
+ font:600 clamp(11px,.9vw,14px)/1.25 system-ui,sans-serif!important;
+ max-width:100%!important;
+}
+.pf .pf-announce .pf-line{
+ max-height:2.5em!important;overflow:hidden!important;text-overflow:ellipsis!important;
+ display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;
+}
+.pf .pf-listen{margin-top:6px!important;padding:4px 10px!important;min-height:26px!important;font-size:11px!important;line-height:1!important}
+.pf .pf-clock{grid-template-columns:1fr!important;grid-template-areas:none!important;gap:2px!important}
+.pf .pf-clock small,.pf .pf-clock b,.pf .pf-clock span{grid-area:auto!important}
+
+/* "Your Learning Journey" title removed; keep cap hidden so ticket moves up. */
+.pf .pf-cap{display:none!important;height:0!important;margin:0!important;padding:0!important}
+
+/* Station frame sits in the middle band only. */
+.tw-plat .tw-frame,.tw-plat .tw-alt .tw-frame{
+ left:7vw!important;right:7vw!important;
+ top:calc(var(--rw-pf-header) + var(--rw-pf-title) + var(--rw-pf-gap))!important;
+ bottom:calc(var(--rw-pf-header) + 18px)!important;z-index:2!important;
+}
+.tw-plat .tw-table,.tw-plat .tw-alt .tw-table{height:calc(var(--rw-pf-header) + 10px)!important;z-index:1!important}
+
+/* Ticket: bottom band, no visible scrollbar. */
+.pf .pf-ticket,.tw-plat .pf-ticket{
+ left:50%!important;top:auto!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;
+ width:min(94vw,1240px)!important;max-height:calc(100dvh - var(--rw-pf-header) - var(--rw-pf-title) - 34px)!important;
+ overflow:auto!important;scrollbar-width:none!important;-ms-overflow-style:none!important;
+ box-sizing:border-box!important;z-index:6!important;
+}
+.pf .pf-ticket::-webkit-scrollbar,.tw-plat .pf-ticket::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
+.pf .pf-ticket:not(.in){transform:translate(-50%,130%) rotate(-1deg)!important}
+.pf .pf-ticket.in,.tw-plat .pf-ticket.in{transform:translate(-50%,0) rotate(-1deg)!important}
+
+/* Back button stays top-left and clear of the top frames. */
+.journey>.back,main>.back,#rwStage .back{
+ position:fixed!important;top:calc(10px + env(safe-area-inset-top))!important;left:10px!important;bottom:auto!important;
+ z-index:40!important;max-width:min(16vw,120px)!important;white-space:nowrap!important;
+}
+
+/* Phone: stack three equal frames, keep them readable and non-overlapping. */
+@media(max-aspect-ratio:1/1){
+ .pf .pf-top{width:min(96vw,560px)!important;display:grid!important;grid-template-columns:1fr 1fr;grid-template-rows:var(--rw-pf-card-h) var(--rw-pf-card-h)!important;gap:8px!important}
+ .pf .pf-left,.pf .pf-right{display:contents!important}
+ .pf .pf-psign{grid-column:1;grid-row:1;width:100%!important}
+ .pf .pf-clock{grid-column:2;grid-row:1;width:100%!important}
+ .pf .pf-announce{grid-column:1/span 2;grid-row:2;width:100%!important}
+ .journey>.back,main>.back,#rwStage .back{top:calc(var(--rw-pf-header) + 8px)!important;max-width:28vw!important}
+}
+
+/* Phones held sideways (short landscape screens, iPhone and Android):
+   the top frames leave room for the Back button (left) and the READwy badge (right),
+   and the ticket is drawn a little smaller so every stop, with its name, fits without hidden scrolling. */
+@media (orientation:landscape) and (max-height:500px){
+ .pf .pf-top{padding-left:calc(118px + env(safe-area-inset-left))!important;padding-right:calc(58px + env(safe-area-inset-right))!important}
+ .pf .pf-psign,.pf .pf-clock,.pf .pf-announce{width:calc((100vw - 196px - env(safe-area-inset-left) - env(safe-area-inset-right)) / 3)!important;min-width:0!important;box-sizing:border-box!important}
+ .pf .pf-left,.pf .pf-right{min-width:0!important}
+ .journey>.back,main>.back,#rwStage .back{max-width:108px!important}
+ /* compact ticket: every stop card, number and name stays inside the ticket */
+ .tw-plat .tk-card{height:auto!important;padding-bottom:6px!important}
+ .tw-plat .tk-top{padding-top:4px!important;padding-bottom:4px!important}
+ .tw-plat .tk-mid{margin:4px 2.2vw!important;padding:2px 0!important}
+ .tw-plat .tk-title b{font-size:22px!important}
+ .tw-plat .tk-title em{font-size:11px!important}
+ .tw-plat .tk-class{width:38px!important;height:38px!important;font-size:18px!important}
+ .tw-plat .tk-class small{display:none!important}
+ .tw-plat .tk-label{margin-bottom:4px!important;font-size:9px!important}
+ .tw-plat .pf-dest{padding:4px .4vw 5px!important;gap:2px!important;font-size:10px!important}
+ .tw-plat .pf-dest:before,.tw-plat .pf-dest .hole{width:16px!important;height:16px!important}
+ .tw-plat .pf-dest .hole{margin-left:-8px!important}
+ .tw-plat .pf-dest b{font-size:18px!important}
+ .tw-plat .tk-foot{display:none!important}
+ .tw-plat .pf-stub .pf-thumb{width:auto!important;height:min(19vh,64px)!important}
+}
+/* Very narrow phones (iPhone SE and similar): two readable frames instead of three squeezed ones. */
+@media (orientation:landscape) and (max-height:500px) and (max-width:700px){
+ .pf .pf-clock{display:none!important}
+ .tw-plat .pf-go,.pf .pf-go{max-width:100%!important;white-space:normal!important;line-height:1.15!important;font-size:11px!important;padding:5px 8px!important;box-sizing:border-box!important}
+ .pf .pf-psign,.pf .pf-announce{width:calc((100vw - 188px - env(safe-area-inset-left) - env(safe-area-inset-right)) / 2)!important}
+}
+
+/* GST/landscape book controls keep separate rows. */
+.gst-book-canvas[data-scene="test"] .gst-backdrop-toolbar,
+.gst-book-canvas[data-scene="results"] .gst-backdrop-toolbar{top:calc(100% - 112px)!important;height:104px!important}
+.gst-book-canvas[data-scene="test"] .gst-page-hotspots{top:calc(100% - 214px)!important;height:96px!important}

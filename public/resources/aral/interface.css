@@ -1,0 +1,68 @@
+#app:has(.aral-screen){overflow:hidden;padding:0;scroll-padding-bottom:0}
+#app:has(.aral-screen)~#nav{display:none}
+.aral-screen{position:absolute;inset:0;overflow:hidden;background:#163b2a}
+.aral-board{position:relative;width:100%;height:100%;container-type:inline-size}
+.aral-art,.aral-living-owl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;image-rendering:auto}
+.aral-art,.aral-living-owl{object-fit:fill}
+.aral-control{position:absolute;border:0;padding:0;background:transparent;cursor:pointer;border-radius:30px;color:transparent}
+.aral-control:focus-visible{outline:3px solid #fff3aa;outline-offset:2px}
+.aral-control:hover,.aral-control:active{background:transparent;box-shadow:none;filter:none;backdrop-filter:none}
+.aral-input{position:absolute;border:0;background:transparent;padding:0 1%;color:#3c2718;font:2cqw Georgia,serif;border-radius:8px;min-width:0}
+.aral-input:focus{outline:2px solid #14734e}
+.aral-message{position:absolute;bottom:1%;left:24%;width:52%;color:#fff8de;text-shadow:0 1px 4px #000,0 1px 6px #000;font:1.3cqw/1.3 system-ui;text-align:center;margin:0;pointer-events:none}
+.aral-feedback-copy{position:absolute;left:30%;top:35%;width:40%;height:28%;background:#ffedc8;color:#372416;font:1.8cqw/1.4 Georgia,serif;text-align:center;padding:1%;box-sizing:border-box;border-radius:8px;overflow:auto}
+.aral-feedback-copy p{margin:0 0 3%}.aral-feedback-copy span{display:inline-block;margin:1%;padding:1%;border-bottom:1px solid #b48c51}
+.aral-progress-count{position:absolute;border-radius:50%;background:radial-gradient(circle,#705024,#402612);color:#ffecac;display:grid;place-items:center;font:bold 1.8cqw Georgia,serif;pointer-events:none;box-shadow:inset 0 0 0 2px #efc561}
+.aral-task-check{position:absolute;color:#ffefba;text-shadow:0 1px 3px #164b26;font:bold 2cqw system-ui;pointer-events:none}
+.aral-board:has(>.aral-art[src="output/aral/6.png"])>.aral-task-check{display:none}
+.aral-living-owl{animation:aralOwlBreathe 3.8s ease-in-out infinite;transform-origin:var(--owl-x) var(--owl-y);mask-image:radial-gradient(ellipse var(--owl-w) var(--owl-h) at var(--owl-x) var(--owl-y),#000 65%,transparent 100%)}
+@keyframes aralOwlBreathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.35%) scale(1.012)}}
+@media(prefers-reduced-motion:reduce){.aral-living-owl{animation:none}}
+html.reduced-motion .aral-living-owl{animation:none}
+.aral-owl-blinks{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform-origin:var(--owl-x) var(--owl-y);animation:aralOwlBreathe 3.8s ease-in-out infinite}
+.aral-eyelid{transform-box:fill-box;transform-origin:center top;transform:scaleY(0);animation:aralOwlBlink 6.4s linear infinite}
+@keyframes aralOwlBlink{0%,41%,45%,48%,52%,100%{transform:scaleY(0)}43%,50%{transform:scaleY(1)}}
+@media(prefers-reduced-motion:reduce){.aral-eyelid,.aral-owl-blinks{animation:none}}
+html.reduced-motion .aral-eyelid,html.reduced-motion .aral-owl-blinks{animation:none}
+/* Content sits inside the existing painted activity frame. */
+.aral-lesson-title{position:absolute;left:28.7%;top:19.4%;width:42%;height:6.6%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15cqw;box-sizing:border-box;padding:.25cqw .8cqw;margin:0;background:transparent;color:#382416;text-align:center;overflow:hidden}
+.aral-lesson-title small{display:block;font:600 .8cqw/1.1 system-ui;flex:none}
+.aral-lesson-title span{display:block;max-width:100%;font:bold 1.65cqw/1.08 Georgia,serif;overflow-wrap:anywhere}
+.aral-lesson-counter{position:absolute;left:73.7%;top:21.7%;width:6.3%;height:4.5%;background:transparent;color:#fff7d7;display:grid;place-items:center;font:bold 2cqw Georgia,serif}
+.aral-lesson-guidance{position:absolute;left:12.7%;top:27.7%;width:13.1%;height:16.2%;background:#fff2d0;color:#342519;display:grid;place-items:center;box-sizing:border-box;padding:1%;text-align:center;font:1.35cqw/1.3 Georgia,serif}
+.aral-lesson-sheet{position:absolute;left:28.8%;top:27%;width:42.5%;height:42.4%;background:#ffedc8;color:#372719;box-sizing:border-box;padding:1.2%;overflow:auto;overscroll-behavior:contain;font:clamp(13px,1.15cqw,19px)/1.5 system-ui;scrollbar-color:#987841 #ffedc8}
+.aral-lesson-navigation{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid #c7a56c;padding-bottom:9px;margin-bottom:12px}
+.aral-lesson-navigation>label{font-weight:600}.aral-lesson-navigation>select{flex:1;min-width:130px;max-width:100%}.aral-lesson-navigation>small{font-size:.8em}
+.aral-lesson-sheet select,.aral-lesson-sheet input,.aral-lesson-sheet textarea{font:inherit;color:#372719;box-sizing:border-box;border:1px solid #b49664;border-radius:4px;background:#fffaf0;max-width:100%;padding:6px}
+.aral-lesson-sheet textarea,.aral-lesson-sheet label>select{display:block;width:100%;margin-top:5px}
+.aral-lesson-sheet textarea{resize:vertical;min-height:70px}
+.aral-lesson-sheet form>label{display:block;margin:14px 0}
+.aral-lesson-sheet fieldset{border:0;padding:0;margin:16px 0}.aral-lesson-sheet legend{font-weight:600;margin-bottom:5px}
+.aral-check{display:flex;align-items:flex-start;gap:9px;margin:10px 0}.aral-check input{flex:none;width:18px;height:18px;accent-color:#176447;margin-top:3px}
+.aral-lesson-sheet details{margin:12px 0}.aral-lesson-sheet summary{cursor:pointer;font-weight:700;padding:6px 0}
+.aral-passage{font:1.14em/1.8 Georgia,serif}.aral-passage p{margin:14px 0}
+.aral-workbook-figure{display:block;max-width:100%;height:auto;margin:14px auto}.aral-lesson-sheet a{color:#12536b;text-decoration:underline}
+.aral-table-wrap{overflow-x:auto;margin:14px 0}.aral-table-wrap table{border-collapse:collapse;width:100%;font-size:.9em}.aral-table-wrap th,.aral-table-wrap td{border:1px solid #ad8a54;padding:5px;text-align:left;min-width:75px}.aral-table-wrap td input{width:100%;min-width:65px}.aral-table-wrap th{font-weight:600}
+.aral-drawing canvas{display:block;width:100%;height:auto;aspect-ratio:3;border:1px solid #b49664;background:#fffaf0;touch-action:none;cursor:crosshair}.aral-drawing button{border:0;background:transparent;color:#244e3a;text-decoration:underline;cursor:pointer;font:inherit;margin-top:4px}
+.aral-lesson-validation{color:#8d2419;font-weight:600}.aral-lesson-feedback h2{margin-top:0}.aral-lesson-feedback img{max-width:100%;background:#fffaf0}.aral-lesson-feedback p{white-space:pre-wrap;overflow-wrap:anywhere}
+.aral-lesson-action-label{position:absolute;left:42%;top:72.5%;width:16%;height:4.3%;background:#087c4d;color:#fffbe7;font:bold 2.3cqw Georgia,serif;text-align:center;pointer-events:none}
+.aral-form-submit{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);border:0}
+.aral-form-submit:focus-visible{position:static;width:auto;height:auto;clip-path:none;padding:8px}
+.aral-session-name{position:absolute;display:flex;align-items:center;box-sizing:border-box;padding:0 .3cqw;background:transparent;color:#13271b;font:700 2cqw/1.05 "Arial Narrow","Trebuchet MS",Arial,sans-serif;pointer-events:none;overflow:hidden}
+.aral-session-name>span{display:block;white-space:nowrap;flex:none;transform-origin:left center;letter-spacing:-.025em}
+.aral-association-word{position:absolute;left:38.5%;top:38.8%;width:23%;height:6%;display:grid;place-items:center;color:#fff4d7;text-shadow:0 2px 3px #291608;font:bold 3.2cqw Georgia,serif;pointer-events:none}
+.aral-session-complete{position:absolute;color:#19623c;font:bold 2.5cqw system-ui;pointer-events:none}
+.aral-task-card-label{position:absolute;box-sizing:border-box;padding:.4cqw;background:#ffedc5;color:#3d2416;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;pointer-events:none}
+.aral-task-card-label small{font:bold 1.6cqw/1.1 Georgia,serif}.aral-task-card-label strong{font:bold 1.5cqw/1.15 Georgia,serif;margin-top:.3cqw}
+.aral-task-card-symbol{position:absolute;display:grid;place-items:center;background:#ffedc5;pointer-events:none}
+.aral-task-card-symbol svg{width:84%;height:96%;overflow:visible}
+.aral-menu-check{position:absolute;pointer-events:none;color:#146b3b;font:bold 2.5cqw system-ui}
+.aral-menu-review{position:absolute;pointer-events:none;background:#087d4c;color:#fff6d6;text-align:center;font:bold 2.4cqw/1.1 Georgia,serif}
+.aral-task-pagination{position:absolute;left:17%;top:70.6%;width:67.5%;height:3.7%;display:flex;align-items:center;justify-content:space-between;color:#583219;text-shadow:none;font:600 1.15cqw Georgia,serif}
+.aral-task-pagination button{width:auto;height:100%;aspect-ratio:1;min-width:20px;min-height:20px;flex:none;padding:0;border:1px solid #cba056;border-radius:50%;background:#123c35;color:#ffebad;font:2.3cqw/1 Georgia,serif;cursor:pointer;box-shadow:none}
+.aral-task-pagination button:disabled{opacity:.4;cursor:default}.aral-task-pagination button:focus-visible{outline:2px solid #fff3ba;outline-offset:3px}
+.aral-summary-response-count,.aral-summary-completion,.aral-summary-directions,.aral-summary-next-count{position:absolute;box-sizing:border-box;display:grid;align-items:center;color:#322617;pointer-events:none}
+.aral-summary-response-count{left:50%;top:34.3%;width:14.5%;height:4%;background:#ffedc5;font:600 1.2cqw system-ui}
+.aral-summary-completion{left:65.8%;top:35.8%;width:5.4%;height:6.5%;background:#ffedc5;font:600 1.1cqw/1.2 system-ui}
+.aral-summary-directions{left:50.6%;top:56%;width:20%;height:7.4%;background:#ffedc5;font:600 1.4cqw/1.2 system-ui}
+.aral-summary-next-count{left:51.5%;top:65.5%;width:17.8%;height:3.8%;background:#073b46;color:#fff4cb;text-align:center;font:600 1.2cqw system-ui}

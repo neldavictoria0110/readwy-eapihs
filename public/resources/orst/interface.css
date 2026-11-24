@@ -1,0 +1,290 @@
+.orst-interface-screen{position:relative;width:100%;height:var(--landscape-height);overflow:hidden;background:#071629}
+.orst-interface-board{position:absolute;left:0;top:0;width:1672px;height:941px;transform-origin:0 0}
+.orst-interface-backdrop{display:block;width:1672px;height:941px;user-select:none;pointer-events:none}
+.orst-art-control{position:absolute;z-index:3;padding:0;border:0;background:transparent;color:transparent;font-size:0;cursor:pointer;border-radius:12px}
+.orst-art-control:hover{box-shadow:0 0 18px #ffdb8077;outline:1px solid #ffdf8d80}
+.orst-art-control:focus-visible{outline:3px solid #fff0ae;outline-offset:3px}
+.orst-art-control[aria-pressed=true]{box-shadow:inset 0 0 0 3px #ffe9a099,0 0 15px #ffdc6a66}
+.orst-grade-control{left:196px;width:286px;height:73px}
+.orst-grade-7{top:327px}.orst-grade-8{top:420px}.orst-grade-9{top:511px}.orst-grade-10{top:603px}
+.orst-microphone-control{left:1391px;top:474px;width:128px;height:126px;border-radius:50%}
+.orst-microphone-control[aria-pressed=true]{box-shadow:0 0 30px 9px #8eeaff,inset 0 0 15px #fff7bb}
+.orst-step-control{top:781px;width:132px;height:104px}
+.orst-step-read{left:564px}.orst-step-record{left:716px}.orst-step-questions{left:871px}.orst-step-results{left:1030px}
+.orst-wst-link{position:absolute;z-index:4;left:1350px;top:715px;width:222px;min-height:54px;display:flex;align-items:center;justify-content:center;gap:18px;padding:10px 22px;border:2px solid #e5bc62;border-radius:9px;background:linear-gradient(180deg,#224e72,#091d3d 65%,#132b48);box-shadow:inset 0 0 0 2px #ffd68235,inset 0 1px 5px #fff1c555,0 4px 12px #020b1d88;color:#ffe8a4;font:700 24px/1.2 Georgia,serif;letter-spacing:.06em;text-shadow:0 1px 3px #020919;cursor:pointer;transition:filter .2s,box-shadow .2s}
+.orst-wst-link:hover{filter:brightness(1.18);box-shadow:inset 0 0 0 2px #ffd68255,0 0 20px #e8bb5c88}
+.orst-wst-link:focus-visible{outline:3px solid #fff0ae;outline-offset:4px}
+.orst-passage-copy{position:absolute;left:0;top:0;width:640px;height:440px;padding:10px 14px;transform-origin:0 0;overflow:auto;scrollbar-width:thin;scrollbar-color:#aa8044 transparent;color:var(--orst-ink,#173c73);font:24px/1.45 Georgia,serif;overscroll-behavior:contain;touch-action:pan-y;background:transparent;border:0;box-shadow:none}
+.orst-passage-copy h2{font:700 29px/1.15 Georgia,serif;text-align:center;margin:2px 0 13px;color:inherit}
+.orst-passage-copy p{margin:0 0 12px}
+.orst-passage-copy{font-weight:700}
+.orst-passage-picker{width:100%;padding:0 18px 4px 0;border:0;border-radius:0;background:transparent;color:inherit;font:19px Georgia,serif;text-align:center}
+.orst-passage-meta{font-size:16px;color:#77552b;text-align:center}
+.orst-passage-copy label{display:block;font-size:18px;margin:10px 0}
+.orst-passage-copy input,.orst-passage-copy textarea{width:100%;padding:6px;border:1px solid #ad8c57;background:transparent;color:inherit;font:18px Georgia,serif;border-radius:3px}
+.orst-passage-copy input[type=number]{width:100px;margin-left:8px}
+.orst-passage-copy audio{max-width:100%;height:32px}
+.orst-live-status{font-size:18px;font-style:italic;color:#725127}
+.orst-interface-screen .page-status{position:absolute;left:34%;top:65%;width:27%;margin:0;color:#6c4125;background:#fff0cbe8;font:16px Georgia,serif;z-index:5}
+.orst-welcome-copy{left:0!important;top:0!important;width:650px!important;height:660px!important;transform-origin:0 0;animation:none!important;padding:16px 24px}
+.orst-welcome-copy h1{font-size:54px;margin:12px 0}
+.orst-welcome-copy h2{font-size:34px}
+.orst-welcome-description{margin:20px 0}
+/* ORST welcome uses the user's original artwork with invisible click targets. */
+.orst-artwork-welcome .orst-welcome-artboard{width:1672px;height:941px;background:none}
+.orst-welcome-original{display:block;width:1672px;height:941px;pointer-events:none;user-select:none}
+.orst-welcome-hit{position:absolute;z-index:2;padding:0;margin:0;border:0;background:transparent;box-shadow:none;color:transparent;cursor:pointer}
+.orst-welcome-hit:focus-visible{outline:3px solid #ffe39a;outline-offset:3px;border-radius:18px}
+.orst-welcome-begin{left:890px;top:518px;width:420px;height:90px;border-radius:45px}
+.orst-welcome-book{left:770px;top:322px;width:88px;height:90px;border-radius:50%}
+.orst-welcome-mic{left:973px;top:267px;width:245px;height:246px;border-radius:50%}
+.orst-welcome-question{left:1354px;top:320px;width:90px;height:90px;border-radius:50%}
+.orst-welcome-stage{top:765px;width:270px;height:126px}
+.orst-welcome-stage-0{left:165px}.orst-welcome-stage-1{left:510px}.orst-welcome-stage-2{left:875px}.orst-welcome-stage-3{left:1245px}
+/* Match the Journey icon included in the updated ORST artwork. */
+.orst-painted-journey{left:130px;top:760px;width:150px;height:135px;border-radius:25px}
+.orst-welcome-stage-0{left:315px;width:245px}
+.orst-welcome-stage-1{left:580px;width:270px}
+
+/* Subtle breathing is confined to the owl already painted in the welcome art. */
+.orst-painted-owl-life{position:absolute;inset:0;width:1672px;height:941px;pointer-events:none;z-index:1;overflow:visible}
+.orst-painted-blink{transform-box:fill-box;transform-origin:center top;animation:orstPaintedBlink 6.2s linear infinite}
+@keyframes orstPaintedBlink{0%,35%,40%,75%,80%,100%{transform:scaleY(0)}37%,38%,77%,78%{transform:scaleY(1)}}
+@media(prefers-reduced-motion:reduce){.orst-painted-blink{animation:none;transform:scaleY(0)}.orst-welcome-original{filter:none!important}}
+html.reduced-motion .orst-painted-blink{animation:none;transform:scaleY(0)}
+html.reduced-motion .orst-welcome-original{filter:none!important}
+html.page-hidden .orst-painted-blink{animation-play-state:paused}
+
+.orst-grade-choice{top:290px;width:166px;height:268px;border-radius:0;background:transparent;border:0;box-shadow:none}
+.orst-grade-choice:is(:hover,:focus-visible,[aria-pressed="true"]){background:transparent;box-shadow:none;outline:none}
+.orst-grade-choice:after{content:none}
+.orst-grade-backdrop-light{position:absolute;inset:0;width:1672px;height:941px;pointer-events:none;z-index:1;overflow:visible}
+.orst-backdrop-lit-grade,.orst-pressed-passage{opacity:0;transition:opacity .18s ease;filter:none}
+.orst-card-recess{fill:#302013;filter:drop-shadow(0 2px 3px #0009)}
+.orst-card-pressed-art{transform-origin:var(--card-x) var(--card-y);transform:translateY(1px) scale(.985);filter:brightness(.96);transition:transform .18s ease,filter .18s ease}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="7"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-7{opacity:1}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="8"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-8{opacity:1}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="9"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-9{opacity:1}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="10"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-10{opacity:1}
+.orst-passage-backdrop-press{position:absolute;inset:0;width:1672px;height:941px;pointer-events:none;z-index:1;overflow:visible}
+.orst-interface-board:has(.orst-passage-card[data-passage="0"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-0{opacity:1}
+.orst-interface-board:has(.orst-passage-card[data-passage="1"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-1{opacity:1}
+.orst-interface-board:has(.orst-passage-card[data-passage="2"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-2{opacity:1}
+.orst-interface-board:has(.orst-passage-card[data-passage="3"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-3{opacity:1}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="7"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-7 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="8"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-8 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="9"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-9 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+.orst-grade-screen:has(.orst-grade-choice[data-grade="10"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-backdrop-lit-grade-10 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+.orst-interface-board:has(.orst-passage-card[data-passage="0"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-0 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+.orst-interface-board:has(.orst-passage-card[data-passage="1"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-1 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+.orst-interface-board:has(.orst-passage-card[data-passage="2"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-2 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+.orst-interface-board:has(.orst-passage-card[data-passage="3"]:is(:hover,:focus-visible,[aria-pressed="true"])) .orst-pressed-passage-3 .orst-card-pressed-art{transform:translateY(4px) scale(.945);filter:brightness(.86)}
+@media(prefers-reduced-motion:reduce){.orst-backdrop-lit-grade,.orst-pressed-passage,.orst-card-pressed-art{transition:none}}
+html.reduced-motion :is(.orst-backdrop-lit-grade,.orst-pressed-passage,.orst-card-pressed-art){transition:none}
+
+.orst-grade-start{left:875px;top:660px;width:433px;height:82px;border-radius:44px}
+.orst-grade-home{left:1454px;top:8px;width:189px;height:55px}
+.orst-grade-journey{left:31px;top:811px;width:158px;height:101px}
+.orst-hall-morph{position:fixed;inset:0;z-index:1000;overflow:hidden;pointer-events:auto;background:#112739;isolation:isolate}
+.orst-hall-morph-source{position:absolute;inset:0;transform-origin:65% 46%;animation:orstHallSource 2800ms cubic-bezier(.35,0,.15,1) both}
+.orst-hall-morph-destination{position:absolute;inset:0;transform-origin:65% 46%;animation:orstHallUnfold 2800ms cubic-bezier(.35,0,.15,1) both}
+.orst-hall-morph-light{position:absolute;inset:-20%;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(ellipse at 63% 46%,#fff4c2cc 0%,#e9bf7766 15%,#8cdcff22 35%,transparent 60%);animation:orstHallLight 2800ms ease both}
+.orst-hall-arriving{opacity:0}.orst-hall-loading *{animation-play-state:paused!important}
+@keyframes orstHallSource{0%,12%{opacity:1;transform:scale(1);filter:blur(0)}55%{opacity:.7}90%,100%{opacity:0;transform:scale(1.16);filter:blur(5px)}}
+@keyframes orstHallUnfold{0%,10%{opacity:0;clip-path:ellipse(0% 0% at 65% 46%);transform:scale(.94);filter:brightness(1.5)}32%{opacity:1;clip-path:ellipse(18% 25% at 65% 46%)}85%,100%{opacity:1;clip-path:ellipse(110% 120% at 65% 46%);transform:scale(1);filter:brightness(1)}}
+@keyframes orstHallLight{0%{opacity:0;transform:scale(.3)}38%{opacity:1}70%{opacity:.5}100%{opacity:0;transform:scale(1.4)}}
+@media(prefers-reduced-motion:reduce){.orst-hall-morph{display:none}.orst-hall-arriving{opacity:1}}
+html.reduced-motion .orst-hall-morph{display:none}html.reduced-motion .orst-hall-arriving{opacity:1}
+
+.orst-themed-screen{background:radial-gradient(ellipse,var(--orst-theme),#10131d)}
+.orst-themed-screen .orst-interface-board{background:#18150f}
+.orst-themed-screen .orst-interface-backdrop{object-fit:contain}
+.orst-passage-card{top:318px;width:207px;height:328px;border-radius:32px}
+.orst-passage-card:is(:hover,:focus-visible,[aria-pressed=true]){background:transparent;box-shadow:none;outline:none}
+.orst-confirm-passage{left:814px;top:661px;width:514px;height:81px;border-radius:40px}
+.orst-themed-screen .orst-passage-copy{left:155px;top:185px;width:866px;height:555px;transform:none!important;padding:18px 28px;background:#fff0d3;border-radius:12px;font-size:25px;font-weight:400;box-shadow:0 0 22px #efd8ab}
+.orst-themed-screen [data-stage=questions] .orst-passage-copy{left:584px;top:224px;width:504px;height:568px;padding:15px 22px;font-size:21px}
+.orst-themed-screen [data-stage=results] .orst-passage-copy{left:611px;top:150px;width:450px;height:650px;padding:22px;font-size:22px}
+.orst-themed-screen .orst-passage-copy h2{color:var(--orst-theme)}
+.orst-themed-screen .orst-passage-copy textarea{background:#fff9eb;min-height:70px}
+.orst-themed-screen .orst-passage-copy:focus-visible{outline:3px solid var(--orst-glow)}
+/* Native image-map regions make the painted artwork itself interactive. */
+.orst-grade-screen .orst-welcome-original,.orst-themed-screen .orst-interface-backdrop[usemap]{pointer-events:auto}
+.orst-grade-screen area,.orst-themed-screen area{cursor:pointer}
+/* Reading copy sits directly on the book's parchment, without a panel. */
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy{left:193px;top:205px;width:809px;height:526px;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;color:#12364c;font:27px/1.4 Georgia,serif;scrollbar-width:thin}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy h2{margin:0 0 36px;color:#081b2a;font:bold 46px/1.15 Georgia,serif;text-align:center}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy p{margin:0 0 22px}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-assessment-nav{display:none}
+.orst-reading-clean-plate{position:absolute;inset:0;width:1672px;height:941px;pointer-events:none}
+.orst-painted-grade-label{position:absolute;left:833px;top:74px;width:160px;text-align:center;color:#12364c;font:25px/1.25 Georgia,serif;pointer-events:none}
+.orst-painted-reading-stats{position:absolute;left:1099px;top:617px;width:458px;display:grid;grid-template-columns:repeat(4,1fr);color:#071725;text-align:center;font:bold 38px/1.2 Georgia,serif;pointer-events:none}
+.orst-reading-clean-plate{z-index:0}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy{z-index:1}
+.orst-painted-grade-label,.orst-painted-reading-stats{z-index:1}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy h2{margin-bottom:56px}
+
+/* Start ORST moves into the chosen grade before revealing its passages. */
+.orst-grade-zoom{position:absolute;inset:0;z-index:1000;overflow:hidden;pointer-events:auto;background:#161c1c}
+.orst-grade-departure,.orst-grade-arrival{position:absolute;inset:0;overflow:hidden}
+.orst-grade-departure{transform-origin:var(--orst-grade-focus-x) var(--orst-grade-focus-y);animation:orstGradeDepart 1100ms cubic-bezier(.25,.65,.3,1) both}
+.orst-grade-arrival{animation:orstGradeArrive 1100ms ease both}
+.orst-grade-zoom-loading *{animation-play-state:paused!important}
+@keyframes orstGradeDepart{0%,8%{opacity:1;transform:scale(1)}60%{opacity:.5}100%{opacity:0;transform:scale(1.4)}}
+@keyframes orstGradeArrive{0%,25%{opacity:0}100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.orst-grade-zoom{display:none}}
+html.reduced-motion .orst-grade-zoom{display:none}
+/* Assessments float over the current scene; the book remains in place. */
+.orst-assessment-dialog{position:fixed;inset:0;width:min(620px,88vw);height:min(900px,92dvh);max-height:92dvh;margin:auto;padding:0;border:0;background:#f9e6bd;border-radius:22px;box-shadow:0 22px 90px #0009;overflow:hidden;color:#17394a;animation:orstOverlayArrive .24s ease both}
+.orst-assessment-dialog::backdrop{background:#09172577;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.orst-overlay-art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none}
+.orst-overlay-form{position:absolute;inset:24% 10% 7%;overflow:auto;padding:15px;background:#fff0d6;color:#18394a;font:19px/1.45 Georgia,serif;scrollbar-width:thin}
+.orst-overlay-form h2{margin:0 0 12px;font-size:27px;color:var(--orst-theme)}
+.orst-overlay-question,.orst-overlay-form label{display:block;margin:0 0 22px}
+.orst-overlay-form textarea,.orst-overlay-form input{box-sizing:border-box;width:100%;padding:9px;margin:7px 0;border:1px solid #b58a48;border-radius:5px;background:#fff9e9;color:inherit;font:inherit}
+.orst-overlay-form input[type=number]{width:95px;display:block}
+.orst-overlay-close{position:absolute;z-index:2;right:5%;top:4%;width:48px;height:48px;padding:0;border:2px solid #deb772;border-radius:50%;background:var(--orst-theme);color:#fff3d9;font:38px/1 Georgia,serif;cursor:pointer}
+.orst-overlay-submit{display:block;width:100%;padding:12px;border:2px solid #c5a05a;border-radius:22px;background:var(--orst-theme);color:#fff4d9;font:bold 20px Georgia,serif;cursor:pointer}
+.orst-overlay-close:focus-visible,.orst-overlay-submit:focus-visible{outline:3px solid #b17c22;outline-offset:3px}
+@keyframes orstOverlayArrive{from{opacity:0;transform:translateY(15px) scale(.97)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.orst-assessment-dialog{animation:none}}
+html.reduced-motion .orst-assessment-dialog{animation:none}
+/* Keep the miscue artwork unobstructed; editing follows it in the same dialog. */
+.orst-overlay-results{overflow:auto;scrollbar-width:thin;background:#fff0d6}
+.orst-overlay-results .orst-overlay-art{position:relative;display:block;width:100%;height:auto;object-fit:contain}
+.orst-overlay-results .orst-overlay-form{position:relative;inset:auto;margin:0 8% 7%;padding:20px 0;background:transparent;overflow:visible}
+.orst-overlay-results .orst-overlay-close{position:sticky;float:right;margin:14px 5% -62px 0;top:14px;right:auto}
+.orst-overlay-results .orst-overlay-close{position:absolute;float:none;margin:0;top:4%;right:5%}
+/* Keep comprehension artwork clear, with answers beneath it. */
+.orst-overlay-questions{overflow:auto;scrollbar-width:thin;background:#fff0d6}
+.orst-overlay-questions .orst-overlay-art{position:relative;display:block;width:100%;height:auto;object-fit:contain}
+.orst-overlay-questions .orst-overlay-form{position:relative;inset:auto;margin:0 8% 7%;padding:20px 0;background:transparent;overflow:visible}
+.orst-overlay-questions .orst-overlay-close{position:absolute;margin:0;top:4%;right:5%}
+/* Real comprehension questions are typeset on the original parchment. */
+.orst-comprehension-page{width:min(584px,88vw,calc(92dvh * 584 / 941));height:auto;aspect-ratio:584/941;overflow:hidden;border-radius:18px;background:transparent}
+.orst-comprehension-original,.orst-comprehension-clean{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.orst-comprehension-meta{position:absolute;left:14%;right:13%;top:24.7%;margin:0;display:flex;justify-content:space-between;gap:8px;color:#18394a;font:bold clamp(11px,1.6vw,17px)/1.25 Georgia,serif}
+.orst-comprehension-form{position:absolute;inset:0;color:#18394a;font:clamp(12px,1.7vw,19px)/1.3 Georgia,serif}
+.orst-comprehension-items{position:absolute;left:13%;right:10%;top:30%;bottom:17%;overflow:auto;scrollbar-width:thin}
+.orst-comprehension-items fieldset{min-width:0;border:0;padding:0;margin:0 0 24px}
+.orst-comprehension-items legend{padding:0;margin-bottom:12px;font-weight:bold;line-height:1.35}
+.orst-comprehension-items label{display:flex;align-items:flex-start;gap:9px;margin:6px 0;padding:7px 8px;border:1px solid #b58a4860;border-radius:7px;cursor:pointer}
+.orst-comprehension-items label:has(:checked){background:#dab96c44;border-color:var(--orst-theme)}
+.orst-comprehension-items input[type=radio]{flex:0 0 auto;accent-color:var(--orst-theme);margin:3px 0 0}
+.orst-comprehension-items textarea{width:95%;font:inherit;background:transparent;border:1px solid #b58a48}
+.orst-comprehension-previous,.orst-comprehension-next{position:absolute;top:85%;height:6%;border:0;background:transparent;color:#fff7df;font:bold clamp(12px,1.8vw,20px) Georgia,serif;cursor:pointer}
+.orst-comprehension-previous{left:12.5%;width:27%;color:#765b31}
+.orst-comprehension-next{left:63%;width:28%;padding-right:22px}
+.orst-comprehension-previous:disabled{opacity:.45;cursor:default}
+.orst-comprehension-counter{position:absolute;top:87%;left:44%;width:15%;text-align:center}
+.orst-comprehension-page .orst-overlay-close{top:3%;right:5%;width:42px;height:42px}
+.orst-comprehension-previous:focus-visible,.orst-comprehension-next:focus-visible{outline:2px solid #a57828;border-radius:24px}
+/* Live miscue values use the artwork's category chips and parchment. */
+.orst-miscue-page{width:min(650px,88vw,calc(92dvh * 950 / 1656));height:auto;aspect-ratio:950/1656;overflow:hidden;background:transparent}
+.orst-miscue-original,.orst-miscue-clean{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.orst-miscue-form{position:absolute;inset:0;color:#18394a;font:clamp(12px,1.5vw,16px)/1.3 Georgia,serif}
+.orst-miscue-passage{position:absolute;left:24%;right:20%;top:9.5%;margin:0;color:#fff2ce;text-align:center;font:clamp(13px,1.6vw,19px)/1.25 Georgia,serif;pointer-events:none}
+.orst-miscue-close{position:absolute;z-index:2;left:84%;top:5%;width:10%;height:6%;padding:0;border:0;background:transparent;cursor:pointer}
+.orst-miscue-category{position:absolute;left:25%;width:44%;height:4.8%;padding:0;border:0;background:transparent;cursor:pointer}
+.orst-miscue-category[aria-pressed=true]{box-shadow:inset 0 -2px #92703980}
+.orst-miscue-count{position:absolute;left:71%;width:12%;height:3.25%;box-sizing:border-box;margin:0;padding:0;border:0;background:transparent;text-align:center;color:#174b38;font:bold clamp(15px,2vw,23px) Georgia,serif;appearance:textfield;-moz-appearance:textfield}
+.orst-miscue-count::-webkit-inner-spin-button,.orst-miscue-count::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.orst-miscue-details{position:absolute;left:14%;right:10%;top:56%;bottom:7%;overflow:auto;scrollbar-width:thin}
+.orst-miscue-details h3{margin:0 0 8px;font-size:1.25em;color:var(--orst-theme)}
+.orst-miscue-details p{margin:7px 0}
+.orst-miscue-details label{display:block;margin:9px 0}
+.orst-miscue-details textarea{box-sizing:border-box;width:100%;padding:7px;border:1px solid #b18a4d;border-radius:5px;background:#fff8e544;color:inherit;font:inherit}
+.orst-miscue-details input[type=number]{width:55px;margin:0 4px;padding:3px;border:1px solid #b18a4d;background:transparent;color:inherit;font:inherit}
+.orst-miscue-details .orst-overlay-submit{font-size:16px;padding:8px}
+.orst-miscue-error{color:#9b241b}
+.orst-miscue-close:focus-visible,.orst-miscue-category:focus-visible,.orst-miscue-count:focus-visible{outline:2px solid #b5822c;outline-offset:2px}
+.orst-miscue-category{width:64%}
+.orst-miscue-view{position:relative}
+.orst-miscue-view [hidden]{display:none!important}
+.orst-miscue-collapse{float:right;width:29px;height:29px;margin:0 0 3px 6px;padding:0;border:1px solid #b8904d;border-radius:50%;background:transparent;color:var(--orst-theme);font:bold 24px/1 Georgia,serif;cursor:pointer}
+.orst-miscue-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;font-size:.86em}
+.orst-detection-status{font-size:.85em;color:#665438}
+.orst-miscue-evidence{max-height:105px;overflow:auto;scrollbar-width:thin;font-size:.85em}
+.orst-miscue-evidence table{width:100%;border-collapse:collapse;text-align:left}
+.orst-miscue-evidence th,.orst-miscue-evidence td{padding:4px;border-bottom:1px solid #ba9b6344}
+/* Cut the panels to their gold frames and fit the active landscape scene. */
+.orst-assessment-dialog.orst-fitted-panel{inset:auto;margin:0;padding:0;max-width:none;max-height:none;min-width:0;min-height:0;aspect-ratio:auto;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;filter:drop-shadow(0 10px 22px #0008);animation:orstPanelAppear .22s ease both}
+.orst-panel-canvas{position:absolute;transform-origin:0 0;overflow:hidden;font-family:"Times New Roman",Times,serif}
+.orst-miscue-page .orst-panel-canvas{clip-path:polygon(10% 2.5%,89% 2.5%,94% 3.4%,96.4% 6%,96.4% 94%,94% 96.5%,89% 97%,11% 97%,7% 96%,5.1% 94%,5.1% 6%,6.5% 3.7%)}
+.orst-comprehension-page .orst-panel-canvas{clip-path:polygon(10% 13.3%,89% 13.3%,94% 14.3%,96.2% 17%,96.2% 93%,93% 96%,8% 96%,5.1% 93%,5.1% 17%,7% 14.5%)}
+.orst-fitted-panel .orst-miscue-form{font:30px/1.3 "Times New Roman",Times,serif;color:color-mix(in srgb,var(--orst-theme) 60%,#172a30)}
+.orst-fitted-panel .orst-miscue-passage{font:34px/1.2 "Times New Roman",Times,serif}
+.orst-fitted-panel .orst-miscue-count{font:bold 43px/1 "Times New Roman",Times,serif;color:var(--orst-theme)}
+.orst-fitted-panel .orst-miscue-details h3{font:bold 38px/1.2 "Times New Roman",Times,serif}
+.orst-fitted-panel .orst-miscue-details textarea,.orst-fitted-panel .orst-miscue-details input{font-family:inherit;color:inherit;border-color:color-mix(in srgb,var(--orst-theme) 38%,#c8a461)}
+.orst-fitted-panel .orst-miscue-details input[type=number]{width:90px}
+.orst-fitted-panel .orst-miscue-details .orst-overlay-submit{font:bold 31px/1.2 "Times New Roman",Times,serif;padding:14px}
+.orst-fitted-panel .orst-miscue-evidence{max-height:170px;font-size:.9em}
+.orst-fitted-panel .orst-miscue-collapse{width:48px;height:48px;font-size:40px;border-color:var(--orst-theme)}
+.orst-fitted-panel .orst-miscue-details{scrollbar-color:var(--orst-theme) transparent}
+.orst-fitted-panel .orst-miscue-category[aria-pressed=true]{box-shadow:inset 0 -3px color-mix(in srgb,var(--orst-theme) 50%,transparent)}
+.orst-fitted-panel .orst-comprehension-form{font:21px/1.3 "Times New Roman",Times,serif;color:color-mix(in srgb,var(--orst-theme) 55%,#172a30)}
+.orst-fitted-panel .orst-comprehension-meta{font:bold 18px/1.25 "Times New Roman",Times,serif;color:var(--orst-theme)}
+.orst-fitted-panel .orst-comprehension-previous,.orst-fitted-panel .orst-comprehension-next{font:bold 22px/1 "Times New Roman",Times,serif}
+.orst-fitted-panel .orst-comprehension-items label{border-color:color-mix(in srgb,var(--orst-theme) 28%,#c8a461)}
+.orst-fitted-panel .orst-comprehension-items label:has(:checked){background:color-mix(in srgb,var(--orst-theme) 13%,transparent);border-color:var(--orst-theme)}
+.orst-fitted-panel .orst-overlay-close{top:14.6%;right:7%;width:32px;height:32px;font:28px/1 "Times New Roman",Times,serif}
+.orst-fitted-panel .orst-miscue-summary-view h3{border-bottom:2px solid color-mix(in srgb,var(--orst-theme) 42%,#c8a461);padding-bottom:9px}
+.orst-fitted-panel .orst-miscue-breakdown strong{color:var(--orst-theme)}
+@keyframes orstPanelAppear{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){.orst-assessment-dialog.orst-fitted-panel{animation:none}}
+html.reduced-motion .orst-assessment-dialog.orst-fitted-panel{animation:none}
+.orst-fitted-panel[data-grade="8"] .orst-colored-patch{filter:hue-rotate(-110deg) saturate(1.05)}
+.orst-fitted-panel[data-grade="9"] .orst-colored-patch{filter:hue-rotate(120deg) saturate(1.35) brightness(.8)}
+.orst-fitted-panel[data-grade="10"] .orst-colored-patch{filter:hue-rotate(-145deg) saturate(1.15) brightness(.9)}
+.orst-fitted-panel .orst-miscue-close{border-radius:50%}
+.orst-fitted-panel .orst-miscue-detail-title{border-bottom:2px solid color-mix(in srgb,var(--orst-theme) 42%,#c8a461);padding-bottom:9px}
+/* The category list takes three quarters; its lower box shows one total. */
+.orst-fitted-panel .orst-miscue-category{height:7.3%}
+.orst-fitted-panel .orst-miscue-count{height:4.95%;font-size:48px}
+.orst-fitted-panel .orst-miscue-details{top:76%;bottom:5.5%;display:flex;flex-direction:column;gap:10px}
+.orst-fitted-panel .orst-miscue-view{flex:1;min-height:0;overflow:auto;scrollbar-width:thin}
+.orst-fitted-panel .orst-miscue-summary-view{height:100%;min-height:90px;display:flex;align-items:center;justify-content:center}
+.orst-fitted-panel .orst-miscue-summary{margin:0;text-align:center;font:bold 48px/1.2 "Times New Roman",Times,serif;color:var(--orst-theme)}
+.orst-fitted-panel .orst-miscue-details .orst-overlay-submit{flex:0 0 auto;padding:10px;font-size:29px}
+.orst-fitted-panel .orst-miscue-error:empty{display:none}
+.orst-fitted-panel .orst-miscue-detail-view{font-size:28px}
+.orst-fitted-panel .orst-miscue-detail-view h3{font-size:34px}
+.orst-fitted-panel .orst-miscue-category{display:flex;align-items:center;text-align:left;font:46px/1.1 "Times New Roman",Times,serif;color:#15252e}
+.orst-back-to-passages{position:absolute;z-index:3;left:178px;top:180px;width:140px;min-height:36px;padding:6px 11px;border:1px solid #bd9550;border-radius:5px 18px 18px 5px;background:linear-gradient(110deg,#f7e2b9,#fff1d1 55%,#e9ce98);box-shadow:inset 0 0 0 2px #fff5da77,0 2px 5px #50341126;color:var(--orst-theme);font:bold 18px/1.2 "Times New Roman",Times,serif;cursor:pointer}
+.orst-back-to-passages:hover{filter:brightness(1.12)}
+.orst-back-to-passages:focus-visible{outline:3px solid #b7842e;outline-offset:4px}
+/* Exact circles and an actual audio meter share the painted control positions. */
+.orst-audio-controls-art{position:absolute;inset:0;width:1672px;height:941px;pointer-events:none;z-index:1}
+.orst-reading-meter{position:absolute;z-index:1;left:1119px;top:278px;width:426px;height:33px;display:flex;align-items:center;gap:9px;pointer-events:none;color:#fff0cd}
+.orst-reading-meter canvas{display:block;width:308px;height:32px}
+#orstAudioMeterTime{flex:1;text-align:right;font:18px/1.1 "Times New Roman",Times,serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.orst-audio-controls-art .orst-pause-symbol{display:none}
+.orst-playback-active .orst-audio-controls-art .orst-play-symbol{display:none}
+.orst-playback-active .orst-audio-controls-art .orst-pause-symbol{display:block}
+.orst-recording-active .orst-record-ring,.orst-playback-active .orst-play-ring{stroke:#fff0c4;stroke-width:4}
+.orst-interface-board:has(.orst-record-area:focus-visible) .orst-record-ring,.orst-interface-board:has(.orst-play-area:focus-visible) .orst-play-ring,.orst-interface-board:has(.orst-stop-area:focus-visible) .orst-stop-ring{stroke:#fff7dc;stroke-width:5}
+.orst-record-area,.orst-play-area,.orst-stop-area{outline:none}
+/* The audio strip carries recording status without moving the passage copy. */
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy .orst-live-status{position:absolute;width:1px;height:1px;padding:0;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#orstPaintedElapsed{font-size:32px;font-variant-numeric:tabular-nums}
+/* Titles and the painted top rule stay fixed while long passage text scrolls below. */
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy{overflow:hidden}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy h2{position:absolute;left:0;right:0;top:20px;width:100%;max-height:64px;margin:0;font:bold 40px/1.15 Georgia,serif;white-space:nowrap;overflow:hidden}
+.orst-reading-scroll{position:absolute;left:0;right:0;top:calc(99px + .5in);bottom:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#aa8044 transparent}
+.orst-reading-scroll:focus-visible{outline:none;scrollbar-color:#77521e transparent}
+/* Reference and author notes share a small, consistently spaced footnote style. */
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-reading-body p:last-child{margin-bottom:0}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-reading-reference{margin-top:37.8px;font:normal 10px/1.3 Georgia,serif;overflow-wrap:anywhere}
+.orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-reading-reference p{margin:0;font:inherit}
+/* Resting toolbar art is matte; only a hovered painted control emits light. */
+.orst-selection-clean-layer,.orst-toolbar-hover-art{position:absolute;inset:0;width:1672px;height:941px;pointer-events:none;z-index:1;overflow:visible}
+.orst-toolbar-hover-art{z-index:2}
+.orst-toolbar-hover-light{opacity:0;filter:brightness(1.08) drop-shadow(0 0 6px #f5d38a) drop-shadow(0 0 10px #f5d38a88);transition:opacity .18s ease}
+[data-orst-toolbar-hover="0"] [data-toolbar-light="0"],[data-orst-toolbar-hover="1"] [data-toolbar-light="1"],[data-orst-toolbar-hover="2"] [data-toolbar-light="2"],[data-orst-toolbar-hover="3"] [data-toolbar-light="3"],[data-orst-toolbar-hover="4"] [data-toolbar-light="4"],[data-orst-toolbar-hover="5"] [data-toolbar-light="5"]{opacity:1}
+@media(prefers-reduced-motion:reduce){.orst-toolbar-hover-light{transition:none}}
+html.reduced-motion .orst-toolbar-hover-light{transition:none}
+
+/* Colored passage steps and badge cleanup sit above the painted hover layer. */
+.orst-toolbar-details{position:absolute;inset:0;width:1672px;height:941px;pointer-events:none;z-index:3}
+[data-orst-toolbar-hover="3"] .orst-toolbar-colored-icon:nth-of-type(1),[data-orst-toolbar-hover="4"] .orst-toolbar-colored-icon:nth-of-type(2),[data-orst-toolbar-hover="5"] .orst-toolbar-colored-icon:nth-of-type(3){filter:brightness(1.15) drop-shadow(0 0 6px #f5d38a88)}

@@ -1,0 +1,17 @@
+﻿/* InterV Reading Adventure Dashboard: full-bleed artwork with live values and invisible, clickable hotspots. */
+.ivd-screen{position:relative;width:100%;height:100%;min-height:0;overflow:hidden;background:#071829!important}
+.ivd-board{position:absolute;inset:0;width:100%;height:100%;overflow:hidden}
+.ivd-board>img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.ivd-live{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.ivd-text{font-family:"Segoe UI","Trebuchet MS",Candara,Arial,sans-serif;font-weight:700;fill:#fff}
+.ivd-pct{font-size:44px;letter-spacing:-1px}
+.ivd-count{font-size:25px;letter-spacing:.3px}
+.ivd-hello{font-size:21px}
+.ivd-pts{font-size:23px;fill:#fbdd84}
+.ivd-hit{position:absolute;z-index:3;margin:0;padding:0;border:0;background:transparent;color:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:box-shadow .18s ease,background-color .18s ease}
+.ivd-hit:hover{background:rgba(255,236,170,.10);box-shadow:0 0 0 2px rgba(255,226,140,.75),0 0 18px rgba(255,214,110,.55)}
+.ivd-hit:active{background:rgba(255,236,170,.18)}
+.ivd-hit:focus-visible{outline:3px solid #fff2ae;outline-offset:2px}
+.ivd-hit[aria-pressed="true"]{box-shadow:0 0 0 2px #ffe08a,0 0 22px rgba(255,214,110,.75)}
+.ivd-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(prefers-reduced-motion:reduce){.ivd-hit{transition:none}}

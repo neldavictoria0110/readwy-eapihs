@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <!-- A young witch on a broomstick, flying right: crimson cloak, long dark hair streaming back, sunset rim light. -->
+  <defs>
+    <linearGradient id="shaft2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a5a30"/><stop offset=".5" stop-color="#5a3518"/><stop offset="1" stop-color="#2e1a0a"/>
+    </linearGradient>
+    <linearGradient id="straw2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4a3010"/><stop offset=".6" stop-color="#a87e34"/><stop offset="1" stop-color="#d3aa58"/>
+    </linearGradient>
+    <linearGradient id="cloak2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9c1e2a"/><stop offset=".55" stop-color="#5e0f18"/><stop offset="1" stop-color="#2a050a"/>
+    </linearGradient>
+    <linearGradient id="dress2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b3a2e"/><stop offset="1" stop-color="#0f1a12"/>
+    </linearGradient>
+    <radialGradient id="skin2" cx=".6" cy=".4" r=".7">
+      <stop offset="0" stop-color="#e8b88f"/><stop offset=".7" stop-color="#b97c55"/><stop offset="1" stop-color="#7a4a2e"/>
+    </radialGradient>
+    <linearGradient id="hair2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2416"/><stop offset=".6" stop-color="#1e120a"/><stop offset="1" stop-color="#0c0704"/>
+    </linearGradient>
+    <linearGradient id="hat2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e1e1e"/><stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <filter id="soft2" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".35"/></filter>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter>
+  </defs>
+
+  <ellipse cx="120" cy="112" rx="95" ry="10" fill="#000" opacity=".18" filter="url(#shadow2)"/>
+
+  <!-- crimson cloak streaming behind -->
+  <path d="M120 60 C98 54 72 62 48 54 C32 50 20 58 6 52 C18 68 32 66 44 78 C58 92 84 86 102 94 C110 97 116 92 122 86 Z" fill="url(#cloak2)">
+    <animate attributeName="d" dur="1s" repeatCount="indefinite"
+      values="M120 60 C98 54 72 62 48 54 C32 50 20 58 6 52 C18 68 32 66 44 78 C58 92 84 86 102 94 C110 97 116 92 122 86 Z;
+              M120 60 C98 58 74 56 50 60 C34 62 20 52 4 60 C18 72 34 72 46 82 C60 94 84 88 102 94 C110 97 116 92 122 86 Z;
+              M120 60 C98 54 72 62 48 54 C32 50 20 58 6 52 C18 68 32 66 44 78 C58 92 84 86 102 94 C110 97 116 92 122 86 Z"/>
+  </path>
+  <path d="M112 64 C92 64 68 66 46 62 M106 76 C86 78 64 76 42 72" stroke="#1a0306" stroke-width="1.5" fill="none" opacity=".55"/>
+  <path d="M120 60 C98 54 72 62 48 54 C32 50 20 58 6 52" stroke="#ffa04a" stroke-width="1.3" fill="none" opacity=".8"/>
+
+  <!-- broom -->
+  <path d="M58 100 C40 92 20 90 4 96 C18 100 18 104 4 110 C22 114 42 112 60 106 Z" fill="url(#straw2)"/>
+  <g stroke="#3a250a" stroke-width=".7" opacity=".65" fill="none">
+    <path d="M58 101 C42 96 24 95 8 98"/><path d="M58 103 C40 100 22 101 6 103"/><path d="M58 105 C40 105 22 107 8 108"/><path d="M58 104 C44 108 28 111 12 112"/>
+  </g>
+  <rect x="56" y="98" width="9" height="10" rx="2" fill="#3e240e"/>
+  <path d="M57 100 h7 M57 103 h7 M57 106 h7" stroke="#b98a46" stroke-width="1"/>
+  <path d="M64 101 L226 94 C230 94 232 96 232 98 C232 100 230 102 226 102 L64 107 Z" fill="url(#shaft2)"/>
+  <path d="M64 101 L226 94" stroke="#ffb26b" stroke-width=".9" opacity=".7"/>
+  <path d="M110 103 l20 -.7 M160 101 l18 -.7" stroke="#20110a" stroke-width=".7" opacity=".6"/>
+
+  <!-- legs, boots -->
+  <path d="M120 92 C124 102 134 110 148 112 L154 108 C142 104 134 98 130 88 Z" fill="#101a12"/>
+  <path d="M146 110 C152 115 162 114 166 110 C162 106 154 106 148 108 Z" fill="#160d06"/>
+
+  <!-- body in a dark green dress, leaning forward -->
+  <path d="M110 92 C106 76 112 58 128 50 C142 44 156 50 160 62 C163 74 154 90 142 96 C130 100 116 100 110 92 Z" fill="url(#dress2)"/>
+  <path d="M128 50 C142 44 156 50 160 62" stroke="#ffa04a" stroke-width="1.3" fill="none" opacity=".8"/>
+  <path d="M120 88 C124 76 130 66 142 60" stroke="#050a06" stroke-width="1.3" fill="none" opacity=".6"/>
+  <!-- cloak clasp at the shoulder -->
+  <circle cx="150" cy="54" r="2.4" fill="#e2b04a"/>
+
+  <!-- arm and hand on the broom -->
+  <path d="M150 64 C162 70 172 80 180 90 C183 94 180 98 176 97 C168 90 158 80 148 74 Z" fill="url(#dress2)"/>
+  <ellipse cx="182" cy="96" rx="5.6" ry="4.4" fill="url(#skin2)"/>
+
+  <!-- long hair streaming back in the wind -->
+  <path d="M160 36 C150 38 136 40 120 38 C104 36 92 42 80 40 C94 46 108 48 120 48 C136 48 150 50 158 52 Z" fill="url(#hair2)" filter="url(#soft2)">
+    <animate attributeName="d" dur=".9s" repeatCount="indefinite"
+      values="M160 36 C150 38 136 40 120 38 C104 36 92 42 80 40 C94 46 108 48 120 48 C136 48 150 50 158 52 Z;
+              M160 36 C150 40 136 36 120 40 C104 44 92 38 78 44 C92 48 108 50 120 50 C136 50 150 50 158 52 Z;
+              M160 36 C150 38 136 40 120 38 C104 36 92 42 80 40 C94 46 108 48 120 48 C136 48 150 50 158 52 Z"/>
+  </path>
+  <path d="M156 40 C140 42 124 42 108 41 M156 46 C140 47 124 46 104 45" stroke="#5a3a22" stroke-width=".6" fill="none" opacity=".7"/>
+
+  <!-- face in profile -->
+  <path d="M160 34 C170 30 180 34 182 44 C183 50 181 54 177 56 C171 58 163 56 160 50 C157 45 157 38 160 34 Z" fill="url(#skin2)"/>
+  <path d="M181 43 C185 45 186 47 183 48" fill="#c98c64" stroke="#7a4a2e" stroke-width=".5"/>
+  <ellipse cx="175" cy="42" rx="2.2" ry="1.5" fill="#f6f0e8"/><circle cx="176" cy="42" r="1" fill="#3a2414"/><circle cx="176.3" cy="41.6" r=".3" fill="#fff"/>
+  <path d="M173 38 C175 37 177 37 178 38" stroke="#2a1a12" stroke-width=".7" fill="none"/>
+  <path d="M175 51 C177 52 179 52 180 51" stroke="#8a3a2e" stroke-width=".9" fill="none" stroke-linecap="round"/>
+  <path d="M160 34 C170 30 180 34 182 44" stroke="#ffb26b" stroke-width=".9" fill="none" opacity=".75"/>
+  <path d="M160 34 C156 38 156 46 160 52 C156 50 154 44 155 38 Z" fill="url(#hair2)"/>
+
+  <!-- black pointed hat, bent back -->
+  <path d="M150 34 C158 26 174 24 188 30 C178 32 166 34 150 36 Z" fill="#0c0c0c"/>
+  <path d="M154 32 C149 21 136 8 118 4 C134 11 154 20 180 29 Z" fill="url(#hat2)">
+    <animateTransform attributeName="transform" type="rotate" values="0 160 31;-2.5 160 31;0 160 31" dur="1s" repeatCount="indefinite"/>
+  </path>
+  <path d="M156 30 C158 27 168 26 174 28" stroke="#9c1e2a" stroke-width="2.2" fill="none"/>
+  <path d="M150 34 C158 26 174 24 188 30" stroke="#ffa04a" stroke-width=".9" fill="none" opacity=".7"/>
+</svg>

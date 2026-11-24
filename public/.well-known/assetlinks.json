@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.readwy.app",
+      "sha256_cert_fingerprints": [
+        "F1:BC:6F:5F:53:A0:6F:9C:4E:FE:51:BB:AE:93:C1:1B:9C:FC:B4:75:6A:4D:6A:A7:03:0F:87:50:BE:BA:3E:17"
+      ]
+    }
+  }
+]

@@ -1,0 +1,22 @@
+/* Native image-map interaction; the sole visible interface is the composited supplied artwork. */
+#app:has(.orst-painted-screen){overflow:hidden}
+.orst-painted-screen{position:relative;width:100%;height:var(--landscape-height);min-height:0;overflow:hidden;background:#07172b}
+.orst-painted-board{position:absolute;inset:0;overflow:hidden}
+#orstPaintedArtwork,#orstLiveArtwork{position:absolute;inset:0;display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none}
+#orstPaintedArtwork{pointer-events:none}
+#orstLiveArtwork{opacity:0}
+.orst-screenreader{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:-1px;padding:0;white-space:nowrap}
+
+.orst-artwork-action{position:absolute;z-index:5;background:transparent;border:0;padding:0;cursor:pointer;color:transparent}
+.orst-artwork-action:disabled{cursor:default}
+.orst-artwork-action:focus-visible{outline:3px solid #075ce5;border-radius:12px}
+#orstArtworkPlay{left:14.6%;top:47%;width:10.5%;height:6.6%}
+#orstArtworkDownload{left:27.2%;top:47%;width:9.3%;height:6.6%}
+#orstArtworkPlay[data-stage="6"]{left:25.4%;top:31.4%;width:6.4%;height:10.4%}
+#orstArtworkDownload[data-stage="6"]{left:31%;top:42.5%;width:19%;height:5%}
+
+#orstArtworkPlay{left:16.35%;top:48.75%;width:1.44%;height:3.2%;clip-path:polygon(4% 0%,4% 100%,100% 50%)}
+#orstArtworkPlay[data-stage="6"]{left:25.84%;top:32.2%;width:5.39%;height:9.56%;clip-path:circle(50%)}
+
+.orst-teacher-code{position:absolute;z-index:6;left:24.4%;top:74.05%;width:31.2%;height:5.2%;background:transparent;border:0;border-radius:12px;padding:4px 12px;color:#06114d;font:26px Arial,sans-serif;box-sizing:border-box}
+.orst-teacher-code:focus-visible{outline:2px solid #075ce5}
