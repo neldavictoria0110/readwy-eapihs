@@ -133,6 +133,10 @@
   const offstage = () => safe(() => {
     if (performance.now() - rwMovingAt < 400) return true;
     if (document.hidden || document.documentElement.classList.contains('program-loading')) return true;
+    // Moving between ARAL pages (weeks, platforms, stops) plays the wand cover: the new page is drawn under it
+    // and the cover fades for about a second, so wait until that page change has fully finished.
+    if (typeof navigationBusy !== 'undefined' && navigationBusy) return true;
+    if (document.documentElement.classList.contains('book-traveling')) return true;
     const fr = window.frameElement; // inside the transition's page frame: wait until that frame is the live page
     return !!(fr && fr.classList.contains('rw-frame') && !fr.classList.contains('active'));
   }, false);
@@ -141,7 +145,9 @@
     const view = document.querySelector('.at-view'); if (!view) return;
     const loop = view.querySelector('.at-loop');
     loop.querySelectorAll('.at-set.at-copy').forEach(n => n.remove());
-    const trainW = loop.getBoundingClientRect().width, viewW = view.clientWidth;
+    // Layout sizes (offsetWidth/clientWidth), not getBoundingClientRect: on phones the whole station is scaled down,
+    // and the train moves in unscaled pixels, so a scaled length left the "off-screen" train half inside the frame.
+    const trainW = loop.offsetWidth || loop.getBoundingClientRect().width, viewW = view.clientWidth;
     if (!trainW || !viewW) return;
     const cruise = Math.max(45, viewW / 14);     // steady speed: about 14 seconds to cross the frame
     const stopX = viewW * 0.62 - trainW;         // engine front pauses a little past the middle
