@@ -472,5 +472,7 @@ for (const relativePath of [
 }
 fs.copyFileSync(indexPath, path.join(publicRoot, 'index.html'));
 // build.json tells open pages which version is current (see the update check above). Copy it to render/ too.
-fs.writeFileSync(path.join(publicRoot, 'build.json'), JSON.stringify({ id: buildId, builtAt: new Date().toISOString() }) + '\n');
+const buildJson = JSON.stringify({ id: buildId, builtAt: new Date().toISOString() }) + '\n';
+fs.writeFileSync(path.join(publicRoot, 'build.json'), buildJson);
+fs.writeFileSync(path.join(root, 'build.json'), buildJson); // the same for opening READwy from this folder
 console.log('synchronized embedded app and teacher-report resources for Firebase Hosting (build ' + buildId + ')');
