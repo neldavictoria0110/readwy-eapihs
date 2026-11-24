@@ -102,6 +102,7 @@
   function allows(mod) {
     const key = mod === 'srst' ? 'wst' : mod;
     if (developerView() || !(key in NAMES)) return {ok: true};
+    if (safe(() => currentUser()?.role === 'teacher')) return {ok: true}; // teachers open every stage (the Post-Test route is their dashboard)
     const s = status();
     return s.open[key] ? {ok: true} : {ok: false, message: message(key, s)};
   }

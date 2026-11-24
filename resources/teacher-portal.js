@@ -157,6 +157,7 @@ function readwyTPScopeData(data) {
   };
 }
 let readwyTeacherData = null;
+let readwyTPWaitedForSession = false; // the portal waits once for Firebase to confirm a teacher who just signed in
 let readwyTeacherSelectedStudent = '';
 let readwyTeacherSearch = '';
 let readwyTeacherView = 'overview';
@@ -746,7 +747,16 @@ function readwyRenderTeacherPortal(view = 'dashboard') {
     return;
   }
   if (user?.role !== 'teacher' || !user?.id) {
-    workLayout('Teacher access required', '<p class="notice">Sign in with an administrator-activated teacher account to view student records.</p>');
+    // Coming straight from the start screen's teacher sign-in: wait once for Firebase to confirm
+    // the account (and create a new DepEd teacher's profile) before deciding.
+    if (window.readwyFirebaseReady && !readwyTPWaitedForSession) {
+      readwyTPWaitedForSession = true;
+      workLayout('Teacher records & reports', '<div class="teacher-portal"><p class="tp-loading" role="status">Checking your teacher account…</p></div>');
+      window.readwyFirebaseReady.then(() => readwyRenderTeacherPortal(view), () => readwyRenderTeacherPortal(view));
+      return;
+    }
+    const why = window.readwyFirebaseAuthError || 'Sign in with your verified DepEd (@deped.gov.ph) teacher account to view your learners’ records. New teachers: sign up on the READwy start screen with your DepEd email, open the verification email, then sign in.';
+    workLayout('Teacher access required', `<p class="notice">${readwyTPEscape(why)}</p><p><a class="tp-btn" href="index.html?view=startup">Go to teacher sign in</a></p>`);
     return;
   }
   readwyTeacherView = ['dashboard','sections','assessments','journeys','reports','student'].includes(view) ? view : 'dashboard';
@@ -1072,7 +1082,7 @@ function readwyActivateFirebaseAccounts() {
       originalSignup(role);
       if (role === 'teacher') {
         const panel = app.querySelector('.story-auth.story-register');
-        if (panel) panel.innerHTML = `<p class="story-kicker">Teacher access</p><h1>Teacher account activation</h1><p>Teacher accounts are created by the READwy administrator. Ask your school administrator to provision your account, then return to Sign in.</p><button class="story-enter" type="button" onclick="changeJoiningRole()">Back to sign in</button>`;
+        if (panel) panel.innerHTML = `<p class="story-kicker">Teacher access</p><h1>Teacher sign up</h1><p>Teachers sign up on the READwy start screen with their DepEd email (@deped.gov.ph). Choose Teacher, then Sign up, and open the verification email before you sign in.</p><a class="story-enter" href="index.html?view=startup">Go to teacher sign up</a>`;
       }
     };
     renderSignup = readwyFirebaseSignupWrapper;
@@ -1083,7 +1093,7 @@ function readwyActivateFirebaseAccounts() {
     const status = form.querySelector('.signup-form-status');
     const button = form.querySelector('[type="submit"]');
     if (role !== 'student') {
-      status.textContent = 'Teacher accounts must be activated by the READwy administrator.';
+      status.textContent = 'Teachers sign up on the READwy start screen with their DepEd email (@deped.gov.ph).';
       return;
     }
     if (!form.checkValidity()) {

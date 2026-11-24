@@ -336,10 +336,52 @@ async function signUpStudent(values) {
   }
 }
 
+/* Teacher self sign-up (verified @deped.gov.ph emails only, enforced again by firestore.rules).
+   The start screen's sign-up keeps the teacher's name, subject area and sections in this browser;
+   on the first verified sign-in the teacher profile is created, then one class per chosen section. */
+const TEACHER_EMAIL = /^[a-z0-9._%+-]+@deped\.gov\.ph$/;
+const isDepEdEmail = email => TEACHER_EMAIL.test(normalize(email).toLowerCase());
+function localTeacherSignup(email, chosen) {
+  try {
+    const profiles = JSON.parse(localStorage.getItem('READwy_new_2026_local_studentProfiles') || '{}');
+    const saved = profiles[normalize(email).toLowerCase()];
+    if (saved?.role === 'teacher') return saved;
+    if (saved?.role) return null; // signed up as a student
+  } catch {}
+  try { if (chosen || localStorage.getItem('readwySelectedRole') === 'teacher') return {}; } catch {}
+  return chosen ? {} : null;
+}
+const teacherSignupMessage = 'Teacher accounts need a DepEd email (@deped.gov.ph). Sign up again with your DepEd email, then verify it from your inbox.';
+async function provisionTeacher(authUser, chosen = false) {
+  if (!authUser || !isDepEdEmail(authUser.email)) return null;
+  const local = localTeacherSignup(authUser.email, chosen);
+  if (!local) return null;
+  if (!authUser.emailVerified) throw new Error('Open the verification email sent to your DepEd address first, then sign in again.');
+  const name = normalize(local.name || [local.firstName, local.middleInitial, local.lastName].filter(Boolean).join(' ') ||
+    authUser.displayName || authUser.email.split('@')[0]).slice(0, 100);
+  const profile = { uid: authUser.uid, name, email: authUser.email, role: 'teacher', createdAt: serverTimestamp() };
+  if (allowedAreas.includes(local.learningArea)) profile.learningArea = local.learningArea;
+  await setDoc(doc(db, 'profiles', authUser.uid), profile);
+  currentProfile = { ...profile, createdAt: undefined };
+  const sections = (Array.isArray(local.sections) ? local.sections : []).filter(s => s && s.grade && s.section).slice(0, 30);
+  if (profile.learningArea) {
+    for (const s of sections) {
+      try { await createClassroom({ grade: s.grade, section: s.section, learningArea: profile.learningArea }); }
+      catch (error) { console.warn('READwy: could not create the class for', s, error); }
+    }
+  }
+  return currentProfile;
+}
+
 async function signIn(email, password, expectedRole) {
   const credential = await signInWithEmailAndPassword(auth, normalize(email).toLowerCase(), password);
   try {
-    const snapshot = await getDoc(doc(db, 'profiles', credential.user.uid));
+    let snapshot = await getDoc(doc(db, 'profiles', credential.user.uid));
+    if (!snapshot.exists() && expectedRole === 'teacher') {
+      if (!isDepEdEmail(credential.user.email)) throw new Error(teacherSignupMessage);
+      await provisionTeacher(credential.user, true);
+      snapshot = await getDoc(doc(db, 'profiles', credential.user.uid));
+    }
     if (!snapshot.exists()) throw new Error('This account is not activated for READwy yet. Ask the school administrator to provision it.');
     const profile = snapshot.data();
     if (profile.role !== expectedRole) throw new Error(`This account is registered as ${profile.role}. Choose the matching account type.`);
@@ -437,6 +479,12 @@ async function handleAuthState(authUser) {
     const snapshot = await getDoc(doc(db, 'profiles', authUser.uid));
     if (auth.currentUser?.uid !== authUser.uid) return;
     if (!snapshot.exists()) {
+      // A DepEd teacher who signed up on the start screen: create their teacher profile now.
+      const teacher = await provisionTeacher(authUser).catch(error => { window.readwyFirebaseAuthError = error.message; return null; });
+      if (teacher && auth.currentUser?.uid === authUser.uid) {
+        window.readwySetFirebaseSession?.(authUser, teacher);
+        return;
+      }
       currentProfile = null;
       window.readwySetFirebaseSession?.(null, null);
       return;
