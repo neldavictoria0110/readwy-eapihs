@@ -1,3 +1,4 @@
+
 const gstBook={grade:7,index:-1,busy:false,animation:null,review:false,returnIndex:0};
 // Start a 45-minute attempt when the student clicks Begin test.
 const GST_TIME_LIMIT_MS=45*60*1000;
@@ -36,7 +37,7 @@ function startGSTTimer(restart=false){
 function syncGSTTimer(){
  const state=gstTimerState();
  updateGSTTimer();
- if(state.startedAt!==null&&state.finishedAt===null&&gstTimeRemaining(state)>0&&gstTimerInterval===null)gstTimerInterval=setInterval(updateGSTTimer,250);
+ if(state.startedAt!==null&&state.finishedAt===null&&gstTimeRemaining(state)>0&&gstTimerInterval===null)gstTimerInterval=setInterval(updateGSTTimer,1000);
 }
 function finishGSTTimer(){
  const state=gstTimerState();if(state.startedAt===null||state.finishedAt!==null)return;
@@ -63,6 +64,33 @@ function openGSTBook(){
  spread.addEventListener('pointerup',event=>{if(!start||start.id!==event.pointerId)return;const portrait=document.documentElement.hasAttribute('data-display-portrait'),dx=portrait?event.clientY-start.y:event.clientX-start.x,dy=portrait?event.clientX-start.x:event.clientY-start.y;start=null;if(Math.abs(dx)<55||Math.abs(dx)<Math.abs(dy)*1.4)return;turnGSTPage(dx<0?1:-1);});
  spread.addEventListener('pointercancel',()=>{start=null});
  renderGSTBookSpread();positionGSTBook();app.scrollTo(0,0);
+ gstCatStart();
+}
+/* The cat reads to itself, grows sleepy and dozes off. Answering or turning a page wakes it to read again. */
+const gstCatTimes={read:16000,drowsy:6500};let gstCatTimers=[];
+function gstCatSet(state){const cat=document.getElementById('gstCat');if(!cat)return false;cat.classList.remove('is-reading','is-drowsy','is-asleep');cat.classList.add('is-'+state);return true}
+function gstCatWake(){
+ gstCatTimers.forEach(clearTimeout);gstCatTimers=[];
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('reduced-motion')){gstCatSet('asleep');return}
+ if(!gstCatSet('reading'))return;
+ gstCatTimers=[setTimeout(()=>gstCatSet('drowsy'),gstCatTimes.read),setTimeout(()=>gstCatSet('asleep'),gstCatTimes.read+gstCatTimes.drowsy)];
+}
+/* The owl praises effort only, never whether an answer is right. */
+const GST_OWL_CHEERS={1:'Great start! Keep going.',5:'5 done. Nice work!',10:'10 done. You are doing well!',20:'Halfway there. Keep it up!',30:'Only 10 more. You can do it!',40:'All done! Press Review to check.'};
+let gstCheerTimer=0;
+function gstOwlCheer(text){
+ const bubble=document.getElementById('gstOwlCheer');if(!bubble)return;
+ clearTimeout(gstCheerTimer);bubble.textContent=text;bubble.classList.add('is-on');
+ gstCheerTimer=setTimeout(()=>bubble.classList.remove('is-on'),4200);
+}
+function gstCatStart(){
+ const screen=document.querySelector('.gst-book-screen');if(!screen)return;
+ for(const type of ['pointerdown','keydown'])screen.addEventListener(type,gstCatWake,{passive:true});
+ gstCatWake();
+ setTimeout(()=>gstOwlCheer("Hi, I'm Gus! We will do this together."),900);
+ setTimeout(()=>readwyOwlAuto('gst'),800);
+ document.fonts?.addEventListener?.('loadingdone',()=>fitGSTBookText());
+ ['700 20px Cinzel','400 20px Lora','600 20px Lora','italic 14px Lora'].forEach(font=>document.fonts?.load?.(font));
 }
 function gstBookLayout(width,height){
  // Fill the shared landscape stage with the original artwork and its controls.
@@ -106,15 +134,70 @@ function gstSelectionLayout(passage,grade=gstBook.grade){
   else if(sourceStarted)sources.push(line);else body.push(line);
  }
  const infographic=passage.images.length>0,selection=gstSelectionCopy({...passage,text:body.join('\n')}),details=GST_INFOGRAPHIC_DETAILS[grade];
- return {...selection,title:infographic?details.title:selection.title,infographic,source:sources.join(' ').trim()||(infographic?details.source:'')};
+ const bodyLines=selection.body.split('\n'),authorLines=[];
+ while(bodyLines.length>1&&/^(by\s|from\s+["\u201c]|from greek|([A-Z][a-z]+\s+){1,3}([A-Z]\.\s+)?[A-Z][a-z]+$)/i.test(bodyLines[0].trim())&&bodyLines[0].length<60&&(authorLines.length||/^(by\s|from\s)/i.test(bodyLines[0].trim())||/^([A-Z][a-z]+\s+){1,3}([A-Z]\.\s+)?[A-Z][a-z]+$/.test(bodyLines[0].trim()))&&(authorLines.length===0||/^(by\s|from\s)/i.test(bodyLines[0].trim())))authorLines.push(bodyLines.shift().trim());
+ /* Word counts are dropped, references go to the small credit, writers go under the title. */
+ const kept=[],moved=[],writers=[];let inReferences=false;
+ for(const raw of bodyLines){
+  let line=raw.trim().replace(/\s*\(\d+\s+words\)\s*$/i,'');
+  if(!line)continue;
+  if(/^references?\s*:?$/i.test(line)){inReferences=true;moved.push(line);continue}
+  if(inReferences){moved.push(line);continue}
+  const count=line.match(/^(?:no\.?|number)\s+of\s+words\s*:?\s*\d+\s*(.*)$/i);
+  if(count){line=count[1].trim();if(!line)continue}
+  line=line.replace(/^\((written by [^)]*)\)$/i,'$1');
+  if(/^written by\s/i.test(line)){writers.push(line);continue}
+  if(/^prepared by\s/i.test(line)){moved.push(line);continue}
+  kept.push(line);
+ }
+ const lengths=kept.map(line=>line.length).sort((x,y)=>x-y),prose=lengths.length>0&&lengths[lengths.length>>1]>=60;
+ let paragraphs=kept;
+ if(prose){
+  const numbered=kept.some(line=>/^\[\d+\]$/.test(line));paragraphs=[];
+  for(const line of kept){
+   const last=paragraphs[paragraphs.length-1];
+   const join=last!==undefined&&(numbered?!/^\[\d+\]/.test(line):(/^[a-z]/.test(line)||!/[.!?:"\u201d)]$/.test(last)));
+   if(join)paragraphs[paragraphs.length-1]=last+' '+line;else paragraphs.push(line);
+  }
+ }
+ selection.body=paragraphs.join('\n');selection.prose=prose;
+ selection.author=[...authorLines,...writers].join('\n');
+ const credit=[...moved,...sources].join(' ').replace(/([a-z])(SOURCE:)/g,'$1 $2').trim();
+ return {...selection,title:infographic?details.title:selection.title,infographic,source:credit||(infographic?details.source:'')};
 }
 // Measure actual rendered text in book coordinates, independent of scene scaling.
+/* Long questions take room from the answers; long passages take room from the picture. */
+function gstFlowPage(root){
+ if(!root.classList?.contains('gst-assessment'))return;
+ const frame=root.querySelector('.gst-right .gst-question-frame'),text=frame?.querySelector('.gst-template-question-text'),right=frame?.closest('.gst-right');
+ if(text&&right&&frame.offsetWidth){
+  let size=21;text.style.fontSize=size+'px';
+  while(size>15&&frame.offsetHeight>292){size-=1;text.style.fontSize=size+'px'}
+  const top=12+frame.offsetHeight+10,gap=frame.offsetHeight>150?8:12,each=Math.max(56,Math.min(118,(634-top-3*gap)/4));
+  right.style.setProperty('--opt-top',top+'px');right.style.setProperty('--opt-gap',gap+'px');right.style.setProperty('--opt-h',each+'px');
+  right.querySelectorAll('.gst-template-option-text').forEach(option=>{option.style.fontSize='';for(let s=21;s>=13&&(option.scrollHeight>option.clientHeight+1||option.scrollWidth>option.clientWidth+1);s-=1)option.style.fontSize=s+'px'});
+ }
+ const leftPage=root.querySelector('.gst-left'),title=leftPage?.querySelector('.gst-template-title'),author=leftPage?.querySelector('.gst-template-author');
+ if(!title)return;
+ let top=title.offsetTop+title.offsetHeight+6;
+ if(author){author.style.top=(top-4)+'px';top+=author.offsetHeight+4}
+ const rule=leftPage.querySelector('.gst-title-rule');
+ if(rule){rule.style.top=top+'px';top+=rule.offsetHeight+8}
+ const passage=leftPage.querySelector('.gst-template-passage'),picture=leftPage.querySelector('.gst-template-illustration'),credit=leftPage.querySelector('.gst-source-credit');
+ const bottom=credit?580:622;
+ if(passage){
+  passage.style.top=top+'px';passage.style.height=(bottom-top)+'px';
+  passage.classList.toggle('gst-passage-more',passage.scrollHeight>passage.clientHeight+2);
+ }
+ if(picture){picture.style.top=top+'px';picture.style.height=(bottom-top)+'px'}
+}
 function fitGSTBookText(root=document.getElementById('gstSpread')){
  if(!root?.querySelectorAll)return;
- root.querySelectorAll('.gst-template-title,.gst-template-question-text').forEach(frame=>{
+ gstFlowPage(root);
+ root.querySelectorAll('.gst-template-title').forEach(frame=>{
   const copy=frame.querySelector('.gst-fit-copy');
   if(!copy||!frame.clientWidth||!frame.clientHeight)return;
-  const maximum=frame.classList.contains('gst-template-title')?28:28;
+  const maximum=frame.classList.contains('gst-template-title')?28:24;
   function fits(size){
    frame.style.fontSize=size+'px';
    return copy.scrollWidth<=frame.clientWidth&&copy.scrollHeight<=frame.clientHeight;
@@ -159,16 +242,16 @@ function gstScoreAnswers(grade,answers){
 }
 function gstResultsMarkup(result){
  const incorrect=result.total-result.score;
- return `<section class="gst-paper gst-left gst-summary-paper gst-designed-summary"><p class="gst-summary-eyebrow">YOUR READING CHAPTER</p><h1 class="gst-summary-ribbon">Test completed</h1><div class="gst-score-medallion"><strong>${result.percentage}%</strong><span>overall score</span></div><div class="gst-summary-statrow"><div><b>${result.score}</b><span>Correct answers</span></div><div><b>${incorrect}</b><span>For practice</span></div></div><div class="gst-summary-closing"><span aria-hidden="true">&#10022;</span><p>Your answers have been submitted.</p><small>Every page is a step forward.</small></div></section><section class="gst-paper gst-right gst-summary-paper gst-designed-summary gst-next-chapter"><p class="gst-summary-eyebrow">THE ADVENTURE CONTINUES</p><h2>Your next chapter</h2><div class="gst-next-goal-art" role="img" aria-label="Illustrated books and microphone"></div><h3>Oral Reading<br>Screening Test</h3><p>Bring the story to life with your voice.</p><div class="gst-next-details"><div><b>Read aloud</b><span>Follow the passage at your own pace.</span></div><div><b>Show your fluency</b><span>Let your accuracy and expression shine.</span></div></div><button class="btn gst-continue-orst" onclick="go('map')">Continue to ORST &rarr;</button></section>`;
+ return `<section class="gst-paper gst-left gst-summary-paper gst-designed-summary"><div class="gst-plaque"><p class="gst-summary-eyebrow">YOUR READING CHAPTER</p><h1 class="gst-summary-ribbon">Test completed</h1></div><div class="gst-score-medallion"><strong>${result.percentage}%</strong><span>overall score</span></div><div class="gst-summary-statrow"><div><b>${result.score}</b><span>Correct answers</span></div><div><b>${incorrect}</b><span>For practice</span></div></div><div class="gst-summary-closing"><span aria-hidden="true">&#10022;</span><p>Your answers have been submitted.</p><small>Every page is a step forward.</small></div></section><section class="gst-paper gst-right gst-summary-paper gst-designed-summary gst-next-chapter"><div class="gst-plaque"><p class="gst-summary-eyebrow">THE ADVENTURE CONTINUES</p><h2>Your next chapter</h2></div><div class="gst-next-goal-art" role="img" aria-label="Illustrated books and microphone"></div><h3>Oral Reading<br>Screening Test</h3><p>Bring the story to life with your voice.</p><div class="gst-next-details"><div><b>Read aloud</b><span>Follow the passage at your own pace.</span></div><div><b>Show your fluency</b><span>Let your accuracy and expression shine.</span></div></div><button class="btn gst-continue-orst" onclick="go('map')">Continue to ORST &rarr;</button></section>`;
 }
 function gstReviewMarkup(data,saved,count,submitted){
  const remaining=data.questions.length-count;
- return `<section class="gst-paper gst-left gst-summary-paper gst-designed-summary"><p class="gst-summary-eyebrow">PAUSE &amp; REFLECT</p><h1 class="gst-summary-ribbon">Review your answers</h1><div class="gst-score-medallion"><strong>${count}</strong><span>of ${data.questions.length} answered</span></div><div class="gst-summary-statrow"><div><b>${remaining}</b><span>Still to answer</span></div><div><b>${Math.round(count/data.questions.length*100)}%</b><span>Complete</span></div></div><div class="gst-summary-closing"><span aria-hidden="true">&#10022;</span><p>One last look before you finish.</p><small>Select a question on the facing page to revisit your answer.</small></div></section><section class="gst-paper gst-right gst-summary-paper gst-review-page"><h2>Your answer sheet</h2><div class="gst-review">${data.questions.map(q=>'<button aria-label="Review question '+q.number+(saved[q.number]?', answer '+saved[q.number]:', unanswered')+'" onclick="jumpGSTQuestion('+(q.number-1)+')">'+q.number+'<span>'+ (saved[q.number]||'&#8212;')+'</span></button>').join('')}</div><p class="gst-review-note" id="gstSubmitStatus" role="status">${submitted?'Your answers have been submitted.':remaining===0?'All questions answered. Ready to finish?':remaining+' unanswered. Complete every question before submitting.'}</p>${submitted?'<button class="btn gst-review-submit" onclick="showGSTResults()">View results &rarr;</button>':'<button class="btn gst-review-submit" onclick="submitGSTBook()" '+(remaining?'disabled':'')+'>Submit answers</button>'}</section>`;
+ return `<section class="gst-paper gst-left gst-summary-paper gst-designed-summary"><div class="gst-plaque"><p class="gst-summary-eyebrow">PAUSE &amp; REFLECT</p><h1 class="gst-summary-ribbon">Review your answers</h1></div><div class="gst-score-medallion"><strong>${count}</strong><span>of ${data.questions.length} answered</span></div><div class="gst-summary-statrow"><div><b>${remaining}</b><span>Still to answer</span></div><div><b>${Math.round(count/data.questions.length*100)}%</b><span>Complete</span></div></div><div class="gst-summary-closing"><span aria-hidden="true">&#10022;</span><p>One last look before you finish.</p><small>Select a question on the facing page to revisit your answer.</small></div></section><section class="gst-paper gst-right gst-summary-paper gst-review-page"><div class="gst-plaque"><p class="gst-summary-eyebrow">QUESTIONS 1 TO ${data.questions.length}</p><h2>Your answer sheet</h2></div><div class="gst-review">${data.questions.map(q=>'<button'+(saved[q.number]?' class="is-answered"':'')+' aria-label="Review question '+q.number+(saved[q.number]?', answer '+saved[q.number]:', unanswered')+'" onclick="jumpGSTQuestion('+(q.number-1)+')">'+q.number+'<span>'+ (saved[q.number]||'&#8212;')+'</span></button>').join('')}</div><p class="gst-review-note" id="gstSubmitStatus" role="status">${submitted?'Your answers have been submitted.':remaining===0?'All questions answered. Ready to finish?':remaining+' unanswered. Complete every question before submitting.'}</p>${submitted?'<button class="btn gst-review-submit" onclick="showGSTResults()">View results &rarr;</button>':'<button class="btn gst-review-submit" onclick="submitGSTBook()" '+(remaining?'disabled':'')+'>Submit answers</button>'}</section>`;
 }
 
 function renderGSTBookSpread({preserveLeft=false}={}){
  const spread=document.getElementById('gstSpread');if(!spread)return;const data=GST_BOOK_DATA[String(gstBook.grade)],saved=load('answer_'+gstBook.grade,{}),count=data.questions.filter(q=>['A','B','C','D'].includes(saved[q.number])).length,submitted=gstIsSubmitted(saved),showResults=submitted&&!gstBook.review&&gstBook.index>=data.questions.length;
- if(gstBook.index===-1){spread.innerHTML=`<section class="gst-paper gst-left gst-title-paper" aria-label="Group Screening Test title"><p class="gst-title-kicker">READwy &#183; Grade ${gstBook.grade}</p><div class="gst-title-emblem" aria-hidden="true"><svg viewBox="0 0 120 100" fill="none"><path d="M12 27Q34 17 60 32Q86 17 108 27L103 81Q82 72 60 87Q38 72 17 81Z" fill="#fff1b4" stroke="#c39139" stroke-width="3"/><path d="M60 32V87M21 38Q38 33 51 42M22 49Q38 44 51 53M69 42Q82 33 99 38M69 53Q82 44 98 49" stroke="#b58538" stroke-width="2.5" stroke-linecap="round"/><path d="M60 4L64 15L76 19L64 23L60 35L56 23L44 19L56 15Z" fill="#f8cb60"/><path d="M20 9L22 15L28 17L22 19L20 25L18 19L12 17L18 15ZM100 8L102 14L108 16L102 18L100 24L98 18L92 16L98 14Z" fill="#cf9b41"/></svg></div><h1><span class="gst-title-overline">Group</span><br>Screening<br>Test</h1><div class="gst-title-flourish" aria-hidden="true"><span></span>&#10022;<span></span></div><p class="gst-title-subtitle">The Gateway of Discovery</p><p class="gst-title-motto">Read &#183; Think &#183; Explore</p></section><section class="gst-paper gst-right gst-title-paper gst-title-directions" aria-label="Test directions"><h2>Before you begin</h2><div class="gst-title-facts"><span><b>40</b> questions</span><span><b>45</b> minutes</span></div><p>The Group Screening Test checks your reading comprehension through a timed set of questions.</p><p>Read each selection carefully and choose the best answer for each of the 40 questions.</p><p>You have 45 minutes. The timer starts once you hit the button.</p><button type="button" class="gst-title-begin btn" onclick="gstNextAction()">Begin test &rarr;</button></section>`;}
+ if(gstBook.index===-1){spread.innerHTML=`<section class="gst-paper gst-left gst-title-paper" aria-label="Group Screening Test title"><p class="gst-title-kicker">READwy &#183; Grade ${gstBook.grade}</p><div class="gst-title-emblem" aria-hidden="true"><svg viewBox="0 0 200 150" fill="none"><defs><radialGradient id="gstBookGlow"><stop stop-color="#ffe9a8" stop-opacity=".95"/><stop offset=".55" stop-color="#ffd877" stop-opacity=".35"/><stop offset="1" stop-color="#ffd877" stop-opacity="0"/></radialGradient><linearGradient id="gstBookCover" x2="0" y2="1"><stop stop-color="#24508c"/><stop offset="1" stop-color="#0d2548"/></linearGradient><linearGradient id="gstPageL" x2="1"><stop stop-color="#fff9e8"/><stop offset=".8" stop-color="#fbeac4"/><stop offset="1" stop-color="#e2c489"/></linearGradient><linearGradient id="gstPageR" x1="1" x2="0"><stop stop-color="#fff9e8"/><stop offset=".8" stop-color="#fbeac4"/><stop offset="1" stop-color="#e2c489"/></linearGradient></defs><ellipse class="gst-book-glow" cx="100" cy="66" rx="96" ry="66" fill="url(#gstBookGlow)"/><path d="M12 50Q55 34 100 54Q145 34 188 50L182 136Q142 124 100 144Q58 124 18 136Z" fill="url(#gstBookCover)" stroke="#e8bd66" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 44Q60 28 98 50V134Q60 116 26 126Z" fill="url(#gstPageL)" stroke="#c9994a" stroke-width="1.2"/><path d="M180 44Q140 28 102 50V134Q140 116 174 126Z" fill="url(#gstPageR)" stroke="#c9994a" stroke-width="1.2"/><path d="M36 56Q62 48 86 62M35 70Q62 62 86 76M34 84Q62 76 86 90M33 98Q60 90 86 104M164 56Q138 48 114 62M165 70Q138 62 114 76M166 84Q138 76 114 90M167 98Q140 90 114 104" stroke="#b5832a" stroke-width="2.4" stroke-linecap="round" opacity=".7"/><path class="gst-book-turn" d="M102 50Q140 28 178 44L172 126Q138 116 102 134Z" fill="url(#gstPageR)" stroke="#c9994a" stroke-width="1.2"/><path d="M100 50V142" stroke="#8a5f22" stroke-width="2.2"/><path d="M128 124V148L135 141L142 148V120Z" fill="#c8323c" stroke="#7d1a22" stroke-width="1"/><text class="gst-book-letter l1" x="66" y="34" fill="#c9862a">A</text><text class="gst-book-letter l2" x="96" y="30" fill="#24508c">b</text><text class="gst-book-letter l3" x="128" y="34" fill="#c8323c">C</text><path class="gst-book-star s1" d="M26 12l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z" fill="#f8cb60"/><path class="gst-book-star s2" d="M172 8l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z" fill="#f8cb60"/><path class="gst-book-star s3" d="M100 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z" fill="#fff1c7"/></svg></div><h1><span class="gst-title-overline">Group</span><br>Screening<br>Test</h1><div class="gst-title-flourish" aria-hidden="true"><span></span>&#10022;<span></span></div><p class="gst-title-subtitle">The Gateway of Discovery</p><p class="gst-title-motto"><span>Read</span><span>Think</span><span>Explore</span></p></section><section class="gst-paper gst-right gst-title-paper gst-title-directions" aria-label="Test directions"><div class="gst-plaque"><p class="gst-summary-eyebrow">YOU CAN DO THIS</p><h2>Before you begin</h2></div><ol class="gst-steps"><li><span class="gst-step-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M4 8Q12 4 20 9Q28 4 36 8V32Q28 28 20 33Q12 28 4 32Z" fill="#fff4d8" stroke="#ffe6a9" stroke-width="2" stroke-linejoin="round"/><path d="M20 9V33" stroke="#ffe6a9" stroke-width="2"/></svg></span><span class="gst-step-copy"><b>Read</b><small>Read each story slowly.</small></span></li><li><span class="gst-step-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 4A12 12 0 0 0 13 26V30H27V26A12 12 0 0 0 20 4Z" fill="#fff4d8" stroke="#ffe6a9" stroke-width="2"/><path d="M15 35H25" stroke="#ffe6a9" stroke-width="3" stroke-linecap="round"/></svg></span><span class="gst-step-copy"><b>Think</b><small>What is the story telling you?</small></span></li><li><span class="gst-step-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#fff4d8" stroke="#ffe6a9" stroke-width="2"/><path d="M12 20L18 26L29 14" stroke="#173a6b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><span class="gst-step-copy"><b>Pick</b><small>Choose the best answer.</small></span></li></ol><div class="gst-title-facts"><span><b>40</b> questions</span><span><b>45</b> minutes</span></div><p class="gst-title-note">The timer starts when you press Begin. Your answers save by themselves, and you can go back and change them.</p><div class="gst-title-actions"><button type="button" class="gst-title-begin btn" onclick="stopGSTOwlSpeech();gstNextAction()">Begin test &rarr;</button></div></section>`;}
 
 
  else if(showResults){const result=gstScoreAnswers(gstBook.grade,saved);spread.innerHTML=gstResultsMarkup(result);save('assessment_'+gstBook.grade,{...load('assessment_'+gstBook.grade,{}),...result})}
@@ -176,7 +259,7 @@ function renderGSTBookSpread({preserveLeft=false}={}){
  else{
   const q=data.questions[gstBook.index],passage=data.passages[q.group],selection=gstSelectionLayout(passage);
   spread.classList.add('gst-assessment');
-  const markup=`<section class="gst-paper gst-left${selection.infographic?' gst-infographic-page':''}" aria-label="Reading selection. Literal Comprehension (Items 1 to 7)"><div class="gst-left-content-clean" aria-hidden="true"></div><span class="gst-template-question-count" aria-label="Question ${q.number} of ${data.questions.length}">Question ${q.number} of ${data.questions.length}</span><span class="gst-page-grade">Literal Comprehension<br><small>(Items 1-7)</small></span><h2 class="gst-template-title"><span class="gst-fit-copy">${h(selection.title)}</span></h2>${selection.infographic?'':`<div class="gst-template-passage" tabindex="0" aria-label="Reading passage">${selection.body.split('\n').map(t=>`<p>${h(t)}</p>`).join('')}</div>`}<div class="gst-template-illustration">${passage.images.length?passage.images.map(src=>`<a href="${safeURL(src)}" target="_blank" rel="noopener" aria-label="Open ${h(selection.title)} infographic at full size"><img src="${safeURL(src)}" alt="${h(selection.title)} — original reading selection infographic"></a>`).join(''):gstPhoto(q.group)}</div>${selection.source?`<small class="gst-source-credit">${h(selection.source)}</small>`:''}</section><section class="gst-paper gst-right"><span class="gst-template-question-number" aria-hidden="true">${q.number}</span><h2 class="gst-template-question-text" id="gstQuestionTitle"><span class="gst-fit-copy">${h(q.question)}</span></h2><fieldset class="gst-template-options" aria-labelledby="gstQuestionTitle">${['A','B','C','D'].map((letter,index)=>`<label class="gst-template-option gst-template-option-${letter}${q.optionIllustrations?.[letter]?' has-illustration':''}" aria-label="${letter}. ${h(q.options[letter]||'See original source')}"><input type="radio" name="gstAnswer" value="${letter}" ${saved[q.number]===letter?'checked':''} onchange="answerGSTBook(${q.number},'${letter}')"><span class="gst-template-option-text" tabindex="0">${h(q.options[letter]||'See original source')}</span>${q.optionIllustrations?.[letter]?`<img class="gst-option-illustration" src="${safeURL(q.optionIllustrations[letter])}" alt="">`:''}</label>`).join('')}</fieldset><p class="gst-save-status gst-template-save" id="gstSaveStatus" role="status">${saved[q.number]?'Answer '+saved[q.number]+' saved':''}</p></section>`;
+  const markup=`<section class="gst-paper gst-left${selection.infographic?' gst-infographic-page':''}" aria-label="Reading selection"><div class="gst-left-content-clean" aria-hidden="true"></div><h2 class="gst-template-title"><span class="gst-fit-copy">${h(selection.title)}</span></h2>${selection.author?`<p class="gst-template-author">${h(selection.author)}</p>`:''}<div class="gst-title-rule" aria-hidden="true"><span>✦</span></div>${selection.infographic?'':`<div class="gst-template-passage${selection.prose?' gst-passage-prose':''}" tabindex="0" aria-label="Reading passage">${selection.body.split('\n').map(t=>`<p>${h(t)}</p>`).join('')}</div>`}${passage.images.length?`<div class="gst-template-illustration">${passage.images.map(src=>`<a href="${safeURL(src)}" target="_blank" rel="noopener" aria-label="Open ${h(selection.title)} infographic at full size"><img src="${safeURL(src)}" alt="${h(selection.title)} — original reading selection infographic"></a>`).join('')}</div>`:''}${selection.source?`<small class="gst-source-credit">${h(selection.source)}</small>`:''}</section><section class="gst-paper gst-right"><div class="gst-question-frame"><span class="gst-template-question-count" aria-label="Question ${q.number} of ${data.questions.length}">Question ${q.number} of ${data.questions.length}</span><h2 class="gst-template-question-text${/\n/.test(q.question)?' gst-question-list':''}" id="gstQuestionTitle"><span class="gst-fit-copy">${h(q.question)}</span></h2><span class="gst-progress" aria-hidden="true"><i style="width:${count/data.questions.length*100}%"></i></span></div><fieldset class="gst-template-options" aria-labelledby="gstQuestionTitle">${['A','B','C','D'].map((letter,index)=>`<label class="gst-template-option gst-template-option-${letter}${q.optionIllustrations?.[letter]?' has-illustration':''}" aria-label="${letter}. ${h(q.options[letter]||'See original source')}"><input type="radio" name="gstAnswer" value="${letter}" ${saved[q.number]===letter?'checked':''} onchange="answerGSTBook(${q.number},'${letter}')"><span class="gst-template-option-text" tabindex="0">${h(q.options[letter]||'See original source')}</span>${q.optionIllustrations?.[letter]?`<img class="gst-option-illustration" src="${safeURL(q.optionIllustrations[letter])}" alt="">`:''}</label>`).join('')}</fieldset><p class="gst-save-status gst-template-save" id="gstSaveStatus" role="status">${saved[q.number]?'Answer '+saved[q.number]+' saved':''}</p></section>`;
   gstApplySpreadMarkup(spread,markup,preserveLeft);
  }
  if(gstBook.index<0||gstBook.index>=data.questions.length)spread.classList.remove('gst-assessment');
@@ -215,7 +298,13 @@ function submitGSTBook(){
 }
 function answerGSTBook(number,letter){
  if(!['A','B','C','D'].includes(letter)||gstBook.busy)return;
- selectedGrade=gstBook.grade;storeAnswer(number,letter);
+ selectedGrade=gstBook.grade;
+ const isDone=saved=>Object.values(saved).filter(v=>['A','B','C','D'].includes(v)).length;
+ const answeredBefore=isDone(load('answer_'+gstBook.grade,{}));
+ storeAnswer(number,letter);
+ const answeredNow=isDone(load('answer_'+gstBook.grade,{}));
+ if(answeredNow>answeredBefore&&GST_OWL_CHEERS[answeredNow])gstOwlCheer(GST_OWL_CHEERS[answeredNow]);
+ const progress=document.querySelector('#gstSpread>.gst-right .gst-progress i');if(progress)progress.style.width=answeredNow/GST_BOOK_DATA[String(gstBook.grade)].questions.length*100+'%';
  const status=document.getElementById('gstSaveStatus');if(status)status.textContent='Answer '+letter+' saved';
  // Keep the timer running until submission.
 }
@@ -290,7 +379,7 @@ async function turnGSTPage(direction){
  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('reduced-motion');
  gstBook.busy=true;spread.classList.add('gst-turning');spread.setAttribute('aria-busy','true');
  try{
- const artwork=new Image();artwork.src='resources/gst-book/assessment-clear-page.png';try{await artwork.decode()}catch{}
+ const artwork=new Image();artwork.src='resources/gst-book/assessment-plain-book.webp';try{await artwork.decode()}catch{}
  if(reduce){gstBook.index=next;renderGSTBookSpread();}
  else await animateGSTPhysicalTurn(spread,next,direction,false);
  }finally{spread.classList.remove('gst-turning');spread.removeAttribute('aria-busy');gstBook.animation=null;gstBook.busy=false;}
@@ -346,7 +435,7 @@ function stopGSTOwlSpeech(){
  if(gstOwlAudioButton){gstOwlAudioButton.setAttribute('aria-pressed','false');gstOwlAudioButton.setAttribute('aria-label','Read the owl’s instructions aloud')}
  gstOwlAudioButton=null;
 }
-function speakGSTOwl(button){
+function speakGSTOwl(button,text){
  if(typeof readwyCanPlaySound==='function'&&!readwyCanPlaySound())return;
  if(gstOwlUtterance){stopGSTOwlSpeech();return}
  const synthesis=window.speechSynthesis,Utterance=window.SpeechSynthesisUtterance;
@@ -354,7 +443,7 @@ function speakGSTOwl(button){
   const status=document.getElementById('gstSaveStatus');if(status)status.textContent='Speech playback is unavailable in this browser.';
   return;
  }
- const utterance=new Utterance(GST_OWL_MESSAGE),voices=synthesis.getVoices();
+ const utterance=new Utterance(text||GST_OWL_MESSAGE),voices=synthesis.getVoices();
  utterance.voice=voices.find(voice=>/^en-PH/i.test(voice.lang))||voices.find(voice=>/^en-US/i.test(voice.lang))||voices.find(voice=>/^en/i.test(voice.lang))||null;
  utterance.lang=utterance.voice?.lang||'en-US';utterance.rate=.92*(typeof readwySpeechRate==='function'?readwySpeechRate():1);utterance.pitch=1.08;utterance.volume=typeof readwyVolume==='function'?readwyVolume():1;
  gstOwlUtterance=utterance;gstOwlAudioButton=button;
@@ -365,9 +454,23 @@ function speakGSTOwl(button){
  synthesis.cancel();synthesis.resume();synthesis.speak(utterance);
 }
 
+/* Each page's content is mapped onto the page's painted corners, so everything on it shares the page's perspective. */
+const GST_PAGE_FIT={left:{rect:[480,61,490,640],quad:[[468,62],[962,62],[964,702],[446,702]]},right:{rect:[1006,72,455,650],quad:[[1000,66],[1464,66],[1501,719],[1000,714]]},rightHome:{rect:[1006,72,455,650],quad:[[1000,66],[1464,66],[1480,716],[1000,712]]}};
+function gstPageMatrix(fit,left,top){
+ const [[x0,y0],[x1,y1],[x2,y2],[x3,y3]]=fit.quad,[rx,ry,rw,rh]=fit.rect;
+ const dx1=x1-x2,dx2=x3-x2,dx3=x0-x1+x2-x3,dy1=y1-y2,dy2=y3-y2,dy3=y0-y1+y2-y3,det=dx1*dy2-dx2*dy1;
+ const g=(dx3*dy2-dx2*dy3)/det,j=(dx1*dy3-dx3*dy1)/det;
+ const P=[[x1-x0+g*x1,x3-x0+j*x3,x0],[y1-y0+g*y1,y3-y0+j*y3,y0],[g,j,1]],U=[[1/rw,0,(left-rx)/rw],[0,1/rh,(top-ry)/rh],[0,0,1]];
+ const mul=(A,B)=>A.map(r=>[0,1,2].map(c=>r[0]*B[0][c]+r[1]*B[1][c]+r[2]*B[2][c]));
+ const m=mul([[1,0,-left],[0,1,-top],[0,0,1]],mul(P,U));
+ return `matrix3d(${m[0][0]},${m[1][0]},0,${m[2][0]},${m[0][1]},${m[1][1]},0,${m[2][1]},0,0,1,0,${m[0][2]},${m[1][2]},0,${m[2][2]})`;
+}
+function gstFitPaper(page,fit){const style=getComputedStyle(page);page.style.transformOrigin='0 0';page.style.transform=gstPageMatrix(fit,parseFloat(style.left)||0,parseFloat(style.top)||0)}
 function positionGSTRightPage(spread){
- const panel=spread?.querySelector('.gst-right');if(!panel)return;
- if(spread.closest('.gst-book-canvas')?.dataset.scene!=='review'){panel.style.transform='none';return}
+ const panel=spread?.querySelector('.gst-right'),leftPage=spread?.querySelector('.gst-left');
+ if(leftPage)gstFitPaper(leftPage,GST_PAGE_FIT.left);
+ if(!panel)return;
+ gstFitPaper(panel,spread.closest('.gst-book-canvas')?.dataset.scene==='test'?GST_PAGE_FIT.right:GST_PAGE_FIT.rightHome);return;
  // Fit the entire answer sheet to the inset of the illustrated gold frame.
  const [p0,p1,p2,p3]=[[1016,84],[1439,80],[1464,687],[1016,687]];
  const dx1=p1[0]-p2[0],dx2=p3[0]-p2[0],dx3=p0[0]-p1[0]+p2[0]-p3[0];
@@ -376,7 +479,7 @@ function positionGSTRightPage(spread){
  panel.style.transform=`matrix3d(${(p1[0]-p0[0]+g*p1[0])/455},${(p1[1]-p0[1]+g*p1[1])/455},0,${g/455},${(p3[0]-p0[0]+j*p3[0])/650},${(p3[1]-p0[1]+j*p3[1])/650},0,${j/650},0,0,1,0,${p0[0]},${p0[1]},0,1)`;
 }
 
-function gstLivingOwlMarkup(){return '<div class="gst-wand-clean" aria-hidden="true"></div><div class="gst-live-wand" aria-hidden="true"><img src="UI%20and%20owl/owl%20poses/wand%20clean.png" alt=""></div><div class="gst-live-grip" aria-hidden="true"></div><svg class="gst-live-eyes" viewBox="0 0 1536 1024" aria-hidden="true"><defs><linearGradient id="gstLidTone" x2="0" y2="1"><stop stop-color="#b56a29"/><stop offset=".65" stop-color="#f5d7a5"/><stop offset="1" stop-color="#fff0d4"/></linearGradient><clipPath id="gstEyeBounds"><ellipse cx="160" cy="305" rx="25" ry="29"/><ellipse cx="230" cy="298" rx="22" ry="28"/></clipPath></defs><g clip-path="url(#gstEyeBounds)"><g class="gst-live-lids"><ellipse cx="160" cy="305" rx="26" ry="30" fill="url(#gstLidTone)"/><ellipse cx="230" cy="298" rx="23" ry="29" fill="url(#gstLidTone)"/><path d="M136 309 Q160 324 184 309 M209 302 Q230 317 251 302" fill="none" stroke="#653615" stroke-width="3"/></g></g></svg>';}
+function gstLivingOwlMarkup(){return (typeof readwyOwlPlate==='function'?readwyOwlPlate('gst'):'')+'<div class="gst-owl-cheer" id="gstOwlCheer" role="status"></div>'+"<div class=\"gst-cat is-asleep\" id=\"gstCat\" aria-hidden=\"true\"><div class=\"gst-cat-body\" style=\"left:296px;top:678px;width:120px;height:79px;transform-origin:44px 74px\"></div><div class=\"gst-cat-chest\" style=\"left:360px;top:694px;width:77px;height:71px\"></div><div class=\"gst-cat-pose\" style=\"left:360px;top:694px;width:77px;height:71px;transform-origin:35px 64px\"><div class=\"gst-cat-move\" style=\"transform-origin:35px 64px\"><div class=\"gst-cat-head\"></div><svg class=\"gst-cat-eyes\" viewBox=\"0 0 77 71\" aria-hidden=\"true\"><g transform=\"translate(30.19999999999999 45.60000000000002)\"><ellipse class=\"gst-cat-eyefur\" rx=\"8.5\" ry=\"5.6\"/><g class=\"gst-cat-open\"><ellipse rx=\"5.6\" ry=\"4.7\" fill=\"#2a2320\"/><ellipse cy=\".3\" rx=\"4.6\" ry=\"3.9\" fill=\"#9a8f4c\"/><g class=\"gst-cat-pupil\"><ellipse cy=\"1\" rx=\"2.5\" ry=\"3.2\" fill=\"#141110\"/><circle cx=\"1\" cy=\"-.6\" r=\".9\" fill=\"#fff\"/></g><path d=\"M-6.6-1.8Q0-6 6.6-1.8\" fill=\"none\" stroke=\"#54392f\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></g><path class=\"gst-cat-shut\" d=\"M-6.8-1Q0 3.6 6.8-1\" fill=\"none\" stroke=\"#54392f\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></g><g transform=\"translate(58.19999999999999 45.200000000000045)\"><ellipse class=\"gst-cat-eyefur\" rx=\"8.5\" ry=\"5.6\"/><g class=\"gst-cat-open\"><ellipse rx=\"5.6\" ry=\"4.7\" fill=\"#2a2320\"/><ellipse cy=\".3\" rx=\"4.6\" ry=\"3.9\" fill=\"#9a8f4c\"/><g class=\"gst-cat-pupil\"><ellipse cy=\"1\" rx=\"2.5\" ry=\"3.2\" fill=\"#141110\"/><circle cx=\"1\" cy=\"-.6\" r=\".9\" fill=\"#fff\"/></g><path d=\"M-6.6-1.8Q0-6 6.6-1.8\" fill=\"none\" stroke=\"#54392f\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></g><path class=\"gst-cat-shut\" d=\"M-6.8-1Q0 3.6 6.8-1\" fill=\"none\" stroke=\"#54392f\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></g></svg></div></div><div class=\"gst-cat-paw\" style=\"left:330px;top:748px;width:31px;height:27px;transform-origin:8px 20px\"></div><svg class=\"gst-cat-page\" viewBox=\"0 0 76 34\"><path d=\"M1 3Q30-2 72 5L75 28Q40 22 2 31Z\" fill=\"#fff6e6\" stroke=\"#caa77c\" stroke-width=\".8\"/><path d=\"M12 10l42 2M12 16l48 2M12 22l34 1\" stroke=\"#d9503f\" stroke-width=\"1.6\" stroke-linecap=\"round\" opacity=\".7\"/></svg><span class=\"gst-cat-z z1\">z</span><span class=\"gst-cat-z z2\">z</span><span class=\"gst-cat-z z3\">Z</span></div>"+'<div class="gst-wand-clean" aria-hidden="true"></div><div class="gst-live-wand" aria-hidden="true"><img src="UI%20and%20owl/owl%20poses/wand%20clean.png" alt=""></div><div class="gst-live-grip" aria-hidden="true"></div><svg class="gst-live-eyes" viewBox="0 0 1536 1024" aria-hidden="true"><defs><linearGradient id="gstLidTone" x2="0" y2="1"><stop stop-color="#b56a29"/><stop offset=".65" stop-color="#f5d7a5"/><stop offset="1" stop-color="#fff0d4"/></linearGradient><clipPath id="gstEyeBounds"><ellipse cx="160" cy="305" rx="25" ry="29"/><ellipse cx="230" cy="298" rx="22" ry="28"/></clipPath></defs><g clip-path="url(#gstEyeBounds)"><g class="gst-live-lids"><ellipse cx="160" cy="305" rx="26" ry="30" fill="url(#gstLidTone)"/><ellipse cx="230" cy="298" rx="23" ry="29" fill="url(#gstLidTone)"/><path d="M136 309 Q160 324 184 309 M209 302 Q230 317 251 302" fill="none" stroke="#653615" stroke-width="3"/></g></g></svg>';}
 
 
 // The same drifting, glowing letters used on the joining page, on the live book text.
@@ -398,3 +501,4 @@ function prepareGSTLetterReveal(canvas){
  });
  canvas.classList.add('gst-letters-ready');
 }
+
