@@ -18,9 +18,9 @@
 (() => {
   const EXPLORE_UNTIL = Date.parse('2027-06-01T00:00:00+08:00');
   const exploring = () => Date.now() < EXPLORE_UNTIL;
-  const EXPLORE_MESSAGE = 'The GST, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and SRA programs.';
+  const EXPLORE_MESSAGE = 'The GST, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and Reading Lab programs.';
   const PREFIX = typeof STORE !== 'undefined' ? STORE : 'READwy_new_2026_local_';
-  const NAMES = {gst: 'GST', orst: 'ORST', wst: 'WST', aral: 'ARAL Program', interv: 'InterV Program', sra: 'SRA Program', reports: 'Post-Test'};
+  const NAMES = {gst: 'GST', orst: 'ORST', wst: 'WST', aral: 'ARAL Program', interv: 'InterV Program', sra: 'Reading Lab', reports: 'Post-Test'};
   const PROGRAMS = ['aral', 'interv', 'sra'];
   const currentUser = () => (typeof user !== 'undefined' && user) || null;
   const safe = (fn, fallback = false) => { try { return fn(); } catch { return fallback; } };
@@ -90,7 +90,7 @@
     if (s.exploring) return mod === 'reports'
       ? 'The Post-Test opens with the GST at the start of School Year 2027–2028 (June 1, 2027).'
       : EXPLORE_MESSAGE;
-    if (s.senior) return `For Grade ${s.grade}, the open journeys are InterV and SRA.`;
+    if (s.senior) return `For Grade ${s.grade}, the open journeys are InterV and Reading Lab.`;
     if (mod === 'gst') return `You have already taken the GST (score ${s.score} of 40).`;
     if (!s.gst) return `Take the GST first. Your ${NAMES[mod]} opens after you submit the GST.`;
     if (PROGRAMS.includes(mod) || mod === 'reports') {

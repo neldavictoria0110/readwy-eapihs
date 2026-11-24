@@ -11,8 +11,8 @@
       text: 'You will start with the ARAL Program. It builds your reading skills step by step, with a teacher guiding you through short lessons and practice.'},
     interv: {range: 'GST 16–27', level: '', pill: 'InterV Program',
       text: 'You will join the InterV Program. Its stations give you focused practice on the reading skills you still need.'},
-    sra: {range: 'GST 28–40', level: '', pill: 'SRA Program',
-      text: 'You will join the SRA Program. You read texts at your own level and move up as you pass each one.'}
+    sra: {range: 'GST 28–40', level: '', pill: 'Reading Lab',
+      text: 'You will join the Reading Lab. You read texts at your own level and move up as you pass each one.'}
   };
   const programFor = score => (window.readwyJourneyGate?.programFor?.(score)) || (score <= 15 ? 'aral' : score <= 27 ? 'interv' : 'sra');
 

@@ -1,6 +1,6 @@
 /* GST book scene:
-   1. The train window shows a magical broomstick match in the sky over the castle valley:
-      riders on broomsticks, golden goal rings, a red game ball and a darting golden winged ball.
+   1. The train window shows wizards on broomsticks flying across the sunset sky over the hills.
+      (No goal rings or game balls: the scene must not resemble any book or film's sport.)
    2. Gus's two wands swirl with light that then spreads outward as sparkles.
    Both are added whenever the GST scene is drawn, and both sit still for anyone who prefers reduced motion.
    ORST shares some GST class names, so everything here is limited to the GST book (.xg without .xc). */
@@ -48,10 +48,6 @@
     <path d="M-6 -1 Q-2 -12 3 -1" fill="none" stroke="${rim}" stroke-width=".7" opacity=".7"/>
     <path d="M2 -6 L9 -2" stroke="#1d130c" stroke-width="1.6" stroke-linecap="round"/>
   </g>`;
-  // Tall goal rings: dark poles, bronze rings catching the sunset.
-  const ring = (x, base, h, r) => `<g opacity=".92"><path d="M${x} ${base} V${base - h}" stroke="#2a1d10" stroke-width="1.6"/>
-    <circle cx="${x}" cy="${base - h - r}" r="${r}" fill="none" stroke="#6b4a1c" stroke-width="2.2"/>
-    <circle cx="${x}" cy="${base - h - r}" r="${r}" fill="none" stroke="#ffcf8a" stroke-width=".7" opacity=".8" stroke-dasharray="${r * 2.4} ${r * 4}" transform="rotate(-120 ${x} ${base - h - r})"/></g>`;
   const stars = Array.from({length: 10}, (_, i) =>
     `<circle class="gm-twinkle" cx="${(i * 389 + 60) % 1000}" cy="${3 + (i * 29) % 16}" r=".6" fill="#fff8dc" opacity=".6"/>`).join('');
   // Riders cross the window one way and loop round off-screen, so nobody flies upside down.
@@ -70,26 +66,13 @@
     <radialGradient id="gmHalo"><stop offset="0" stop-color="#fff2a8" stop-opacity=".9"/><stop offset="1" stop-color="#fff2a8" stop-opacity="0"/></radialGradient>
     ${rider('gmRiderA', '#3a1418', '#ffb46a')}${rider('gmRiderBright', '#12292a', '#ffd9a0')}
     <g id="gmRiderB"><use href="#gmRiderBright" transform="scale(-1 1)"/></g>
-    <g id="gmWinged">
-      <circle r="7" fill="url(#gmHalo)"/>
-      <path d="M-1 -1 C-6 -9 -14 -8 -15 -3 C-11 -4 -7 -3 -1 0 Z" fill="#fff7dc" opacity=".95">
-        <animateTransform attributeName="transform" type="scale" values="1 1;1 -.2;1 1" dur=".18s" repeatCount="indefinite"/></path>
-      <path d="M1 -1 C6 -9 14 -8 15 -3 C11 -4 7 -3 1 0 Z" fill="#fff7dc" opacity=".95">
-        <animateTransform attributeName="transform" type="scale" values="1 1;1 -.2;1 1" dur=".18s" repeatCount="indefinite"/></path>
-      <circle r="2.8" fill="url(#gmGold)"/>
-    </g>
   </defs>
   <rect width="1000" height="100" fill="url(#gmDusk)"/>
   ${stars}
-  <g opacity=".95">${ring(60, 100, 34, 9)}${ring(84, 100, 48, 10)}${ring(108, 100, 28, 8)}${ring(892, 100, 28, 8)}${ring(916, 100, 48, 10)}${ring(940, 100, 34, 9)}</g>
   ${flight('gmRiderA', 'M-60 62 C200 22 450 76 700 36 S950 56 1060 46', '11s')}
   ${flight('gmRiderB', 'M1060 40 C800 76 560 22 320 56 S80 42 -60 36', '12s', '-3s')}
   ${flight('gmRiderA', 'M-60 30 C250 50 520 14 760 48 S980 26 1060 32', '14s', '-7s')}
   ${flight('gmRiderB', 'M1060 74 C780 46 480 86 240 52 S40 72 -60 76', '13s', '-9s')}
-  <g><circle r="3.6" fill="url(#gmRed)"><animateMotion dur="6s" repeatCount="indefinite" keyPoints="0;.5;1" keyTimes="0;.5;1" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1"
-    path="M180 62 Q360 8 540 52 Q720 8 860 46 Q700 92 520 58 Q340 96 180 62 Z"/></circle></g>
-  <g><use href="#gmWinged"><animateMotion dur="9s" repeatCount="indefinite"
-    path="M500 30 C560 10 640 60 600 40 C560 20 700 15 760 45 C820 75 690 70 650 30 C610 -5 420 70 380 40 C340 10 460 5 500 30 Z"/></use></g>
 </svg>`;
   }
 

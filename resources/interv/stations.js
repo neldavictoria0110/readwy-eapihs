@@ -521,7 +521,7 @@ function ivGamesBar(P,back){
 /* ---------- Station tasks as arcade games (ARAL arcade style, InterV instructional level) ----------
    Every one of the 25 tasks uses a different arcade game from the shared READwy game library (ARAL_GAME_RUN),
    fed only with the task's original InterV content. Difficulty is set for instructional-level readers — above ARAL
-   (frustration level), below SRA (independent level) — and rises with the grade:
+   (frustration level), below Reading Lab (independent level) — and rises with the grade:
    Grades 7–8 need 7 correct, 9–10 need 8, 11–12 need 9 (ARAL needs 6); four answer choices instead of three;
    more words and rounds at higher grades. ARAL's own games are not changed: InterV runs tuned copies of them. */
 const IV_ARCADE={
@@ -999,7 +999,7 @@ function renderIvWordPuzzle(){
  const next=()=>{i++;if(i>=words.length){finished=true;paint();G.P.bubble(`Puzzle complete! You scored ${score} points.`);return}load()};
  const check=()=>{if(locked)return;const w=words[i][0],guess=picked.map(k=>letters[k]).join('');if(guess.length<w.length){G.P.bubble('Use all the letters first.');return}
   if(guess===w){const pts=attempt===1?10:5;score+=pts;right++;ivAward(pts);G.P.pts();locked=true;status=`✔ Correct! “${w}” +${pts}`;paint();G.P.bubble('Correct! Great job!');ivLater(next,1300)}
-  else{attempt++;picked=[];if(attempt>3){locked=true;status=`The word was “${w}”.`;paint();G.P.bubble(`The word was “${w}”. Let's try the next one.`);ivLater(next,1900)}else{paint();G.P.bubble(`Not quite. Try again! Attempt ${attempt} of 3.`)}}};
+  else{attempt++;picked=[];if(attempt>3){locked=true;status=`The word was “${w}”.`;paint();G.P.bubble(`The word was “${w}”. Let’s try the next one.`);ivLater(next,1900)}else{paint();G.P.bubble(`Not quite. Try again! Attempt ${attempt} of 3.`)}}};
  G.on(d=>{if('again' in d)return renderIvWordPuzzle();if('l' in d){picked.push(Number(d.l));return paint()}if('un' in d){picked.splice(Number(d.un),1);return paint()}
   if('clear' in d){picked=[];return paint()}if('hint' in d){reveal=1;paint();return G.P.bubble(`Clue: ${words[i][1]}`)}if('check' in d)return check()});
  load();
@@ -1069,7 +1069,7 @@ function renderIvChallenge(){
   const [q,opts,ans]=order[i];
   G.shell(['Challenge Game',`Challenge ${i+1} of ${order.length} · Perfect score = +50 bonus`],`<p class="ivx-qt ivg-big">${ivEsc(q)}</p><div class="ivx-opts">${opts.map((o,k)=>ivOptBtn(o,k,locked?(k===ans?'ok':k===pick?'no':''):'')).join('')}</div>`,'')};
  const answer=k=>{if(locked)return;locked=true;pick=k;const ans=order[i][2];
-  if(k===ans){score+=10;right++;ivAward(10);G.P.pts();G.P.bubble('Correct! You are a champion in the making!')}else G.P.bubble(`Good try! The answer is “${order[i][1][ans]}”.`);paint();
+  if(k===ans){score+=10;right++;ivAward(10);G.P.pts();G.P.bubble('Correct! You are a champion in the making!')}else G.P.bubble(`Good try! The correct answer is “${order[i][1][ans]}”.`);paint();
   ivLater(()=>{i++;if(i>=order.length){finished=true;if(right===order.length){score+=50;ivAward(50);G.P.pts();G.P.bubble('Perfect score! Bonus +50 points!')}else G.P.bubble(`Challenge complete! ${right} of ${order.length} correct.`);paint();return}locked=false;pick=-1;paint();G.P.bubble('Solve the challenge and earn bonus points!')},1500)};
  const start=()=>{order=ivShuffle(IV_CHALLENGE);i=0;score=0;right=0;locked=false;finished=false;pick=-1;paint();G.P.bubble('Solve the challenge and earn bonus points!')};
  G.on(d=>{if('again' in d)return start();if('k' in d)return answer(Number(d.k))});
