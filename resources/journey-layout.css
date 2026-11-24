@@ -97,6 +97,37 @@
  .journey>.back,main>.back,#rwStage .back{top:calc(var(--rw-pf-header) + 8px)!important;max-width:28vw!important}
 }
 
+/* Phones held sideways (short landscape screens, iPhone and Android):
+   the top frames leave room for the Back button (left) and the READwy badge (right),
+   and the ticket is drawn a little smaller so every stop, with its name, fits without hidden scrolling. */
+@media (orientation:landscape) and (max-height:500px){
+ .pf .pf-top{padding-left:calc(118px + env(safe-area-inset-left))!important;padding-right:calc(58px + env(safe-area-inset-right))!important}
+ .pf .pf-psign,.pf .pf-clock,.pf .pf-announce{width:calc((100vw - 196px - env(safe-area-inset-left) - env(safe-area-inset-right)) / 3)!important;min-width:0!important;box-sizing:border-box!important}
+ .pf .pf-left,.pf .pf-right{min-width:0!important}
+ .journey>.back,main>.back,#rwStage .back{max-width:108px!important}
+ /* compact ticket: every stop card, number and name stays inside the ticket */
+ .tw-plat .tk-card{height:auto!important;padding-bottom:6px!important}
+ .tw-plat .tk-top{padding-top:4px!important;padding-bottom:4px!important}
+ .tw-plat .tk-mid{margin:4px 2.2vw!important;padding:2px 0!important}
+ .tw-plat .tk-title b{font-size:22px!important}
+ .tw-plat .tk-title em{font-size:11px!important}
+ .tw-plat .tk-class{width:38px!important;height:38px!important;font-size:18px!important}
+ .tw-plat .tk-class small{display:none!important}
+ .tw-plat .tk-label{margin-bottom:4px!important;font-size:9px!important}
+ .tw-plat .pf-dest{padding:4px .4vw 5px!important;gap:2px!important;font-size:10px!important}
+ .tw-plat .pf-dest:before,.tw-plat .pf-dest .hole{width:16px!important;height:16px!important}
+ .tw-plat .pf-dest .hole{margin-left:-8px!important}
+ .tw-plat .pf-dest b{font-size:18px!important}
+ .tw-plat .tk-foot{display:none!important}
+ .tw-plat .pf-stub .pf-thumb{width:auto!important;height:min(19vh,64px)!important}
+}
+/* Very narrow phones (iPhone SE and similar): two readable frames instead of three squeezed ones. */
+@media (orientation:landscape) and (max-height:500px) and (max-width:700px){
+ .pf .pf-clock{display:none!important}
+ .tw-plat .pf-go,.pf .pf-go{max-width:100%!important;white-space:normal!important;line-height:1.15!important;font-size:11px!important;padding:5px 8px!important;box-sizing:border-box!important}
+ .pf .pf-psign,.pf .pf-announce{width:calc((100vw - 188px - env(safe-area-inset-left) - env(safe-area-inset-right)) / 2)!important}
+}
+
 /* GST/landscape book controls keep separate rows. */
 .gst-book-canvas[data-scene="test"] .gst-backdrop-toolbar,
 .gst-book-canvas[data-scene="results"] .gst-backdrop-toolbar{top:calc(100% - 112px)!important;height:104px!important}

@@ -344,7 +344,7 @@
     img.src = src;
   });
   const wizardImages = [1, 2].map(async n =>
-    (await tryImage(`resources/gst-book/wizard-rider-${n}.png`)) || (await tryImage(`resources/gst-book/wizard-rider-${n}.svg`)));
+    tryImage(`resources/gst-book/wizard-rider-${n}.svg`)); // the painted wizards that ship with READwy (no PNG was ever supplied; asking for one cost a failed request on every page)
   function useWizardImages(svg) {
     Promise.all(wizardImages).then(([first, second]) => {
       [['gmRiderA', first], ['gmRiderBright', second || first]].forEach(([id, src]) => {
