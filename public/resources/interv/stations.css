@@ -338,17 +338,27 @@ kbd.ivarc-chip{font:inherit;color:#13205a;text-transform:none;letter-spacing:0}
 .ivpr-card dl{font-size:.7em;gap:.28em}.ivpr-card dl div{padding:.2em .35em}
 
 /* ---------- InterV games toolbar (drawn over the painted pill) ---------- */
-.ivbar{position:absolute;z-index:7;box-sizing:border-box;padding:.55cqw .9cqw;border-radius:999px;background:linear-gradient(180deg,#2758b8,#173f95 48%,#0e2a6e);box-shadow:inset 0 0 0 .22cqw #e2b24c,inset 0 0 0 .4cqw #0c2766,inset 0 .55cqw 0 .38cqw #ffffff14,0 .4cqw 1cqw #0008}
-.ivbar-in{height:100%;display:grid;grid-template-columns:repeat(8,1fr);align-items:stretch}
-.ivbar-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25cqw;min-width:0;padding:0 .3cqw;border:0;background:none;color:#fff;cursor:pointer;font:700 calc(15/1672*100cqw)/1.05 "Baloo 2","Segoe UI",sans-serif;text-shadow:0 .1cqw .15cqw #021133;border-radius:1.2cqw;transition:background .15s,transform .15s}
-.ivbar-b+.ivbar-b::before{content:"";position:absolute;left:0;top:22%;bottom:22%;width:.12cqw;background:linear-gradient(transparent,#cfe0ffaa,transparent)}
+.ivbar{position:absolute;z-index:7;box-sizing:border-box;padding:.55cqw .9cqw;border-radius:999px;background:linear-gradient(180deg,#2758b8,#173f95 48%,#0e2a6e);box-shadow:inset 0 0 0 .22cqw #e2b24c,inset 0 0 0 .4cqw #0c2766,inset 0 .55cqw 0 .38cqw #ffffff14,0 .4cqw 1cqw #0008;overflow:hidden;transition:padding .28s ease}
+.ivbar-in{height:100%}
+.ivbar-items{height:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-items:stretch;transition:transform .32s cubic-bezier(.2,.85,.25,1),gap .32s ease}
+.ivbar-b{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25cqw;min-width:0;padding:0 .3cqw;border:0;background:none;color:#fff;cursor:pointer;font:700 calc(15/1672*100cqw)/1.05 "Baloo 2","Segoe UI",sans-serif;text-shadow:0 .1cqw .15cqw #021133;border-radius:1.2cqw;transition:background .15s,transform .15s,opacity .24s ease,font-size .28s ease,max-width .32s ease,padding .28s ease}
+.ivbar-b+.ivbar-b::before{content:"";position:absolute;left:0;top:22%;bottom:22%;width:.12cqw;background:linear-gradient(transparent,#cfe0ffaa,transparent);transition:opacity .2s}
 .ivbar-b:hover{background:#ffffff1c;transform:translateY(-.15cqw)}
 .ivbar-b:focus-visible{outline:.2cqw solid #ffe27a;outline-offset:-.3cqw}
-.ivbar-ic{font-size:2.4cqw;line-height:1;filter:drop-shadow(0 .12cqw .1cqw #0006)}
-.ivbar-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ivbar-ic{font-size:2.4cqw;line-height:1;filter:drop-shadow(0 .12cqw .1cqw #0006);transition:font-size .28s ease,transform .28s ease}
+.ivbar-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;transition:font-size .28s ease,letter-spacing .28s ease}
 .ivbar-b.hub{color:#ffe9a6}
 .ivbar-b.bonus{color:#ffe9a6}
 .ivbar-badge{position:absolute;top:8%;right:20%;min-width:1.5cqw;padding:0 .35cqw;border-radius:99px;background:#ffd447;color:#3a2604;font:800 .95cqw/1.5cqw "Baloo 2",sans-serif;font-style:normal;text-shadow:none;box-shadow:0 .1cqw .2cqw #0005}
+/* Collapsed: only InterV Games hub visible, centered and bigger */
+.ivbar.ivbar-collapsed .ivbar-items{grid-template-columns:1fr}
+.ivbar.ivbar-collapsed .ivbar-b:not(.hub){opacity:0;pointer-events:none;max-width:0;padding:0;overflow:hidden;position:absolute}
+.ivbar.ivbar-collapsed .ivbar-b.hub{max-width:none;width:min(46%,420px);margin:0 auto;gap:.6cqw;flex-direction:row;justify-content:center;font-size:calc(28/1672*100cqw);letter-spacing:.01em}
+.ivbar.ivbar-collapsed .ivbar-b.hub .ivbar-ic{font-size:3.2cqw}
+.ivbar.ivbar-collapsed .ivbar-b.hub .ivbar-t{font-size:1em;overflow:visible}
+.ivbar.ivbar-collapsed .ivbar-b.hub::before{display:none}
+.ivbar.ivbar-expanded .ivbar-b.hub{max-width:none}
+@media (prefers-reduced-motion:reduce){.ivbar,.ivbar-items,.ivbar-b,.ivbar-ic,.ivbar-t,.ivbar-b+.ivbar-b::before{transition:none!important}}
 /* ---------- Station: task cards keep a card shape (not stretched) ---------- */
 .ivst-cards{align-items:center;align-content:center}
 .ivst-card{height:auto;aspect-ratio:3/4;max-height:100%;justify-content:center;gap:.3em}
@@ -370,8 +380,8 @@ kbd.ivarc-chip{font:inherit;color:#13205a;text-transform:none;letter-spacing:0}
 .ivp-gpanel{font-size:calc(19/1672*100cqw)}
 .ivp-gcards{gap:1cqw;padding:1.1cqw}
 .ivp-gicon{font-size:2.4em}
-
-.ivbar-in{grid-template-columns:repeat(7,1fr)}
+.ivbar.ivbar-collapsed .ivbar-b.hub{font-size:calc(30/1672*100cqw)}
+.ivbar.ivbar-collapsed .ivbar-b.hub .ivbar-ic{font-size:3.4cqw}
 
 .ivx-plate{position:absolute;z-index:4;pointer-events:none;border-radius:1.6cqw;background:linear-gradient(#1b4aa6,#0f2a6b);box-shadow:0 .5cqw 1.8cqw #021133aa,inset 0 0 0 .35cqw #e2b24c,inset 0 0 0 .6cqw #6f9be6}
 
@@ -499,6 +509,8 @@ kbd.ivarc-chip{font:inherit;color:#13205a;text-transform:none;letter-spacing:0}
 .ivbar-b{flex-direction:row;gap:.5cqw;font-size:calc(15.5/1672*100cqw)}
 .ivbar-ic{font-size:1.9cqw}
 .ivbar-badge{top:12%;right:8%}
+.ivbar.ivbar-collapsed .ivbar-b.hub{font-size:calc(26/1672*100cqw);gap:.7cqw}
+.ivbar.ivbar-collapsed .ivbar-b.hub .ivbar-ic{font-size:2.6cqw}
 
 .ivv2 .ivp-board>img{filter:blur(1.4cqw) saturate(.9) brightness(1.06)!important;transform:scale(1.08)!important}.ivv2-veil{background:linear-gradient(180deg,rgba(214,234,255,.28),rgba(120,150,210,.18) 60%,rgba(12,32,82,.25))!important}
 
@@ -574,3 +586,115 @@ kbd.ivarc-chip{font:inherit;color:#13205a;text-transform:none;letter-spacing:0}
 .ivv3 .ivst-card{background:linear-gradient(180deg,#ffffff,color-mix(in srgb,var(--c) 16%,#fff));color:color-mix(in srgb,var(--c) 70%,#0a1030);box-shadow:inset 0 .35em 0 var(--c),0 .25em 0 color-mix(in srgb,var(--c) 55%,#000),0 .4em .8em #0b1f5233}
 .ivv3 .ivst-card b{text-shadow:none}.ivv3 .ivst-stars{color:#e6a817;text-shadow:none}
 .ivv3 .ivst-card em{box-shadow:0 .1em .2em #0003}
+/* tasks open one at a time */
+.ivst-card.locked{filter:grayscale(.8) brightness(.82);opacity:.72;cursor:not-allowed}
+.ivst-card.locked:hover{transform:none}
+.ivst-card.locked em{background:#4b5468;color:#fff}
+/* stations open one at a time */
+.ivhs-tile.locked{background:rgba(28,34,52,.5);-webkit-backdrop-filter:grayscale(1) brightness(.85);backdrop-filter:grayscale(1) brightness(.85);border-radius:1.1em;cursor:not-allowed}
+.ivhs-tile.locked em{background:#4b5468;color:#fff}
+
+/* InterV games toolbar: one wide "InterV Games" button; the six mini-games slide out inside the bar */
+/* same blue as the painted toolbar underneath, so the bar blends in instead of standing out */
+body .ivbar.ivgb-bar{background:linear-gradient(180deg,#3a6fd3,#2152b4 48%,#163d8f)}
+.ivbar .ivgb{display:flex;align-items:stretch;height:100%;overflow:hidden}
+.ivbar .ivgb .ivgb-hub{position:relative;flex:none;width:calc(100% - .4cqw);flex-direction:row;gap:.9cqw;font-size:calc(26/1672*100cqw);letter-spacing:.01em;transition:width .42s cubic-bezier(.2,.85,.25,1),font-size .3s ease,gap .3s ease}
+.ivbar .ivgb .ivgb-hub .ivbar-ic{font-size:2.9cqw}
+.ivbar .ivgb .ivgb-hub .ivbar-t{overflow:visible}
+/* the hub is lettering on the toolbar itself, not a separate coloured button */
+.ivbar .ivgb .ivgb-hub,.ivbar .ivgb .ivgb-hub:hover{background:none!important;box-shadow:none!important;margin:0!important;border-radius:999px!important;color:#fff;text-shadow:0 .1cqw .15cqw #0007}
+.ivbar .ivgb .ivgb-hub:hover{transform:none;color:#fff6d8}
+.ivbar .ivgb .ivgb-hub:active{transform:scale(.98)}
+.ivbar .ivgb .ivgb-arrow{display:inline-block;font-size:.8em;opacity:.85;transition:transform .35s ease}
+.ivbar .ivgb .ivgb-games{flex:none;display:flex;width:0;min-width:0;overflow:hidden;transition:width .42s cubic-bezier(.2,.85,.25,1)}
+.ivbar .ivgb .ivgb-games .ivbar-b{flex:1 1 0;min-width:0;opacity:0;transform:translateX(40%);pointer-events:none;transition:opacity .28s ease,transform .42s cubic-bezier(.2,.85,.25,1)}
+/* open: the hub uses the same size as the game buttons so nothing is cut off at the top */
+.ivbar.ivgb-open .ivgb .ivgb-hub{width:calc(16% - .4cqw);flex-direction:column;gap:.3cqw;font-size:calc(17/1672*100cqw);padding-right:1.1cqw}
+.ivbar.ivgb-open .ivgb .ivgb-hub .ivbar-ic{font-size:2.7cqw}
+.ivbar.ivgb-open .ivgb .ivgb-arrow{position:absolute;right:.35cqw;top:50%;transform:translateY(-50%) rotate(180deg)}
+.ivbar.ivgb-open .ivgb .ivgb-games{width:84%}
+.ivbar.ivgb-open .ivgb .ivgb-games .ivbar-b{opacity:1;transform:none;pointer-events:auto}
+.ivbar.ivgb-open .ivgb .ivgb-games .ivbar-b:nth-child(2){transition-delay:.04s}
+.ivbar.ivgb-open .ivgb .ivgb-games .ivbar-b:nth-child(3){transition-delay:.08s}
+.ivbar.ivgb-open .ivgb .ivgb-games .ivbar-b:nth-child(4){transition-delay:.12s}
+.ivbar.ivgb-open .ivgb .ivgb-games .ivbar-b:nth-child(5){transition-delay:.16s}
+.ivbar.ivgb-open .ivgb .ivgb-games .ivbar-b:nth-child(6){transition-delay:.2s}
+@media (prefers-reduced-motion:reduce){.ivbar .ivgb *{transition:none!important}}
+/* the green "Continue" button on the InterV home is removed: each station has its own Go button */
+.ivhs-go{display:none!important}
+/* the station panel fills the whole home frame (painting and station buttons are placed in %, so they stretch together) */
+.ivhome .ivhs-wrap{padding:0!important;display:block!important;width:100%;height:100%}
+.ivhome .ivhs-panel{width:100%!important;height:100%!important;aspect-ratio:auto!important}
+
+/* ===== Reading Race (lane racer) ===== */
+.ivr{position:relative;gap:1.2cqh!important;color:#fff}
+.ivr-top{flex:none;display:flex;flex-direction:column;gap:1cqh}
+.ivr-sent{background:linear-gradient(#fffdf6,#fbeccb);color:#13205a;border:.25cqw solid #e2b24c;border-radius:1.4cqw;padding:1.2cqh 2cqw;font:700 clamp(12px,min(3.1cqw,6.4cqh),34px)/1.25 "Baloo 2","Segoe UI",sans-serif;text-align:center;min-height:2.6em;display:block}
+.ivr-sent b{display:inline-block;padding:0 .35em;border-radius:.4em}
+.ivr-sent b.blank{color:#9aa3bd;letter-spacing:.06em}
+.ivr-sent b.ok{background:#2fa64f;color:#fff}
+.ivr-sent b.fix{background:#ffd447;color:#3a2604}
+.ivr-prog{position:relative;height:5cqh;margin:0 4cqw 0 2cqw}
+.ivr-line{position:absolute;left:0;right:0;top:50%;height:.6cqh;border-radius:99px;background:#ffffff40}
+.ivr-me,.ivr-owl{position:absolute;top:50%;transform:translate(-50%,-50%) scaleX(-1);font-size:clamp(16px,5cqh,34px);transition:left .1s linear}
+.ivr-owl{transform:translate(-50%,-50%);filter:drop-shadow(0 0 .3em #fff8)}
+.ivr-flag{position:absolute;right:-3cqw;top:50%;transform:translateY(-50%);font-size:clamp(12px,3.4cqh,26px)}
+.ivr-road{--road:0px;position:relative;flex:1;min-height:0;border-radius:1.4cqw;overflow:hidden;border:.25cqw solid #e2b24c;
+ background:repeating-linear-gradient(90deg,#fff9 0 3cqw,transparent 3cqw 6cqw) var(--road) 33.33%/100% .5cqh no-repeat,repeating-linear-gradient(90deg,#fff9 0 3cqw,transparent 3cqw 6cqw) var(--road) 66.66%/100% .5cqh no-repeat,linear-gradient(#3d4a5c,#2c3747)}
+.ivr-lane{position:absolute;left:0;right:0;height:33.34%;border:0;background:transparent;cursor:pointer;padding:0}
+.ivr-lane[data-lane="0"]{top:0}.ivr-lane[data-lane="1"]{top:33.33%}.ivr-lane[data-lane="2"]{top:66.66%}
+.ivr-lane:active{background:#ffffff14}
+.ivr-gates{position:absolute;inset:0;pointer-events:none}
+.ivr-gate{position:absolute;top:0;bottom:0;width:0}
+.ivr-sign{position:absolute;left:0;height:33.33%;display:grid;place-items:center;transform:translateX(-50%)}
+.ivr-sign b{display:block;padding:.35em .8em;border-radius:.6em;background:linear-gradient(#ffe680,#f3b51f);color:#3a2604;border:.2cqw solid #fff;box-shadow:0 .4cqh 0 #b37d0a,0 .8cqh 1.6cqh #0007;font:900 clamp(11px,min(2.6cqw,5.2cqh),30px)/1 "Baloo 2","Segoe UI",sans-serif;white-space:nowrap}
+.ivr-sign.good b{background:linear-gradient(#7fe08f,#2fa64f);color:#fff}
+.ivr-sign.bad b{background:linear-gradient(#ff8a8a,#d93b3b);color:#fff}
+.ivr-sign.dim b{opacity:.45}
+.ivr-car{position:absolute;left:14%;top:50%;transform:translate(-50%,-50%) scaleX(-1);font-size:clamp(28px,min(9cqw,17cqh),96px);transition:top .18s ease;filter:drop-shadow(0 .6cqh .6cqh #0008);pointer-events:none;z-index:2}
+.ivr-car.spin{animation:ivrSpin .6s ease}
+@keyframes ivrSpin{50%{transform:translate(-50%,-50%) scaleX(-1) rotate(-25deg)}}
+.ivr-pop{position:absolute;left:24%;top:8%;font:900 clamp(14px,4cqw,40px)/1 "Baloo 2",sans-serif;opacity:0;pointer-events:none;z-index:3;text-shadow:0 .3cqh 0 #0006}
+.ivr-pop.show{animation:ivrPop .7s ease}
+.ivr-pop.good{color:#7fffa0}.ivr-pop.bad{color:#ff9a9a}
+@keyframes ivrPop{0%{opacity:0;transform:scale(.6)}25%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:translateY(-2cqh)}}
+.ivr-foot{flex:none;display:flex;justify-content:space-between;gap:2cqw;font:700 clamp(10px,min(1.8cqw,3.6cqh),20px)/1.2 "Baloo 2",sans-serif;color:#dbe7ff}
+.ivr-hud{color:#ffe9a6;font-weight:900}
+.ivr-end{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:#0b1a3ad9;border-radius:1.4cqw}
+.ivr-end[hidden]{display:none}
+.ivr-card{max-width:92%;max-height:96%;overflow:auto;background:linear-gradient(#fffdf6,#fbeccb);color:#13205a;border:.3cqw solid #e2b24c;border-radius:1.6cqw;padding:2cqh 3cqw;text-align:center;font:700 clamp(10px,min(1.9cqw,3.8cqh),20px)/1.3 "Baloo 2",sans-serif}
+.ivr-big{font-size:2em;font-weight:900}
+.ivr-card ul{list-style:none;margin:.5em 0;padding:0;text-align:left}
+.ivr-card li{padding:.15em 0}.ivr-card li.ok{color:#1d7a35}.ivr-card li.no{color:#a32020}
+.ivr-card li b{text-decoration:underline}
+/* ===== Challenge: Word Pop ===== */
+.ivp{position:relative;gap:1cqh!important;color:#fff}
+.ivp-top{flex:none;display:flex;flex-direction:column;gap:.8cqh}
+.ivp-rule{background:linear-gradient(#ffe680,#f3b51f);color:#3a2604;border-radius:99px;padding:.8cqh 2cqw;text-align:center;font:900 clamp(12px,min(3cqw,6cqh),34px)/1.15 "Baloo 2","Segoe UI",sans-serif;box-shadow:0 .5cqh 0 #b37d0a}
+.ivp-time{height:1.2cqh;border-radius:99px;background:#ffffff33;overflow:hidden}
+.ivp-time i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#7fe08f,#2fa64f);border-radius:99px}
+.ivp-time i.low{background:linear-gradient(90deg,#ff9a6a,#e2462f)}
+.ivp-arena{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1.4cqw;border:.25cqw solid #e2b24c;background:radial-gradient(120% 90% at 50% 100%,#3d7de0,#1b4aa6 55%,#0f2a6b)}
+.ivp-bub{--h:200;position:absolute;transform:translate(-50%,-50%);border:0;padding:0;cursor:pointer;min-width:min(17cqw,30cqh);aspect-ratio:1.9;border-radius:50%;display:grid;place-items:center;color:#fff;
+ background:radial-gradient(circle at 32% 28%,#fffc 0 8%,transparent 9%),radial-gradient(circle at 50% 50%,hsl(var(--h) 80% 62% / .92),hsl(var(--h) 75% 42% / .95));box-shadow:inset 0 -.8cqh 1.4cqh #0003,0 .8cqh 1.6cqh #0005;font:900 clamp(11px,min(2.4cqw,4.8cqh),26px)/1 "Baloo 2","Segoe UI",sans-serif;text-shadow:0 .2cqh .2cqh #0007;touch-action:manipulation}
+.ivp-bub span{padding:0 .6em;white-space:nowrap}
+.ivp-bub.pop{animation:ivpPop .38s ease forwards}
+.ivp-bub.bad{animation:ivpBad .5s ease forwards;background:radial-gradient(circle,#ff8a8a,#c42f2f)}
+@keyframes ivpPop{to{transform:translate(-50%,-50%) scale(1.6);opacity:0}}
+@keyframes ivpBad{20%,60%{transform:translate(-56%,-50%)}40%,80%{transform:translate(-44%,-50%)}100%{transform:translate(-50%,-50%) scale(.6);opacity:0}}
+.ivp-float{position:absolute;transform:translate(-50%,-50%);font:900 clamp(14px,3.4cqw,34px)/1 "Baloo 2",sans-serif;color:#ffe680;pointer-events:none;animation:ivpFloat .8s ease forwards;font-style:normal;text-shadow:0 .3cqh 0 #0007}
+.ivp-float.no{color:#ff9a9a}
+@keyframes ivpFloat{to{transform:translate(-50%,-160%);opacity:0}}
+.ivp-foot{flex:none}
+.ivp-hud{display:flex;gap:2cqw;align-items:center;justify-content:center;font:800 clamp(10px,min(1.9cqw,3.8cqh),20px)/1.2 "Baloo 2",sans-serif;color:#dbe7ff}
+.ivp-hud b{color:#ffe9a6}.ivp-hud .c.hot{color:#ffd447;animation:ivpHot .6s ease infinite alternate}
+@keyframes ivpHot{to{transform:scale(1.12)}}
+.ivp-over{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:#0b1a3ac7;border-radius:1.4cqw}
+.ivp-over[hidden]{display:none}
+.ivp-card{max-width:90%;max-height:96%;overflow:auto;background:linear-gradient(#fffdf6,#fbeccb);color:#13205a;border:.3cqw solid #e2b24c;border-radius:1.6cqw;padding:2cqh 3cqw;text-align:center;font:700 clamp(10px,min(2cqw,4cqh),22px)/1.3 "Baloo 2",sans-serif;animation:ivpIn .35s cubic-bezier(.2,1.3,.4,1)}
+@keyframes ivpIn{from{transform:scale(.85);opacity:0}}
+.ivp-kick{font-weight:900;color:#a5660a;text-transform:uppercase;letter-spacing:.04em}
+.ivp-big{font-size:1.9em;font-weight:900;line-height:1.1;margin:.2em 0}
+.ivp-words{display:flex;flex-wrap:wrap;gap:.35em;justify-content:center;margin:.5em 0 .8em}
+.ivp-words span{background:#2fa64f;color:#fff;border-radius:99px;padding:.15em .7em;font-weight:800}
+@media (prefers-reduced-motion:reduce){.ivr-car,.ivr-me,.ivr-owl{transition:none}.ivp-bub.pop,.ivp-bub.bad,.ivp-card,.ivr-pop.show,.ivp-hud .c.hot{animation:none}}
