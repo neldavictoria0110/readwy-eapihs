@@ -158,7 +158,7 @@ document.addEventListener('keydown',event=>{
  event.preventDefault();event.stopImmediatePropagation();enterDeveloperAuth();
 },true);
 /* what each grade level has: Grades 7-10 take every assessment; Grades 11-12 start with InterV and SRA only */
-const PROG=[['Journey map','index.html?view=map'],['Check-In','index.html?journeyModule=gst'],['ORST','index.html?journeyModule=orst'],['WST','index.html?journeyModule=wst'],['ARAL','index.html?journeyModule=aral'],['InterV','index.html?journeyModule=interv'],['Reading Lab','index.html?journeyModule=sra'],['Post-Test','index.html?journeyModule=reports']];
+const PROG=[['Journey map','index.html?view=map'],['Check-In','index.html?journeyModule=gst'],['ORST','index.html?journeyModule=orst'],['WST','index.html?journeyModule=wst'],['ARAL','index.html?journeyModule=aral'],['InterV','index.html?journeyModule=interv'],['READwy Lab','index.html?journeyModule=sra'],['Post-Test','index.html?journeyModule=reports']];
 const BY_GRADE=g=>g>=11?PROG.filter(p=>['Journey map','InterV','Reading Lab'].includes(p[0])):PROG;
 /* screens of the program that is open now (each program lists its own), so any screen can be inspected directly */
 let SCR=[];

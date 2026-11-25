@@ -44,6 +44,7 @@ function readwyCanvasX(event){return document.documentElement.hasAttribute('data
   root.style.setProperty('--display-left',(layout.left+(!zoomed&&viewport?viewport.offsetLeft:0))+'px');
   root.style.setProperty('--display-top',(layout.top+(!zoomed&&viewport?viewport.offsetTop:0))+'px');
   requestAnimationFrame(()=>{
+   if(root.classList.contains('program-loading')||root.classList.contains('book-traveling')||root.classList.contains('rw-page-hidden'))return;
    positionGSTBook();positionORSTWelcome();positionORSTInterface();positionWSTInterface();positionAssessmentSummary();
   });
  }

@@ -52,7 +52,7 @@ async function gstFlipContent(commit,direction=1){
 }
 function gstBuildUtilitySpread(kind,title,markup){
  const template=document.createElement('template');template.innerHTML=markup;
- const form=template.content.querySelector('form');form.className='gst-utility-form';form.id='gstUtilityForm';
+ const form=template.content.querySelector('form');form.className='gst-utility-form student-profile';form.id='gstUtilityForm';
  const left=document.createElement('section'),right=document.createElement('section');
  left.className='gst-paper gst-left gst-utility-paper';right.className='gst-paper gst-right gst-utility-paper';
  left.setAttribute('aria-label',title);right.setAttribute('aria-label',kind==='profile'?'Student details':'Sound and preferences');
@@ -69,7 +69,7 @@ function gstBuildUtilitySpread(kind,title,markup){
  if(kind==='profile'){
   const photo=form.querySelector('.profile-photo-box');if(photo)leftBody.appendChild(photo);
   ['name','lrn'].forEach(name=>field(name,leftBody));
-  ['grade','section','teacherName','email'].forEach(name=>field(name,rightBody));
+  ['grade','section','gender','teacherName','email'].forEach(name=>field(name,rightBody));
  }else{
   ['theme','readingSize','lineSpacing','highContrast'].forEach(name=>field(name,leftBody));
   ['sound','volume','speechRate','reduceMotion'].forEach(name=>field(name,rightBody));

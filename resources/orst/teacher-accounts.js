@@ -1,3 +1,4 @@
+
 /* Local account/section linkage. Cross-device or tamper-resistant authorization needs a server. */
 function readwySchoolAccounts(){const accounts=load('school_accounts_v1',[]);return Array.isArray(accounts)?accounts:[]}
 function readwyAccountPublic(account){return {id:account.id,name:account.name,email:account.email,username:account.username,role:account.role,grade:account.grade,section:account.section,learningArea:account.learningArea,teacherName:account.teacherName,teacherId:account.teacherId,lrn:account.lrn}}
@@ -60,3 +61,4 @@ function readwyInstallTeacherAccounts(){
  modulePage=function(mod){if(mod==='teacher-sections')return readwyTeacherSections();const result=originalModule(mod);if(mod==='dashboard'&&user?.role==='teacher'){const root=app.querySelector('.workarea');if(root)root.insertAdjacentHTML('afterbegin','<p><button class="btn" onclick="readwyTeacherSections()">My Teaching Sections</button></p>')}return result};
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',readwyInstallTeacherAccounts,{once:true});else readwyInstallTeacherAccounts();
+

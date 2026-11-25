@@ -1215,7 +1215,7 @@ function readwyActivateFirebaseAccounts() {
   // the portal before the page finishes loading, the second pass (on load) must still restore it.
   if (startupTeacherPreview) readwyStartupTeacherPreviewActive = true;
   if (teacherPreviewRoute && readwyStartupTeacherPreviewActive) {
-    if (document.querySelector('.teacher-portal') && user?.role === 'teacher' && user?.dev === true) return;
+    if (document.querySelector('.teacher-portal') && user?.role === 'teacher') return;
     window.readwyDeveloperTeacherPreview = true;
     user = {
       id: 'readwy-dev-teacher',
@@ -1232,10 +1232,16 @@ function readwyActivateFirebaseAccounts() {
     readwyRenderTeacherPortal('dashboard');
   } else if (teacherPreviewRoute) {
     const previewUser = load('user', null);
-    if (previewUser?.role === 'teacher' && previewUser.dev === true) {
-      window.readwyDeveloperTeacherPreview = true;
-      user = {...previewUser, id: previewUser.id || 'readwy-dev-teacher'};
-      readwyTeacherData = {classrooms: [], roster: [], records: [], interventions: []};
+    if (previewUser?.role === 'teacher') {
+      if (previewUser.dev === true) {
+        window.readwyDeveloperTeacherPreview = true;
+        user = {...previewUser, id: previewUser.id || 'readwy-dev-teacher'};
+        readwyTeacherData = {classrooms: [], roster: [], records: [], interventions: []};
+      } else {
+        window.readwyDeveloperTeacherPreview = false;
+        user = {...previewUser, id: previewUser.id || user?.id};
+        readwyTeacherData = null;
+      }
       readwyRenderTeacherPortal('dashboard');
     }
   }

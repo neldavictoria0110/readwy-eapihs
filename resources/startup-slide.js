@@ -6,6 +6,12 @@ function renderStartupSlide(){
  const scene=window.readwyStationLayer(art,{zoom:1,focusWide:(w,h)=>w/h>1.5?870:836,shade:false,loginFrames:true,mobileFit:true,mobileAlignY:.38});
  const titleLayer=app.querySelector('.startup-login-title');
  if(!titleLayer||!scene.querySelector('.rs-cam')){scene.remove();throw new Error('The login title animation is unavailable');}
+ const mobileSafe=typeof window.readwyMobileSafetyActive==='function'&&window.readwyMobileSafetyActive();
+ if(mobileSafe){
+  const calmTitle=()=>{try{const titleDoc=titleLayer.contentDocument;if(titleDoc&&titleDoc.documentElement)titleDoc.documentElement.classList.add('rw-mobile-safe')}catch(e){}};
+  titleLayer.addEventListener('load',calmTitle);
+  calmTitle();
+ }
  scene.append(titleLayer);
  function fitTitleLayer(){
   const width=art.clientWidth,height=art.clientHeight;

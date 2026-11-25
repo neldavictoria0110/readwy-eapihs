@@ -380,6 +380,42 @@ pages.application = application;
     });
   }
 }
+
+// User-visible journey labels: keep programme IDs/routes/selectors untouched.
+{
+  const syncLabel = (oldText, newText, expected, label) => {
+    let oldCount = 0, newCount = 0;
+    for (const source of Object.values(pages)) {
+      if (typeof source !== 'string') continue;
+      oldCount += source.split(oldText).length - 1;
+      newCount += source.split(newText).length - 1;
+    }
+    if (oldCount === 0) {
+      if (newCount !== expected) throw new Error(`Embedded label '${label}' expected ${expected} updated copies, found ${newCount}.`);
+      return;
+    }
+    if (oldCount !== expected) throw new Error(`Embedded label '${label}' expected ${expected} old copies, found ${oldCount}.`);
+    for (const [name, source] of Object.entries(pages)) {
+      if (typeof source === 'string') pages[name] = source.split(oldText).join(newText);
+    }
+  };
+  syncLabel("sra:'Reading Lab'", "sra:'READwy Reading Lab'", 2, 'labelOf');
+  syncLabel("sra: 'Reading Lab'", "sra: 'READwy Reading Lab'", 1, 'journey names');
+  syncLabel("['Reading Lab','index.html?journeyModule=sra']", "['READwy Reading Lab','index.html?journeyModule=sra']", 0, 'programme list');
+  syncLabel("['Journey map','InterV','Reading Lab']", "['Journey map','InterV','READwy Reading Lab']", 6, 'grade filter');
+  syncLabel("['.sra-express-frame','Reading Lab']", "['.sra-express-frame','READwy Reading Lab']", 6, 'screen titles');
+  syncLabel("' · InterV and Reading Lab only'", "' · InterV and READwy Reading Lab only'", 6, 'grade note');
+  syncLabel('aria-label="6. Reading Lab"', 'aria-label="6. READwy Reading Lab"', 1, 'station label');
+  syncLabel("['Reading Lab Guided Reading','Read at your own level.'", "['READwy Reading Lab Guided Reading','Read at your own level.'", 1, 'station name');
+  syncLabel("const short=['Check-In','ORST','Writing','ARAL','Intervention','Reading Lab','Post-Test'];", "const short=['Check-In','ORST','Writing','ARAL','Intervention','READwy Reading Lab','Post-Test'];", 1, 'short labels');
+  syncLabel("['Check-In','ORST','Writing','ARAL','Intervention','Reading Lab','Post-Test'][i]", "['Check-In','ORST','Writing','ARAL','Intervention','READwy Reading Lab','Post-Test'][i]", 1, 'board labels');
+  syncLabel("'READING LAB','POST'", "'READWY READING LAB','POST'", 1, 'stop caps');
+  syncLabel("This school year, explore the ARAL, InterV and Reading Lab programs.", "This school year, explore the ARAL, InterV and READwy Reading Lab programs.", 1, 'grade message');
+  syncLabel("the open journeys are InterV and Reading Lab.", "the open journeys are InterV and READwy Reading Lab.", 1, 'grade note message');
+  // The journey ticket keeps its own short title; SINGLE JOURNEY and Platform 7½ are unchanged.
+  syncLabel("const SH=['Check-In','ORST','Writing','ARAL','Inter-V','Reading Lab','Post-Test'];", "const SH=['Check-In','ORST','Writing','ARAL','Inter-V','READwy Lab','Post-Test'];", 1, 'ticket title');
+}
+
 const safePayload = JSON.stringify(pages)
   .replace(/</g, '\\u003c')
   .replace(/>/g, '\\u003e')
@@ -443,6 +479,11 @@ for (const relativePath of [
   'resources/station-scene.js',
   'resources/interv/welcome.js',
   'resources/teacher-portal.js',
+  'resources/brand/devbadge.js',
+  'resources/sra/v3/app.html',
+  'resources/sra/v3/books.js',
+  'resources/sra/express.js',
+  'resources/sra/welcome.css',
   'resources/teacher-portal.css',
   'resources/profile-sync.js',
   'resources/profile-lock.js',
