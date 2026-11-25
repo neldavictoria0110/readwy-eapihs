@@ -16,6 +16,81 @@ button{font:inherit;cursor:pointer;color:inherit}
 @keyframes sceneIn{from{opacity:0;transform:scale(.97)}}
 .plate{position:absolute;overflow:hidden}
 .plate>.art{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+/* Native journey page: one scenery layer, then independent HTML stations and controls. */
+.scene.native-journey{overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background:#101a31}
+.scene.native-journey::-webkit-scrollbar{display:none}
+.scene.native-journey::before{inset:0;background-size:cover;filter:blur(9px) brightness(.38) saturate(.7);transform:scale(1.04)}
+.scene.native-journey::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(135deg,rgba(10,20,42,.34),rgba(16,28,54,.48))}
+.scene.native-journey .plate{position:relative;z-index:1;overflow:visible;min-height:100dvh}
+.scene.native-journey .plate>.art{display:none}
+.scene.safe-fit::before{inset:0;background-size:cover;filter:blur(14px) brightness(.48) saturate(.6);transform:scaleX(-1) scale(1.08)}
+.journey-shell{width:100%;min-height:100dvh;padding:10px clamp(12px,2vw,32px) 18px;display:flex;flex-direction:column;gap:10px;color:#f7f2e3}
+.journey-topbar{position:relative;min-height:52px;display:flex;align-items:center;gap:clamp(10px,2vw,26px);padding:7px 14px;border:1px solid #d9a441aa;border-radius:16px;background:rgba(20,35,67,.99);box-shadow:0 5px 18px #0005}
+.journey-brand{color:#f1d58a;font:700 clamp(15px,1.5vw,21px)/1.1 Fredoka,Nunito,sans-serif;white-space:nowrap}
+.journey-nav{display:flex;align-items:center;justify-content:center;gap:clamp(4px,.8vw,12px);flex:1;min-width:0}
+.journey-nav button,.journey-self,.journey-progress button{font:700 14px/1.1 Nunito,sans-serif}
+.journey-nav button{min-height:34px;padding:6px 12px;border:1px solid transparent;border-radius:999px;color:#f5e8be;background:transparent;transition:background .1s,color .1s,transform .1s;white-space:nowrap}
+.journey-nav button:hover,.journey-nav button:focus-visible{background:#d9a441;color:#15213e;transform:translateY(-1px)}
+.journey-self{padding:8px 13px;border-radius:999px;color:#183050;background:#e6efce;border:1px solid #fff6dc;white-space:nowrap}
+.journey-heading{text-align:center;align-self:center;max-width:min(900px,96vw);padding:9px 26px 10px;border:2px solid #d9a441;border-radius:24px;background:linear-gradient(135deg,rgba(20,35,67,.97),rgba(29,48,85,.96));box-shadow:0 7px 20px #0006}
+.journey-heading h1{margin:0;color:#fff8e5;font:700 clamp(22px,2.35vw,34px)/1.05 Fredoka,Nunito,sans-serif}
+.journey-heading p{margin:4px 0 0;color:#f1d58a;font:700 clamp(12px,1.2vw,17px)/1.2 Nunito,sans-serif}
+.journey-grid{position:relative;isolation:isolate;flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(9px,1.25vw,18px);padding:4px 1px}
+.journey-rail{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;overflow:visible}
+.journey-station{min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.journey-crop{position:relative;width:clamp(112px,21vh,213px);max-width:100%;height:clamp(75px,14vh,142px);aspect-ratio:1.5;flex:none;overflow:hidden;border:2px solid #e6c36a;border-radius:18px;background-color:#142345;box-shadow:0 8px 20px #0007;background-repeat:no-repeat}
+.journey-crop:after{content:"";position:absolute;inset:50% 0 0;background:linear-gradient(transparent,rgba(10,20,40,.72));pointer-events:none}
+.journey-train{position:absolute;right:8px;bottom:5px;z-index:2;width:clamp(25px,3.4vh,38px);height:clamp(19px,2.8vh,31px);filter:drop-shadow(0 2px 3px #0009)}
+.journey-train svg{display:block;width:100%;height:100%}
+.journey-card{width:min(100%,430px);min-height:160px;flex:0 0 auto;display:flex;flex-direction:column;gap:5px;padding:clamp(7px,.8vw,12px) clamp(9px,1vw,15px);border:2px solid var(--station-color);border-radius:17px;color:#17223d;background:linear-gradient(150deg,#fffdf7,#f4eddd);box-shadow:0 7px 18px #0005;font-size:clamp(12px,1vw,16px)}
+.journey-card-head{display:flex;align-items:center;justify-content:space-between;gap:7px}
+.journey-gem-name{font:700 clamp(16px,1.35vw,21px)/1.1 Fredoka,Nunito,sans-serif;color:#17223d}
+.journey-badge{flex:none;padding:4px 8px;border-radius:999px;background:#e8edf6;color:#24365c;font-size:.76em;font-weight:900;white-space:nowrap}
+.journey-metric{display:grid;grid-template-columns:68px minmax(20px,1fr) 34px;align-items:center;gap:7px;font-weight:800}
+.journey-meter{height:8px;overflow:hidden;border-radius:999px;background:#d9dee8;box-shadow:inset 0 1px 2px #0002}
+.journey-meter i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#64c43b,#268a21)}
+.journey-meter.blue i{background:linear-gradient(90deg,#64a7ff,#2860d5)}
+.journey-action{width:100%;min-height:34px;margin-top:auto;border:1px solid #c69436;border-radius:999px;background:linear-gradient(#ffe783,#f6bd28 60%,#e99b0b);color:#211800;font:700 14px/1 Nunito,sans-serif;box-shadow:0 2px 0 #a86d12;transition:filter .1s,transform .1s;cursor:pointer}
+.journey-action:hover:not(:disabled),.journey-action:focus-visible{filter:brightness(1.07);transform:translateY(-1px)}
+.journey-action:active:not(:disabled){transform:scale(.98)}
+.journey-action.secondary{background:linear-gradient(#fffdf7,#eee5d3);color:#1c2948}
+.journey-action:disabled{color:#635c50;background:#ddd8ce;border-color:#c6beb1;box-shadow:none;cursor:not-allowed}
+.journey-progress-tab{position:fixed!important;right:0!important;top:38vh!important;z-index:91!important;width:31px!important;height:118px!important;padding:0!important;border:1px solid #e2b24c!important;border-right:0!important;border-radius:12px 0 0 12px!important;background:rgba(20,35,67,.96)!important;color:#fff6dc!important;box-shadow:-4px 0 14px #0005!important;touch-action:none!important;cursor:grab!important}
+.journey-progress{color:#1d2440!important;background:linear-gradient(150deg,#fffdf7,#eee4cf)!important;border:1px solid #d9a441!important;border-radius:20px 0 0 20px!important;box-shadow:-12px 0 34px #0008!important}
+.journey-progress-inner{padding:clamp(16px,3vw,28px);font:600 15px/1.35 Nunito,sans-serif}
+.journey-progress h2{margin:0;font:700 27px/1 Fredoka,Nunito,sans-serif;color:#14254a}
+.journey-progress h3{margin:18px 0 8px;font:700 17px/1.1 Fredoka,Nunito,sans-serif;color:#14254a}
+.journey-progress .progress-stat{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:8px 0}
+.journey-progress .progress-bar{grid-column:1/-1;height:9px;background:#dfe3ea;border-radius:99px;overflow:hidden}
+.journey-progress .progress-bar i{display:block;height:100%;background:linear-gradient(90deg,#73ce44,#2f8f10)}
+.journey-progress .progress-task{padding:12px;border-radius:14px;background:#e6eefc;border:1px solid #b9ccec}
+.journey-progress .prog-close{display:grid;place-items:center;flex:none;width:42px;height:42px;padding:0;border:0;border-radius:50%;background:#22396b;color:#fff6dc;font:700 28px/1 sans-serif;cursor:pointer}
+.scene.native-journey #caption{position:relative;left:auto;top:auto;bottom:auto;transform:none;z-index:30;max-width:min(820px,90vw);margin:0 auto;cursor:pointer;pointer-events:auto;font-size:clamp(12px,1.3vh,16px);padding:5px 12px}
+@media(max-width:900px){
+ .scene.native-journey{overflow-y:auto}
+ .journey-shell{min-height:100dvh;padding:8px 10px 24px;gap:8px}
+ .journey-topbar{min-height:unset;flex-wrap:wrap;gap:5px;padding:8px}
+ .journey-brand{width:100%;text-align:center;font-size:17px}
+ .journey-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));order:2;width:100%;justify-content:stretch;overflow:visible;padding-bottom:0}
+ .journey-nav button{font-size:12px;padding:7px 5px;white-space:normal}
+ .journey-self{position:static;order:1;margin:0 auto 0 0;font-size:11px}
+ .journey-heading{padding:7px 16px;width:100%}
+ .journey-heading h1{font-size:23px}
+ .journey-heading p{font-size:12px}
+ .journey-grid{display:flex;flex-direction:column;gap:12px;flex:none;padding:0 0 8px}
+ .journey-rail{display:none}
+ .journey-station{width:100%;display:flex;flex-direction:column;align-items:center;gap:7px;min-height:0}
+ .journey-crop{width:min(100%,240px);height:auto;max-height:150px;min-height:0;aspect-ratio:1.5;align-self:center;border-radius:14px}
+ .journey-card{width:min(calc(100vw - 40px),430px);max-width:100%;min-width:0;min-height:124px;padding:8px 9px;gap:4px;border-radius:14px;font-size:12px}
+ .journey-card-head{gap:3px}
+ .journey-gem-name{font-size:14px}
+ .journey-badge{font-size:9px;padding:3px 5px}
+ .journey-metric{grid-template-columns:58px minmax(14px,1fr) 30px;gap:5px;font-size:11px}
+ .journey-action{min-height:29px;font-size:12px}
+ .scene.native-journey #caption{left:auto;right:auto;top:auto;bottom:auto;max-width:none;width:100%}
+}
+@media(min-width:901px) and (max-height:820px){.journey-crop{width:clamp(114px,18vh,158px);height:clamp(76px,12vh,105px)}.journey-card{min-height:148px}}
+@media(max-width:420px){.journey-self{padding:6px 8px}}
 /* Background extensions retained for old scene markup; the current viewport underlay uses a blurred copy. */
 .ext{position:absolute;background-repeat:no-repeat;pointer-events:none}
 .ext::after{content:"";position:absolute;inset:0}
@@ -316,22 +391,32 @@ function transparentBrandText(key){
 }
 document.head.insertAdjacentHTML('beforeend','<style>.rl-drawer{display:none!important}.rl-pull{display:none!important}</style>');
 function plate(key){const sc=document.createElement('section');sc.className='scene';sc.dataset.key=key;sc.innerHTML=`<div class="ext t"></div><div class="ext b"></div><div class="ext l"></div><div class="ext r"></div><div class="plate"><img class="art" src="${ART}${key}.jpg" alt="" draggable="false">${rlBrand(key)}</div>`;return sc}
-// Contain the visible art within the full viewport. Controls stay in the same art-pixel coordinate system.
-function fit(sc){const aw=+(sc.dataset.aw||AW),W=innerWidth,H=innerHeight,k=Math.min(W/aw,H/AH),pl=sc.querySelector('.plate'),w=aw*k,h=AH*k;
+// One scale and one offset govern both the backdrop and every art-coordinate hit area.
+function fit(sc){const W=innerWidth,H=innerHeight,pl=sc.querySelector('.plate');
   sc.style.setProperty('--scene-bg',`url("${ART}${sc.dataset.key}.jpg")`);
-  if(sc.dataset.aw){const a=pl.querySelector(':scope>.art');if(a){a.style.width=(AW*k)+'px';a.style.height=h+'px'}}
   document.documentElement.style.setProperty('--toolbar-h','0px');
-  const plateLeft=(W-w)/2,plateTopViewport=(H-h)/2;
-  sc.style.setProperty('--plate-w',w+'px');sc.style.setProperty('--plate-h',h+'px');sc.style.setProperty('--plate-left',plateLeft+'px');sc.style.setProperty('--plate-top',plateTopViewport+'px');sc.style.setProperty('--plate-k',k+'px');
-  Object.assign(pl.style,{left:plateLeft+'px',top:((H-h)/2)+'px',width:w+'px',height:h+'px',fontSize:k+'px',transformOrigin:'0 0',transform:'none'});
-  sc.style.setProperty('--k',k+'px');sc.style.background='#070e16';
+  if(sc.dataset.nativeJourney==='1'){
+   const k=1;sc.classList.add('native-journey');sc.style.setProperty('--k',k+'px');
+   Object.assign(pl.style,{left:'0',top:'0',width:'100%',height:'auto',minHeight:'100dvh',fontSize:'16px',transform:'none'});
+   sc.style.setProperty('--plate-w',W+'px');sc.style.setProperty('--plate-h',H+'px');sc.style.setProperty('--plate-left','0px');sc.style.setProperty('--plate-top','0px');sc.style.setProperty('--plate-k','1px');requestAnimationFrame(updateJourneyCrops);return;
+  }
+  const aw=AW,ah=AH,key=sc.dataset.key;
+  // The full artwork is the safe rectangle: preserve every painted title, label and button.
+  const safe=(key==='rw01'||key==='rw02')?[0,0,AW,AH]:[0,0,AW,AH];
+  const [sx,sy,sw,sh]=safe,coverK=Math.max(W/aw,H/ah),safeK=Math.min(W/sw,H/sh);
+  const k=Math.min(coverK,safeK),w=aw*k,h=ah*k;
+  const minX=Math.max(W-w,-sx*k),maxX=Math.min(0,W-(sx+sw)*k);
+  const minY=Math.max(H-h,-sy*k),maxY=Math.min(0,H-(sy+sh)*k);
+  const left=minX<=maxX?Math.max(minX,Math.min(maxX,(W-w)/2)):(W-w)/2;
+  const top=minY<=maxY?Math.max(minY,Math.min(maxY,(H-h)/2)):(H-h)/2;
+  if(key==='rw01'||key==='rw02')sc.classList.add('safe-fit');
+  sc.style.setProperty('--plate-w',w+'px');sc.style.setProperty('--plate-h',h+'px');sc.style.setProperty('--plate-left',left+'px');sc.style.setProperty('--plate-top',top+'px');sc.style.setProperty('--plate-k',k+'px');sc.style.setProperty('--k',k+'px');
+  Object.assign(pl.style,{left:left+'px',top:top+'px',width:w+'px',height:h+'px',fontSize:k+'px',transformOrigin:'0 0',transform:'none'});
+  const art=pl.querySelector(':scope>.art');if(art)Object.assign(art.style,{left:'0',top:'0',width:w+'px',height:h+'px',clipPath:'none'});
   sc.querySelectorAll('.ext').forEach(e=>e.style.display='none');
-  // Toolbar controls sit directly over the painted art.
   pl.querySelectorAll('[data-toolbar],[data-toolbar-nav]').forEach(el=>{
    const x=+(el.dataset.x||0),y=+(el.dataset.y||0),ew=+(el.dataset.w||0),eh=+(el.dataset.h||0),fs=+(el.dataset.fs||0);
-   el.style.position='absolute';el.style.left=(x*k)+'px';el.style.top=(y*k)+'px';
-   el.style.width=(ew*k)+'px';el.style.height=(eh*k)+'px';if(fs)el.style.fontSize=(fs*k)+'px';
-   el.style.zIndex=el.dataset.toolbarNav?'71':'70';
+   el.style.position='absolute';el.style.left=(x*k)+'px';el.style.top=(y*k)+'px';el.style.width=(ew*k)+'px';el.style.height=(eh*k)+'px';if(fs)el.style.fontSize=(fs*k)+'px';el.style.zIndex=el.dataset.toolbarNav?'71':'70';
   });
 }
 addEventListener('resize',()=>{if(cur)fit(cur);if(S.scene==='reading')paginate()});
@@ -398,9 +483,11 @@ function finishFx(){if(!fx)return;cancelAnimationFrame(fx.raf);fx.done()}
 /* Page change: the SRA train steams across the screen from left to right; the next page appears in its wake, behind a trail of steam. */
 function show(name,key,build,{instant=false}={}){finishFx();if(S.scene&&S.scene!==name)S.prev=S.scene;S.scene=name;S.key=key;setTimeout(remember,0);speechSynthesis?.cancel();tok++;owlTalk(false);caption('');closeSheet();
  clearProgressOverlay();
- const w=document.getElementById('world'),old=cur,sc=plate(key);w.appendChild(sc);fit(sc);cur=sc;const pl=sc.querySelector('.plate');decorate(pl,key);build(pl);fit(sc);SWIPE=0;if(name==='journey')rlJourneyFull(sc,pl);
+ const narrationCaption=document.getElementById('caption');if(name!=='journey'&&narrationCaption&&narrationCaption.parentElement!==document.body)document.body.appendChild(narrationCaption);
+ const w=document.getElementById('world'),old=cur,sc=plate(key);if(name==='journey')sc.dataset.nativeJourney='1';w.appendChild(sc);fit(sc);cur=sc;const pl=sc.querySelector('.plate');if(name!=='journey')decorate(pl,key);build(pl);fit(sc);SWIPE=0;if(name==='journey')rlJourneyFull(sc,pl);
  else{clearProgressOverlay()}
  try{parent.document.querySelector('.sra-express-journey')?.style.setProperty('display','none')}catch(e){}
+ if(name==='journey'){old?.remove();return}
  if(old&&instant){/* same-screen update: keep the backdrop steady, only the content slides */old.style.pointerEvents='none';sc.style.visibility='hidden';const art=sc.querySelector('img.art');let swapped=false;const swap=()=>{if(swapped)return;swapped=true;sc.style.visibility='';old.remove()};(art&&art.decode?art.decode():Promise.resolve()).then(swap,swap);setTimeout(swap,220);return}
  if(!old||matchMedia('(prefers-reduced-motion: reduce)').matches){old?.remove();return}
  const W=innerWidth,H=innerHeight,box=document.createElement('div');box.id='trainfx';box.innerHTML=`<img src="${ART}train.png" alt="">`;document.body.appendChild(box);
@@ -563,63 +650,40 @@ const STN=[{house:[285,272,232,170],card:[288,438,228,142]},{house:[548,268,262,
 // painted gem on each station roof (art px) — only this cut-out animates, so nothing behind it moves
 const GEMBOX=[[377,277,58,56],[645,274,58,59],[950,275,60,55],[903,616,65,61],[573,619,65,58],[190,601,90,66]];
 const ICON=k=>`<img src="${ART}icons/${k}.png" alt="" style="width:1em;height:1em;object-fit:contain;filter:drop-shadow(0 .05em .06em rgba(40,25,10,.3))">`;
-const JOURNEY_VISIBLE_W=1168;
-const CARDX=[400,686,966,936,603,268];
-const CARDY=[435,435,435,782,782,782];
-const CARDW=[256,270,256,270,270,256];
-const CARDH=[172,172,172,184,184,184];
-const PATHPT=[[406,305],[674,303],[980,302],[936,646],[606,648],[235,634]];
-/* Journey map: full journey area below the toolbar, with a light rail joining all six gem stations. */
-function rlJourneyFull(sc,pl){sc.dataset.aw=JOURNEY_VISIBLE_W; fit(sc);
- const art=pl.querySelector(':scope>.art');if(art){art.style.width='var(--plate-w)';art.style.height='var(--plate-h)';art.style.clipPath='inset(0 0 0 0)'}
- const rail=document.createElement('div');
- rail.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1';
- rail.innerHTML='<svg viewBox="0 0 '+JOURNEY_VISIBLE_W+' 1024" preserveAspectRatio="none" width="100%" height="100%"><polyline points="'+PATHPT.map(p=>p[0]+','+p[1]).join(' ')+'" fill="none" stroke="#d9a44199" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 12"/></svg>';
- pl.appendChild(rail);
- // Re-mount after every journey show so there is exactly one tab, drawer and backdrop.
- const drawerScale=innerHeight/AH,panelBgX=-(JOURNEY_VISIBLE_W*drawerScale),panelBgW=AW*drawerScale,panelBgH=AH*drawerScale;
- try{ mountProgressOverlay({title:'My Progress',bodyHTML:progressBodyHTML(),drawerStyle:'position:fixed;top:0;right:0;bottom:0;width:min(420px,94vw);z-index:80;overflow:auto;touch-action:pan-y;background-image:linear-gradient(rgba(255,253,247,.86),rgba(248,238,214,.89)),url("'+ART+'rw04.jpg");background-repeat:no-repeat;background-size:100% 100%,'+panelBgW+'px '+panelBgH+'px;background-position:center,'+panelBgX+'px 0;border:0;box-shadow:-10px 0 30px rgba(0,0,0,.38);transform:translateX(100%);visibility:hidden;pointer-events:none;transition:transform .26s cubic-bezier(.2,.85,.25,1),visibility 0s linear .26s;'}) }catch(e){console.error('journey progress overlay failed',e)}
+const JOURNEY_CROPS=[[260,240,278,185],[535,230,300,185],[875,240,278,185],[790,570,270,180],[460,610,255,170],[100,570,270,180]];
+function updateJourneyCrops(){document.querySelectorAll('.native-journey .journey-crop').forEach(tile=>{const [x,y,w,h]=tile.dataset.crop.split(',').map(Number),r=tile.getBoundingClientRect();if(!r.width||!r.height)return;const k=Math.min(r.width/w,r.height/h),ox=(r.width-w*k)/2,oy=(r.height-h*k)/2;tile.style.backgroundImage=`url("${ART}rw04.jpg")`;tile.style.backgroundSize=`${AW*k}px ${AH*k}px`;tile.style.backgroundPosition=`${ox-x*k}px ${oy-y*k}px`})}
+function rlJourneyFull(sc,pl){
+ const cu=current(),st=cu.all?'done':stage(cu.c,cu.n),b=book(cu.c,cu.n);
+ const drawerWidth='min(470px,92vw)';
+ try{mountProgressOverlay({title:'My Progress',bodyHTML:progressBodyHTML(),toggleStyle:'',drawerStyle:`position:fixed;top:0;right:0;bottom:0;width:${drawerWidth};z-index:80;overflow:auto;touch-action:pan-y;background:linear-gradient(150deg,#fffdf7,#eee4cf);border:0;border-left:2px solid #d9a441;box-shadow:-12px 0 34px #0008;transform:translateX(100%);visibility:hidden;pointer-events:none;transition:transform .25s cubic-bezier(.2,.85,.25,1),visibility 0s linear .25s;`})}catch(e){console.error('journey progress overlay failed',e)}
+ const tab=document.getElementById('rl-progress-toggle');tab?.classList.add('journey-progress-tab');
+ const drawer=document.getElementById('rl-progress-drawer');drawer?.classList.add('journey-progress');
+ const close=drawer?.querySelector('.prog-close');if(close)close.textContent='×';
+ const go=drawer?.querySelector('#journey-progress-continue');if(go)go.onclick=()=>{setProgressOpen(false);cu.all?certSheet():resume(cu.c,cu.n)};
+ requestAnimationFrame(updateJourneyCrops);
 }
-function journey(){const pre=P.start==null;show('journey','rw04',pl=>{const cu=current();
- // softer, less vibrant background so the six gem stations stand out
- pl.querySelector('.art').style.filter='saturate(.5) brightness(.93) contrast(.94)';
- nav(pl,{logo:[44,5,302,105],self:[920,98,186,50]});
- toolbar(pl,[418,17,1118,50],[418,17,1118,50],[['home','Home'],['map','Journey Map'],['portfolio','Portfolio'],['certs','Certificates'],['settings','Settings']],{home:dashboard,map:toREADwyJourney});hit(pl,'Welcome station (start screen)',[58,352,168,78],welcome,'.6em');
- STN.forEach((s,c)=>{const open=lvOpen(c),d=lvDone(c),now=c===cu.c&&!cu.all,done=d===10,[gx,gy,gw,gh]=GEMBOX[c];
-  // clickable station (whole house + card); the house itself never moves
-  const b=document.createElement('button');b.type='button';b.className='hit stn';b.setAttribute('aria-label',`${LV[c].name} station`);b.style.cssText=`left:${px(s.house[0])};top:${px(s.house[1])};width:${px(s.house[2])};height:${px(s.house[3])};border-radius:1em`;
-  b.onclick=()=>{ac();SFX.pop();open?station(c):(SFX.buzz(),notice(`🔒 Finish all of ${LV[c-1].name} to unlock ${LV[c].name}.`))};pl.appendChild(b);
-  // soft colour halo behind the gem, then the gem cut out along its facets: it pulses and sparkles in place
-  el(pl,'',[gx-gw*.6,gy-gh*.6,gw*2.2,gh*2.2],'abs',`pointer-events:none;border-radius:50%;mix-blend-mode:screen;background:radial-gradient(closest-side,${LV[c].hex}cc,${LV[c].hex}44 55%,transparent);animation:flicker ${2.4+c*.2}s ease-in-out infinite`);
-  const gp=[[gx+gw*.16,gy],[gx+gw*.84,gy],[gx+gw,gy+gh*.34],[gx+gw*.5,gy+gh],[gx,gy+gh*.34]];
-  const gwrap=el(pl,'',[gx,gy,gw,gh],'abs gemcut',`pointer-events:none;z-index:2;animation-delay:${-c*.4}s`);
-  clone(gwrap,[gx,gy,gw,gh],'clone',`left:0;top:0;${outlineMask(gp,gx,gy,gw,gh,.8)}`);
-  el(gwrap,'✦',[gw*.62,gh*.05,gw*.3,gw*.3],'spark',`font-size:${px(gw*.3)};animation-delay:${c*.45}s`);
-  b.onmouseenter=()=>{gwrap.classList.add('hot');SFX.pop()};b.onmouseleave=()=>gwrap.classList.remove('hot');
-  // one record card per station: same size, same layout
-  const cw=CARDW[c],ch=CARDH[c],cx=CARDX[c]-cw/2,cy=CARDY[c];
-  const state=done?['✅ Completed','cg']:now?['📍 Current station','cb']:open?['🔓 Open','cy']:['🔒 Locked','cl'];
-  const row=(ic,t,v,cls)=>`<div style="display:flex;align-items:center;gap:.4em;margin-top:.3em"><span style="font-size:1.35em;display:inline-flex">${ICON(ic)}</span><b style="width:4.3em">${t}</b><div class="bar ${cls}" style="flex:1;height:.5em"><i style="width:${v*10}%"></i></div><b style="width:2.6em;text-align:right">${v}/10</b></div>`;
-  const card=el(pl,`<div style="height:100%;display:flex;flex-direction:column;padding:.45em .6em .5em"><div style="display:flex;align-items:center;justify-content:space-between;gap:.3em"><span style="display:inline-flex;align-items:center;gap:.3em;font:700 1.05em Fredoka,sans-serif">${gem3d(c)} ${LV[c].name}</span><span class="chip ${state[1]}" style="font-size:.72em">${state[0]}</span></div>${row('book','Reading',lvRead(c),'')}${row('pencil','Writing',lvWrite(c),'blue')}<div style="flex:1"></div></div>`,[cx,cy,cw,ch],'abs',`z-index:3;font-size:calc(19*var(--k));border-radius:calc(16*var(--k));background:#fffdf7;border:calc(${now?4:3}*var(--k)) solid ${LV[c].hex};box-shadow:0 calc(5*var(--k)) calc(12*var(--k)) #3a2a1240${now?`,0 0 calc(16*var(--k)) ${LV[c].hex}88`:''};${open||done?'':'filter:saturate(.7)'}`);
-  card.style.cursor='pointer';card.onclick=b.onclick;card.onmouseenter=b.onmouseenter;card.onmouseleave=b.onmouseleave;
-  const lbl=now?(pre?'Start reading ›':'Continue ›'):done?'Review ›':open?'Open ›':`🔒 Finish ${LV[c-1].name}`;
-  const pb=pill(pl,lbl,[cx+22,cy+ch-52,cw-44,42],()=>now?station(cu.c):b.onclick(),now?'gold pulse':open||done?'ghost':'ghost',now?22:20);pb.style.zIndex=4;if(!open&&!done){pb.style.opacity='.75';pb.style.cursor='not-allowed'}});
- // what the whole journey asks for, in one line (covers the painted legend)
- box(pl,[176,950,874,54],`<span style="display:inline-flex;align-items:center;gap:.25em">${LV.map((l,c)=>gem3d(c)).join('')}</span><b>6 gem stations</b><span>×</span><b>📖 10 texts each</b><span>=</span><b>60 readings</b><span>+</span><b>✏️ 60 writing tasks</b>`,{fs:18,css:'display:flex;align-items:center;justify-content:center;gap:.45em;white-space:nowrap;background:linear-gradient(#fffdf7,#f6edd9);border-radius:99px;border:calc(2*var(--k)) solid #e2cd96;z-index:3'});
- /* Reading, Writing and Completed texts are painted into rw04; the drawer overlays their live counts. */
- const b=book(cu.c,cu.n),st=stage(cu.c,cu.n);
- // Current task: no button here (the station card already has one) — a gem, the level and text number, and the text title
- {const tk=b,steps=['Read','Questions','Write','Done'],si=pre?0:{read:0,quiz:1,write:2,done:3}[st];
- el(pl,`<div style="height:100%;display:flex;align-items:center;gap:.65em;padding:0 .7em">
-  <div style="flex:none;position:relative;display:grid;place-items:center;width:3.3em;height:3.3em;border-radius:50%;background:radial-gradient(circle at 40% 35%,#ffffff,${LV[cu.c].hex}33 60%,${LV[cu.c].hex}55);box-shadow:inset 0 0 0 .12em ${LV[cu.c].hex}66,0 .15em .4em #0002"><span style="font-size:2.2em;display:inline-flex;animation:floaty 3s ease-in-out infinite">${gem3d(cu.c)}</span></div>
-  <div style="flex:1;min-width:0">
-   <div class="ttl" style="font-size:1.35em;white-space:nowrap">${LV[cu.c].name} <span style="color:${LV[cu.c].hex}">#${pre?1:cu.n}</span></div>
-   <div style="font-weight:700;font-size:.82em;color:#4a4f60;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${pre?'Placement reading':esc(tk.title)}</div>
-   <div style="display:flex;gap:.2em;margin-top:.35em">${steps.map((s,k)=>`<span style="flex:1;text-align:center;font-size:.62em;font-weight:900;padding:.18em 0;border-radius:99px;${k<si?'background:#d6efc8;color:#1f5d10':k===si?`background:${LV[cu.c].hex};color:#fff`:'background:#ece7dc;color:#7a7466'}">${k<si?'✓ ':''}${s}</span>`).join('')}</div></div></div>`,
-  [1174,380,342,144],'abs',`z-index:3;font-size:calc(22*var(--k));border-radius:calc(18*var(--k));background:linear-gradient(135deg,#fffdf7,#f7efdc);border:calc(3*var(--k)) solid ${LV[cu.c].hex};box-shadow:0 calc(4*var(--k)) calc(12*var(--k)) #3a2a1233,0 0 calc(14*var(--k)) ${LV[cu.c].hex}55`);}
-
- /* Ollie's tip and certificate goal stay in the painted panel until the drawer opens. */
-});setTimeout(()=>S.scene==='journey'&&say(pre?'Here is your whole journey: six gem stations, ten texts each. That is sixty readings and sixty writing tasks! When you are ready, press Start reading.':'Choose your station. Point at a station to see it light up!'),700)}
+function journey(){show('journey','rw04',pl=>{
+ const sc=cur;sc.dataset.nativeJourney='1';sc.classList.add('native-journey');
+ const cu=current(),pathOrder=[0,1,2,3,4,5];
+ const shell=document.createElement('main');shell.className='journey-shell';
+ shell.innerHTML=`<header class="journey-topbar"><div class="journey-brand">READwy Reading Lab</div><nav class="journey-nav" aria-label="Reading Lab navigation"><button type="button" data-nav="home">Home</button><button type="button" data-nav="map">Journey Map</button><button type="button" data-nav="portfolio">Portfolio</button><button type="button" data-nav="certificates">Certificates</button><button type="button" data-nav="settings">Settings</button></nav><button type="button" class="journey-self" data-nav="self">Self Mode</button></header><section class="journey-heading"><h1>Your learning journey</h1><p>Read. Understand. Write. Move forward.</p></section><section class="journey-grid" aria-label="Six gem stations"><svg class="journey-rail" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true"><path d="M166 142 H500 H834 V458 H500 H166" fill="none" stroke="#f2c75d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="18 16" opacity=".94"/></svg></section>`;
+ pl.replaceChildren(shell);shell.querySelector('.journey-heading').after(document.getElementById('caption'));
+ const grid=shell.querySelector('.journey-grid');
+ for(const c of pathOrder){
+  const lv=LV[c],open=lvOpen(c),done=lvDone(c)===10,now=c===cu.c&&!cu.all,read=lvRead(c),write=lvWrite(c),name=c===5?'Diamond Grand Central':lv.name,crop=JOURNEY_CROPS[c];
+  const status=done?'Completed':now?'Current station':open?'Open':'Locked';
+  const node=document.createElement('article');node.className='journey-station';node.dataset.station=String(c);
+  if(c<3){node.style.gridColumn=String(c+1);node.style.gridRow='1'}else{node.style.gridColumn=String(6-c);node.style.gridRow='2'}
+  node.style.setProperty('--station-color',lv.hex);
+  node.innerHTML=`<button type="button" class="journey-crop" data-crop="${crop.join(',')}" aria-label="Open ${esc(name)} station">${c===cu.c?'<span class="journey-train" aria-label="Train at the current station"><svg viewBox="0 0 64 44" aria-hidden="true"><path d="M7 25h35a8 8 0 0 0 8-8v-5H31l-5-7H13v12H7z" fill="#f4c74d" stroke="#142345" stroke-width="3" stroke-linejoin="round"/><path d="M15 9h8l4 6H15zM34 14h10v6H34z" fill="#8ed7ff" stroke="#142345" stroke-width="2"/><path d="M8 25h41v7H8z" fill="#b83232" stroke="#142345" stroke-width="2"/><circle cx="18" cy="34" r="6" fill="#142345" stroke="#f4c74d" stroke-width="3"/><circle cx="40" cy="34" r="6" fill="#142345" stroke="#f4c74d" stroke-width="3"/><path d="M52 17h7v15h-7zM56 11l4 6h-8z" fill="#d94832" stroke="#142345" stroke-width="2"/></svg></span>':''}</button><div class="journey-card"><div class="journey-card-head"><span class="journey-gem-name">${esc(name)}</span><span class="journey-badge">${status}</span></div><div class="journey-metric"><span>Reading</span><span class="journey-meter"><i style="width:${read*10}%"></i></span><span>${read}/10</span></div><div class="journey-metric"><span>Writing</span><span class="journey-meter blue"><i style="width:${write*10}%"></i></span><span>${write}/10</span></div><button type="button" class="journey-action${now?'':' secondary'}" ${open||done?'':'disabled'}>${now?'Start reading':done?'Review':'Open'}</button></div>`;
+  const stationAction=()=>{ac();SFX.pop();if(open||done)station(c);else{SFX.buzz();notice(`🔒 Finish ${LV[c-1]?.name||'the previous station'} to unlock ${lv.name}.`)}};
+  node.querySelector('.journey-crop').onclick=stationAction;
+  node.querySelector('.journey-action').onclick=stationAction;
+  grid.appendChild(node);
+ }
+ shell.querySelectorAll('[data-nav]').forEach(button=>button.addEventListener('click',()=>{ac();SFX.pop();({home:dashboard,map:toREADwyJourney,portfolio,certificates:certSheet,settings,self:()=>notice('🧑‍🎓 Self Mode — you are learning at your own pace.')})[button.dataset.nav]?.()}));
+ const cap=document.getElementById('caption');if(cap)cap.onclick=()=>caption('');
+});setTimeout(()=>{if(S.scene==='journey')say(P.start==null?'Here is your whole journey: six gem stations, ten texts each. Press Start reading at your current station when you are ready.':'Choose a station and continue your reading and writing journey.')},700)}
 
 /* ===== 5 · Station (the 10 texts of a level) ===== */
 function station(c){if(!lvOpen(c)){SFX.buzz();return notice(`🔒 Finish ${LV[c-1].name} to unlock ${LV[c].name}.`)}S.c=c;show('station','rw05',pl=>{
@@ -822,7 +886,9 @@ function _progEscHandler(e){
  if(d&&d.getAttribute('aria-hidden')==='false'){e.preventDefault();setProgressOpen(false)}
 }
 function progressBodyHTML(){
- return '<div style="display:flex;justify-content:space-evenly;align-items:stretch;gap:12px;min-height:220px">'+LV.map((l,c)=>{const d=lvDone(c),open=lvOpen(c);return '<div style="flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px 8px;border-radius:16px;background:rgba(255,255,255,.45);border:1.5px solid rgba(217,164,65,.22)"><div style="font-size:2.8em;line-height:1">'+gem(c,'1em')+'</div><div style="font-family:Fredoka,sans-serif;font-weight:700;font-size:1.05em">'+l.name+'</div><div style="font-weight:800;font-size:.82em;color:'+(d===10?'#1f4d0f':open?'#173c8a':'#5a5348')+'">'+(d===10?'✔ Complete':open?d+' / 10 texts':'🔒 Locked')+'</div><div style="width:100%;height:8px;border-radius:99px;background:#dfe3ea;overflow:hidden"><i style="display:block;height:100%;width:'+(d*10)+'%;background:linear-gradient(90deg,#7ee081,#2f8f10)"></i></div></div>'}).join('')+'</div>';
+ const rd=sum(lvRead),wr=sum(lvWrite),completed=sum(lvDone),cu=current(),st=cu.all?'done':stage(cu.c,cu.n),b=book(cu.c,cu.n),step={read:'Read',quiz:'Questions',write:'Write',done:'Done'}[st],earned=[0,1,2,3,4,5].filter(c=>lvDone(c)===10).length;
+ const stat=(label,value,total,color='')=>`<div class="progress-stat"><b>${label}</b><b>${value}/${total}</b><div class="progress-bar"><i style="width:${Math.min(100,value/total*100)}%;${color?'background:'+color:''}"></i></div></div>`;
+ return `<section aria-label="Reading and writing totals">${stat('Reading',rd,60)}${stat('Writing',wr,60,'linear-gradient(90deg,#65a8ff,#2860d5)')}${stat('Completed texts',completed,60)}</section><h3>Current task</h3><section class="progress-task"><b>${esc(LV[cu.c].name)} · Text ${cu.n}</b><div>${esc(b?.title||'Journey complete')}</div><div style="margin:6px 0;color:#465775;font-weight:900">Step: ${step}</div><button type="button" class="journey-action" id="journey-progress-continue">${cu.all?'View certificates':'Continue'}</button></section><h3>Ollie’s tip</h3><p style="margin:0;padding:11px;border-radius:12px;background:#fff9e9">${st==='read'?'Read carefully and take your time.':st==='quiz'?'Use what you remember from the passage to answer each question.':st==='write'?'Use your own words and check that every sentence supports your ideas.':'Great work—finish the next open text when you are ready.'}</p><h3>Certificate goal</h3><section class="progress-task"><b>${lvDone(5)===10?'Diamond certificate earned':'Complete Diamond 10'}</b><div style="margin-top:5px">${earned}/6 level certificates earned · ${lvDone(5)}/10 Diamond texts complete</div></section>`;
 }
 function _progIsOpen(){const d=document.getElementById('rl-progress-drawer');return !!(d&&d.getAttribute('aria-hidden')==='false')}
 function setProgressOpen(open){
@@ -830,7 +896,7 @@ function setProgressOpen(open){
  if(!dr||!back||!tab)return;
  const wasOpen=dr.getAttribute('aria-hidden')==='false',o=!!open;
  dr.style.transform=o?'translateX(0)':'translateX(100%)';dr.style.visibility=o?'visible':'hidden';dr.style.pointerEvents=o?'auto':'none';
- dr.style.transition=o?'transform .26s cubic-bezier(.2,.85,.25,1),visibility 0s linear 0s':'transform .26s cubic-bezier(.2,.85,.25,1),visibility 0s linear .26s';
+ dr.style.transition=o?'transform .25s cubic-bezier(.2,.85,.25,1),visibility 0s linear 0s':'transform .25s cubic-bezier(.2,.85,.25,1),visibility 0s linear .25s';
  dr.setAttribute('aria-hidden',o?'false':'true');
  back.style.opacity=o?'1':'0';back.style.visibility=o?'visible':'hidden';back.style.pointerEvents=o?'auto':'none';
  back.style.transition=o?'opacity .16s ease,visibility 0s linear 0s':'opacity .16s ease,visibility 0s linear .16s';
@@ -840,6 +906,7 @@ function setProgressOpen(open){
  else if(wasOpen&&document.activeElement&&dr.contains(document.activeElement))tab.focus?.({preventScroll:true});
 }
 function openProgress(){
+ if(S.scene!=='journey')return;
  if(!document.getElementById('rl-progress-drawer'))mountProgressOverlay({title:'My Progress',bodyHTML:progressBodyHTML()});
  setProgressOpen(true);
 }
@@ -872,7 +939,7 @@ function mountProgressOverlay({title='My Progress',bodyHTML='',toggleLabel='My P
  back.style.cssText='position:fixed;inset:0;background:rgba(20,12,30,.38);border:0;padding:0;margin:0;z-index:79;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .16s ease,visibility 0s linear .16s;';
  const dr=document.createElement('aside');dr.id='rl-progress-drawer';dr.setAttribute('aria-hidden','true');
  dr.style.cssText=drawerStyle||'position:fixed;top:var(--toolbar-h);right:0;bottom:0;width:min(420px,94vw);z-index:80;overflow:auto;touch-action:pan-y;background:linear-gradient(rgba(255,253,247,.97),rgba(248,238,214,.95));border-left:2px solid rgba(217,164,65,.45);box-shadow:-10px 0 30px rgba(0,0,0,.22);transform:translateX(100%);visibility:hidden;pointer-events:none;transition:transform .26s cubic-bezier(.2,.85,.25,1),visibility 0s linear .26s;';
- dr.innerHTML='<div style="padding:16px;color:#1d2440;font-size:18px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div style="font:700 28px/1 Fredoka,Nunito,sans-serif;color:#0e1838">'+esc(title)+'</div><button type="button" class="prog-close" aria-label="Close My Progress" style="width:36px;height:36px;border:0;border-radius:50%;background:#22396b;color:#fff6dc;font:700 24px/1 sans-serif;cursor:pointer">×</button></div>'+bodyHTML+'</div>';
+ dr.innerHTML='<div class="journey-progress-inner"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2>'+esc(title)+'</h2><button type="button" class="prog-close" aria-label="Close My Progress">×</button></div>'+bodyHTML+'</div>';
  const tab=document.createElement('button');tab.type='button';tab.id='rl-progress-toggle';tab.className='hit';tab.setAttribute('aria-expanded','false');tab.setAttribute('aria-controls','rl-progress-drawer');tab.setAttribute('aria-label','Open My Progress');
  tab.style.cssText=toggleStyle||'position:fixed;right:0;top:22vh;z-index:81;width:28px;height:108px;padding:0;border:1px solid #e2b24c;border-right:0;border-radius:12px 0 0 12px;background:rgba(20,35,67,.82);color:#fff6dc;box-shadow:-4px 0 14px rgba(0,0,0,.22);cursor:grab;touch-action:none;display:flex;align-items:center;justify-content:center';
  tab.innerHTML='<span style="display:flex;flex-direction:column;align-items:center;gap:.45em"><span class="prog-arrow" style="display:inline-block;font-size:1.1em;transition:transform .22s">‹</span><b style="writing-mode:vertical-rl;transform:rotate(180deg);font:700 12px/1 Fredoka,Nunito,sans-serif;letter-spacing:.05em">'+esc(toggleLabel)+'</b></span>';
