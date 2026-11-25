@@ -155,6 +155,9 @@ const IV_GAME_ICON={hangman:'🔤',memory:'🃏',wordle:'🔐',domino:'🁫',bul
 // Relabel the painted "Attempts" plaque (same plaque on every page).
 function ivPlaque(P,label){P.draw('plaque',`<defs><linearGradient id="ivgPlq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8dfae"/><stop offset="1" stop-color="#f1d09a"/></linearGradient></defs><rect x="1398" y="374" width="186" height="38" rx="10" fill="url(#ivgPlq)"/><text class="ivp-serif" x="1491" y="404" font-size="${label.length>8?27:33}" text-anchor="middle" style="fill:#13205a">${ivEsc(label)}</text>`)}
 function ivHallPage(label,stations){return ivPage({img:IV_PAGE_ART,w:1672,h:941,fit:'fill',label,...IV_TASK_HEAD,stations,bubble:IV_BUBBLE})}
+/* stations open one at a time: every earlier station must have all 5 tasks done */
+function ivStationOpen(key){const i=IV_ORDER.indexOf(key);for(let j=0;j<i;j++)if(ivStationProgress(IV_ORDER[j]).done<5)return false;return true}
+function ivFirstOpenStation(){for(const k of IV_ORDER)if(ivStationProgress(k).done<5)return k;return IV_ORDER[0]}
 function ivStationProgress(key){const D=ivStData(intervStationStore(),key);let won=0,done=0,writings=0;for(let t=1;t<=5;t++){const r=D.t[t];if(r?.g?.won)won++;if(r?.w)writings++;if(ivTaskDone(r))done++}return {D,won,done,writings,pct:Math.round((won+writings)/10*100)}}
 
 /* ---------- Home: choose a reading station ---------- */
@@ -169,16 +172,16 @@ function ivRenderHome(){
  frame.innerHTML=`<div class="ivx-in"><header class="ivx-head"><div class="ivx-meta"><b>Choose your reading station</b><span>Hello, ${ivEsc(first)}! · ${stats.points.toLocaleString()} points · ${stats.done} of 25 tasks done</span></div></header>
   <div class="ivhs-wrap"><div class="ivhs-panel"><div class="ivhs-art"></div>
    <svg class="ivhs-svg" viewBox="${IV_HOME_PANEL.join(' ')}" preserveAspectRatio="none" aria-hidden="true"><svg x="505" y="416" width="44" height="36" viewBox="505 410 44 1" preserveAspectRatio="none"><image href="${IV_HOME_ART}" width="1672" height="941" preserveAspectRatio="none"/></svg><svg x="505" y="452" width="44" height="62" viewBox="505 517 44 1" preserveAspectRatio="none"><image href="${IV_HOME_ART}" width="1672" height="941" preserveAspectRatio="none"/></svg><text class="ivd-text ivd-card" x="1252" y="479" text-anchor="middle">Critical</text><text class="ivd-text ivd-card" x="1252" y="505" text-anchor="middle">Depot</text></svg>
-   ${INTERV_STATIONS.map(s=>{const p=ivStationProgress(s.key),[x,y,w,h]=s.box,[px,py,pw,ph]=IV_HOME_PANEL,pc=(v,t)=>(v/t*100).toFixed(3)+'%';
-    return `<button type="button" class="ivhs-tile${s.key===next.key?' next':''}${p.done===5?' done':''}" data-st="${s.key}" aria-label="${ivEsc(s.name)}: ${p.done} of 5 tasks done" style="left:${pc(x-px,pw)};top:${pc(y-py,ph)};width:${pc(w,pw)};height:${pc(h,ph)}">${s.key===next.key?'<em>Next stop</em>':p.done===5?'<em>✔ Done</em>':''}<span class="ivhs-chip">${p.done}/5 tasks</span></button>`}).join('')}
-  </div><button type="button" class="ivhs-go" data-go>▶ Continue: ${ivEsc(next.name)}</button></div></div>`;
+   ${INTERV_STATIONS.map(s=>{const p=ivStationProgress(s.key),lk=!ivStationOpen(s.key),[x,y,w,h]=s.box,[px,py,pw,ph]=IV_HOME_PANEL,pc=(v,t)=>(v/t*100).toFixed(3)+'%';
+    return `<button type="button" class="ivhs-tile${s.key===next.key?' next':''}${p.done===5?' done':''}${lk?' locked':''}" data-st="${s.key}"${lk?' aria-disabled="true"':''} aria-label="${ivEsc(s.name)}: ${p.done} of 5 tasks done" style="left:${pc(x-px,pw)};top:${pc(y-py,ph)};width:${pc(w,pw)};height:${pc(h,ph)}">${lk?'<em>🔒 Locked</em>':s.key===next.key?'<em>Next stop</em>':p.done===5?'<em>✔ Done</em>':''}<span class="ivhs-chip">${p.done}/5 tasks</span></button>`}).join('')}
+  </div></div></div>`;
  // The original painted "Choose Your Reading Station" panel, shown crisp from the dashboard artwork.
  const art=frame.querySelector('.ivhs-art');if(typeof ivArtBg==='function')ivArtBg(art,IV_HOME_ART,IV_HOME_PANEL,1672,941);
  frame.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const d=b.dataset;
-  if(d.st)return renderStation(d.st);if('go' in d)return renderStation(next.key)});
+  if(d.st){if(!ivStationOpen(d.st)){const txt=`Finish ${IV_ST[ivFirstOpenStation()]?.name||'the current station'} first. Stations open one at a time.`;P.bubble(txt);return P.say(txt)}return renderStation(d.st)}if('go' in d)return renderStation(next.key)});
  P.hit('Continue your journey',[1310,825,338,92],()=>renderStation(next.key),'99px').classList.add('ivh-idle');
  ivGamesBar(P,()=>renderInter());
- P.bubble(`Hi, ${first}! Choose a reading station.`);
+ P.bubble(`Hi, ${first}! Stations open one at a time. Finish all 5 tasks to unlock the next one.`);
 }
 
 /* ---------- Progress: score summary for each competency ---------- */
@@ -276,26 +279,28 @@ function ivRenderSettings(){
 }
 /* ---------- Station: choose a task ---------- */
 function renderStation(key,mode){
- key=IV_ST[key]?key:(ivLast.st||'fl');ivLast.st=key;
+ key=IV_ST[key]?key:(ivLast.st||'fl');if(!ivStationOpen(key))key=ivFirstOpenStation();ivLast.st=key;
  const S=IV_ST[key],tasks=ivTasks(key),prog=ivStationProgress(key),D=prog.D;let selected=Number(D.sel)||ivNextTask(key);
+ /* tasks open one at a time: a task is open when it is done or every task before it is done */
+ const nextT=ivNextTask(key),openT=t=>ivTaskDone(D.t[t])||t<=nextT;if(!openT(selected))selected=nextT;
  const P=ivHallPage(S.name+': choose a task',()=>renderInter());
  P.draw('title',ivTitle(S.name,S.sub,false));
- P.draw('goal',ivTaskGoal(S.goal));P.draw('tips',ivTips(['Pick a task, then press Start.','Win the game, then write.']));
+ P.draw('goal',ivTaskGoal(S.goal));P.draw('tips',ivTips(['Tasks open one at a time.','Win the game, then write.']));
  ivPlaque(P,'Progress');P.draw('attempts',ivAttemptStars(Math.round(prog.done/5*3),`${prog.done}/5 tasks`));
  const frame=P.layer('ivx ivst',IV_FRAME);
  const paint=()=>{
   frame.innerHTML=`<div class="ivx-in"><header class="ivx-head"><div class="ivx-meta"><b>${IV_ST_ICON[key]} Choose a task</b><span>${ivEsc(S.name)} · Grade ${ivGrade()} · ${prog.won} of 5 games won · ${(D.pts||0).toLocaleString()} points</span></div></header>
-   <div class="ivst-cards">${tasks.map((t,i)=>{const kind=IV_ARCADE[key][i],gname=(typeof ARAL_GAMES!=='undefined'&&ARAL_GAMES[kind]?.name)||'',r=D.t[i+1],n=ivTaskStars(r),st=ivTaskDone(r)?'✔ Done':r?.g?.won?'★ Write next':'';
-    return `<button type="button" class="ivst-card${i+1===selected?' sel':''}${ivTaskDone(r)?' done':''}" data-t="${i+1}" style="--c:${IV_ST_COLOR[key]}"><span class="ivst-num">Task ${i+1}</span><span class="ivst-ic">${IV_GAME_ICON[kind]||'🎮'}</span><b>${ivEsc(t.n)}</b><small>${ivEsc(gname)}</small><span class="ivst-stars">${'★'.repeat(n)}${'☆'.repeat(4-n)}</span>${st?`<em>${st}</em>`:''}</button>`}).join('')}</div>
+   <div class="ivst-cards">${tasks.map((t,i)=>{const kind=IV_ARCADE[key][i],gname=(typeof ARAL_GAMES!=='undefined'&&ARAL_GAMES[kind]?.name)||'',r=D.t[i+1],n=ivTaskStars(r),st=ivTaskDone(r)?'✔ Done':r?.g?.won?'★ Write next':openT(i+1)?'':'🔒 Locked';
+    return `<button type="button" class="ivst-card${i+1===selected?' sel':''}${ivTaskDone(r)?' done':''}${openT(i+1)?'':' locked'}" data-t="${i+1}"${openT(i+1)?'':' aria-disabled="true"'} style="--c:${IV_ST_COLOR[key]}"><span class="ivst-num">Task ${i+1}</span><span class="ivst-ic">${IV_GAME_ICON[kind]||'🎮'}</span><b>${ivEsc(t.n)}</b><small>${ivEsc(gname)}</small><span class="ivst-stars">${'★'.repeat(n)}${'☆'.repeat(4-n)}</span>${st?`<em>${st}</em>`:''}</button>`}).join('')}</div>
    <footer class="ivx-foot"><button type="button" class="ivx-b ivx-listen" data-home>◀ All stations</button><span class="ivx-msg"></span><button type="button" class="ivx-b ivx-check" data-start>▶ Start Task ${selected}</button></footer></div>`};
  const select=t=>{selected=t;const s=intervStationStore();ivStData(s,key).sel=t;intervStationSave(s);paint();P.say('Task '+t+' selected: '+(tasks[t-1]?.n||''))};
  frame.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const d=b.dataset;
-  if(d.t){const t=Number(d.t);return t===selected?renderTask(key,t):select(t)}
+  if(d.t){const t=Number(d.t);if(!openT(t)){const m=frame.querySelector('.ivx-msg'),txt=`Finish Task ${nextT} first. Tasks open one at a time.`;if(m)m.textContent=txt;return P.say(txt)}return t===selected?renderTask(key,t):select(t)}
   if('start' in d)return renderTask(key,selected);if('home' in d)return renderInter()});
  paint();
  P.hit('Start the selected task',[1310,825,338,92],()=>renderTask(key,selected),'99px').classList.add('ivh-idle');
  ivGamesBar(P,()=>renderStation(key));
- P.bubble(`${S.name}! Pick a task, then press Start.`);
+ P.bubble(prog.done>=5?`${S.name}! All tasks done. You can replay any task.`:`${S.name}! Tasks open one at a time. Start with Task ${nextT}.`);
  if(mode==='games'){frame.remove();ivStationGames(P,key)}
 }
 function ivRingSectors(cx,cy,r0,r1,pct){
@@ -506,17 +511,26 @@ function ivAttemptStars(n,label){return IV_ATT_STARS.slice(0,Math.max(0,Math.min
 function ivOpenPlaylab(P,after){const wallet=ivWallet();if(!globalThis.ReadwyPlaylab||!wallet){P.bubble('The Bonus Game is not available right now.');return}
  globalThis.ReadwyPlaylab.open({wallet,onReturn:()=>{if(!P.board.isConnected)return;ivBarBadge(P);P.bubble(`You have ${wallet.balance()} hint credit${wallet.balance()===1?'':'s'}. Use them for hints!`);after?.()}})}
 function ivBarBadge(P){const b=P.board.querySelector('.ivbar-badge');if(b){const w=ivWallet();b.textContent=w?w.balance():0}}
-/* InterV games toolbar: drawn over the painted games pill in the same navy-and-gold style, with every game in one
-   row of equal slots. All games live here (InterV Games hub, the five arcade games, this station's games, Bonus Game). */
+/* InterV games toolbar: one wide "InterV Games" button fills the bottom bar. Tapping it slides the six mini-games
+   (Word Puzzle, Memory Match, Reading Race, Word Spinner, Challenge, Bonus Game) out inside the same bar; tapping it
+   again folds them away. The game list never opens in the middle of the screen. The open/closed state is kept while
+   the learner moves between pages. */
 const IV_BAR=[16,795,1282,138];
+let ivBarOpen=false;
 function ivGamesBar(P,back){
  P.board.querySelector('.ivbar')?.remove();
- const bar=P.layer('ivbar',IV_BAR),w=ivWallet(),st=IV_ST[ivLast.st]?ivLast.st:'fl';
- const items=[['hub','🎮','InterV Games',()=>renderIntervGames()],['puzzle','🧩','Word Puzzle',()=>renderIvWordPuzzle()],['memory','🃏','Memory Match',()=>renderIvMemory()],['race','🏁','Reading Race',()=>renderIvReadingRace()],
+ const bar=P.layer('ivbar ivgb-bar',IV_BAR),w=ivWallet();
+ const games=[['puzzle','🧩','Word Puzzle',()=>renderIvWordPuzzle()],['memory','🃏','Memory Match',()=>renderIvMemory()],['race','🏁','Reading Race',()=>renderIvReadingRace()],
   ['spinner','🎡','Word Spinner',()=>renderIvSpinner()],['challenge','🏆','Challenge',()=>renderIvChallenge()],['bonus','🎁','Bonus Game',null]];
- bar.innerHTML=`<nav class="ivbar-in" aria-label="InterV games">${items.map(([k,ic,n])=>`<button type="button" class="ivbar-b${k==='hub'?' hub':''}${k==='bonus'?' bonus':''}" data-k="${k}"><span class="ivbar-ic">${ic}</span><span class="ivbar-t">${n}</span>${k==='bonus'?`<i class="ivbar-badge" title="Bonus credits">${w?w.balance():0}</i>`:''}</button>`).join('')}</nav>`;
- bar.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const it=items.find(x=>x[0]===b.dataset.k);if(!it)return;
-  if(it[0]==='bonus')return ivOpenPlaylab(P);ivGamesBack=back;it[3]()});
+ bar.innerHTML=`<nav class="ivbar-in ivgb" aria-label="InterV games"><button type="button" class="ivbar-b hub ivgb-hub" data-k="hub" aria-expanded="false" aria-controls="ivgb-games"><span class="ivbar-ic">🎮</span><span class="ivbar-t">InterV Games</span><span class="ivgb-arrow" aria-hidden="true">▸</span></button><div class="ivgb-games" id="ivgb-games">${games.map(([k,ic,n])=>`<button type="button" class="ivbar-b${k==='bonus'?' bonus':''}" data-k="${k}"><span class="ivbar-ic">${ic}</span><span class="ivbar-t">${n}</span>${k==='bonus'?`<i class="ivbar-badge" title="Bonus credits">${w?w.balance():0}</i>`:''}</button>`).join('')}</div></nav>`;
+ const hub=bar.querySelector('.ivgb-hub'),btns=[...bar.querySelectorAll('.ivgb-games .ivbar-b')];
+ const set=on=>{ivBarOpen=on;bar.classList.toggle('ivgb-open',on);hub.setAttribute('aria-expanded',on?'true':'false');hub.setAttribute('aria-label',on?'Hide InterV games':'Show InterV games');btns.forEach(b=>{b.tabIndex=on?0:-1;b.setAttribute('aria-hidden',on?'false':'true')})};
+ set(ivBarOpen);
+ bar.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const k=b.dataset.k;
+  if(k==='hub')return set(!ivBarOpen);
+  if(!ivBarOpen)return;
+  if(k==='bonus')return ivOpenPlaylab(P);
+  const it=games.find(x=>x[0]===k);if(!it)return;ivGamesBack=back;it[3]()});
 }
 /* ---------- Station tasks as arcade games (ARAL arcade style, InterV instructional level) ----------
    Every one of the 25 tasks uses a different arcade game from the shared READwy game library (ARAL_GAME_RUN),
@@ -725,6 +739,7 @@ let ivArcadeRun=null;
 function ivArcStop(){try{ivArcadeRun?.stop?.()}catch(e){}try{ivArcadeRun?.cleanup?.()}catch(e){}ivArcadeRun=null}
 function renderTask(key,t,start){
  key=IV_ST[key]?key:'fl';ivLast.st=key;const S=IV_ST[key],task=ivTasks(key)[t-1];if(!task)return renderStation(key);
+ {const D0=ivStData(intervStationStore(),key);if(!ivStationOpen(key)||(!ivTaskDone(D0.t[t])&&t>ivNextTask(key)))return renderStation(key)}
  const g=ivGrade(),A=IV_ARC_LEVEL(g);let L=null;try{ivLegacyMerge()}catch(e){}L=globalThis.InterVLegacyData;
  const GD=L?ivGameData(key,t-1,L,g,task):null,kind=GD?.kind,info=kind&&typeof ARAL_GAMES!=='undefined'?ARAL_GAMES[kind]:null,runner=kind?ivArcRunner(kind):null;
  const P=ivPage({img:'resources/interv/pages/task-generic.png',w:1672,h:941,fit:'fill',label:S.name+': '+task.n,...IV_TASK_HEAD,stations:()=>renderStation(key),bubble:{x:295,y:186,size:25,chars:23,rows:3,maxW:236}});
@@ -930,10 +945,6 @@ const IV_RACE=[
  ['Ana saved her coins to buy a book.',['Ana lost her coins.','Ana bought shoes.','Ana saved for a book.'],2],
  ['The farmer picked ripe mangoes from the tree.',['He picked mangoes.','He planted rice.','He sold the tree.'],0]
 ];
-const IV_SPINNER=[
- [['brave','full of courage'],['gentle','soft and kind'],['brilliant','very bright'],['honest','truthful'],['kind','caring'],['calm','quiet, peaceful']],
- [['ancient','very old'],['fragile','easy to break'],['generous','likes to share'],['curious','wants to know'],['enormous','very big'],['timid','shy and scared']]
-];
 const IV_CHALLENGE=[
  ['Which is a synonym for “happy”?',['sad','joyful','angry','tired'],1],
  ['Which is an antonym for “ancient”?',['old','modern','broken','huge'],1],
@@ -950,9 +961,9 @@ const IV_GAME_INFO={
  hub:{name:'Learn • Play • Earn',goal:'Play games to earn more points!',tips:['Every game builds reading skills.','The Bonus Game earns hint credits.'],say:'Games help you build reading skills while having fun! Choose a game.'},
  puzzle:{name:'Word Puzzle',icon:'🧩',desc:'Unscramble the letters to build the word.',goal:'Unscramble every word!',tips:['Look for a word part you know.','Press Hint to reveal a letter.'],say:'Unscramble the letters to form a correct word!'},
  memory:{name:'Memory Match',icon:'🃏',desc:'Find pairs of words with the same meaning.',goal:'Match all six pairs in few moves!',tips:['Remember where each word is.','Pairs mean the same thing.'],say:'Find the matching cards! Each pair means the same.'},
- race:{name:'Reading Race',icon:'🏁',desc:'Read fast and pick the matching sentence.',goal:'Answer before the clock runs out!',tips:['Read the whole sentence first.','Pick the choice that means the same.'],say:'Read the sentence and choose the correct answer before time runs out!'},
- spinner:{name:'Word Spinner',icon:'🎡',desc:'Spin the wheel and choose the meaning.',goal:'Know the meaning of every word!',tips:['Press SPIN to get a word.','Choose the meaning that fits.'],say:'Spin the wheel, read the word, and choose the correct meaning!'},
- challenge:{name:'Challenge Game',icon:'🏆',desc:'Ten word challenges. Perfect score = +50 bonus!',goal:'Get all ten right for a +50 bonus!',tips:['Synonym = same meaning.','Antonym = opposite meaning.'],say:'Solve the challenge and earn bonus points!'}
+ race:{name:'Reading Race',icon:'🏁',desc:'Steer into the word that completes the sentence.',goal:'Beat Ollie to the finish flag!',tips:['Read the sentence, find the clue.','Right word = speed boost!'],say:'Read the sentence, then steer your car into the word that fits. Beat Ollie to the flag!'},
+ spinner:{name:'Word Spinner',icon:'🎡',desc:'Spin the wheel and choose the meaning. New words every wheel!',goal:'Learn new words on every wheel!',tips:['Press SPIN to get a word.','The wheels never run out.'],say:'Spin the wheel, read the word, and choose the correct meaning!'},
+ challenge:{name:'Challenge Game',icon:'🏆',desc:'Word Pop: pop only the words that fit the rule.',goal:'Clear all 5 rounds for a +50 bonus!',tips:['Read the rule on the gold bar.','Streaks build a combo!'],say:'Pop only the words that fit the rule. Streaks give a combo!'}
 };
 function ivPlayed(name){const s=intervStationStore();s.games={...(s.games||{}),[name]:((s.games||{})[name]||0)+1};intervStationSave(s)}
 function ivGamePage(key,label){const info=IV_GAME_INFO[key];ivCurGame=key==='hub'?'':info.name;
@@ -1022,60 +1033,235 @@ function renderIvMemory(){
 }
 /* Reading Race */
 let ivRaceClock=0;
+
+/* Reading Race: steer your car into the gate whose word completes the sentence (context clues).
+   Right word = speed boost, wrong word = slow down. Beat Ollie the Owl to the finish line. */
+const IV_RACE_BANK=[
+['The ___ storm knocked down trees and flooded the streets.','violent',['gentle','tiny']],
+['After running the whole race, Rico was too ___ to stand.','exhausted',['energetic','early']],
+['The desert is so ___ that only a few plants can grow there.','dry',['wet','crowded']],
+['Mila was ___ to share her snacks with everyone in class.','happy',['afraid','unable']],
+['The old bridge was too ___ for trucks to cross safely.','weak',['strong','new']],
+['We ___ the plants every morning so they will not dry out.','water',['burn','hide']],
+['The library is a ___ place where people read and study.','quiet',['noisy','wild']],
+['Because the road was icy, the driver moved ___.','slowly',['quickly','loudly']],
+['The puppy was so ___ that it hid behind the sofa during the thunder.','scared',['brave','hungry']],
+['Ana studied every night, so she felt ___ before the test.','prepared',['confused','lazy']],
+['The mango was ___, sweet and ready to eat.','ripe',['raw','frozen']],
+['The crowd ___ loudly when the team scored the winning goal.','cheered',['slept','whispered']],
+['The farmers were glad because the rain gave them a ___ harvest.','plentiful',['poor','silent']],
+['Lino forgot his umbrella, so he got ___ on the way home.','soaked',['dry','lost']],
+['The ___ child asked many questions about how stars shine.','curious',['bored','sleepy']],
+['Please speak ___; the baby is sleeping.','softly',['loudly','angrily']],
+['The fisherman ___ his net into the calm sea.','threw',['ate','painted']],
+['The museum keeps ___ objects that are hundreds of years old.','ancient',['modern','broken']],
+['The lighthouse helps ships ___ safely at night.','navigate',['sink','vanish']],
+['When the fire alarm rang, the students left the building ___.','calmly',['angrily','never']],
+['The volcano became ___ again after sleeping for fifty years.','active',['quiet','smaller']],
+['The vase is ___, so carry it with both hands.','fragile',['heavy','cheap']],
+['Our class worked together to ___ the messy classroom.','clean',['break','forget']],
+['The bright sun made the beach sand feel ___ under our feet.','hot',['cold','soft']],
+['The team was ___ after losing the final game by one point.','disappointed',['delighted','hungry']],
+['Mangroves ___ the coast by slowing down big waves.','protect',['destroy','paint']],
+['The baker woke up early to ___ fresh bread for the town.','bake',['sell','sleep']],
+['The hikers needed a map because the forest trail was ___.','confusing',['short','straight']],
+['The kind neighbor ___ us carry the heavy boxes.','helped',['stopped','watched']],
+['The audience ___ when the magician made the bird disappear.','gasped',['yawned','left']],
+['The streets were ___ because everyone stayed home during the typhoon.','empty',['crowded','bright']],
+['The nurse spoke in a ___ voice to calm the crying child.','gentle',['harsh','silly']],
+['Plants need sunlight, water and air to ___.','grow',['melt','shrink']],
+['The ___ elephant moved slowly through the tall grass.','enormous',['tiny','invisible']],
+['Before crossing the street, always look both ways to stay ___.','safe',['late','lost']],
+['The coach ___ the players for working hard during practice.','praised',['scolded','ignored']],
+['The bus was ___, so we had to stand all the way to school.','full',['empty','fast']],
+['The scientist used a microscope to ___ the tiny cells.','observe',['cook','throw']],
+['The soup was too ___, so Lola added some water.','salty',['cold','blue']],
+['The kite rose ___ into the windy sky.','higher',['lower','slower']],
+['He was so ___ that he finished the whole pizza by himself.','hungry',['full','sick']],
+['The candle gave off a ___ light in the dark room.','dim',['loud','sharp']],
+['Rain clouds ___ over the mountains before the storm.','gathered',['vanished','danced']],
+['The students were ___ when the principal announced a field trip.','excited',['angry','tired']],
+['Carlos ___ his little sister by reading her a bedtime story.','comforted',['frightened','punished']],
+['The river ___ after days of heavy rain.','overflowed',['dried','froze']],
+['We packed water and food because the journey would be ___.','long',['short','easy']],
+['The old map was hard to read because the ink had ___.','faded',['grown','sparkled']]];
+function ivRaceNew(n){const s=intervStationStore();let used=new Set(Array.isArray(s.raceUsed)?s.raceUsed:[]);let fresh=IV_RACE_BANK.filter(x=>!used.has(x[0]));if(fresh.length<n){s.raceUsed=[];intervStationSave(s);fresh=IV_RACE_BANK.slice()}return ivShuffle(fresh).slice(0,n)}
+function ivRaceMarkUsed(sent){const s=intervStationStore();const u=Array.isArray(s.raceUsed)?s.raceUsed:[];if(!u.includes(sent))u.push(sent);s.raceUsed=u;intervStationSave(s)}
 function renderIvReadingRace(){
- const G=ivGamePage('race','Reading Race: read the sentence and choose the answer');ivPlayed('Reading Race');
- let order,i,score,time,locked,finished,right,pick;
- const paint=()=>{G.score(score,Math.round(right/order.length*3));
-  if(finished)return G.shell(['Reading Race','Race finished!'],`<p class="ivx-qt">${right} of ${order.length} correct · ${score} points!</p>`,`<span class="ivx-msg"></span><button type="button" class="ivx-b ivx-next" data-again>↻ Race again</button>`);
-  const [s,opts,ans]=order[i];
-  G.shell(['Reading Race',`Sentence ${i+1} of ${order.length}`],`<p class="ivx-ctx ivg-big">${ivEsc(s)}</p><p class="ivx-qt">Which sentence matches?</p><div class="ivx-opts one">${opts.map((o,k)=>ivOptBtn(o,k,locked?(k===ans?'ok':k===pick?'no':''):'')).join('')}</div>`,'',`<span class="ivg-clock${time<=10?' low':''}">⏱ 0:${String(Math.max(0,time)).padStart(2,'0')}</span>`)};
- const clock=()=>{const c=G.frame.querySelector('.ivg-clock');if(c){c.textContent='⏱ 0:'+String(Math.max(0,time)).padStart(2,'0');c.classList.toggle('low',time<=10)}};
- const answer=k=>{if(locked)return;locked=true;pick=k;clearInterval(ivRaceClock);const ans=order[i][2];
-  if(k===ans){score+=10;right++;ivAward(10);G.P.pts();G.P.bubble('Correct! Keep racing!')}else G.P.bubble(k<0?'Time is up! Here is the right answer.':'Not quite. The green answer matches the sentence.');
-  paint();ivLater(()=>{i++;if(i>=order.length){finished=true;paint();G.P.bubble(`Race finished! ${right} of ${order.length} correct.`);return}ask()},1500)};
- const ask=()=>{locked=false;pick=-1;time=45;paint();clearInterval(ivRaceClock);ivRaceClock=setInterval(()=>{if(!G.frame.isConnected)return clearInterval(ivRaceClock);time--;clock();if(time<=0)answer(-1)},1000)};
- const start=()=>{order=ivShuffle(IV_RACE);i=0;score=0;right=0;finished=false;ask()};
- G.on(d=>{if('again' in d)return start();if('k' in d)return answer(Number(d.k))});
+ const G=ivGamePage('race','Reading Race: steer into the word that completes the sentence');ivPlayed('Reading Race');
+ const N=8,CARX=14,GAP=100,BASE=14,OWL=BASE*.94,FIN_EXTRA=40;
+ let gates,dist,owl,lane,gi,speedMul,effectUntil,score,right,result,raf=0,last=0,over=false,review=[],showFill=null;
+ const finish=()=>GAP*(N-1)+GAP+FIN_EXTRA;
+ const html=()=>`<div class="ivx-in ivr">
+  <div class="ivr-top"><div class="ivr-sent" aria-live="polite"></div>
+   <div class="ivr-prog" aria-hidden="true"><i class="ivr-line"></i><span class="ivr-me">🏎️</span><span class="ivr-owl">🦉</span><b class="ivr-flag">🏁</b></div></div>
+  <div class="ivr-road" role="group" aria-label="Three lanes. Tap a lane to steer.">
+   ${[0,1,2].map(l=>`<button type="button" class="ivr-lane" data-lane="${l}" aria-label="Lane ${l+1}"></button>`).join('')}
+   <div class="ivr-gates"></div><div class="ivr-car" aria-hidden="true">🏎️</div><div class="ivr-pop" aria-hidden="true"></div>
+  </div>
+  <div class="ivr-foot"><span class="ivr-tip">Tap a lane (or press ↑ ↓) to steer into the right word.</span><span class="ivr-hud"></span></div>
+  <div class="ivr-end" hidden></div></div>`;
+ let F,road,car,gEl,sent,me,owlEl,hud,pop,end;
+ const fillSent=(g,word,cls)=>{const [s]=g.q;sent.innerHTML=ivEsc(s).replace('___',word?`<b class="${cls}">${ivEsc(word)}</b>`:'<b class="blank">_____</b>')};
+ const setLane=l=>{lane=Math.max(0,Math.min(2,l));car.style.top=`calc(${lane*33.33+16.67}% )`};
+ const build=()=>{G.frame.innerHTML=html();F=G.frame;road=F.querySelector('.ivr-road');car=F.querySelector('.ivr-car');gEl=F.querySelector('.ivr-gates');sent=F.querySelector('.ivr-sent');me=F.querySelector('.ivr-me');owlEl=F.querySelector('.ivr-owl');hud=F.querySelector('.ivr-hud');pop=F.querySelector('.ivr-pop');end=F.querySelector('.ivr-end');
+  gEl.innerHTML=gates.map((g,i)=>`<div class="ivr-gate" data-g="${i}">${g.words.map((w,l)=>`<span class="ivr-sign" style="top:${l*33.33}%"><b>${ivEsc(w)}</b></span>`).join('')}</div>`).join('');setLane(1)};
+ const flash=(txt,cls)=>{pop.textContent=txt;pop.className='ivr-pop show '+cls;setTimeout(()=>{if(pop.isConnected)pop.className='ivr-pop'},700)};
+ const cross=g=>{const ok=g.words[lane]===g.q[1];g.done=true;g.ok=ok;review.push({s:g.q[0],a:g.q[1],ok});ivRaceMarkUsed(g.q[0]);
+  const el=gEl.querySelector(`[data-g="${gates.indexOf(g)}"]`);el?.querySelectorAll('.ivr-sign').forEach((s,l)=>s.classList.add(g.words[l]===g.q[1]?'good':l===lane?'bad':'dim'));
+  if(ok){right++;score+=10;ivAward(10);G.P.pts();speedMul=1.7;effectUntil=performance.now()+1300;flash('BOOST! +10','good');G.P.bubble(`Yes! “${g.q[1]}” fits. Boost!`)}
+  else{speedMul=.45;effectUntil=performance.now()+1600;car.classList.remove('spin');void car.offsetWidth;car.classList.add('spin');flash('Oops!','bad');G.P.bubble(`The right word was “${g.q[1]}”. Keep going!`)}
+  fillSent(g,g.q[1],ok?'ok':'fix');showFill=performance.now()+1400};
+ const endRace=(won)=>{over=true;cancelAnimationFrame(raf);if(won){score+=30;ivAward(30);G.P.pts()}
+  G.score(score,Math.round(right/N*3));
+  end.hidden=false;end.innerHTML=`<div class="ivr-card"><div class="ivr-big">${won?'🏆 You win!':'🦉 Ollie wins this time!'}</div><p>${right} of ${N} words correct · ${score} points${won?' (including +30 for winning)':''}</p>
+   <ul>${review.map(r=>`<li class="${r.ok?'ok':'no'}">${r.ok?'✔':'✘'} ${ivEsc(r.s).replace('___',`<b>${ivEsc(r.a)}</b>`)}</li>`).join('')}</ul>
+   <button type="button" class="ivx-b ivx-next" data-again>↻ Race again</button></div>`;
+  G.P.bubble(won?`You won the race with ${right} of ${N} right!`:`Ollie won, but you got ${right} of ${N} right. Race again!`)};
+ const tick=t=>{if(!F||!F.isConnected){cancelAnimationFrame(raf);return}const dt=Math.min(.25,(t-last)/1000||0);last=t;
+  if(t>effectUntil)speedMul=1;const v=BASE*speedMul;dist+=v*dt;owl+=OWL*dt;
+  // gates
+  gates.forEach((g,i)=>{const x=CARX+(g.at-dist);const el=gEl.children[i];if(!el)return;el.style.left=x+'%';el.style.display=x>115||x<-20?'none':'';if(!g.done&&x<=CARX+1)cross(g)});
+  // sentence for the next gate (after the filled-in answer has been shown briefly)
+  const nextG=gates.find(g=>!g.done);if(nextG&&(!showFill||t>showFill)){if(sent.dataset.g!==String(gates.indexOf(nextG))){sent.dataset.g=gates.indexOf(nextG);fillSent(nextG)}}
+  road.style.setProperty('--road',(-dist*6)+'px');
+  const F2=finish();me.style.left=Math.min(100,dist/F2*100)+'%';owlEl.style.left=Math.min(100,owl/F2*100)+'%';
+  hud.textContent=`Gate ${Math.min(N,gates.filter(g=>g.done).length+1)} of ${N} · ${right} correct · ${score} pts`;
+  if(dist>=F2)return endRace(true);if(owl>=F2)return endRace(false);
+  raf=requestAnimationFrame(tick)};
+ const start=()=>{const qs=ivRaceNew(N);gates=qs.map((q,i)=>({q,at:GAP*(i+1),words:ivShuffle([q[1],...q[2]]),done:false}));dist=0;owl=0;gi=0;speedMul=1;effectUntil=0;score=0;right=0;over=false;review=[];showFill=null;
+  build();G.score(0,0);last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);G.P.bubble('Read the sentence, then steer into the word that fits. Beat Ollie to the flag!')};
+ G.frame.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;if('again' in b.dataset)return start();if(b.dataset.lane!=null&&!over)setLane(Number(b.dataset.lane))});
+ const key=e=>{if(!G.frame.isConnected){removeEventListener('keydown',key);return}if(over)return;if(e.key==='ArrowUp'||e.key==='w'){setLane(lane-1);e.preventDefault()}if(e.key==='ArrowDown'||e.key==='s'){setLane(lane+1);e.preventDefault()}};
+ addEventListener('keydown',key);
+ // swipe up/down on the road
+ let sy=null;G.frame.addEventListener('pointerdown',e=>{sy=e.clientY},{passive:true});G.frame.addEventListener('pointerup',e=>{if(sy!=null&&Math.abs(e.clientY-sy)>30&&!over)setLane(lane+(e.clientY>sy?1:-1));sy=null},{passive:true});
  start();
 }
 /* Word Spinner */
+
+/* Word Spinner word bank: 180 Grade 7–10 words with short meanings. Each learner gets words they have not answered yet;
+   the bank only repeats after every word has been used. */
+const IV_SPIN_BANK=[
+['abundant','more than enough'],['accurate','correct in every detail'],['adapt','change to fit a new situation'],['adequate','enough for what is needed'],['adjacent','next to or beside'],['admire','look up to with respect'],['advocate','speak up in support of'],['affluent','having a lot of money'],['agile','able to move quickly and easily'],['alert','watchful and ready'],
+['ally','a friend who gives support'],['ambiguous','having more than one meaning'],['ample','plenty'],['anxious','worried and nervous'],['apparent','easy to see or understand'],['arid','very dry, with little rain'],['assist','help'],['astonish','surprise greatly'],['attain','reach or achieve'],['authentic','real, not a copy'],
+['barren','unable to grow plants'],['benefit','something good that helps'],['bewildered','very confused'],['bland','without much taste or interest'],['boisterous','noisy and full of energy'],['brief','short in time'],['brittle','hard but easy to break'],['candid','honest and direct'],['capable','able to do something well'],['cautious','careful to avoid danger'],
+['cease','stop'],['clarify','make clear'],['coax','gently persuade'],['coincide','happen at the same time'],['collaborate','work together'],['commence','begin'],['compassion','caring about others who suffer'],['competent','having enough skill'],['comply','follow a rule or request'],['concise','short and clear'],
+['conclude','end or decide after thinking'],['confide','tell a secret to someone you trust'],['conserve','save and protect from waste'],['considerate','thoughtful of others'],['conspicuous','easy to notice'],['contaminate','make dirty or impure'],['contemplate','think about deeply'],['contradict','say the opposite'],['courteous','polite'],['crucial','extremely important'],
+['cultivate','grow or develop with care'],['dainty','small and delicate'],['dazzling','very bright or impressive'],['debate','a formal discussion of two sides'],['decline','go down, or say no politely'],['dedicate','give time or effort to'],['deduce','figure out from clues'],['defiant','refusing to obey'],['deliberate','done on purpose'],['demolish','tear down completely'],
+['dense','packed closely together'],['depict','show in a picture or words'],['descend','go down'],['desolate','empty and lonely'],['determined','firm in deciding to do something'],['devour','eat hungrily'],['diligent','hardworking and careful'],['diminish','make or become smaller'],['discard','throw away'],['disclose','reveal or make known'],
+['dismal','gloomy and sad'],['dispute','an argument or disagreement'],['distinct','clearly different'],['diverse','made of many different kinds'],['dormant','sleeping or not active for now'],['drowsy','sleepy'],['durable','lasting a long time'],['eager','very keen to do something'],['economical','not wasteful with money'],['elated','very happy and excited'],
+['eloquent','speaking clearly and powerfully'],['elude','escape or avoid'],['emerge','come out into view'],['endure','last or put up with hardship'],['enhance','make better'],['enormous','very large'],['ensure','make certain'],['essential','absolutely needed'],['evaluate','judge the value of'],['evident','clear and obvious'],
+['exaggerate','make something seem bigger than it is'],['exceed','go beyond a limit'],['exhausted','very tired'],['expand','grow larger'],['expel','force out'],['feasible','possible to do'],['feeble','weak'],['ferocious','fierce and violent'],['flexible','able to bend or change easily'],['flourish','grow well and healthily'],
+['fluctuate','rise and fall again and again'],['forbid','not allow'],['fragile','easy to break'],['frail','weak and thin'],['frugal','careful not to waste money'],['furious','very angry'],['futile','useless; having no result'],['generous','happy to give and share'],['genuine','real and sincere'],['gratitude','being thankful'],
+['grim','serious and gloomy'],['habitat','the natural home of a plant or animal'],['harmony','peaceful agreement'],['hazard','a danger'],['hesitate','pause before acting'],['hostile','unfriendly'],['humble','not proud'],['hypothesis','an idea to be tested'],['identical','exactly the same'],['illuminate','light up'],
+['immense','huge'],['imitate','copy'],['impartial','fair to all sides'],['inevitable','sure to happen'],['influence','the power to change others'],['inhabit','live in'],['initiate','start'],['innovate','make something new'],['inquire','ask'],['integrity','being honest and having strong values'],
+['intense','very strong'],['interpret','explain the meaning of'],['jubilant','full of joy'],['keen','eager or sharp'],['lament','express sadness'],['legible','clear enough to read'],['lenient','not strict'],['linger','stay longer than needed'],['lucid','clear and easy to understand'],['luminous','glowing; giving off light'],
+['meager','very small in amount'],['meticulous','very careful about details'],['migrate','move from one place to another'],['mimic','copy someone in a funny way'],['modest','not boastful'],['monotonous','boring because it never changes'],['mournful','very sad'],['murky','dark and dirty'],['mutual','shared by both sides'],['navigate','find the way'],
+['negligent','careless'],['nimble','quick and light in movement'],['notorious','famous for something bad'],['novice','a beginner'],['nurture','care for and help grow'],['obscure','not well known or hard to see'],['obsolete','no longer used'],['obstacle','something in the way'],['optimistic','expecting good things'],['ordeal','a very hard experience'],
+['peculiar','strange or unusual'],['perceive','notice or become aware of'],['persevere','keep trying despite difficulty'],['persuade','convince someone'],['placid','calm and peaceful'],['plentiful','more than enough'],['ponder','think carefully'],['precise','exact'],['predict','say what will happen'],['prosper','do well and succeed'],
+['prudent','wise and careful'],['punctual','on time'],['radiant','shining brightly'],['reluctant','not willing'],['remote','far away'],['resilient','able to recover quickly'],['resolve','find an answer, or a firm decision'],['scarce','not enough; hard to find'],['scrutinize','examine closely'],['serene','calm and peaceful']];
+let ivSpinUsedCache=null;
+function ivSpinUsed(){const s=intervStationStore();return Array.isArray(s.spinUsed)?s.spinUsed:[]}
+function ivSpinMarkUsed(word){const s=intervStationStore();const u=Array.isArray(s.spinUsed)?s.spinUsed:[];if(!u.includes(word))u.push(word);s.spinUsed=u;intervStationSave(s)}
+function ivSpinNewWheel(avoid=[]){
+ let used=new Set(ivSpinUsed());let fresh=IV_SPIN_BANK.filter(([w])=>!used.has(w)&&!avoid.includes(w));
+ if(fresh.length<6){const s=intervStationStore();s.spinUsed=[];intervStationSave(s);used=new Set();fresh=IV_SPIN_BANK.filter(([w])=>!avoid.includes(w))}
+ return ivShuffle(fresh).slice(0,6)}
 function renderIvSpinner(){
  const G=ivGamePage('spinner','Word Spinner: spin, read and choose the meaning');ivPlayed('Word Spinner');
- const all=IV_SPINNER.flat();let set,done,current,opts,score,spinning,answered,right,finished,rot=0,pick=-1;
- const wheel=()=>`<div class="ivg-wheelwrap"><i class="ivg-pointer"></i><div class="ivg-wheel" style="transform:rotate(${rot}deg)">${IV_SPINNER[set].map(([w],k)=>`<span class="ivg-wl${done.has(k)&&k!==current?' used':''}${k===current&&!spinning?' cur':''}" style="--a:${k*60+30}deg"><b>${ivEsc(w)}</b></span>`).join('')}</div><button type="button" class="ivg-spin" data-spin${spinning?' disabled':''}>SPIN</button></div>`;
- const paint=()=>{G.score(score,Math.round(right/all.length*3));
-  if(finished)return G.shell(['Word Spinner','All words spun!'],`<p class="ivx-qt">${right} of ${all.length} correct · ${score} points!</p>`,`<span class="ivx-msg"></span><button type="button" class="ivx-b ivx-next" data-again>↻ Play again</button>`);
-  const w=current>=0?IV_SPINNER[set][current]:null;
-  G.shell(['Word Spinner',`Wheel ${set+1} of ${IV_SPINNER.length} · ${done.size} of 6 words`],`<div class="ivg-spinrow">${wheel()}<div class="ivg-mean"><p class="ivx-qt">${w&&!spinning?`What does “${ivEsc(w[0])}” mean?`:'Press SPIN to get a word.'}</p><div class="ivx-opts one">${(opts&&!spinning?opts:[]).map((o,k)=>ivOptBtn(o,k,answered?(o===w[1]?'ok':k===pick?'no':''):'')).join('')}</div></div></div>`,'')};
+ let W,wheelN,done,current,opts,score,spinning,answered,right,asked,rot=0,pick=-1;
+ const wheel=()=>`<div class="ivg-wheelwrap"><i class="ivg-pointer"></i><div class="ivg-wheel" style="transform:rotate(${rot}deg)">${W.map(([w],k)=>`<span class="ivg-wl${done.has(k)&&k!==current?' used':''}${k===current&&!spinning?' cur':''}" style="--a:${k*60+30}deg"><b>${ivEsc(w)}</b></span>`).join('')}</div><button type="button" class="ivg-spin" data-spin${spinning?' disabled':''}>SPIN</button></div>`;
+ const paint=()=>{G.score(score,asked?Math.round(right/asked*3):0);
+  const w=current>=0?W[current]:null;
+  G.shell(['Word Spinner',`Wheel ${wheelN} · ${done.size} of 6 words · ${right} correct`],`<div class="ivg-spinrow">${wheel()}<div class="ivg-mean"><p class="ivx-qt">${w&&!spinning?`What does “${ivEsc(w[0])}” mean?`:spinning?'Spinning…':'Press SPIN to get a word.'}</p><div class="ivx-opts one">${(opts&&!spinning?opts:[]).map((o,k)=>ivOptBtn(o,k,answered?(o===w[1]?'ok':k===pick?'no':''):'')).join('')}</div></div></div>`,'')};
+ const nextWheel=()=>{const prev=W?W.map(x=>x[0]):[];W=ivSpinNewWheel(prev);wheelN++;done=new Set();current=-1;opts=null;answered=false;pick=-1;paint();G.P.bubble(`Wheel ${wheelN}: six new words! Press SPIN.`)};
  const spin=()=>{if(spinning)return;if(current>=0&&!answered){G.P.bubble('Choose the meaning of the highlighted word first.');return}
-  const left=IV_SPINNER[set].map((_,k)=>k).filter(k=>!done.has(k));
-  if(!left.length){if(set+1<IV_SPINNER.length){set++;done=new Set();current=-1;opts=null;paint();G.P.bubble('New words on the wheel! Press SPIN.');return}finished=true;paint();G.P.bubble(`All words spun! ${right} of ${all.length} correct.`);return}
-  const target=left[Math.floor(Math.random()*left.length)],aim=((-(target*60+30))%360+360)%360,now=((rot%360)+360)%360;rot+=1080+((aim-now+360)%360);
-  spinning=true;answered=false;opts=null;current=target;pick=-1;paint();
-  ivLater(()=>{spinning=false;const w=IV_SPINNER[set][target],wrongs=ivShuffle(all.filter(x=>x[1]!==w[1])).slice(0,3).map(x=>x[1]);opts=ivShuffle([w[1],...wrongs]);paint();ivSay(w[0]);G.P.bubble(`Your word is “${w[0]}”. Choose its meaning!`)},ivReducedMotion()?50:2300)};
- const choose=k=>{if(spinning||current<0||answered||!opts)return;answered=true;pick=k;const w=IV_SPINNER[set][current];done.add(current);
-  if(opts[k]===w[1]){score+=10;right++;ivAward(10);G.P.pts();G.P.bubble(`Yes! “${w[0]}” means ${w[1]}. Press SPIN.`)}else G.P.bubble(`“${w[0]}” means ${w[1]}. Press SPIN for the next word.`);paint()};
- const start=()=>{set=0;done=new Set();current=-1;opts=null;score=0;spinning=false;answered=false;right=0;finished=false;pick=-1;paint();G.P.bubble('Spin the wheel, read the word, and choose the correct meaning!')};
- G.on(d=>{if('again' in d)return start();if('spin' in d)return spin();if('k' in d)return choose(Number(d.k))});
+  let left=W.map((_,k)=>k).filter(k=>!done.has(k));
+  if(!left.length){nextWheel();return}
+  const target=left[Math.floor(Math.random()*left.length)],aim=((-(target*60+30))%360+360)%360,now=((rot%360)+360)%360;
+  /* spin for 5 seconds: about 9 full turns, fast at first and slowing to a stop on the chosen word */
+  const r0=rot,r1=rot+360*9+((aim-now+360)%360),DUR=5000;
+  spinning=true;answered=false;opts=null;current=target;pick=-1;paint();G.P.bubble('Spinning…');
+  const el=document.querySelector('.ivg-wheel');if(el)el.style.transition='none';
+  const t0=performance.now(),ease=t=>1-Math.pow(1-t,3);
+  const finish=()=>{rot=r1;spinning=false;const w=W[target],wrongs=ivShuffle(IV_SPIN_BANK.filter(x=>x[1]!==w[1])).slice(0,3).map(x=>x[1]);opts=ivShuffle([w[1],...wrongs]);paint();ivSay(w[0]);G.P.bubble(`Your word is “${w[0]}”. Choose its meaning!`)};
+  const step=now2=>{if(!el||!el.isConnected){rot=r1;spinning=false;return}const t=Math.min(1,(now2-t0)/DUR);rot=r0+(r1-r0)*ease(t);el.style.transform=`rotate(${rot}deg)`;if(t<1)requestAnimationFrame(step);else finish()};
+  requestAnimationFrame(step)};
+ const choose=k=>{if(spinning||current<0||answered||!opts)return;answered=true;pick=k;asked++;const w=W[current];done.add(current);ivSpinMarkUsed(w[0]);
+  const last=done.size>=W.length;
+  if(opts[k]===w[1]){score+=10;right++;ivAward(10);G.P.pts();G.P.bubble(`Yes! “${w[0]}” means ${w[1]}. ${last?'Press SPIN for a new wheel!':'Press SPIN.'}`)}else G.P.bubble(`“${w[0]}” means ${w[1]}. ${last?'Press SPIN for a new wheel!':'Press SPIN for the next word.'}`);paint()};
+ const start=()=>{W=null;wheelN=0;score=0;spinning=false;right=0;asked=0;nextWheel();G.P.bubble('Spin the wheel, read the word, and choose the correct meaning! The wheels never run out.')};
+ G.on(d=>{if('spin' in d)return spin();if('k' in d)return choose(Number(d.k))});
  start();
 }
 function ivReducedMotion(){return matchMedia('(prefers-reduced-motion:reduce)').matches||document.documentElement.classList.contains('reduced-motion')}
 /* Challenge Game */
+
+/* Challenge: Word Pop. Each round has a rule ("Pop words that mean HAPPY"). Word bubbles float up; pop only the ones
+   that fit before they float away. Streaks build a combo; a wrong pop costs a heart. Five rounds, rules change every game. */
+const IV_POP_RULES=[
+ {rule:'Pop words that mean HAPPY',yes:['joyful','glad','cheerful','delighted','merry','content','elated','pleased'],no:['gloomy','angry','tired','upset','bored','fearful','lonely','grumpy']},
+ {rule:'Pop words that mean BIG',yes:['huge','enormous','giant','massive','vast','large','immense','gigantic'],no:['tiny','small','little','narrow','brief','slim','petite','short']},
+ {rule:'Pop the OPPOSITES of ANCIENT',yes:['modern','new','recent','fresh','current','young','latest'],no:['old','aged','antique','historic','elderly','past','early']},
+ {rule:'Pop the OPPOSITES of BRAVE',yes:['timid','fearful','cowardly','scared','afraid','nervous'],no:['bold','daring','fearless','heroic','courageous','strong']},
+ {rule:'Pop the NOUNS (person, place, thing or idea)',yes:['teacher','river','freedom','island','courage','bicycle','market','friendship'],no:['quickly','beautiful','run','softly','jump','brave','under','sing']},
+ {rule:'Pop the VERBS (action words)',yes:['whisper','gather','explore','build','wander','shout','climb','borrow'],no:['happy','mountain','slowly','green','table','quiet','window','very']},
+ {rule:'Pop the ADJECTIVES (describing words)',yes:['fragile','enormous','curious','gentle','bright','timid','salty','ancient'],no:['carefully','sing','window','they','under','jump','quickly','river']},
+ {rule:'Pop words with a prefix that means NOT',yes:['unhappy','impossible','invisible','dishonest','unkind','incorrect','unsafe','disagree'],no:['uncle','imagine','instant','display','under','island','discuss','insect']},
+ {rule:'Pop the COMPOUND words',yes:['sunflower','notebook','rainbow','classroom','firefly','playground','toothbrush','seashell'],no:['flower','garden','window','pencil','happy','river','teacher','basket']},
+ {rule:'Pop the PAST-TENSE verbs',yes:['walked','wrote','swam','gathered','found','began','sang','carried'],no:['walk','write','swim','gather','finding','begins','sing','carry']},
+ {rule:'Pop words about WEATHER',yes:['drizzle','humid','typhoon','breeze','thunder','forecast','monsoon','drought'],no:['harvest','recess','ladder','pencil','marble','orbit','folder','canvas']},
+ {rule:'Pop words that mean SMART',yes:['clever','wise','brilliant','bright','intelligent','sharp','gifted'],no:['foolish','silly','careless','slow','clumsy','confused','dull']},
+ {rule:'Pop the ADVERBS (how something is done)',yes:['quickly','softly','bravely','carefully','loudly','gently','happily','slowly'],no:['quick','soft','brave','careful','loud','gentle','happy','slow']},
+ {rule:'Pop words that mean SAD',yes:['gloomy','unhappy','sorrowful','miserable','downcast','mournful','glum'],no:['cheerful','joyful','proud','calm','eager','hopeful','merry']}];
 function renderIvChallenge(){
- const G=ivGamePage('challenge','Challenge Game: think, solve and win');ivPlayed('Challenge Game');
- let order,i,score,right,locked,finished,pick;
- const paint=()=>{G.score(score,Math.round(right/order.length*3));
-  if(finished)return G.shell(['Challenge Game','Challenge complete!'],`<p class="ivx-qt">${right} of ${order.length} correct · ${score} points${right===order.length?' including the +50 perfect-score bonus':''}!</p>`,`<span class="ivx-msg"></span><button type="button" class="ivx-b ivx-next" data-again>↻ Play again</button>`);
-  const [q,opts,ans]=order[i];
-  G.shell(['Challenge Game',`Challenge ${i+1} of ${order.length} · Perfect score = +50 bonus`],`<p class="ivx-qt ivg-big">${ivEsc(q)}</p><div class="ivx-opts">${opts.map((o,k)=>ivOptBtn(o,k,locked?(k===ans?'ok':k===pick?'no':''):'')).join('')}</div>`,'')};
- const answer=k=>{if(locked)return;locked=true;pick=k;const ans=order[i][2];
-  if(k===ans){score+=10;right++;ivAward(10);G.P.pts();G.P.bubble('Correct! You are a champion in the making!')}else G.P.bubble(`Good try! The correct answer is “${order[i][1][ans]}”.`);paint();
-  ivLater(()=>{i++;if(i>=order.length){finished=true;if(right===order.length){score+=50;ivAward(50);G.P.pts();G.P.bubble('Perfect score! Bonus +50 points!')}else G.P.bubble(`Challenge complete! ${right} of ${order.length} correct.`);paint();return}locked=false;pick=-1;paint();G.P.bubble('Solve the challenge and earn bonus points!')},1500)};
- const start=()=>{order=ivShuffle(IV_CHALLENGE);i=0;score=0;right=0;locked=false;finished=false;pick=-1;paint();G.P.bubble('Solve the challenge and earn bonus points!')};
- G.on(d=>{if('again' in d)return start();if('k' in d)return answer(Number(d.k))});
+ const G=ivGamePage('challenge','Challenge: Word Pop. Pop only the words that fit the rule');ivPlayed('Challenge Game');
+ const ROUNDS=5,ROUND_SEC=22,GOAL=5;
+ let rules,ri,hearts,score,combo,best,caught,bubbles,raf=0,last=0,spawnAt=0,roundEnd=0,state='intro',lostHeart=false,cleared=0,seq=0;
+ let F,arena,ruleEl,timeEl,hud,overlay;
+ const build=()=>{G.frame.innerHTML=`<div class="ivx-in ivp">
+  <div class="ivp-top"><div class="ivp-rule" aria-live="polite"></div><div class="ivp-time"><i></i></div></div>
+  <div class="ivp-arena" aria-label="Word bubbles"></div>
+  <div class="ivp-foot"><span class="ivp-hud"></span></div>
+  <div class="ivp-over" hidden></div></div>`;F=G.frame;arena=F.querySelector('.ivp-arena');ruleEl=F.querySelector('.ivp-rule');timeEl=F.querySelector('.ivp-time i');hud=F.querySelector('.ivp-hud');overlay=F.querySelector('.ivp-over')};
+ const paintHud=()=>{hud.innerHTML=`<span class="h">${'❤️'.repeat(hearts)}${'🤍'.repeat(3-hearts)}</span><span>Round ${ri+1}/${ROUNDS}</span><span>Caught ${caught}/${GOAL}</span><span class="c${combo>=3?' hot':''}">Combo ×${mult()}</span><b>${score} pts</b>`;G.score(score,Math.min(3,cleared))};
+ const mult=()=>combo>=6?3:combo>=3?2:1;
+ const show=(htmlStr)=>{overlay.hidden=false;overlay.innerHTML=`<div class="ivp-card">${htmlStr}</div>`};
+ const roundIntro=()=>{state='intro';arena.innerHTML='';bubbles=[];caught=0;const R=rules[ri];ruleEl.textContent=R.rule;timeEl.style.width='100%';paintHud();
+  show(`<div class="ivp-kick">Round ${ri+1} of ${ROUNDS}</div><div class="ivp-big">${ivEsc(R.rule)}</div><p>Pop at least ${GOAL} right words. Wrong pops cost a heart.</p><button type="button" class="ivx-b ivx-next" data-go>▶ Go!</button>`);ivSay(R.rule)};
+ const roundGo=()=>{overlay.hidden=true;state='play';const now=performance.now();roundEnd=now+ROUND_SEC*1000;spawnAt=now+200;last=now;cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)};
+ const spawn=()=>{const R=rules[ri],good=Math.random()<.48,pool=good?R.yes:R.no,word=pool[Math.floor(Math.random()*pool.length)];
+  const el=document.createElement('button');el.type='button';el.className='ivp-bub';el.dataset.id=++seq;el.innerHTML=`<span>${ivEsc(word)}</span>`;
+  const x=8+Math.random()*78,hue=[200,160,280,30,330,100][seq%6];el.style.left=x+'%';el.style.setProperty('--h',hue);arena.append(el);
+  bubbles.push({id:seq,el,good,word,y:105,vy:(14+ri*2.5+Math.random()*5),wob:Math.random()*6.28,x})};
+ const popB=(b,ok)=>{b.dead=true;b.el.classList.add(ok?'pop':'bad');b.el.disabled=true;setTimeout(()=>b.el.remove(),ok?380:520)};
+ const hit=id=>{if(state!=='play')return;const b=bubbles.find(x=>String(x.id)===String(id)&&!x.dead);if(!b)return;
+  if(b.good){combo++;const pts=10*mult();score+=pts;caught++;ivAward(pts);G.P.pts();popB(b,true);float(b,`+${pts}`)}
+  else{combo=0;hearts--;lostHeart=true;popB(b,false);float(b,'✘');G.P.bubble(`“${b.word}” does not fit: ${rules[ri].rule.toLowerCase()}.`);if(hearts<=0){paintHud();return gameOver()}}
+  paintHud()};
+ const float=(b,t)=>{const f=document.createElement('i');f.className='ivp-float'+(t==='✘'?' no':'');f.textContent=t;f.style.left=b.x+'%';f.style.top=b.y+'%';arena.append(f);setTimeout(()=>f.remove(),800)};
+ const tick=t=>{if(!F||!F.isConnected){cancelAnimationFrame(raf);return}if(state!=='play')return;const dt=Math.min(.25,(t-last)/1000);last=t;
+  if(t>=spawnAt){spawn();spawnAt=t+Math.max(420,900-ri*90)}
+  bubbles.forEach(b=>{if(b.dead)return;b.y-=b.vy*dt;b.wob+=dt*2;b.el.style.top=b.y+'%';b.el.style.transform=`translate(-50%,-50%) translateX(${Math.sin(b.wob)*8}px)`;if(b.y<-12){b.dead=true;b.el.remove();if(b.good)combo=0}});
+  bubbles=bubbles.filter(b=>!b.dead||b.el.isConnected);
+  const left=Math.max(0,roundEnd-t);timeEl.style.width=(left/(ROUND_SEC*1000)*100)+'%';timeEl.classList.toggle('low',left<5000);
+  if(left<=0)return roundOver();
+  raf=requestAnimationFrame(tick)};
+ const roundOver=()=>{state='between';cancelAnimationFrame(raf);arena.querySelectorAll('.ivp-bub').forEach(e=>e.remove());const R=rules[ri],ok=caught>=GOAL;if(ok)cleared++;paintHud();
+  show(`<div class="ivp-kick">${ok?'⭐ Round cleared!':'Round over'}</div><div class="ivp-big">${caught} right word${caught===1?'':'s'} popped</div><p>Words that fit “${ivEsc(R.rule)}”:</p><div class="ivp-words">${R.yes.map(w=>`<span>${ivEsc(w)}</span>`).join('')}</div>
+   <button type="button" class="ivx-b ivx-next" data-next>${ri+1<ROUNDS?'Next round ›':'See results ›'}</button>`);
+  G.P.bubble(ok?'Great popping! Look at all the words that fit.':'Study the words that fit, then try the next round!')};
+ const gameOver=()=>{state='over';cancelAnimationFrame(raf);arena.querySelectorAll('.ivp-bub').forEach(e=>e.remove());
+  const perfect=cleared===ROUNDS&&!lostHeart&&hearts>0;if(perfect){score+=50;ivAward(50);G.P.pts()}paintHud();
+  show(`<div class="ivp-kick">${hearts<=0?'💔 Out of hearts':'🏆 Challenge complete!'}</div><div class="ivp-big">${score} points</div><p>Rounds cleared: ${cleared} of ${ROUNDS}${perfect?' · Perfect! +50 bonus':''}</p><button type="button" class="ivx-b ivx-next" data-again>↻ Play again</button>`);
+  G.P.bubble(perfect?'Perfect challenge! +50 bonus points!':`You cleared ${cleared} of ${ROUNDS} rounds. Play again for new rules!`)};
+ const start=()=>{rules=ivShuffle(IV_POP_RULES).slice(0,ROUNDS);ri=0;hearts=3;score=0;combo=0;cleared=0;lostHeart=false;bubbles=[];build();roundIntro();G.P.bubble('Pop only the words that fit the rule! Streaks give a combo.')};
+ G.frame.addEventListener('pointerdown',ev=>{const b=ev.target.closest('.ivp-bub');if(b){ev.preventDefault();hit(b.dataset.id)}});
+ G.frame.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||b.classList.contains('ivp-bub'))return;const d=b.dataset;
+  if('go' in d)return roundGo();if('next' in d){if(ri+1<ROUNDS){ri++;return roundIntro()}return gameOver()}if('again' in d)return start()});
  start();
 }
-
 /* ---------- Reports: InterV writing review for teachers ---------- */
 function ivReportsSection(){
  const log=ivWritingLog().sort((a,b)=>String(b.submittedAt).localeCompare(String(a.submittedAt)));
