@@ -698,10 +698,3 @@ body .ivbar.ivgb-bar{background:linear-gradient(180deg,#3a6fd3,#2152b4 48%,#163d
 .ivp-words{display:flex;flex-wrap:wrap;gap:.35em;justify-content:center;margin:.5em 0 .8em}
 .ivp-words span{background:#2fa64f;color:#fff;border-radius:99px;padding:.15em .7em;font-weight:800}
 @media (prefers-reduced-motion:reduce){.ivr-car,.ivr-me,.ivr-owl{transition:none}.ivp-bub.pop,.ivp-bub.bad,.ivp-card,.ivr-pop.show,.ivp-hud .c.hot{animation:none}}
-/* +1 / −1 message */
-.ivpt{position:absolute;left:50%;top:14%;transform:translateX(-50%);z-index:30;padding:.5em 1.3em;border-radius:99px;font:900 clamp(14px,min(3.4cqw,7cqh),38px)/1 "Baloo 2","Segoe UI",sans-serif;color:#fff;box-shadow:0 .6cqh 0 #0003,0 1cqh 2.4cqh #0006;pointer-events:none;animation:ivptIn 1.5s ease forwards}
-.ivpt.ok{background:linear-gradient(#5fd67a,#23963f)}.ivpt.no{background:linear-gradient(#ff8a7a,#d4382c)}
-.ivpt b{font-size:1.15em;margin-left:.2em}
-@keyframes ivptIn{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}15%{opacity:1;transform:translate(-50%,0) scale(1.08)}25%{transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-8px)}}
-.ivg-fb{font-size:1.05em;padding:.3em .6em;border-radius:.5em}.ivg-fb.ok{background:#d8f5dd;color:#1d7a35}.ivg-fb.no{background:#fde0dd;color:#a32020}
-@media (prefers-reduced-motion:reduce){.ivpt{animation:none}}

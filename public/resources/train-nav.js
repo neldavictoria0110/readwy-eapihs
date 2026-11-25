@@ -11,7 +11,7 @@ const abs=h=>new URL(h,location.href).href;
 const isJourney=h=>{try{return new URL(h,location.href).searchParams.get('view')==='map'}catch(e){return false}};
 let topGo=null;try{if(window.top!==window&&window.top.location.origin===location.origin&&window.top.readwyTrainGo)topGo=window.top.readwyTrainGo}catch(e){}
 const reduce=()=>matchMedia('(prefers-reduced-motion:reduce)').matches||document.documentElement.classList.contains('reduced-motion');
-const labelOf=h=>{try{const u=new URL(h,location.href),m=u.searchParams.get('journeyModule');return isJourney(h)?'Your Learning Journey':({gst:'General Skills Test',orst:'Oral Reading Screening Test',wst:'Writing Screening Test',srst:'Silent Reading Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'SRA Program',reports:'Post-Test'})[m]||'Reading Express'}catch(e){return 'Reading Express'}};
+const labelOf=h=>{try{const u=new URL(h,location.href),m=u.searchParams.get('journeyModule');return isJourney(h)?'Your Learning Journey':({gst:'Reading Check-In',orst:'Oral Reading Screening Test',wst:'Writing Screening Test',srst:'Silent Reading Screening Test',aral:'ARAL Program',interv:'Intervention Program',sra:'Reading Lab',reports:'Post-Test'})[m]||'Reading Express'}catch(e){return 'Reading Express'}};
 
 /* Pages inside the frame hand navigation to the top window. */
 window.readwyGo=function(href,label){if(topGo)return topGo(abs(href),label);return window.readwyTrainGo(abs(href),label)};
@@ -156,12 +156,13 @@ window.readwyTrainGo=async function(href,label,opts={}){
    const accel=now-t0<350?2.6:7;v+=(target-v)*Math.min(1,dt*accel);
    x+=dir*v*dt;
    const off=place();
+   try{nf.contentWindow.postMessage({rw:'moving'},'*')}catch(e){} // the arriving page waits (e.g. the ARAL train stays off-screen)
    if(now-lastPuff>95&&v>vmax*.15){lastPuff=now;const ex=dir>0?x+len-T.ew*.73:x+T.ew*.73,ey=T.base-T.eh*.86;if(ex>-T.h&&ex<W+T.h){const p=document.createElement('i');p.className='rw-puff';const sz=T.h*.32;p.style.setProperty('--rw-dx',String(-dir*T.h*.9));Object.assign(p.style,{left:ex-sz/2+'px',top:ey-sz/2+'px',width:sz+'px',height:sz+'px'});layer.appendChild(p);setTimeout(()=>p.remove(),1350)}}
    if(dir>0?x>=end:x<=end){res();return}
    requestAnimationFrame(step)};
   requestAnimationFrame(step)});
  // commit: the new page is now the live page
- nf.style.transform='none';nf.classList.remove('moving');nf.classList.add('active');nf.style.zIndex=1;layer.remove();
+ nf.style.transform='none';nf.classList.remove('moving');nf.classList.add('active');try{nf.contentWindow.postMessage({rw:'arrived'},'*')}catch(e){}nf.style.zIndex=1;layer.remove();
  if(prev){prev.classList.remove('active');try{prev.src='about:blank'}catch(e){}setTimeout(()=>prev.remove(),50)}
  document.documentElement.classList.add('rw-hosted');
  try{document.querySelectorAll('body>audio,body>video').forEach(m=>m.pause());window.speechSynthesis?.cancel()}catch(e){}

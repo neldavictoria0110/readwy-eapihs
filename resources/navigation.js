@@ -29,9 +29,7 @@ function captureBookScreen(){
  snapshot.style.position='absolute';snapshot.style.inset='auto';snapshot.style.left='0';snapshot.style.top=-app.scrollTop+'px';snapshot.style.width=app.clientWidth+'px';snapshot.style.height=app.scrollHeight+'px';snapshot.style.overflow='hidden';snapshot.style.transform='none';snapshot.style.margin='0';snapshot.setAttribute('aria-hidden','true');
  return snapshot;
 }
-// Page-change waits run at READWY_MOTION_SPEED (set by performance-runtime.js together with the matching
-// CSS animation speed-up), so the waits and the animations they wait for always stay in step.
-function waitForTransitionMotion(duration){duration/=Math.max(1,Number(globalThis.READWY_MOTION_SPEED)||1);return new Promise(resolve=>{let start;function tick(now){start??=now;if(now-start<duration)requestAnimationFrame(tick);else resolve()}requestAnimationFrame(tick)})}
+function waitForTransitionMotion(duration){return new Promise(resolve=>{let start;function tick(now){start??=now;if(now-start<duration)requestAnimationFrame(tick);else resolve()}requestAnimationFrame(tick)})}
 async function animatePageTransition(to,renderDestination){
  if(navigationBusy)return false;
  navigationBusy=true;
@@ -39,7 +37,6 @@ async function animatePageTransition(to,renderDestination){
  let outgoingPassage=null,outgoingVisibility='';
  const commit=()=>{page=to;if(renderDestination)renderDestination();else render();scrollAppToTop()};
  try{
-  const mobileSafe=typeof globalThis.readwyMobileSafetyActive==='function'?globalThis.readwyMobileSafetyActive():((nav=>/iPhone|iPad|iPod/i.test(nav.userAgent||'')||((nav.maxTouchPoints||0)>1&&/Macintosh/i.test(nav.userAgent||'')))(globalThis.navigator||{}));
   document.documentElement.classList.add('book-traveling');
   const storyPages=['startup','login','signup','subject','areas-preview','subjects-spread','journey','map'];
   const keepOwl=storyPages.includes(page)&&storyPages.includes(to);
@@ -48,7 +45,7 @@ async function animatePageTransition(to,renderDestination){
   stopWelcomeWandering();
   if(document.querySelector('.gst-book-screen'))stopGSTOwlSpeech();
   app.inert=true;nav.inert=true;app.setAttribute('aria-busy','true');
-  if(mobileSafe||matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('reduced-motion')){commit();return true}
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('reduced-motion')){commit();return true}
   const mapShortcut=['journey','map'].includes(page)&&['work','orst-welcome','wst'].includes(to);
   const gstToReading=to==='orst-welcome'&&!!document.querySelector('.gst-book-screen');
   const readingToWriting=to==='wst'&&page!=='wst'&&!!document.querySelector('.orst-interface-screen');

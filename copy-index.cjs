@@ -359,6 +359,20 @@ pages.application = application;
   const headOpen = /<head(\s[^>]*)?>/i;
   const withPace = doc => { doc = doc.replace(pacePattern, ''); const m = doc.match(headOpen); return m ? doc.slice(0, m.index + m[0].length) + paceTag + doc.slice(m.index + m[0].length) : doc; };
   const encodeJson = x => JSON.stringify(x).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+  // Keep SRA Reading Lab express document in sync from source file.
+  try {
+    const sraPath = path.join(root, 'resources/sra/v3/app.html');
+    const booksPath = path.join(root, 'resources/sra/v3/books.js');
+    if (fs.existsSync(sraPath)) {
+      let sraHtml = fs.readFileSync(sraPath, 'utf8');
+      if (sraHtml.includes('/*__BOOKS__*/')) {
+        if (!fs.existsSync(booksPath)) throw new Error('The SRA BOOKS dataset is missing.');
+        sraHtml = sraHtml.replace('/*__BOOKS__*/', fs.readFileSync(booksPath, 'utf8').trim());
+      }
+      if (!sraHtml.includes('const BOOKS=')) throw new Error('The SRA BOOKS dataset was not embedded.');
+      if (pages.application) pages.application = pages.application.replace(/(<script type="application\/json" id="sra-express-document">)([\s\S]*?)(<\/script>)/g, (all, open, raw, close) => open + encodeJson(sraHtml) + close);
+    }
+  } catch (e) { throw new Error(`SRA reading lab sync failed: ${e.message}`); }
   for (const key of Object.keys(pages)) {
     if (typeof pages[key] !== 'string' || !headOpen.test(pages[key])) continue;
     pages[key] = withPace(pages[key]).replace(/(<script type="application\/json" id="[a-z]+-express-document">)([\s\S]*?)(<\/script>)/g, (all, open, raw, close) => {

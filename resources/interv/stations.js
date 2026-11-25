@@ -62,9 +62,6 @@ function ivStopAll(){ivTimers.forEach(clearTimeout);ivTimers=[];clearInterval(iv
 let ivCurGame='';
 function ivAward(points,key){const s=intervStationStore();s.points=(Number(s.points)||0)+points;if(key){const d=ivStData(s,key);d.pts=(d.pts||0)+points}
  else{s.gpts=(Number(s.gpts)||0)+points;if(ivCurGame){s.gp=s.gp||{};s.gp[ivCurGame]=(s.gp[ivCurGame]||0)+points}}intervStationSave(s);return s}
-/* Game points: +1 for every right answer, −1 for every wrong one (the total never drops below 0). */
-function ivPoint(ok,key){const s=intervStationStore();const cur=Number(s.points)||0;const d=ok?1:(cur>0?-1:0);if(d)ivAward(d,key);return ok?1:-1}
-function ivPointFx(G,ok){const f=G&&G.frame;if(!f||!f.isConnected)return;f.querySelector('.ivpt')?.remove();const el=document.createElement('div');el.className='ivpt '+(ok?'ok':'no');el.setAttribute('role','status');el.innerHTML=ok?'✔ Correct! <b>+1</b>':'✘ Wrong <b>−1</b>';f.append(el);setTimeout(()=>el.remove(),1500);G.P.pts()}
 const IV_HINT_COST=20;
 function ivRewardBalance(){const s=intervStationStore();return Math.max(0,(Number(s.gpts)||0)-(Number(s.gspent)||0))}
 // Pay for one hint: a Bonus Game credit if there is one, otherwise 20 reward points.
@@ -512,7 +509,7 @@ function ivFitFrame(frame,qMax=.085,pMax=.05){const h=frame.clientHeight||400;iv
 function ivAttemptStars(n,label){return IV_ATT_STARS.slice(0,Math.max(0,Math.min(3,n))).map(x=>ivStar(x,IV_ATT_Y,IV_ATT_R)).join('')+`<text class="ivp-ink" x="1491" y="489" font-size="32" text-anchor="middle">${ivEsc(label)}</text>`}
 /* Bottom games bar: InterV Games, the six painted games, and the Bonus Game (Playlab) added at the right end of the same bar. */
 function ivOpenPlaylab(P,after){const wallet=ivWallet();if(!globalThis.ReadwyPlaylab||!wallet){P.bubble('The Bonus Game is not available right now.');return}
- globalThis.ReadwyPlaylab.open({wallet,onResult:won=>{const g=ivCurGame;ivCurGame='Bonus Game';ivPoint(!!won);ivCurGame=g},onReturn:()=>{if(!P.board.isConnected)return;ivBarBadge(P);P.bubble(`You have ${wallet.balance()} hint credit${wallet.balance()===1?'':'s'}. Use them for hints!`);after?.()}})}
+ globalThis.ReadwyPlaylab.open({wallet,onReturn:()=>{if(!P.board.isConnected)return;ivBarBadge(P);P.bubble(`You have ${wallet.balance()} hint credit${wallet.balance()===1?'':'s'}. Use them for hints!`);after?.()}})}
 function ivBarBadge(P){const b=P.board.querySelector('.ivbar-badge');if(b){const w=ivWallet();b.textContent=w?w.balance():0}}
 /* InterV games toolbar: one wide "InterV Games" button fills the bottom bar. Tapping it slides the six mini-games
    (Word Puzzle, Memory Match, Reading Race, Word Spinner, Challenge, Bonus Game) out inside the same bar; tapping it
@@ -912,7 +909,7 @@ function renderLegacyGame(key,gi,round){
   artifact:()=>recOf().r.art[cur]||'',response:()=>recOf().r.ev[cur]?.response||null,
   saveArtifact:text=>{const {s,r}=recOf();r.art[cur]=text;intervStationSave(s);return true},
   media:()=>media,say:text=>ivSay(text),
-  score:(correct,kind,evidence)=>{const {s,r}=recOf();if(cur in r.sc)return true;r.sc[cur]=correct?1:0;r.ev[cur]={kind,...evidence,at:new Date().toISOString()};intervStationSave(s);ivPoint(!!correct,key);P.pts();paintRounds();P.bubble(correct?'Round complete! +1 point.':'Not this time. −1 point. Review the answer, then go to the next round.');return true}});
+  score:(correct,kind,evidence)=>{const {s,r}=recOf();if(cur in r.sc)return true;r.sc[cur]=correct?1:0;r.ev[cur]={kind,...evidence,at:new Date().toISOString()};intervStationSave(s);if(correct)ivAward(10,key);P.pts();paintRounds();P.bubble(correct?'Round complete! +10 points.':'Round recorded. Review the answer, then go to the next round.');return true}});
  ivLegacyRuntime={destroy(){ro.disconnect();try{interactive.destroy()}catch(e){}if(media.rec&&media.rec.state!=='inactive')try{media.rec.stop()}catch(e){};media.stream?.getTracks().forEach(t=>t.stop())}};
  const go2=n=>{cur=n;media.recorded=false;media.played=false;interactive.reset();interactive.render();paintRounds();P.bubble(meta[2])};
  appEl.addEventListener('click',async ev=>{const b=ev.target.closest('button,[data-round],[data-nav],[data-next]');if(!b)return;
@@ -966,7 +963,7 @@ const IV_GAME_INFO={
  memory:{name:'Memory Match',icon:'🃏',desc:'Find pairs of words with the same meaning.',goal:'Match all six pairs in few moves!',tips:['Remember where each word is.','Pairs mean the same thing.'],say:'Find the matching cards! Each pair means the same.'},
  race:{name:'Reading Race',icon:'🏁',desc:'Steer into the word that completes the sentence.',goal:'Beat Ollie to the finish flag!',tips:['Read the sentence, find the clue.','Right word = speed boost!'],say:'Read the sentence, then steer your car into the word that fits. Beat Ollie to the flag!'},
  spinner:{name:'Word Spinner',icon:'🎡',desc:'Spin the wheel and choose the meaning. New words every wheel!',goal:'Learn new words on every wheel!',tips:['Press SPIN to get a word.','The wheels never run out.'],say:'Spin the wheel, read the word, and choose the correct meaning!'},
- challenge:{name:'Challenge Game',icon:'🏆',desc:'Word Pop: pop only the words that fit the rule.',goal:'Clear all 5 rounds!',tips:['Read the rule on the gold bar.','Right pop +1, wrong pop −1.'],say:'Pop only the words that fit the rule. Right pop +1, wrong pop −1!'}
+ challenge:{name:'Challenge Game',icon:'🏆',desc:'Word Pop: pop only the words that fit the rule.',goal:'Clear all 5 rounds for a +50 bonus!',tips:['Read the rule on the gold bar.','Streaks build a combo!'],say:'Pop only the words that fit the rule. Streaks give a combo!'}
 };
 function ivPlayed(name){const s=intervStationStore();s.games={...(s.games||{}),[name]:((s.games||{})[name]||0)+1};intervStationSave(s)}
 function ivGamePage(key,label){const info=IV_GAME_INFO[key];ivCurGame=key==='hub'?'':info.name;
@@ -1008,14 +1005,14 @@ function renderIvWordPuzzle(){
   const guess=picked.map(k=>letters[k]).join('');
   G.shell(['Word Puzzle',`Word ${i+1} of ${words.length} · Try ${Math.min(attempt,3)} of 3`],
    `<p class="ivx-qt">Unscramble the letters to make a word.</p>${reveal?`<p class="ivx-ctx">Clue: ${ivEsc(words[i][1])}</p>`:''}<div class="ivx-slots letters ivg-answer">${guess?[...guess].map((l,k)=>`<button type="button" class="ivx-tile placed" data-un="${k}">${ivEsc(l)}</button>`).join(''):'<span class="ivx-ph">Tap the letters below.</span>'}</div><div class="ivx-tiles letters">${letters.map((l,k)=>picked.includes(k)?'':`<button type="button" class="ivx-tile" data-l="${k}"${locked?' disabled':''}>${ivEsc(l.toUpperCase())}</button>`).join('')}</div>${status?`<p class="ivg-status">${status}</p>`:''}`,
-   `<button type="button" class="ivx-b ivx-hint" data-hint${locked?' disabled':''}>💡 Clue</button><button type="button" class="ivx-b ivx-listen" data-clear${locked?' disabled':''}>↺ Clear</button><span class="ivx-msg"></span>${locked?'<button type="button" class="ivx-b ivx-next" data-next>Next word ›</button>':'<button type="button" class="ivx-b ivx-check" data-check>✔ Check</button>'}`)};
+   `<button type="button" class="ivx-b ivx-hint" data-hint${locked?' disabled':''}>💡 Clue</button><button type="button" class="ivx-b ivx-listen" data-clear${locked?' disabled':''}>↺ Clear</button><span class="ivx-msg"></span><button type="button" class="ivx-b ivx-check" data-check${locked?' disabled':''}>✔ Check</button>`)};
  const load=()=>{letters=scramble(words[i][0]);picked=[];attempt=1;locked=false;status='';reveal=0;paint();G.P.bubble('Unscramble the letters to form a correct word!')};
  const next=()=>{i++;if(i>=words.length){finished=true;paint();G.P.bubble(`Puzzle complete! You scored ${score} points.`);return}load()};
  const check=()=>{if(locked)return;const w=words[i][0],guess=picked.map(k=>letters[k]).join('');if(guess.length<w.length){G.P.bubble('Use all the letters first.');return}
-  if(guess===w){score+=1;right++;ivPoint(true);locked=true;status=`✔ Correct! “${w}” · +1 point`;paint();ivPointFx(G,true);G.P.bubble('Correct! Press Next.')}
-  else{attempt++;picked=[];score-=1;ivPoint(false);if(attempt>3){locked=true;status=`✘ The word was “${w}”. −1 point`;paint();G.P.bubble(`The word was “${w}”. Press Next.`)}else{status=`✘ Not quite. −1 point. Try again (${attempt} of 3).`;paint();G.P.bubble(`Not quite. Try again! Attempt ${attempt} of 3.`)}ivPointFx(G,false)}};
+  if(guess===w){const pts=attempt===1?10:5;score+=pts;right++;ivAward(pts);G.P.pts();locked=true;status=`✔ Correct! “${w}” +${pts}`;paint();G.P.bubble('Correct! Great job!');ivLater(next,1300)}
+  else{attempt++;picked=[];if(attempt>3){locked=true;status=`The word was “${w}”.`;paint();G.P.bubble(`The word was “${w}”. Let’s try the next one.`);ivLater(next,1900)}else{paint();G.P.bubble(`Not quite. Try again! Attempt ${attempt} of 3.`)}}};
  G.on(d=>{if('again' in d)return renderIvWordPuzzle();if('l' in d){picked.push(Number(d.l));return paint()}if('un' in d){picked.splice(Number(d.un),1);return paint()}
-  if('clear' in d){picked=[];return paint()}if('hint' in d){reveal=1;paint();return G.P.bubble(`Clue: ${words[i][1]}`)}if('check' in d)return check();if('next' in d)return next()});
+  if('clear' in d){picked=[];return paint()}if('hint' in d){reveal=1;paint();return G.P.bubble(`Clue: ${words[i][1]}`)}if('check' in d)return check()});
  load();
 }
 /* Memory Match */
@@ -1029,14 +1026,13 @@ function renderIvMemory(){
    `<span class="ivx-msg"></span><button type="button" class="ivx-b ivx-next" data-again>↻ New game</button>`)};
  const flip=n=>{if(busy||open.includes(n)||matched.has(n))return;open.push(n);paint();
   if(open.length===2){moves++;const [a,b]=open;
-   if(cards[a].k===cards[b].k){matched.add(a);matched.add(b);open=[];score+=1;ivPoint(true);paint();ivPointFx(G,true);G.P.bubble(matched.size===12?`You found all the pairs in ${moves} moves!`:`A match! “${cards[a].w}” and “${cards[b].w}” mean the same.`)}
-   else{busy=true;score-=1;ivPoint(false);paint();ivPointFx(G,false);G.P.bubble('Not a pair. −1 point. Remember where they are!');ivLater(()=>{open=[];busy=false;paint()},1000)}}};
+   if(cards[a].k===cards[b].k){matched.add(a);matched.add(b);open=[];score+=10;ivAward(10);G.P.pts();paint();G.P.bubble(matched.size===12?`You found all the pairs in ${moves} moves!`:`A match! “${cards[a].w}” and “${cards[b].w}” mean the same.`)}
+   else{busy=true;paint();G.P.bubble('Not a pair. Remember where they are!');ivLater(()=>{open=[];busy=false;paint()},1000)}}};
  G.on(d=>{if('again' in d)return start();if('c' in d)return flip(Number(d.c))});
  start();
 }
 /* Reading Race */
 let ivRaceClock=0;
-
 
 /* Reading Race: steer your car into the gate whose word completes the sentence (context clues).
    Right word = speed boost, wrong word = slow down. Beat Ollie the Owl to the finish line. */
@@ -1113,13 +1109,12 @@ function renderIvReadingRace(){
  const flash=(txt,cls)=>{pop.textContent=txt;pop.className='ivr-pop show '+cls;setTimeout(()=>{if(pop.isConnected)pop.className='ivr-pop'},700)};
  const cross=g=>{const ok=g.words[lane]===g.q[1];g.done=true;g.ok=ok;review.push({s:g.q[0],a:g.q[1],ok});ivRaceMarkUsed(g.q[0]);
   const el=gEl.querySelector(`[data-g="${gates.indexOf(g)}"]`);el?.querySelectorAll('.ivr-sign').forEach((s,l)=>s.classList.add(g.words[l]===g.q[1]?'good':l===lane?'bad':'dim'));
-  ivPoint(ok);ivPointFx(G,ok);score+=ok?1:-1;
-  if(ok){right++;speedMul=1.7;effectUntil=performance.now()+1300;flash('BOOST!','good');G.P.bubble(`Yes! “${g.q[1]}” fits. Boost! +1`)}
-  else{speedMul=.45;effectUntil=performance.now()+1600;car.classList.remove('spin');void car.offsetWidth;car.classList.add('spin');flash('Oops!','bad');G.P.bubble(`The right word was “${g.q[1]}”. −1 point. Keep going!`)}
+  if(ok){right++;score+=10;ivAward(10);G.P.pts();speedMul=1.7;effectUntil=performance.now()+1300;flash('BOOST! +10','good');G.P.bubble(`Yes! “${g.q[1]}” fits. Boost!`)}
+  else{speedMul=.45;effectUntil=performance.now()+1600;car.classList.remove('spin');void car.offsetWidth;car.classList.add('spin');flash('Oops!','bad');G.P.bubble(`The right word was “${g.q[1]}”. Keep going!`)}
   fillSent(g,g.q[1],ok?'ok':'fix');showFill=performance.now()+1400};
- const endRace=(won)=>{over=true;cancelAnimationFrame(raf);
+ const endRace=(won)=>{over=true;cancelAnimationFrame(raf);if(won){score+=30;ivAward(30);G.P.pts()}
   G.score(score,Math.round(right/N*3));
-  end.hidden=false;end.innerHTML=`<div class="ivr-card"><div class="ivr-big">${won?'🏆 You win!':'🦉 Ollie wins this time!'}</div><p>${right} of ${N} words correct · Score ${score} (+1 for each right word, −1 for each wrong one)</p>
+  end.hidden=false;end.innerHTML=`<div class="ivr-card"><div class="ivr-big">${won?'🏆 You win!':'🦉 Ollie wins this time!'}</div><p>${right} of ${N} words correct · ${score} points${won?' (including +30 for winning)':''}</p>
    <ul>${review.map(r=>`<li class="${r.ok?'ok':'no'}">${r.ok?'✔':'✘'} ${ivEsc(r.s).replace('___',`<b>${ivEsc(r.a)}</b>`)}</li>`).join('')}</ul>
    <button type="button" class="ivx-b ivx-next" data-again>↻ Race again</button></div>`;
   G.P.bubble(won?`You won the race with ${right} of ${N} right!`:`Ollie won, but you got ${right} of ${N} right. Race again!`)};
@@ -1144,7 +1139,6 @@ function renderIvReadingRace(){
  start();
 }
 /* Word Spinner */
-
 
 /* Word Spinner word bank: 180 Grade 7–10 words with short meanings. Each learner gets words they have not answered yet;
    the bank only repeats after every word has been used. */
@@ -1176,11 +1170,11 @@ function ivSpinNewWheel(avoid=[]){
  return ivShuffle(fresh).slice(0,6)}
 function renderIvSpinner(){
  const G=ivGamePage('spinner','Word Spinner: spin, read and choose the meaning');ivPlayed('Word Spinner');
- let W,wheelN,done,current,opts,score,spinning,answered,right,asked,fb='',rot=0,pick=-1;
+ let W,wheelN,done,current,opts,score,spinning,answered,right,asked,rot=0,pick=-1;
  const wheel=()=>`<div class="ivg-wheelwrap"><i class="ivg-pointer"></i><div class="ivg-wheel" style="transform:rotate(${rot}deg)">${W.map(([w],k)=>`<span class="ivg-wl${done.has(k)&&k!==current?' used':''}${k===current&&!spinning?' cur':''}" style="--a:${k*60+30}deg"><b>${ivEsc(w)}</b></span>`).join('')}</div><button type="button" class="ivg-spin" data-spin${spinning?' disabled':''}>SPIN</button></div>`;
  const paint=()=>{G.score(score,asked?Math.round(right/asked*3):0);
   const w=current>=0?W[current]:null;
-  G.shell(['Word Spinner',`Wheel ${wheelN} · ${done.size} of 6 words · Score ${score}`],`<div class="ivg-spinrow">${wheel()}<div class="ivg-mean"><p class="ivx-qt">${w&&!spinning?`What does “${ivEsc(w[0])}” mean?`:spinning?'Spinning…':'Press SPIN to get a word.'}</p><div class="ivx-opts one">${(opts&&!spinning?opts:[]).map((o,k)=>ivOptBtn(o,k,answered?(o===w[1]?'ok':k===pick?'no':''):'')).join('')}</div>${answered&&w?`<p class="ivg-status ivg-fb ${fb}">${fb==='ok'?'✔ Correct! +1 point':`✘ Wrong. −1 point. “${ivEsc(w[0])}” means <b>${ivEsc(w[1])}</b>.`}</p>`:''}</div></div>`,answered?`<span class="ivx-msg">Score: ${score}</span><button type="button" class="ivx-b ivx-next" data-next>${done.size>=W.length?'New wheel ›':'Next word ›'}</button>`:`<span class="ivx-msg">Score: ${score}</span>`)};
+  G.shell(['Word Spinner',`Wheel ${wheelN} · ${done.size} of 6 words · ${right} correct`],`<div class="ivg-spinrow">${wheel()}<div class="ivg-mean"><p class="ivx-qt">${w&&!spinning?`What does “${ivEsc(w[0])}” mean?`:spinning?'Spinning…':'Press SPIN to get a word.'}</p><div class="ivx-opts one">${(opts&&!spinning?opts:[]).map((o,k)=>ivOptBtn(o,k,answered?(o===w[1]?'ok':k===pick?'no':''):'')).join('')}</div></div></div>`,'')};
  const nextWheel=()=>{const prev=W?W.map(x=>x[0]):[];W=ivSpinNewWheel(prev);wheelN++;done=new Set();current=-1;opts=null;answered=false;pick=-1;paint();G.P.bubble(`Wheel ${wheelN}: six new words! Press SPIN.`)};
  const spin=()=>{if(spinning)return;if(current>=0&&!answered){G.P.bubble('Choose the meaning of the highlighted word first.');return}
   let left=W.map((_,k)=>k).filter(k=>!done.has(k));
@@ -1195,15 +1189,14 @@ function renderIvSpinner(){
   const step=now2=>{if(!el||!el.isConnected){rot=r1;spinning=false;return}const t=Math.min(1,(now2-t0)/DUR);rot=r0+(r1-r0)*ease(t);el.style.transform=`rotate(${rot}deg)`;if(t<1)requestAnimationFrame(step);else finish()};
   requestAnimationFrame(step)};
  const choose=k=>{if(spinning||current<0||answered||!opts)return;answered=true;pick=k;asked++;const w=W[current];done.add(current);ivSpinMarkUsed(w[0]);
-  const ok=opts[k]===w[1];score+=ok?1:-1;if(ok)right++;ivPoint(ok);fb=ok?'ok':'no';paint();ivPointFx(G,ok);
-  G.P.bubble(ok?`Yes! “${w[0]}” means ${w[1]}. Press Next.`:`“${w[0]}” means ${w[1]}. Press Next.`)};
+  const last=done.size>=W.length;
+  if(opts[k]===w[1]){score+=10;right++;ivAward(10);G.P.pts();G.P.bubble(`Yes! “${w[0]}” means ${w[1]}. ${last?'Press SPIN for a new wheel!':'Press SPIN.'}`)}else G.P.bubble(`“${w[0]}” means ${w[1]}. ${last?'Press SPIN for a new wheel!':'Press SPIN for the next word.'}`);paint()};
  const start=()=>{W=null;wheelN=0;score=0;spinning=false;right=0;asked=0;nextWheel();G.P.bubble('Spin the wheel, read the word, and choose the correct meaning! The wheels never run out.')};
- G.on(d=>{if('spin' in d||'next' in d)return spin();if('k' in d)return choose(Number(d.k))});
+ G.on(d=>{if('spin' in d)return spin();if('k' in d)return choose(Number(d.k))});
  start();
 }
 function ivReducedMotion(){return matchMedia('(prefers-reduced-motion:reduce)').matches||document.documentElement.classList.contains('reduced-motion')}
 /* Challenge Game */
-
 
 /* Challenge: Word Pop. Each round has a rule ("Pop words that mean HAPPY"). Word bubbles float up; pop only the ones
    that fit before they float away. Streaks build a combo; a wrong pop costs a heart. Five rounds, rules change every game. */
@@ -1232,11 +1225,11 @@ function renderIvChallenge(){
   <div class="ivp-arena" aria-label="Word bubbles"></div>
   <div class="ivp-foot"><span class="ivp-hud"></span></div>
   <div class="ivp-over" hidden></div></div>`;F=G.frame;arena=F.querySelector('.ivp-arena');ruleEl=F.querySelector('.ivp-rule');timeEl=F.querySelector('.ivp-time i');hud=F.querySelector('.ivp-hud');overlay=F.querySelector('.ivp-over')};
- const paintHud=()=>{hud.innerHTML=`<span class="h">${'❤️'.repeat(hearts)}${'🤍'.repeat(3-hearts)}</span><span>Round ${ri+1}/${ROUNDS}</span><span>Caught ${caught}/${GOAL}</span><span class="c${combo>=3?' hot':''}">🔥 Streak ${combo}</span><b>Score ${score}</b>`;G.score(score,Math.min(3,cleared))};
+ const paintHud=()=>{hud.innerHTML=`<span class="h">${'❤️'.repeat(hearts)}${'🤍'.repeat(3-hearts)}</span><span>Round ${ri+1}/${ROUNDS}</span><span>Caught ${caught}/${GOAL}</span><span class="c${combo>=3?' hot':''}">Combo ×${mult()}</span><b>${score} pts</b>`;G.score(score,Math.min(3,cleared))};
  const mult=()=>combo>=6?3:combo>=3?2:1;
  const show=(htmlStr)=>{overlay.hidden=false;overlay.innerHTML=`<div class="ivp-card">${htmlStr}</div>`};
  const roundIntro=()=>{state='intro';arena.innerHTML='';bubbles=[];caught=0;const R=rules[ri];ruleEl.textContent=R.rule;timeEl.style.width='100%';paintHud();
-  show(`<div class="ivp-kick">Round ${ri+1} of ${ROUNDS}</div><div class="ivp-big">${ivEsc(R.rule)}</div><p>Pop at least ${GOAL} right words. Right pop +1 · wrong pop −1 and a heart.</p><button type="button" class="ivx-b ivx-next" data-go>▶ Go!</button>`);ivSay(R.rule)};
+  show(`<div class="ivp-kick">Round ${ri+1} of ${ROUNDS}</div><div class="ivp-big">${ivEsc(R.rule)}</div><p>Pop at least ${GOAL} right words. Wrong pops cost a heart.</p><button type="button" class="ivx-b ivx-next" data-go>▶ Go!</button>`);ivSay(R.rule)};
  const roundGo=()=>{overlay.hidden=true;state='play';const now=performance.now();roundEnd=now+ROUND_SEC*1000;spawnAt=now+200;last=now;cancelAnimationFrame(raf);raf=requestAnimationFrame(tick)};
  const spawn=()=>{const R=rules[ri],good=Math.random()<.48,pool=good?R.yes:R.no,word=pool[Math.floor(Math.random()*pool.length)];
   const el=document.createElement('button');el.type='button';el.className='ivp-bub';el.dataset.id=++seq;el.innerHTML=`<span>${ivEsc(word)}</span>`;
@@ -1244,10 +1237,10 @@ function renderIvChallenge(){
   bubbles.push({id:seq,el,good,word,y:105,vy:(14+ri*2.5+Math.random()*5),wob:Math.random()*6.28,x})};
  const popB=(b,ok)=>{b.dead=true;b.el.classList.add(ok?'pop':'bad');b.el.disabled=true;setTimeout(()=>b.el.remove(),ok?380:520)};
  const hit=id=>{if(state!=='play')return;const b=bubbles.find(x=>String(x.id)===String(id)&&!x.dead);if(!b)return;
-  if(b.good){combo++;score+=1;caught++;ivPoint(true);G.P.pts();popB(b,true);float(b,'+1')}
-  else{combo=0;hearts--;lostHeart=true;score-=1;ivPoint(false);G.P.pts();popB(b,false);float(b,'−1');G.P.bubble(`“${b.word}” does not fit: ${rules[ri].rule.toLowerCase()}.`);if(hearts<=0){paintHud();return gameOver()}}
+  if(b.good){combo++;const pts=10*mult();score+=pts;caught++;ivAward(pts);G.P.pts();popB(b,true);float(b,`+${pts}`)}
+  else{combo=0;hearts--;lostHeart=true;popB(b,false);float(b,'✘');G.P.bubble(`“${b.word}” does not fit: ${rules[ri].rule.toLowerCase()}.`);if(hearts<=0){paintHud();return gameOver()}}
   paintHud()};
- const float=(b,t)=>{const f=document.createElement('i');f.className='ivp-float'+(t.startsWith('−')?' no':'');f.textContent=t;f.style.left=b.x+'%';f.style.top=b.y+'%';arena.append(f);setTimeout(()=>f.remove(),800)};
+ const float=(b,t)=>{const f=document.createElement('i');f.className='ivp-float'+(t==='✘'?' no':'');f.textContent=t;f.style.left=b.x+'%';f.style.top=b.y+'%';arena.append(f);setTimeout(()=>f.remove(),800)};
  const tick=t=>{if(!F||!F.isConnected){cancelAnimationFrame(raf);return}if(state!=='play')return;const dt=Math.min(.25,(t-last)/1000);last=t;
   if(t>=spawnAt){spawn();spawnAt=t+Math.max(420,900-ri*90)}
   bubbles.forEach(b=>{if(b.dead)return;b.y-=b.vy*dt;b.wob+=dt*2;b.el.style.top=b.y+'%';b.el.style.transform=`translate(-50%,-50%) translateX(${Math.sin(b.wob)*8}px)`;if(b.y<-12){b.dead=true;b.el.remove();if(b.good)combo=0}});
@@ -1260,10 +1253,10 @@ function renderIvChallenge(){
    <button type="button" class="ivx-b ivx-next" data-next>${ri+1<ROUNDS?'Next round ›':'See results ›'}</button>`);
   G.P.bubble(ok?'Great popping! Look at all the words that fit.':'Study the words that fit, then try the next round!')};
  const gameOver=()=>{state='over';cancelAnimationFrame(raf);arena.querySelectorAll('.ivp-bub').forEach(e=>e.remove());
-  const perfect=cleared===ROUNDS&&!lostHeart&&hearts>0;paintHud();
-  show(`<div class="ivp-kick">${hearts<=0?'💔 Out of hearts':'🏆 Challenge complete!'}</div><div class="ivp-big">Score ${score}</div><p>Rounds cleared: ${cleared} of ${ROUNDS}${perfect?' · Perfect game!':''} · +1 for each right pop, −1 for each wrong pop</p><button type="button" class="ivx-b ivx-next" data-again>↻ Play again</button>`);
-  G.P.bubble(perfect?'Perfect challenge! Every pop was right!':`You cleared ${cleared} of ${ROUNDS} rounds. Play again for new rules!`)};
- const start=()=>{rules=ivShuffle(IV_POP_RULES).slice(0,ROUNDS);ri=0;hearts=3;score=0;combo=0;cleared=0;lostHeart=false;bubbles=[];build();roundIntro();G.P.bubble('Pop only the words that fit the rule! +1 for a right pop, −1 for a wrong one.')};
+  const perfect=cleared===ROUNDS&&!lostHeart&&hearts>0;if(perfect){score+=50;ivAward(50);G.P.pts()}paintHud();
+  show(`<div class="ivp-kick">${hearts<=0?'💔 Out of hearts':'🏆 Challenge complete!'}</div><div class="ivp-big">${score} points</div><p>Rounds cleared: ${cleared} of ${ROUNDS}${perfect?' · Perfect! +50 bonus':''}</p><button type="button" class="ivx-b ivx-next" data-again>↻ Play again</button>`);
+  G.P.bubble(perfect?'Perfect challenge! +50 bonus points!':`You cleared ${cleared} of ${ROUNDS} rounds. Play again for new rules!`)};
+ const start=()=>{rules=ivShuffle(IV_POP_RULES).slice(0,ROUNDS);ri=0;hearts=3;score=0;combo=0;cleared=0;lostHeart=false;bubbles=[];build();roundIntro();G.P.bubble('Pop only the words that fit the rule! Streaks give a combo.')};
  G.frame.addEventListener('pointerdown',ev=>{const b=ev.target.closest('.ivp-bub');if(b){ev.preventDefault();hit(b.dataset.id)}});
  G.frame.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b||b.classList.contains('ivp-bub'))return;const d=b.dataset;
   if('go' in d)return roundGo();if('next' in d){if(ri+1<ROUNDS){ri++;return roundIntro()}return gameOver()}if('again' in d)return start()});

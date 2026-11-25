@@ -65,7 +65,7 @@ function openAssessmentLibrary(){
  if(navigationBusy)return false;activeModule='assessment-library';return transition('work',renderAssessmentLibrary);
 }
 function renderAssessmentLibrary(){
- activeModule='assessment-library';workLayout('Assessment Library',`<div class="resources">${[7,8,9,10].map(grade=>`<a href="${safeURL(RES+'Assessment File/ORST Graded Passages/G'+grade+' GRADED PASSAGE.docx')}" download>Grade ${grade} — original oral reading passages</a>`).join('')}</div>`);
+ activeModule='assessment-library';workLayout('Assessment Library',`<div class="resources"><a href="${safeURL(RES+'Assessment File/GROUP SCREENING TEST.docx')}" download>Group Screening Test — original document</a>${[7,8,9,10].map(grade=>`<a href="${safeURL(RES+'Assessment File/ORST Graded Passages/G'+grade+' GRADED PASSAGE.docx')}" download>Grade ${grade} — original oral reading passages</a>`).join('')}</div>`);
 }
 (()=>{
  const previousRender=render,previousModule=modulePage;

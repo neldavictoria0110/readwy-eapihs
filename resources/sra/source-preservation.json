@@ -1,0 +1,10 @@
+{
+  "original_sha256": "b9b409aece293ab45716e0c98db11f16de1c46ffa3070ae2d9411d3ce3f68fc2",
+  "embedded_sha256": "7ea2549832c47bb94b55e1419ed5890d87587651f6b8024f787b78c58da9c60b",
+  "only_document_change": "assets/hd/ -> resources/sra/express-assets/hd/",
+  "original_characters": 363323,
+  "embedded_characters": 363543,
+  "dataset_source": "resources/sra/v3/books.js",
+  "dataset_marker": "/*__BOOKS__*/",
+  "build_step": "copy-index.cjs injects books.js into the marker before writing index.html"
+}
