@@ -724,6 +724,175 @@ body:has(.rl-screen) #caption{left:auto!important;right:24px!important;top:76px!
 body:has(.rl-screen) #caption .rl-cap-av{width:52px;height:52px}
 @media(min-width:601px){.scene.rl-native:has(.rl-screen){overflow:hidden}}
 .scene.rl-native>.ext,.scene.native-journey>.ext{display:none!important}
+
+/* ===== Solid gem cards (Page 3 stations, station text cards, dashboard station rows) ===== */
+.rl-screen{isolation:isolate}
+.rl-screen>*:not(.rl-st-tint){position:relative}
+.rl-screen:not([data-gem]){--tint:255,236,200}
+.rl-screen{--g1:#2f9a3e;--g2:#1c6a2a;--gc:#1c6a2a;--gembg:linear-gradient(135deg,#2f9a3e,#1c6a2a)}
+.journey-card,.rl-gemcard{position:relative;overflow:hidden;background:var(--gembg)!important;border:3px solid #e8b84a!important;border-radius:16px!important;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.38),0 8px 18px rgba(0,0,0,.35)!important;color:#fff!important}
+.journey-card::before,.rl-gemcard::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,rgba(255,255,255,0) 52%,rgba(255,255,255,.08) 60%,rgba(255,255,255,0) 70%),linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,0) 35%)}
+.journey-station[data-station="5"] .journey-card::after,.rl-screen[data-gem="5"] .rl-gemcard::after,.rl-db-st[data-c="5"]::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 18% 22%,rgba(255,255,255,.7) 0 1.2px,transparent 2px),radial-gradient(circle at 72% 15%,rgba(255,255,255,.6) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 70%,rgba(255,255,255,.55) 0 1.2px,transparent 2px),radial-gradient(circle at 40% 85%,rgba(255,255,255,.45) 0 1px,transparent 1.6px)}
+.journey-card>*{position:relative;z-index:1}
+.journey-gem-name{color:#fff!important;font-size:21px!important;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.journey-metric{color:#fff!important;font-size:17px!important;text-shadow:0 1px 1px rgba(0,0,0,.3)}
+.journey-meter{background:rgba(255,255,255,.25)!important;box-shadow:none!important}
+.journey-meter i,.journey-meter.blue i{background:linear-gradient(90deg,#ffe58a,#f2b632)!important}
+.journey-badge{background:#fff!important;color:var(--gc)!important;border:0!important;font-size:14px!important;font-weight:900}
+.journey-station.is-current .journey-badge{background:#fff!important;color:var(--gc)!important}
+.journey-action{min-height:44px!important;font-size:17px!important}
+.journey-action.secondary{background:#fff!important;color:var(--gc)!important;border:2px solid #fff!important;box-shadow:0 2px 0 rgba(0,0,0,.25)!important;font-weight:800}
+.journey-action:disabled{background:rgba(255,255,255,.6)!important;color:var(--gc)!important;border:2px solid rgba(255,255,255,.7)!important;box-shadow:none!important;opacity:1}
+.journey-station.is-locked .journey-card,.rl-gemcard.locked{filter:saturate(.65)}
+.rl-plaque{background:var(--gembg)!important;color:#fff!important;border:2px solid #e8b84a!important;text-shadow:0 1px 1px rgba(0,0,0,.35)}
+/* station text cards */
+.rl-st-card.rl-gemcard{padding:8px 8px 10px;text-align:left}
+.rl-st-card.rl-gemcard .rl-st-title{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.rl-st-card.rl-gemcard .rl-st-genre{background:#fff;border-color:#fff;color:var(--gc)}
+.rl-st-card.rl-gemcard .rl-st-row{background:rgba(0,0,0,.2);color:#fff;font-size:15px}
+.rl-st-card.rl-gemcard .rl-st-ok{color:#9ff28a}
+.rl-st-card.rl-gemcard .rl-st-ring{border-color:rgba(255,255,255,.85)}
+.rl-st-card.rl-gemcard .rl-st-num{background:#fff;color:var(--gc);border-color:#e8b84a;text-shadow:none}
+.rl-st-card.rl-gemcard.done .rl-st-num{background:#2f7d14;color:#fff}
+.rl-st-card.rl-gemcard .rl-st-btn{background:#fff;color:var(--gc);border:2px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.25);font-weight:800}
+.rl-st-card.rl-gemcard .rl-st-btn.gold{background:linear-gradient(#ffe783,#f6bd28 60%,#e99b0b);border-color:#b07a14;color:#14254a;box-shadow:0 2px 0 #a86d12}
+.rl-st-card.rl-gemcard.locked{background:var(--gembg)!important}
+.rl-st-card.rl-gemcard.locked .rl-st-btn{background:rgba(255,255,255,.6);color:var(--gc);border-color:rgba(255,255,255,.7);box-shadow:none}
+.rl-st-card.rl-gemcard.now{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.38),0 0 0 3px #fff6c4,0 0 28px rgba(255,230,120,.9),0 8px 18px rgba(0,0,0,.35)!important}
+.rl-st-card.rl-gemcard .rl-st-thumb{border:2px solid rgba(255,255,255,.5)}
+/* owl is static everywhere */
+.rl-ollie-img,.rl-ollie.rl-tipnew .rl-ollie-img,.rl-ollie.rl-tipnew .rl-ollie-bubble,.rl-st-ollie img{animation:none!important}
+/* gem-themed accents on native screens */
+.rl-screen .rl-s-step.now{background:var(--gembg);box-shadow:0 0 0 2px #e2b24c}
+.rl-screen .rl-s-step.now .rl-s-num{color:var(--gc)}
+.rl-s-2col{grid-template-columns:clamp(150px,13vw,250px) minmax(0,1fr)}
+@media(max-width:899px){.rl-s-2col,.rl-s-qgrid{grid-template-columns:minmax(0,1fr)}}
+/* ----- Before you read ----- */
+.rl-bf-card{display:grid;grid-template-columns:minmax(260px,32%) minmax(0,1fr);gap:24px;padding:20px 24px;align-items:stretch;margin-right:clamp(0px,6vw,140px)}
+.rl-bf-pic{display:flex;flex-direction:column;gap:8px;min-height:0}
+.rl-bf-img{position:relative;flex:1;min-height:180px;border-radius:18px;overflow:hidden;border:3px solid #e0c88f}
+.rl-bf-genre{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);white-space:nowrap;padding:4px 14px;border-radius:999px;background:rgba(14,24,48,.85);color:#fff;font:700 17px/1.2 Fredoka,Nunito,sans-serif}
+.rl-bf-meta{margin:0;text-align:center;font:700 17px/1.3 Nunito,sans-serif;color:#3a3f52}
+.rl-bf-info{min-width:0;display:flex;flex-direction:column;gap:12px}
+.rl-bf-title{margin:0;font:700 clamp(30px,2.1vw,40px)/1.08 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-bf-sum{margin:0;font:600 19px/1.55 Nunito,sans-serif;color:#1d2440;max-width:70ch}
+.rl-bf-boxes{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rl-bf-box{padding:12px 16px;border-radius:16px;background:#fffdf6;border:2px solid #e8dcbd}
+.rl-bf-box h3{margin:0 0 6px;font:700 21px/1.1 Fredoka,Nunito,sans-serif;color:#14254a}
+.rl-bf-word,.rl-bf-goal{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #ece3cb;font:700 17px/1.3 Nunito,sans-serif;color:#1d2440}
+.rl-bf-word:last-child,.rl-bf-goal:last-child{border-bottom:0}
+.rl-bf-word .rl-s-chip{min-width:7.5em;text-align:center;font-size:17px}
+.rl-bf-goal span:first-child{font-size:24px}
+/* ----- Quiz / placement test ----- */
+.rl-s-qgrid{grid-template-columns:clamp(150px,13vw,250px) clamp(300px,22vw,420px) minmax(0,1fr)}
+.rl-q-pic{display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px;text-align:center}
+.rl-q-pic h3{margin:0;font-size:24px}
+.rl-q-img{position:relative;width:100%;flex:1;min-height:150px;border-radius:16px;overflow:hidden;border:2px solid #e0c88f}
+.rl-q-card{display:flex;flex-direction:column;gap:14px;padding:20px 28px}
+.rl-q-top{display:flex;align-items:center;gap:14px}
+.rl-q-top .rl-s-chip{font-size:18px}
+.rl-q-dots{flex:1;display:flex;gap:6px}
+.rl-q-dots i{flex:1;height:10px;border-radius:99px;background:#d8dbe2}
+.rl-q-dots i.done{background:#7a8aa8}.rl-q-dots i.now{background:#14254a}
+.rl-q-text{margin:4px 0;font:700 clamp(24px,1.6vw,30px)/1.25 Fredoka,Nunito,sans-serif;color:#0e1838}
+.rl-q-opts{display:flex;flex-direction:column;gap:12px;flex:1;min-height:0}
+.rl-q-opt{position:relative!important;left:auto!important;top:auto!important;width:100%!important;min-height:60px;height:auto!important;padding:8px 18px 8px 54px!important;font:700 20px/1.3 Nunito,sans-serif!important;text-align:left;white-space:normal!important}
+.rl-q-opt:focus-visible{outline:none;box-shadow:0 0 0 3px #1f5fd6}
+.rl-q-actions{flex:none;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.rl-q-actions .rl-pl-btn{width:auto;min-width:240px;min-height:56px;font-size:22px}
+.rl-q-result{align-items:center;justify-content:center;text-align:center}
+.rl-q-result h2{margin:0;font:700 36px/1.1 Fredoka,Nunito,sans-serif}
+.rl-q-score{font:700 110px/1 Fredoka,Nunito,sans-serif}
+.rl-q-stars{font-size:56px;letter-spacing:.1em;color:#f5b301;text-shadow:0 2px 0 #a86f00}.rl-q-stars span{color:#ccc;text-shadow:none}
+.rl-q-result p{margin:0;font:700 22px/1.4 Nunito,sans-serif}
+.rl-q-result .rl-q-actions{justify-content:center}
+.rl-pt-memory{display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px!important}
+.rl-pt-memory img{width:64px;height:64px}
+/* ----- Writing mission ----- */
+.rl-ms-card{display:flex;flex-direction:column;gap:16px;padding:20px 24px}
+.rl-ms-top{display:grid;grid-template-columns:clamp(180px,14vw,260px) minmax(0,1fr);gap:20px;align-items:start}
+.rl-ms-img{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;border:3px solid #e0c88f}
+.rl-ms-name{margin:0 0 6px;font:700 clamp(30px,2vw,38px)/1.1 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-ms-ask{margin:0 0 10px;font:700 19px/1.4 Nunito,sans-serif;color:#1d2440}
+.rl-ms-pass{margin:0;padding:10px 14px;border-radius:12px;background:#eef3d6;font:600 17px/1.45 Nunito,sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rl-ms-grid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;align-content:center}
+.rl-ms-box{display:flex;flex-direction:column;gap:8px;padding:10px 14px;border-radius:14px;background:#fffdf6;border:2px solid #e8dcbd}
+.rl-ms-lab{align-self:flex-start;padding:5px 14px;border-radius:10px;background:var(--gembg);color:#fff;font:700 19px/1.2 Fredoka,Nunito,sans-serif}
+.rl-ms-start{display:flex;align-items:center;gap:8px;font:700 20px/1.3 Nunito,sans-serif;color:#1d2440}
+.rl-ms-start i{flex:1;height:0;border-bottom:2px solid #8b90a0;margin-top:14px}
+.rl-ms-unlock{align-self:center}
+/* ----- Feedback ----- */
+.rl-fb-banner{flex:none;margin:-4px 0 0;padding:8px 26px;border-radius:999px;background:#0c4a14;color:#fff;font:700 21px/1.2 Fredoka,Nunito,sans-serif;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.rl-fb-rubric{display:flex;flex-direction:column;gap:12px;padding:18px 26px}
+.rl-fb-rubric h2{margin:0;font:700 28px/1.1 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-fb-row{display:grid;grid-template-columns:200px minmax(0,1fr) 70px;align-items:center;gap:14px;font:800 20px/1.2 Nunito,sans-serif;color:#14254a}
+.rl-fb-bar{height:16px;border-radius:99px;background:#e4ddc9;overflow:hidden}
+.rl-fb-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#64c43b,#268a21);transition:width .6s ease-out}
+.rl-fb-row b{text-align:right}
+.rl-fb-total{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-radius:16px;background:#122341;color:#fff;font:700 24px/1 Fredoka,Nunito,sans-serif}
+.rl-fb-total b{font-size:36px}
+.rl-fb-msg{margin:0;padding:8px 16px;border-radius:999px;background:#e3edc6;text-align:center;font:italic 700 19px/1.3 Nunito,sans-serif;color:#1f4d0f}
+.rl-fb-list{margin:0;padding-left:1.2em;font:700 17px/1.45 Nunito,sans-serif;color:#1d2440}
+.rl-fb-ex{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:#fff9e9;font:600 17px/1.4 Nunito,sans-serif}
+.rl-fb-unlock{flex:none;margin:0;padding:10px 26px;border-radius:999px;background:rgba(255,241,214,.97);border:2px solid #e2cd96;color:#7a3b00;font:600 19px/1.3 Nunito,sans-serif;text-align:center}
+.rl-fb-unlock.ok{background:rgba(234,243,211,.97);color:#0c3d0c}
+/* ----- Dashboard ----- */
+.rl-dash{gap:12px}
+.rl-db-grid{flex:1;min-height:0;width:min(1760px,96vw);display:grid;gap:14px;grid-template-columns:clamp(250px,16vw,300px) repeat(3,minmax(0,1fr));grid-template-rows:auto minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"map me rp wp" "map cont cont time" "map ach port cert"}
+.rl-db-map{grid-area:map;display:flex;flex-direction:column;gap:8px;min-height:0;padding:12px;border-radius:22px;background:linear-gradient(#152b55,#0d1f45 60%,#0a1a3c);border:3px solid #d9a441;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.rl-db-map h3{margin:0 0 2px;color:#fff6dc;font:700 19px/1.15 Fredoka,Nunito,sans-serif}
+.rl-db-st{flex:1;min-height:0;display:flex;align-items:center;gap:10px;padding:6px 12px!important;font:inherit;text-align:left;cursor:pointer}
+.rl-db-st.now{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.38),0 0 0 3px #fff6c4,0 0 18px rgba(255,230,120,.8)!important}
+.rl-db-gem{flex:none;width:44px;height:auto;position:relative;z-index:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+.rl-db-stt{position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;color:#fff;font:700 16px/1.2 Nunito,sans-serif;text-shadow:0 1px 1px rgba(0,0,0,.35)}
+.rl-db-stt b{font:700 20px/1.1 Fredoka,Nunito,sans-serif}
+.rl-db-stbar{height:7px;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden}.rl-db-stbar i{display:block;height:100%;background:linear-gradient(90deg,#ffe58a,#f2b632)}
+.rl-db-me{grid-area:me;display:flex;align-items:center;gap:14px;padding:14px 16px}
+.rl-db-av{flex:none;display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:var(--gembg);border:3px solid #e2b24c;color:#fff;font:700 36px/1 Fredoka,Nunito,sans-serif}
+.rl-db-me h3{margin:0;font-size:22px}
+.rl-db-chipgem{width:20px;height:auto;vertical-align:-4px}
+.rl-db-prog{padding:14px 18px}.rl-db-rp{grid-area:rp}.rl-db-wp{grid-area:wp}
+.rl-db-progtop{display:flex;align-items:center;gap:12px}
+.rl-db-ic{font-size:36px}
+.rl-db-big{font:700 28px/1.1 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-db-barrow{display:flex;align-items:center;gap:10px;margin-top:8px}
+.rl-db-bar{flex:1;display:block;height:12px;border-radius:99px;background:#e4ddc9;overflow:hidden}
+.rl-db-bar i{display:block;height:100%;background:linear-gradient(90deg,#64c43b,#268a21)}.rl-db-bar.blue i{background:linear-gradient(90deg,#64a7ff,#2860d5)}
+.rl-db-cont{grid-area:cont;display:flex;flex-direction:column;gap:10px;padding:14px 20px}
+.rl-db-h{margin:-14px -20px 0;padding:10px 20px;border-radius:22px 22px 0 0;background:linear-gradient(#22396b,#11234a);color:#fff6dc;font:700 24px/1.1 Fredoka,Nunito,sans-serif}
+.rl-db-controw{flex:1;min-height:0;display:flex;gap:18px}
+.rl-db-thumb{position:relative;flex:none;width:clamp(170px,12vw,230px);border-radius:14px;overflow:hidden;border:2px solid #e0c88f}
+.rl-db-continfo{min-width:0;display:flex;flex-direction:column;gap:8px}
+.rl-db-title{margin:0;font:700 28px/1.1 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-db-steps{display:flex;flex-wrap:wrap;gap:6px}
+.rl-db-steps span{padding:5px 12px;border-radius:999px;background:#ece8de;color:#3a3f52;font:800 16px/1.2 Nunito,sans-serif}
+.rl-db-steps span.done{background:#e3f4d9;color:#205d20}.rl-db-steps span.now{background:var(--gembg);color:#fff}
+.rl-db-task{margin:0;padding:6px 12px;border-radius:12px;background:#e3f4d9;color:#205d20;font:700 17px/1.3 Nunito,sans-serif}
+.rl-db-go{align-self:center;width:auto!important;min-width:300px;min-height:54px;font-size:22px}
+.rl-db-time{grid-area:time;display:flex;flex-direction:column;gap:10px;padding:14px 18px}
+.rl-db-day{margin:0;text-align:center;font:800 18px/1.3 Nunito,sans-serif}
+.rl-db-mile{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px;border-radius:14px;background:#e6f0cc;text-align:center;font:700 20px/1.2 Fredoka,Nunito,sans-serif;color:#14254a}
+.rl-db-mile b{color:#1f4d0f;font-size:18px}
+.rl-db-ach{grid-area:ach;padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.rl-db-head{display:flex;align-items:center;justify-content:space-between}.rl-db-head h3{margin:0}
+.rl-db-all{width:auto;min-height:44px;margin:0}
+.rl-db-badges{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rl-db-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:12px;background:#f3ecdb;filter:grayscale(1);opacity:.55;text-align:center}
+.rl-db-badge.got{filter:none;opacity:1;background:#fff6d2}
+.rl-db-badge span{font-size:30px}.rl-db-badge b{font:800 15px/1.15 Nunito,sans-serif}
+.rl-db-port,.rl-db-cert{padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.rl-db-port{grid-area:port}.rl-db-cert{grid-area:cert}
+.rl-db-count{margin:0;font:700 19px/1.2 Nunito,sans-serif}.rl-db-count b{font-size:32px}
+.rl-db-port .rl-pl-btn,.rl-db-cert .rl-pl-btn{margin-top:auto;align-self:center;width:auto;min-width:240px;min-height:50px;font-size:20px}
+.rl-db-certgems{display:flex;justify-content:space-around}.rl-db-certgems .off{filter:grayscale(.8);opacity:.5}
+.rl-db-cg{width:32px;height:auto}
+@media(max-width:1300px){.rl-db-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"me rp wp" "cont cont time" "ach port cert" "map map map";overflow:auto}}
+/* ----- Fast transitions (≤450 ms) ----- */
+.rl-enter-place .rl-pl-banner{animation:rlDrop .28s cubic-bezier(.2,.9,.3,1.15) .04s backwards!important}
+.rl-enter-place .rl-pl-col,.rl-enter-place .rl-pl-bar,.rl-enter-place .rl-pl-strip{animation:rlRise .24s ease-out backwards!important;animation-delay:calc(.06s + var(--i,0)*30ms)!important}
+.rl-enter-rail .rl-gem{animation:rlPopIn .2s cubic-bezier(.3,1.6,.5,1) backwards!important;animation-delay:calc(.06s + var(--i,0)*35ms)!important}
+.rl-enter-cards .rl-st-card{animation:rlRise .18s ease-out backwards!important;animation-delay:calc(.04s + var(--i,0)*25ms)!important}
+.rl-db-time .rl-db-bar{flex:none;height:12px}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
@@ -1045,7 +1214,6 @@ function wireToolbar(root,acts={}){
  const H={self:GO.self,help:helpSheet,home:dashboard,map:toREADwyJourney,portfolio,progress:acts.progress||openProgress,certs:certSheet,settings,back:acts.back,
   sound:btn=>{toggleSound();btn.innerHTML=`${muted?RL_ICON.soundOff:RL_ICON.sound}<span>${muted?'Sound off':'Sound'}</span>`;btn.setAttribute('aria-label',muted?'Sound off':'Sound');btn.setAttribute('aria-pressed',muted?'false':'true')}};
  root.querySelectorAll('.rl-topbar [data-tb]').forEach(btn=>{if(btn.dataset.tb==='sound')btn.setAttribute('aria-pressed',muted?'false':'true');btn.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();H[btn.dataset.tb]?.(btn)})})}
-function rlOwl(file,alt){return `<svg class="rl-owl" viewBox="0 0 420 540" role="img" aria-label="${esc(alt)}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ollieFeathers" x2="0" y2="1"><stop stop-color="#9a6540"/><stop offset="1" stop-color="#57341f"/></linearGradient><linearGradient id="ollieHat" x2="0" y2="1"><stop stop-color="#344a79"/><stop offset="1" stop-color="#14264d"/></linearGradient><linearGradient id="ollieScarf" x2="0" y2="1"><stop stop-color="#e23f48"/><stop offset="1" stop-color="#a91c31"/></linearGradient></defs><ellipse cx="210" cy="506" rx="132" ry="17" fill="#142345" opacity=".2"/><path d="M115 270C58 242 44 205 60 181c35-1 70 26 95 66zm190 0c57-28 71-65 55-89-35-1-70 26-95 66z" fill="url(#ollieFeathers)" stroke="#432719" stroke-width="8"/><path d="M105 249c-42-17-64-40-70-63 39 8 68 30 88 57zm210 0c42-17 64-40 70-63-39 8-68 30-88 57z" fill="#c08a55" opacity=".8"/><ellipse cx="210" cy="331" rx="126" ry="155" fill="url(#ollieFeathers)" stroke="#432719" stroke-width="9"/><ellipse cx="210" cy="354" rx="83" ry="113" fill="#f3e5ca" stroke="#d7bd96" stroke-width="5"/><path d="M93 161c8-73 59-115 117-115s109 42 117 115l-19 75c-25 31-61 49-98 49s-73-18-98-49z" fill="url(#ollieFeathers)" stroke="#432719" stroke-width="9"/><path d="M103 164c16-42 60-65 107-65s91 23 107 65c-8 65-52 112-107 112s-99-47-107-112z" fill="#f2e3c9"/><ellipse cx="158" cy="168" rx="42" ry="48" fill="#fffaf0" stroke="#c5aa81" stroke-width="5"/><ellipse cx="262" cy="168" rx="42" ry="48" fill="#fffaf0" stroke="#c5aa81" stroke-width="5"/><ellipse cx="164" cy="173" rx="19" ry="25" fill="#17213b"/><ellipse cx="256" cy="173" rx="19" ry="25" fill="#17213b"/><circle cx="170" cy="164" r="7" fill="#fff"/><circle cx="262" cy="164" r="7" fill="#fff"/><path d="m210 181-28 32q28 27 56 0z" fill="#e8a12c" stroke="#9e5b16" stroke-width="5"/><path d="M83 133c4-47 48-83 127-83s123 36 127 83H83z" fill="url(#ollieHat)" stroke="#101d3b" stroke-width="8"/><path d="M139 55q71-55 142 0" fill="none" stroke="#edc451" stroke-width="8"/><path d="M210 45v-18m-10 9h20" stroke="#f5d77e" stroke-width="6" stroke-linecap="round"/><path d="M95 241q115 42 230 0l-9 45q-106 35-212 0z" fill="url(#ollieScarf)" stroke="#7f1728" stroke-width="7"/><path d="M282 266q56 15 48 68l-18 81q-37-7-55-34l21-82z" fill="url(#ollieScarf)" stroke="#7f1728" stroke-width="7"/><path d="M146 472q-37 19-64 13-15-4-7-17 14-20 58-19m141 23q37 19 64 13 15-4 7-17-14-20-58-19" fill="#e5a82f" stroke="#9b5b16" stroke-width="7" stroke-linecap="round"/><path d="M155 320q55-28 110 0v111H155z" fill="#17294d" stroke="#c9953e" stroke-width="6"/><path d="M210 320v111m-43-80h29m28 0h29m-86 28h29m28 0h29" fill="none" stroke="#f4d27a" stroke-width="5"/><path d="M169 340q16-13 31 0m20 0q16-13 31 0" fill="none" stroke="#fff2c6" stroke-width="4"/>${file.includes('ticket')?'<g transform="rotate(-10 324 304)"><path d="M270 282h111v62h-111q-12-10 0-20-12-10 0-21-12-10 0-21z" fill="#f2d28a" stroke="#6e4a1d" stroke-width="6"/><text x="325" y="308" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#342519">READING</text><text x="325" y="328" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#342519">TICKET</text></g>':''}</svg>`}
 function rlDemoTrain(){try{if(new URLSearchParams(parent.location.search).get('demoTrain')==='1')return true}catch(e){}try{return new URLSearchParams(location.search).get('demoTrain')==='1'}catch(e){return false}}
 
 /* ---------- Page 3 rail: drawn through the real gem positions, so the train always sits on it ---------- */
@@ -1073,7 +1241,7 @@ function layoutJourneyRail(shell){
   <path d="${d}" fill="none" stroke="#e4ebef" stroke-width="20" stroke-linejoin="round" mask="url(#rlRailHi)" opacity=".9"/>
  </g><path class="rl-rail-geom" d="${d}" fill="none" stroke="none"/>`;
  const path=svg.querySelector('.rl-rail-geom'),total=path.getTotalLength();
- if(draw){const dp=svg.querySelector('.rl-draw-path');dp.style.strokeDasharray=total;dp.style.strokeDashoffset=total;dp.style.animation='rlDraw .62s cubic-bezier(.4,.1,.2,1) .1s forwards';shell.__drawPending=false}
+ if(draw){const dp=svg.querySelector('.rl-draw-path');dp.style.strokeDasharray=total;dp.style.strokeDashoffset=total;dp.style.animation='rlDraw .36s cubic-bezier(.4,.1,.2,1) .04s forwards';shell.__drawPending=false}
  // length along the rail closest to each gem
  const near=([x,y])=>{let best=0,bd=1e12;for(let s=0;s<=total;s+=6){const p=path.getPointAtLength(s),dd=(p.x-x)**2+(p.y-y)**2;if(dd<bd){bd=dd;best=s}}for(let s=Math.max(0,best-6);s<=Math.min(total,best+6);s++){const p=path.getPointAtLength(s),dd=(p.x-x)**2+(p.y-y)**2;if(dd<bd){bd=dd;best=s}}return best};
  const R={path,total,L:pts.map(near),pts,mobile};shell.__rail=R;return R}
@@ -1128,23 +1296,23 @@ function rlTransition(old,sc,from,to){
  if(reduce){sc.animate([{opacity:0},{opacity:1}],{duration:150,easing:'linear'});end(150);return}
  const W=innerWidth,H=innerHeight;
  if(from==='welcome'&&to==='placement'){
-  fxBox=document.createElement('div');fxBox.id='rl-fx';document.body.appendChild(fxBox);SFX.chuff(3);
+  fxBox=document.createElement('div');fxBox.id='rl-fx';document.body.appendChild(fxBox);setTimeout(()=>SFX.chuff(3),0);
   for(let i=0;i<9;i++){const p=document.createElement('i'),z=H*(.42+Math.random()*.38);p.className='rl-steam-puff';Object.assign(p.style,{width:z+'px',height:z+'px',top:(H*(i/8)-z/2+(Math.random()-.5)*H*.12)+'px',left:(-z)+'px'});fxBox.appendChild(p);
-   p.animate([{transform:'translateX(0) scale(.85)',opacity:.0},{transform:`translateX(${W*.55+z*.5}px) scale(1.05)`,opacity:1,offset:.45},{transform:`translateX(${W+z*1.4}px) scale(1.2)`,opacity:0}],{duration:640,delay:i*14,easing:'cubic-bezier(.3,.1,.3,1)',fill:'both'})}
-  old.animate([{opacity:1},{opacity:0}],{duration:300,delay:80,fill:'forwards'});
-  sc.animate([{opacity:0},{opacity:1}],{duration:300,delay:150,fill:'backwards'});sc.classList.add('rl-enter-place');end(720);return}
+   p.animate([{transform:'translateX(0) scale(.85)',opacity:.0},{transform:`translateX(${W*.55+z*.5}px) scale(1.05)`,opacity:1,offset:.45},{transform:`translateX(${W+z*1.4}px) scale(1.2)`,opacity:0}],{duration:360,delay:i*8,easing:'cubic-bezier(.3,.1,.3,1)',fill:'both'})}
+  old.animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});
+  sc.animate([{opacity:.4},{opacity:1}],{duration:160});sc.classList.add('rl-enter-place');end(400);return}
  if(from==='placement'&&to==='journey'){
-  fxBox=document.createElement('div');fxBox.id='rl-fx';document.body.appendChild(fxBox);SFX.chuff(4);
+  fxBox=document.createElement('div');fxBox.id='rl-fx';document.body.appendChild(fxBox);setTimeout(()=>SFX.chuff(4),0);
   fxBox.innerHTML=`<svg class="rl-fx-train" viewBox="0 0 420 120" aria-hidden="true"><g fill="#132035"><path d="M250 92h150l10-10V58l-24-6V20h-22v32h-26V8h-46l-10 12v72z"/><rect x="128" y="34" width="112" height="58" rx="8"/><rect x="6" y="34" width="112" height="58" rx="8"/><rect x="118" y="70" width="10" height="8"/><rect x="240" y="70" width="10" height="8"/><g><circle cx="282" cy="98" r="15"/><circle cx="330" cy="98" r="15"/><circle cx="374" cy="102" r="10"/><circle cx="154" cy="100" r="11"/><circle cx="214" cy="100" r="11"/><circle cx="32" cy="100" r="11"/><circle cx="92" cy="100" r="11"/></g></g><g fill="#fff" opacity=".85"><ellipse cx="372" cy="8" rx="22" ry="12"/><ellipse cx="344" cy="-6" rx="16" ry="9"/></g></svg>`;
   const tr=fxBox.firstChild,tw=H*.3*420/120;
-  tr.animate([{transform:`translateX(${-tw}px)`},{transform:`translateX(${W+tw*.1}px)`}],{duration:620,easing:'cubic-bezier(.45,.05,.4,1)',fill:'both'});
-  old.animate([{opacity:1},{opacity:0}],{duration:320,delay:60,fill:'forwards'});
+  tr.animate([{transform:`translateX(${-tw}px)`},{transform:`translateX(${W+tw*.1}px)`}],{duration:400,easing:'cubic-bezier(.45,.05,.4,1)',fill:'both'});
+  old.animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});
   const shell=sc.querySelector('.journey-shell');if(shell)shell.__drawPending=true;sc.classList.add('rl-enter-rail');
-  sc.animate([{opacity:0},{opacity:1}],{duration:320,delay:140,fill:'backwards'});end(680);return}
+  sc.animate([{opacity:.4},{opacity:1}],{duration:160});end(420);return}
  const dir=(RL_ORDER.indexOf(to)>=RL_ORDER.indexOf(from))?1:-1;
- sc.animate([{opacity:0,transform:`translateX(${dir*56}px)`},{opacity:1,transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'});
- old.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-dir*56}px)`}],{duration:320,easing:'ease-in',fill:'forwards'});
- end(500)}
+ sc.animate([{opacity:.35,transform:`translateX(${dir*40}px)`},{opacity:1,transform:'none'}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});
+ old.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-dir*56}px)`}],{duration:220,easing:'ease-in',fill:'forwards'});
+ end(320)}
 /* ===== 1 · Welcome ===== */
 let narrated=false;
 /* Page 1 is the finished design picture welcome-bg.jpg (2560x1440). Measured in picture pixels:
@@ -1169,16 +1337,16 @@ function welcome(){show('welcome','native-station',pl=>{
  const page=document.createElement('div');page.className='rl-page rl-wpic';
  page.innerHTML=`${rlToolbar('welcome')}<h1 class="rl-sr">READwy Reading Lab — Reading &amp; Writing Journey. Read, Learn, Write, Achieve. Your learning adventure starts here. Read at your pace. Write with confidence.</h1><div class="rl-wstage"><div class="rl-wimg" aria-hidden="true"></div><button type="button" class="rl-whit" data-rl="start" aria-label="Start Journey"></button><div class="rl-wfoot"><button type="button" class="rl-start" data-rl="start" aria-label="Start Journey">Start Journey <span aria-hidden="true">›</span></button></div></div>`;
  pl.replaceChildren(page);wireToolbar(page);
- page.querySelectorAll('[data-rl="start"]').forEach(b=>b.onclick=e=>{e.stopPropagation();ac();SFX.pop();startJourney()});
+ page.querySelectorAll('[data-rl="start"]').forEach(b=>b.onclick=e=>{e.stopPropagation();startJourney()});
  layoutWelcome(page);requestAnimationFrame(()=>layoutWelcome(page));
  if(window.ResizeObserver){const ro=new ResizeObserver(()=>{if(!page.isConnected){ro.disconnect();return}layoutWelcome(page)});ro.observe(page)}
 });setTimeout(()=>{if(S.scene==='welcome')autoNarrate()},300)}
 function autoNarrate(){if(narrated||muted)return;const go=()=>{if(narrated)return;narrated=true;document.getElementById('tap')?.remove();ac();startMusic();SFX.chuff(3);narrate()};
  addEventListener('pointerdown',function once(e){if(e.target.closest('.hit[aria-label="Start Journey"],.hit[aria-label^="Sound"],[data-rl="start"],[data-tb="sound"]'))return;removeEventListener('pointerdown',once,true);go()},true)}
 // Start Journey: whistle, the painted train strains and shakes as if about to leave, then it pulls out and carries the learner to the next page.
-function startJourney(){narrated=true;ac();startMusic();SFX.whistle();say('All aboard!',1.05,1.45);touch();
- const tw=cur.querySelector('.trainwrap');if(tw){tw.style.animation='trainShake .5s linear infinite'}cur.querySelectorAll('[data-rl="start"]').forEach(b=>b.classList.add('rl-go'));setTimeout(()=>SFX.chuff(4),200);
- setTimeout(()=>P.start==null?placement(true):dashboard(),450)}
+function startJourney(){narrated=true;touch();
+ // Page 2 opens first (visible and clickable at once); sound and music start right after and never hold the page.
+ P.start==null?placement(true):dashboard();setTimeout(()=>{ac();startMusic();SFX.whistle();setTimeout(()=>SFX.chuff(4),200)},0)}
 
 /* ===== 2 · Placement assessment ===== */
 /* Page 3's faceted gem as a standalone SVG, so Page 2 uses the same gems (unique gradient ids per use). */
@@ -1219,33 +1387,6 @@ function placement(intro){show('placement','native-station',pl=>{const pa=P.plac
 // Reading Inventory: read (and reread) the passage freely; once the comprehension test starts, the passage closes.
 function placeReading(){if(P.placement?.testing&&P.placement.reading==null)return placeTest();S.place=true;S.page=P.bookmarks.place||0;reading()}
 // Placement comprehension test: shown on the Reading time page itself, titled "Comprehension Test", one question at a time in the reading frame. The passage is closed.
-function placeTest(){const Q=PLACE.questions,n=Q.length;P.placement=P.placement||{};if(!P.placement.pt)P.placement.pt={q:0,ans:{}};const st=P.placement.pt;save();S.place=false;
- show('placetest','rw07',pl=>{
- nav(pl,{logo:[40,10,560,52],self:[630,14,188,46]});
- toolbar(pl,[840,14,676,46],[840,13,676,44],[['home','Home'],['map','Journey Map'],['portfolio','Portfolio'],['settings','Settings']],{home:()=>DEV?dashboard():notice('Finish the test first — your answers are kept.'),map:()=>DEV?journey():notice('Finish the test first — your answers are kept.')});
- const stepc=(r,html,on)=>box(pl,r,html,{fs:26,cls:'box ttl',css:`display:flex;align-items:center;justify-content:center;gap:.35em;white-space:nowrap;border-radius:99px;${on?'color:#fff;background:linear-gradient(#3b8f1c,#256d0b);box-shadow:0 0 0 .12em #e2b24c':'color:#1d2440;background:#f3efdc;border:.08em solid #d5cfb3'}`});
- stepc([300,173,174,48],'<span class="chip cg" style="border-radius:50%;padding:0 .4em">1</span> Read ✓',false);stepc([506,173,246,48],'<span style="display:grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:#fff;color:#256d0b">2</span> Comprehension',true);
- box(pl,[590,90,380,64],'Comprehension Test',{fs:42,cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;white-space:nowrap;color:#fff8e6;background:linear-gradient(#1a3366,#0d2249);text-shadow:0 .05em 0 #000a'});
- if(0)box(pl,[158,108,300,38],'',{fs:17,cls:'box',css:'display:flex;align-items:center;white-space:nowrap;font-weight:800;background:#f7f0cf;border-radius:.3em'});
- const [qt,ch,ans]=Q[st.q];const sw=e=>{if(SWIPE)e.classList.add(SWIPE>0?'swR':'swL');return e};
- sw(box(pl,[100,250,946,590],`<div style="height:100%;display:flex;flex-direction:column;padding:.6em 1.1em;gap:.45em">
-  <div style="display:flex;align-items:center;gap:.6em"><span class="chip cg" style="font-size:1.05em">Question ${st.q+1} of ${n}</span><span style="flex:1;display:flex;gap:.25em">${Q.map((_,i)=>`<i style="flex:1;height:.55em;border-radius:99px;background:${i<st.q||st.ans[i]!=null&&i!==st.q?'#2f8f10':i===st.q?'#14254a':'#d8dbe2'}"></i>`).join('')}</span></div>
-  <div class="ttl" style="font-size:1.5em;line-height:1.2;margin:.3em 0 .2em">${esc(qt)}</div></div>`,{fs:26,css:'background:linear-gradient(#fffdf7,#fbf4e4);border-radius:1em'}));
- ch.forEach((c,i)=>{const o=sw(document.createElement('button'));o.type='button';o.className+=' opt'+(st.ans[st.q]===i?' sel':'');o.style.cssText=`left:${px(140)};top:${px(452+i*88)};width:${px(866)};height:${px(74)};font-size:${px(28)}`;o.innerHTML=`<i></i><span><b>${'ABCD'[i]}.</b> ${esc(c)}</span>`;o.onclick=()=>{st.ans[st.q]=i;SFX.pop();placeTest()};pl.appendChild(o)});
- // right column: passage closed + test progress
- box(pl,[1073,255,412,262],`<div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25em;text-align:center"><div style="font-size:3.2em;line-height:1;display:inline-flex"><img src="${ART}icons/brain.png" alt="" style="width:1em;height:1em"></div><div class="ttl" style="font-size:1.3em">Answer from memory</div><div style="font-weight:700">The passage is closed during the test.</div></div>`,{fs:24,css:'background:radial-gradient(circle at 50% 40%,#fff,#eef3dc 80%);border-radius:calc(22*var(--k))'});
- const done=Object.keys(st.ans).length;box(pl,[1084,532,398,98],`<div style="padding:.15em .3em"><div class="ttl" style="font-size:1.15em">Test progress</div><div style="font-weight:800">Answered ${done} of ${n}</div><div class="bar" style="margin-top:.35em"><i style="width:${done/n*100}%"></i></div></div>`,{fs:22});
- box(pl,[1268,652,206,104],'<div style="height:100%;display:grid;place-items:center;text-align:center;font-weight:800;line-height:1.15">Think back to the details you read.</div>',{fs:21,css:'background:#fff;border-radius:1.2em'});
- // bottom bar
- box(pl,[130,852,258,44],st.q?'‹ Previous':'Question 1',{fs:26,cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;white-space:nowrap;background:#fdf6e6'});
- if(st.q)hit(pl,'Previous question',[118,848,282,58],()=>{st.q--;SFX.page();SWIPE=-1;placeTest()},'999px');
- box(pl,[440,852,240,44],'🧠 No looking back',{fs:21,cls:'box',css:'display:flex;align-items:center;white-space:nowrap;font-style:italic;font-weight:700;background:#fcf6e8'});
- label(pl,[718,850,290,52],st.q<n-1?'Next question ›':'Submit answers ›',30);
- hit(pl,'Next question or submit',[698,842,330,68],()=>{if(!DEV&&st.ans[st.q]==null){SFX.buzz();return notice('Choose an answer first.')}if(st.q<n-1){st.q++;SFX.page();SWIPE=1;return placeTest()}
-  const sc=Q.reduce((s,q,i)=>s+(st.ans[i]===q[2]?1:0),0);P.placement={...(P.placement||{}),reading:sc,readingOf:n,testing:false,pt:null};save();SFX.fanfare();confetti(40);placement();notice(`Reading Inventory done: ${sc} / ${n}. Now the Writing Sample!`)},'999px').classList.add('pulse');
- box(pl,[300,926,550,32],'The passage stays closed until you submit.',{fs:20,cls:'box',css:'display:flex;align-items:center;justify-content:center;font-style:italic;font-weight:700;background:#fcf6e8'});
- hit(pl,'Answer questions',[1090,846,388,46],()=>notice('You are answering the questions now.'),'.5em');hit(pl,'Complete writing task',[1090,902,388,48],()=>notice('The Writing Sample opens after this test.'),'.5em');
- },{instant:S.scene==='placetest'})}
 // Placement Writing Experience: the Writing Mission page (sample of what to expect), then the real Writing Workspace.
 TASKS['Placement']={name:'Write about a journey',focus:'Ideas • Order • Clear sentences',labels:['First','Next','Then','Finally'],icons:['🚉','🔎','📍','💭'],starters:['First,','Next,','Then,','Finally,'],ask:'Write about a journey you remember. What happened, and how did you feel?',checks:['I told what happened.','I told it in order.','I wrote complete sentences.','I checked capitals and punctuation.'],tip:'Tell what happened in order, then share how you felt.'};
 const PLACEW={title:'A Journey I Remember',genre:'Placement',paragraphs:['Think of a trip you took — to school, to a relative, to a market, or on a holiday. Remember where you went, who was with you, what happened, and how you felt.'],source:'READwy Reading Lab Placement'};
@@ -1255,52 +1396,6 @@ function finishPlaceWriting(txt){const r=rubric(txt,0,null);const pa={...(P.plac
 function chooseStart(c){const rec=P.placement?.rec??0;if(!DEV&&c>rec)return notice(`Start at ${LV[rec].name} or an easier gem.`);P.start=c;save();SFX.whistle();confetti(50);notice(`🚂 Your journey starts at ${LV[c].name} Station!`);dashboard()}
 
 /* ===== 3 · Dashboard ===== */
-function dashboard(){touch();show('dashboard','rw03',pl=>{const cu=current(),b=book(cu.c,cu.n),st=stage(cu.c,cu.n),rd=sum(lvRead),wr=sum(lvWrite);
- nav(pl,{logo:[20,5,322,95],self:[352,12,205,52]});hit(pl,'Settings and profile',[1215,8,305,66],settings,'999px');
- box(pl,[1305,16,215,52],`<span style="display:grid;place-items:center;width:1.9em;height:1.9em;border-radius:50%;background:#ffd447;color:#11234a;font-weight:900">${esc(first()[0]||'R')}</span><span style="line-height:1.1"><b>${esc(first())}</b><br><span style="font-size:.85em">${grade()?'Grade '+grade():'Learner'}</span></span>`,{fs:20,cls:'box',css:'display:flex;align-items:center;gap:.5em;padding-left:.3em;color:#fff;background:#0f2348;border-radius:99px;pointer-events:none'});
- // Left column: the painted menu is replaced by the journey-map progress, Emerald to Diamond (see below).
- box(pl,[350,138,385,42],`Welcome back, ${esc(first())}!`,{fs:27,cls:'box',css:'display:flex;align-items:center;justify-content:center;font-family:Fredoka;font-weight:700;color:#0e1838;background:#f8f3e6;border-radius:99px'});
- box(pl,[272,200,375,145],`<div style="display:flex;gap:.6em;align-items:center;height:100%;padding:0 .4em"><div style="flex:none;width:2.1em;height:2.1em;border-radius:50%;display:grid;place-items:center;font-family:Fredoka;font-weight:700;font-size:2em;color:#fff;background:${LV[cu.c].g};border:.12em solid #e2b24c;box-shadow:0 .1em .3em #0004">${esc(first()[0]||'R')}</div><div><div class="ttl" style="font-size:1.35em">${esc(learner())}</div><div class="muted" style="font-weight:800">${grade()?'Grade '+grade():'READwy Reading Lab learner'}</div><div class="chip cb" style="margin:.25em 0;font-size:.85em">${gem(cu.c,'1em')} ${LV[cu.c].name} • ${LV[cu.c].sub}</div><div class="chip cg" style="font-size:.85em">🔥 ${P.streak.days||1}-day streak</div></div></div>`,{fs:20});
- const prog=(r,ic,t,v,cls)=>box(pl,r,`<div style="padding:.3em .5em"><div style="display:flex;gap:.5em;align-items:center"><span style="font-size:1.8em">${ic}</span><div><div class="ttl" style="font-size:1.05em">${t}</div><div class="ttl" style="font-size:1.6em">${v} / 60 ${t.startsWith('Reading')?'texts':'tasks'}</div></div></div><div style="display:flex;gap:.5em;align-items:center;margin-top:.35em"><div class="bar ${cls}" style="flex:1"><i style="width:${v/60*100}%"></i></div><span class="chip cg">${Math.round(v/60*100)}%</span></div><div class="ital muted" style="font-size:.75em;margin-top:.3em;text-align:center">Every text includes comprehension and writing.</div></div>`,{fs:22});
- prog([680,200,392,142],'📖','Reading progress',rd,'');prog([1104,200,402,142],'✏️','Writing progress',wr,'blue');
- const tsk=taskOf(b),steps=['Read','Comprehension','Write','Complete'],si={read:0,quiz:1,write:2,done:3}[st];
- box(pl,[280,428,838,258],`<div style="display:flex;gap:.8em;height:100%;padding:.3em .4em"><div class="thumb" style="flex:none;width:8.6em;height:7.6em;border-radius:.6em;background:linear-gradient(135deg,${gBg(b)},#fff);border:.12em solid #e0c88f">${gPic(b)}</div><div style="flex:1;min-width:0"><div class="ttl" style="font-size:1.45em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.title)}</div><div class="chip cb" style="margin:.2em 0">${gem(cu.c)} ${LV[cu.c].name} • Text ${cu.n} of 10</div><div style="display:flex;gap:.25em;margin:.35em 0;flex-wrap:wrap">${steps.map((s,i)=>`<span class="chip ${i<si?'cg':i===si?'':'cl'}" style="${i===si?'background:#2f7d14;color:#fff':''}">${i+1} ${s}${i<si?' ✔':''}</span>`).join('')}</div><div class="chip cg" style="white-space:normal">✏️ <b>Writing task:</b>&nbsp;${esc(tsk.name)}</div><div class="ital muted" style="font-size:.78em;margin-top:.3em">👀 Read carefully! Once the questions start, the passage closes — you answer from memory.</div></div></div>`,{fs:21});
- pill(pl,`${cu.all?'Review journey':{read:'Start reading',quiz:'Answer questions',write:'Continue writing',done:'Review'}[st]} ›`,[640,612,330,50],()=>st==='read'?journey():resume(cu.c,cu.n),'gold pulse',26);
- const days=Math.max(1,Math.ceil((Date.now()-new Date(P.startedAt))/864e5)),left=Math.max(0,90-(days-1));
- box(pl,[1152,378,355,305],`<div style="padding:.3em .5em"><div style="display:flex;gap:.5em;align-items:center"><span style="font-size:2em">📅</span><div><div class="ttl" style="font-size:1.15em">Journey timeline</div><div class="ttl" style="font-size:1.45em">${left} days remaining</div></div></div><div class="bar" style="margin:.5em 0"><i style="width:${sum(lvDone)/60*100}%"></i></div><div style="text-align:center;font-weight:800">Day ${days} of 90 · ${sum(lvDone)} of 60 texts complete</div><div style="margin-top:.6em;border-radius:.6em;background:#e6f0cc;padding:.5em;text-align:center"><div class="ttl" style="font-size:1.05em;color:#1f4d0f">🚩 Your next milestone</div><div class="ttl" style="font-size:1.25em;margin-top:.3em">${cu.all?'Journey complete!':`Complete ${LV[cu.c].name} ${cu.n}`}</div></div></div>`,{fs:22});
- // ---- left column: journey map progress, Emerald → Diamond (replaces the painted menu) ----
- const side=el(pl,'',[8,372,236,632],'abs','background:linear-gradient(#152b55,#0d1f45 60%,#0a1a3c);border:calc(3*var(--k)) solid #d9a441;border-top:0;border-radius:0 0 calc(22*var(--k)) calc(22*var(--k));box-shadow:0 calc(6*var(--k)) calc(14*var(--k)) #0006;z-index:2');
- el(pl,`<div style="display:flex;align-items:center;gap:.45em;height:100%;padding:0 .55em"><svg viewBox="0 0 32 32" width="1.5em" height="1.5em"><path fill="#f2c14e" d="M16 2a9 9 0 0 0-9 9c0 6.8 9 17 9 17s9-10.2 9-17a9 9 0 0 0-9-9z"/><circle cx="16" cy="11" r="3.6" fill="#0d1f45"/></svg><div style="line-height:1.05;font-family:Fredoka,sans-serif;font-weight:600;color:#fff6dc">Your journey<br>map progress</div></div>`,[20,384,212,58],'abs',`font-size:calc(18*var(--k));background:linear-gradient(#22396b,#11234a);border:calc(2*var(--k)) solid #e2b24c;border-radius:calc(14*var(--k));z-index:3`);
- LV.forEach((l,c)=>{const y=452+c*91,open=lvOpen(c),d=lvDone(c),now=c===cu.c&&!cu.all;
-  const row=document.createElement('button');row.type='button';row.className='pill';row.setAttribute('aria-label',`${l.name} station`);
-  row.style.cssText=`left:${px(18)};top:${px(y)};width:${px(216)};height:${px(84)};border-radius:${px(14)};padding:0 ${px(10)};justify-content:flex-start;gap:${px(10)};font-size:${px(20)};color:#fff6dc;font-family:Nunito,sans-serif;background:${now?'linear-gradient(#2a4f8f,#183466)':'rgba(255,255,255,.05)'};border:${px(now?3:1.5)} solid ${now?'#ffd447':'rgba(226,178,76,.45)'};${now?`box-shadow:0 0 ${px(14)} #ffd44788`:''}`;
-  row.innerHTML=`<span style="flex:none;position:relative">${gem(c,'2.3em')}${open?'':'<span style="position:absolute;right:-.3em;bottom:-.2em;font-size:.85em">🔒</span>'}</span><span style="flex:1;min-width:0;text-align:left;line-height:1.15"><b style="font-family:Fredoka,sans-serif;font-weight:600;font-size:1.12em">${l.name}</b><br><span style="font-size:.85em;color:${open?'#cfe3ff':'#b8b3a6'};font-weight:700">${d===10?'✅ Complete':open?`${d} / 10 texts`:'Locked'}</span><span style="display:block;height:.4em;border-radius:99px;background:#ffffff26;margin-top:.25em;overflow:hidden"><i style="display:block;height:100%;width:${d*10}%;background:linear-gradient(90deg,#7ee081,#2f8f10)"></i></span></span>`;
-  row.onmouseenter=()=>{row.style.transform='translateX(3%) scale(1.03)'};row.onmouseleave=()=>{row.style.transform=''};
-  row.onclick=e=>{e.stopPropagation();ac();if(!open){SFX.buzz();return notice(`🔒 Finish ${LV[c-1].name} to unlock ${l.name}.`)}SFX.pop();station(c)};pl.appendChild(row)});
- // ---- bottom row: the three cards reach down to the bottom edge (the painted bottom bar is removed) ----
- const art=(par,[sx,sy,sw,sh],[dx,dy,dw,dh],css='')=>{const kx=dw/sw,ky=dh/sh;return el(par,'',[dx,dy,dw,dh],'clone',`background-image:url(${ART}rw03.jpg);background-size:calc(${AW*kx}*var(--k)) calc(${AH*ky}*var(--k));background-position:calc(${-sx*kx}*var(--k)) calc(${-sy*ky}*var(--k));${dy>=740?'-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent),linear-gradient(transparent,#000 5%,#000 95%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent),linear-gradient(transparent,#000 5%,#000 95%,transparent);mask-composite:intersect;':''}${css}`)};
- const card=(r)=>el(pl,'',r,'abs','background:linear-gradient(#fffdf6,#fbf4e3);border:calc(2.5*var(--k)) solid #e2cd96;border-radius:calc(18*var(--k));box-shadow:0 calc(4*var(--k)) calc(10*var(--k)) #6b4a1c40;z-index:2');
- el(pl,'',[244,690,1292,334],'abs','background:linear-gradient(#f6ecdb,#efe1c8);z-index:2');
- card([252,698,438,312]);card([696,698,352,312]);card([1054,698,470,312]);
- const top3=(r)=>el(pl,'',r,'abs','z-index:3;pointer-events:none');
- art(top3([0,0,AW,AH]),[272,704,270,44],[272,708,270,44]);art(top3([0,0,AW,AH]),[697,704,252,44],[699,708,252,44]);art(top3([0,0,AW,AH]),[1060,704,242,44],[1062,708,242,44]);
- const ach=achievements(),lay=top3([0,0,AW,AH]);
- // the three painted badges (greyed until earned), then three more achievements below
- [[290,752,104,135],[418,752,108,135],[545,752,108,135]].forEach((r,i)=>art(lay,r,[r[0],r[1]+8,r[2],r[3]],ach[i].got?'animation:floaty 3s ease-in-out infinite':'filter:grayscale(1) opacity(.45)'));
- box(pl,[272,906,404,92],`<div style="display:flex;justify-content:space-around;align-items:center;height:100%">${ach.slice(3).map(a=>`<div style="text-align:center;${a.got?'':'filter:grayscale(1);opacity:.45'}"><div style="font-size:1.9em;line-height:1">${a.icon}</div><div style="font-weight:800;font-size:.75em;line-height:1.1;margin-top:.15em">${a.name}</div></div>`).join('')}</div>`,{fs:22,cls:'box',css:'z-index:3;border-top:calc(1.5*var(--k)) dashed #e2cd96'});
- hit(pl,'View all achievements',[580,712,92,32],openProgress,'99px').style.zIndex=4;
- el(pl,`<span style="text-decoration:underline">View all</span> ›`,[578,714,96,30],'abs',`font-size:calc(19*var(--k));font-weight:800;color:#1d2440;display:flex;align-items:center;z-index:3;pointer-events:none`);
- const nW=Object.values(P.texts).filter(t=>t.writing),lastW=nW.sort((a,b)=>String(b.writing.at).localeCompare(a.writing.at))[0];
- art(lay,[705,762,108,86],[712,770,112,90]);
- box(pl,[832,778,210,70],`<b style="font-size:1.6em">${nW.length}</b>&nbsp; writing piece${nW.length===1?'':'s'} saved`,{fs:19,cls:'box',css:'display:flex;align-items:center;z-index:3'});
- box(pl,[708,868,330,58],lastW?`<div class="ital" style="font-size:.85em;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">“${esc(lastW.writing.text.slice(0,110))}…”</div>`:'<div class="ital muted" style="font-size:.85em;text-align:center">Your first writing piece will appear here.</div>',{fs:19,cls:'box',css:'display:flex;align-items:center;justify-content:center;z-index:3'});
- pill(pl,'Open portfolio ›',[758,936,228,50],portfolio,'ghost',23).style.zIndex=4;
- art(lay,[1075,758,152,112],[1072,768,160,118]);
- const lvC=[0,1,2,3,4,5].filter(c=>lvDone(c)===10).length;
- box(pl,[1244,758,258,128],`<span class="chip cg" style="font-size:.85em">${lvC?`🏅 ${lvC} earned`:'In progress'}</span><div style="font-size:.78em;margin-top:.3em;line-height:1.25">● <b>Level certificate:</b> finish all 10 texts in a level.<br>● <b>Completion:</b> finish Diamond 10.</div>`,{fs:20,cls:'box',css:'z-index:3'});
- box(pl,[1070,896,432,36],LV.map((l,c)=>`<span title="" style="display:inline-flex;align-items:center;gap:.2em;${lvDone(c)===10?'':'filter:grayscale(.8);opacity:.55'}">${gem(c,'1.1em')}</span>`).join('<span style="flex:1"></span>'),{fs:20,cls:'box',css:'display:flex;align-items:center;padding:0 .6em;z-index:3'});
-   pill(pl,'View certificates ›',[1150,942,262,50],certSheet,'ghost',23).style.zIndex=4;
- });setTimeout(()=>{if(S.scene==='dashboard'){const cu=current();say(cu.all?`You finished the whole journey, ${first()}! Amazing!`:`Welcome back, ${first()}! Next stop: ${LV[cu.c].name}, text ${cu.n}. Remember, read carefully. The passage closes when the questions start.`)}},800)}
 function achievements(){const any=f=>Object.values(P.texts).some(f),cnt=f=>Object.values(P.texts).filter(f).length;return [{icon:'⭐',name:'First story',got:any(t=>t.quizPassed)},{icon:'📖',name:'Word explorer',got:cnt(t=>t.read)>=5},{icon:'🎯',name:'First draft',got:any(t=>t.writing)},{icon:'🔥',name:'3-day streak',got:(P.streak.days||0)>=3},{icon:'🏆',name:'Level champion',got:[0,1,2,3,4,5].some(c=>lvDone(c)===10)},{icon:'💎',name:'Journey master',got:sum(lvDone)===60}]}
 function resume(c,n){S.c=c;S.n=n;const st=stage(c,n);if(st==='read')return before();if(st==='quiz')return quiz(true);if(st==='write')return mission();feedback()}
 
@@ -1334,11 +1429,11 @@ function journey(){show('journey','native-map',pl=>{
  const grid=shell.querySelector('.journey-grid');
  for(const c of pathOrder){
   const lv=LV[c],open=lvOpen(c),done=lvDone(c)===10,now=c===cu.c&&!cu.all,read=lvRead(c),write=lvWrite(c),name=c===5?'Diamond Grand Central':lv.name;
-  const status=done?'Completed':now?'Current station':open?'Open':'Locked';
+  const status=done?'Completed':now?'Current station':open?'Open':'🔒 Locked';
   const node=document.createElement('article');node.className='journey-station'+(now?' is-current':'')+(open||done?'':' is-locked');node.dataset.station=String(c);
-  node.style.gridRow=c<3?'1':'2';node.style.setProperty('--station-color',lv.hex);node.style.setProperty('--i',String(c));
+  node.style.cssText+=rlGemVars(c);node.style.gridRow=c<3?'1':'2';node.style.setProperty('--station-color',lv.hex);node.style.setProperty('--i',String(c));
   node.style.gridColumn=innerWidth<=900?'auto':String(c<3?c+1:6-c);
-  node.innerHTML=`<button type="button" class="journey-crop rl-stop" aria-label="Open ${esc(name)} station">${journeyStationSVG(c,name,now,!(open||done))}</button><div class="journey-card"><div class="journey-card-head"><span class="journey-gem-name">${esc(name)}</span><span class="journey-badge">${status}</span></div><div class="journey-metric"><span>Reading</span><span class="journey-meter"><i style="width:${read*10}%"></i></span><span>${read}/10</span></div><div class="journey-metric"><span>Writing</span><span class="journey-meter blue"><i style="width:${write*10}%"></i></span><span>${write}/10</span></div><button type="button" class="journey-action${now?'':' secondary'}" ${open||done?'':'disabled'}>${now?'Start reading':done?'Review':'Open'}</button></div>`;
+  node.innerHTML=`<button type="button" class="journey-crop rl-stop" aria-label="Open ${esc(name)} station">${journeyStationSVG(c,name,now,!(open||done))}</button><div class="journey-card"><div class="journey-card-head"><span class="journey-gem-name">${esc(name)}</span><span class="journey-badge">${status}</span></div><div class="journey-metric"><span>Reading</span><span class="journey-meter"><i style="width:${read*10}%"></i></span><span>${read}/10</span></div><div class="journey-metric"><span>Writing</span><span class="journey-meter blue"><i style="width:${write*10}%"></i></span><span>${write}/10</span></div><button type="button" class="journey-action${now?'':' secondary'}" ${open||done?'':'disabled'}>${now?'Start reading':done?'Review':open?'Open':'🔒 Locked'}</button></div>`;
   const stationAction=()=>{ac();SFX.pop();if(open||done)station(c);else{SFX.buzz();notice(`🔒 Finish ${LV[c-1]?.name||'the previous station'} to unlock ${lv.name}.`)}};
   node.querySelector('.journey-crop').onclick=stationAction;
   node.querySelector('.journey-action').onclick=stationAction;
@@ -1347,50 +1442,165 @@ function journey(){show('journey','native-map',pl=>{
  const cap=document.getElementById('caption');if(cap)cap.onclick=()=>caption('');
 });setTimeout(()=>{if(S.scene==='journey')say(P.start==null?'Here is your whole journey: six gem stations, ten texts each. Press Start reading at your current station when you are ready.':'Choose a station and continue your reading and writing journey.')},700)}
 /* ===== 5 · Station (the 10 texts of a level) ===== */
+/* ===== Gem themes: solid gem bodies (a dark scrim keeps white text at WCAG AA on the lighter gems) ===== */
+const RL_GEM=[{g1:'#12a05c',g2:'#0b5d38',scrim:.26,tint:'31,157,76'},{g1:'#2a63d6',g2:'#163a8f',scrim:.05,tint:'31,95,214'},{g1:'#d9820f',g2:'#8a4f00',scrim:.30,tint:'240,160,32'},{g1:'#d21f45',g2:'#8e0f2a',scrim:.08,tint:'214,40,60'},{g1:'#8a4bd6',g2:'#5a2a96',scrim:.08,tint:'140,70,210'},{g1:'#3a9cc9',g2:'#1d5f80',scrim:.28,tint:'120,190,230'}];
+function rlGemVars(c){const g=RL_GEM[c];if(!g)return '';return `--g1:${g.g1};--g2:${g.g2};--gc:${g.g2};--tint:${g.tint};--gembg:linear-gradient(rgba(0,0,0,${g.scrim}),rgba(0,0,0,${g.scrim})),linear-gradient(135deg,${g.g1},${g.g2});`}
+function rlTheme(page,c){if(c!=null&&RL_GEM[c]){page.style.cssText+=rlGemVars(c);page.dataset.gem=c}if(!page.querySelector(':scope>.rl-st-tint'))page.insertAdjacentHTML('afterbegin','<div class="rl-st-tint" aria-hidden="true"></div>')}
+function rlOn(root,sel,fn){root.querySelectorAll(sel).forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();fn(el,e)}))}
 /* ===== 5 · Station (native template, themed per gem) ===== */
-RL_NATIVE.station=1;
-const RL_ST_TINT=['31,157,76','31,95,214','240,160,32','214,40,60','140,70,210','150,205,240'];
+RL_NATIVE.station=1;RL_NATIVE.before=1;RL_NATIVE.quiz=1;RL_NATIVE.placetest=1;RL_NATIVE.mission=1;RL_NATIVE.feedback=1;RL_NATIVE.dashboard=1;
 function station(c){if(!lvOpen(c)){SFX.buzz();return notice(`🔒 Finish ${LV[c-1].name} to unlock ${LV[c].name}.`)}S.c=c;show('station','native-station',pl=>{
  const lv=LV[c],d=lvDone(c),nx=(()=>{for(let n=1;n<=10;n++)if(!tDone(c,n))return n;return 0})();
- const page=document.createElement('div');page.className='rl-page rl-screen rl-station rl-enter-cards';page.style.setProperty('--tint',RL_ST_TINT[c]);page.style.setProperty('--gem',lv.hex);
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-station rl-enter-cards';
  const cards=[];for(let n=1;n<=10;n++){const b=book(c,n),open=tOpen(c,n),dn=tDone(c,n),st=stage(c,n),now=open&&!dn&&(n===1||tDone(c,n-1)),t=tget(c,n);
   const rd=t.quizPassed?'Complete':open?(st==='read'?'Not started':'In progress'):'Locked',wr=t.writing?.passed?'Complete':open?'Not started':'Locked';
   const ic=(ok)=>ok?'<span class="rl-st-ok" aria-hidden="true">✔</span>':open?'<span class="rl-st-ring" aria-hidden="true"></span>':'<span aria-hidden="true">🔒</span>';
-  cards.push(`<button type="button" class="rl-st-card${open?'':' locked'}${now?' now':''}${dn?' done':''}" data-n="${n}" style="--i:${n-1}" aria-label="Text ${n}: ${esc(b.title)}${open?'':' (locked)'}">
+  cards.push(`<button type="button" class="rl-st-card rl-gemcard${open?'':' locked'}${now?' now':''}${dn?' done':''}" data-n="${n}" style="--i:${n-1}" aria-label="Text ${n}: ${esc(b.title)}${open?'':' (locked)'}">
    <span class="rl-st-thumb" style="background:linear-gradient(135deg,${gBg(b)},#fff)">${gPic(b)}</span><span class="rl-st-num">${n}</span>${now?'<span class="rl-st-ready">Ready</span>':''}${open?'':'<span class="rl-st-lock" aria-hidden="true">🔒</span>'}
    <span class="rl-st-title">${esc(b.title)}</span><span class="rl-st-genre">${esc(b.genre)}</span>
    <span class="rl-st-row">📖 Reading: ${rd}${ic(t.quizPassed)}</span><span class="rl-st-row">✏️ Writing: ${wr}${ic(t.writing?.passed)}</span>
-   <span class="rl-st-btn">${!open?'🔒 Locked':dn?'Review ›':now&&st==='read'?`Start Text ${n} ›`:'Continue ›'}</span></button>`)}
- page.innerHTML=`<div class="rl-st-tint" aria-hidden="true"></div>${rlToolbar('main')}
+   <span class="rl-st-btn${now?' gold':''}">${!open?'🔒 Locked':dn?'Review ›':now&&st==='read'?`Start Text ${n} ›`:'Continue ›'}</span></button>`)}
+ page.innerHTML=`${rlToolbar('main')}
  <header class="rl-st-head"><div class="rl-s-banner"><div class="rl-pl-plaque rl-s-plaque rl-st-plaque">${rlGem(c,'rl-st-gem')}<h1>${esc(lv.name)} Station</h1></div><div class="rl-pl-ribbon rl-s-ribbon">Read a story. Check your understanding. Write to move forward.</div></div><div class="rl-st-platform"><span>Platform ${c+1}</span><span aria-hidden="true">·</span><b>${esc(lv.name)}</b></div></header>
  <div class="rl-st-stats"><span class="rl-st-level">${esc(lv.sub)} level</span><span>📚 Texts completed <b>${d}/10</b></span><span>📖 Reading <b>${lvRead(c)}/10</b></span><span>✏️ Writing <b>${lvWrite(c)}/10</b></span><span class="rl-st-bar" role="progressbar" aria-valuenow="${d*10}" aria-valuemin="0" aria-valuemax="100"><i style="width:${d*10}%"></i></span><b class="rl-st-pct">${d*10}%</b></div>
  <section class="rl-st-grid" aria-label="${esc(lv.name)} texts">${cards.join('')}</section>
  <footer class="rl-st-foot"><div class="rl-st-ollie"><img src="${ART}owl.png" alt="Ollie the owl" draggable="false"><p class="rl-st-tip">Complete reading, comprehension and writing to unlock the next text.</p></div>
   <ol class="rl-st-chips" aria-label="How to unlock the next text"><li>📖 Read</li><li aria-hidden="true">→</li><li>🔍 Comprehension</li><li aria-hidden="true">→</li><li>✏️ Write</li><li aria-hidden="true">→</li><li>🔓 Unlock</li></ol>
   <div class="rl-st-actions"><button type="button" class="rl-pl-btn ghost rl-st-back">← Back to map</button><button type="button" class="rl-pl-btn gold pulse rl-st-go" aria-label="Continue">${nx?`Continue to Text ${nx} ›`:'Level complete! 🏅'}</button></div></footer>`;
- pl.replaceChildren(page);rlScreenNav(page);
+ rlTheme(page,c);pl.replaceChildren(page);rlScreenNav(page);
  page.querySelectorAll('.rl-st-card').forEach(card=>card.onclick=()=>{const n=+card.dataset.n,open=tOpen(c,n),dn=tDone(c,n);ac();if(!open){SFX.buzz();return notice(`🔒 Finish Text ${n-1} (reading, questions and writing) first.`)}SFX.pop();S.c=c;S.n=n;dn?feedback():resume(c,n)});
- page.querySelector('.rl-st-back').onclick=e=>{e.stopPropagation();ac();SFX.pop();journey()};
- page.querySelector('.rl-st-go').onclick=e=>{e.stopPropagation();ac();SFX.pop();nx?resume(c,nx):certSheet()};
- setTimeout(()=>page.classList.remove('rl-enter-cards'),1200);
+ rlOn(page,'.rl-st-back',()=>journey());rlOn(page,'.rl-st-go',()=>nx?resume(c,nx):certSheet());
+ setTimeout(()=>page.classList.remove('rl-enter-cards'),700);
 });setTimeout(()=>S.scene==='station'&&say(`${LV[c].name} Station! Pick a text that's ready.`),250)}
+/* ===== 6 · Before you read (native) ===== */
+function before(){const c=S.c,n=S.n,b=book(c,n),tsk=taskOf(b),mins=Math.max(1,Math.round(b.paragraphs.join(' ').split(/\s+/).length/120));show('before','native-station',pl=>{
+ const goals=[['🎯',`Understand the ${/Poetry/.test(b.genre)?'poem’s images and message':/Fable|Fiction|Short|Novel/.test(b.genre)?'characters, setting, and events':'main idea and key details'}.`],['🔢','Answer 10 questions — 8 correct to pass.'],['✏️',`${tsk.name} in ${SENT[c][0]}–${SENT[c][1]} sentences.`]];
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-before';
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('Before you read',`${LV[c].name} • Text ${n} of 10`,c,1)}
+ <div class="rl-s-main rl-s-2col"><div class="rl-s-owlcol">${rlOllie('Read at your own pace.')}</div>
+  <section class="rl-s-card rl-bf-card" aria-label="About this text">
+   <div class="rl-bf-pic"><div class="rl-bf-img" style="background:radial-gradient(circle at 50% 40%,#fff,${gBg(b)} 70%)">${gPic(b)}<span class="rl-bf-genre">${esc(b.genre)}</span></div><p class="rl-bf-meta">📖 ${esc(b.genre)} &nbsp;|&nbsp; 🕒 About ${mins} minute${mins>1?'s':''}</p></div>
+   <div class="rl-bf-info"><h2 class="rl-bf-title">${esc(b.title)}</h2><p class="rl-bf-sum">${esc(b.paragraphs[0].split(/(?<=[.!?])\s/).slice(0,2).join(' '))}</p>
+    <div class="rl-bf-boxes"><div class="rl-bf-box"><h3>📖 Words to discover</h3>${wordsToDiscover(b).map(([w,h])=>`<div class="rl-bf-word"><span class="rl-s-chip">${esc(w)}</span><span>— ${h}</span></div>`).join('')}</div>
+    <div class="rl-bf-box"><h3>✅ Your learning goals</h3>${goals.map(([i,t])=>`<div class="rl-bf-goal"><span>${i}</span><span>${t}</span></div>`).join('')}</div></div></div>
+  </section></div>
+ <div class="rl-s-bottom"><button type="button" class="rl-pl-btn ghost rl-bf-back">‹ Back to ${esc(LV[c].name)} library</button><button type="button" class="rl-pl-btn ghost rl-bf-read">📖 Read from the start</button><button type="button" class="rl-pl-btn gold pulse rl-bf-go" aria-label="Start reading">Start Reading ›</button></div>
+ <p class="rl-s-unlock">🔒 Finish the questions and writing to unlock ${n<10?'Text '+(n+1):'the next level'}.</p>`;
+ rlTheme(page,c);pl.replaceChildren(page);rlScreenNav(page);
+ rlOn(page,'.rl-bf-back',()=>station(c));rlOn(page,'.rl-bf-read',()=>{S.page=0;reading()});rlOn(page,'.rl-bf-go',()=>{S.page=P.bookmarks[tid(c,n)]||0;reading()});
+});setTimeout(()=>S.scene==='before'&&say(`${b.title}. Read at your own pace!`),250)}
+/* ===== 8 · Reading comprehension (native) ===== */
+let qfs=26;
+function rlChoice(i,txt,sel){return `<button type="button" class="rl-q-opt opt${sel?' sel':''}" data-i="${i}" aria-pressed="${sel?'true':'false'}"><i></i><span><b>${'ABCD'[i]}.</b> ${esc(txt)}</span></button>`}
+function quiz(fresh){const c=S.c,n=S.n,b=book(c,n);if(fresh){S.q=0;S.picked={};S.checked={};S.first={}}S.finished=fresh?false:S.finished;show('quiz','native-station',pl=>{
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-quiz';
+ let body;
+ if(S.finished){const sc=S.lastScore??tget(c,n).quiz?.score??0,ok=sc>=8,stars=sc>=10?3:sc>=9?2:sc>=8?1:0;
+  body=`<section class="rl-s-card rl-q-card rl-q-result" aria-live="polite"><h2>${ok?'Comprehension complete!':'Keep trying!'}</h2><div class="rl-q-score pop" style="color:${ok?'#2f8f10':'#c0392b'}">${sc} / 10</div><div class="rl-q-stars" aria-label="${stars} of 3 stars">${'★'.repeat(stars)}<span>${'★'.repeat(3-stars)}</span></div><p>${ok?'You passed. Your writing mission is open!':'You need 8 out of 10. Read the text again — you can do it!'}</p>
+   <div class="rl-q-actions">${ok?'<button type="button" class="rl-pl-btn gold pulse rl-q-mission">✏️ Go to writing mission ›</button>':'<button type="button" class="rl-pl-btn ghost rl-q-reread">📖 Read again</button><button type="button" class="rl-pl-btn gold rl-q-retry">🔁 Try the questions again</button>'}</div></section>`}
+ else{const q=b.questions[S.q],pk=S.picked[S.q];
+  body=`<section class="rl-s-card rl-q-card" aria-label="Question ${S.q+1} of 10"><div class="rl-q-top"><span class="rl-s-chip">Question ${S.q+1} of 10</span><span class="rl-q-dots" aria-hidden="true">${Array.from({length:10},(_,i)=>`<i class="${i===S.q?'now':S.picked[i]!=null?'done':''}"></i>`).join('')}</span></div>
+   <h2 class="rl-q-text rl-swipe">${esc(q.question)}</h2><div class="rl-q-opts rl-swipe">${q.choices.map((ch,i)=>rlChoice(i,ch,pk===i)).join('')}</div>
+   <div class="rl-q-actions">${S.q?'<button type="button" class="rl-pl-btn ghost rl-q-prev">‹ Previous question</button>':'<span></span>'}<button type="button" class="rl-pl-btn gold rl-q-next" aria-label="Next question or submit">${S.q<9?'Next question ›':'Submit answers ›'}</button></div></section>`}
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('Reading comprehension',`${LV[c].name} • Text ${n} of 10 • ${b.title}`,c,2)}
+ <div class="rl-s-main rl-s-qgrid"><div class="rl-s-owlcol">${rlOllie(S.finished?'Every try helps you learn.':'Answer from memory. Think back to what you read.')}</div>
+  <aside class="rl-s-card rl-q-pic"><div class="rl-q-img" style="background:linear-gradient(135deg,${gBg(b)},#fff)">${gPic(b)}</div><h3>${esc(b.title)}</h3><span class="rl-s-chip">${esc(b.genre)} • ${LV[c].name} ${n}</span><p class="rl-s-small">🧠 Answer from memory. The passage is closed.</p></aside>
+  ${body}</div>`;
+ rlTheme(page,c);pl.replaceChildren(page);rlScreenNav(page);
+ if(SWIPE)page.querySelectorAll('.rl-swipe').forEach(e=>e.classList.add(SWIPE>0?'swR':'swL'));
+ rlOn(page,'.rl-q-opt',o=>{S.picked[S.q]=+o.dataset.i;quiz()});
+ rlOn(page,'.rl-q-prev',()=>{S.q--;SFX.page();SWIPE=-1;quiz()});
+ page.querySelector('.rl-q-next')?.addEventListener('click',e=>{e.stopPropagation();ac();if(!DEV&&S.picked[S.q]==null){SFX.buzz();return notice('Choose an answer first.')}SFX.pop();if(S.q<9){S.q++;SFX.page();SWIPE=1;return quiz()}finishQuiz()});
+ rlOn(page,'.rl-q-mission',mission);rlOn(page,'.rl-q-reread',()=>{S.page=0;reading()});rlOn(page,'.rl-q-retry',()=>quiz(true));
+},{instant:S.scene==='quiz'&&!fresh});}
+function quizResult(){quiz()}
+/* ===== Placement comprehension test (native) ===== */
+function placeTest(){const Q=PLACE.questions,n=Q.length;P.placement=P.placement||{};if(!P.placement.pt)P.placement.pt={q:0,ans:{}};const st=P.placement.pt;save();S.place=false;
+ show('placetest','native-station',pl=>{
+ const [qt,ch]=Q[st.q],answered=Object.keys(st.ans).length;
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-quiz rl-ptest';
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('Comprehension Test','Placement • Reading Inventory',null,2)}
+ <div class="rl-s-main rl-s-3col"><div class="rl-s-owlcol">${rlOllie('Think back to the details you read.')}</div>
+  <section class="rl-s-card rl-q-card" aria-label="Question ${st.q+1} of ${n}"><div class="rl-q-top"><span class="rl-s-chip">Question ${st.q+1} of ${n}</span><span class="rl-q-dots" aria-hidden="true">${Q.map((_,i)=>`<i class="${i===st.q?'now':st.ans[i]!=null?'done':''}"></i>`).join('')}</span></div>
+   <h2 class="rl-q-text rl-swipe">${esc(qt)}</h2><div class="rl-q-opts rl-swipe">${ch.map((t,i)=>rlChoice(i,t,st.ans[st.q]===i)).join('')}</div>
+   <div class="rl-q-actions">${st.q?'<button type="button" class="rl-pl-btn ghost rl-q-prev">‹ Previous</button>':'<span class="rl-s-saved">🧠 No looking back</span>'}<button type="button" class="rl-pl-btn gold pulse rl-q-next" aria-label="Next question or submit">${st.q<n-1?'Next question ›':'Submit answers ›'}</button></div>
+   <p class="rl-s-foot">The passage stays closed until you submit.</p></section>
+  <div class="rl-s-side"><div class="rl-s-card rl-pt-memory"><img src="${ART}icons/brain.png" alt=""><h3>Answer from memory</h3><p class="rl-s-small">The passage is closed during the test.</p></div>
+   <div class="rl-s-card rl-s-prog"><div class="rl-prog-t">Test progress</div><div>Answered ${answered} of ${n}</div><div class="rl-prog-bar"><i style="width:${answered/n*100}%"></i></div></div>
+   <div class="rl-s-card rl-s-next"><h3>🎯 Next steps</h3><button type="button" class="rl-s-link rl-pt-ask">📖 Answer questions <span>›</span></button><button type="button" class="rl-s-link rl-pt-write">✏️ Complete writing task <span>›</span></button></div></div></div>`;
+ rlTheme(page,null);pl.replaceChildren(page);rlScreenNav(page);
+ // during the test, leaving is blocked (answers are kept), as before
+ const guard=()=>notice('Finish the test first — your answers are kept.');
+ ['home','map','progress'].forEach(k=>{const bt=page.querySelector(`.rl-topbar [data-tb="${k}"]`);if(bt&&!DEV){const f=bt.cloneNode(true);bt.replaceWith(f);f.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();guard()})}});
+ if(SWIPE)page.querySelectorAll('.rl-swipe').forEach(e=>e.classList.add(SWIPE>0?'swR':'swL'));
+ rlOn(page,'.rl-q-opt',o=>{st.ans[st.q]=+o.dataset.i;placeTest()});
+ rlOn(page,'.rl-q-prev',()=>{st.q--;SFX.page();SWIPE=-1;placeTest()});
+ rlOn(page,'.rl-pt-ask',()=>notice('You are answering the questions now.'));rlOn(page,'.rl-pt-write',()=>notice('The Writing Sample opens after this test.'));
+ page.querySelector('.rl-q-next').addEventListener('click',e=>{e.stopPropagation();ac();if(!DEV&&st.ans[st.q]==null){SFX.buzz();return notice('Choose an answer first.')}if(st.q<n-1){st.q++;SFX.page();SWIPE=1;return placeTest()}
+  const sc=Q.reduce((s,q,i)=>s+(st.ans[i]===q[2]?1:0),0);P.placement={...(P.placement||{}),reading:sc,readingOf:n,testing:false,pt:null};save();SFX.fanfare();confetti(40);placement();notice(`Reading Inventory done: ${sc} / ${n}. Now the Writing Sample!`)});
+ },{instant:S.scene==='placetest'})}
+/* ===== 9 · Writing mission (native) ===== */
+function mission(){const pm=!!S.pw,c=pm?0:S.c,n=S.n,b=pm?PLACEW:book(c,n),tk=taskOf(b);if(!DEV&&!pm&&!tget(c,n).quizPassed){notice('Pass the questions first (8 of 10).');return quiz(true)}show('mission','native-station',pl=>{
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-mission';
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('Your writing mission',pm?'Placement • Writing Experience':`${LV[c].name} • Text ${n} of 10 • ${b.title}`,pm?null:c,3)}
+ <div class="rl-s-main rl-s-3col"><div class="rl-s-owlcol">${rlOllie(tk.tip)}</div>
+  <section class="rl-s-card rl-ms-card" aria-label="Writing mission">
+   <div class="rl-ms-top"><div class="rl-ms-img" style="background:radial-gradient(circle at 50% 40%,#fff,${gBg(b)} 75%)">${gPic(b)}</div><div><h2 class="rl-ms-name">${esc(tk.name)}</h2><p class="rl-ms-ask">${esc(tk.ask)} ${pm?'Write as much as you can, in your own words.':`Write ${SENT[c][0]}–${SENT[c][1]} sentences (at least ${MINW[c]} words).`}</p><p class="rl-ms-pass">📖 ${esc(b.paragraphs[0])}</p></div></div>
+   <div class="rl-ms-grid">${[0,1,2,3].map(i=>`<div class="rl-ms-box"><span class="rl-ms-lab">${tk.icons[i]} ${esc(tk.labels[i])}</span><span class="rl-ms-start">${esc(tk.starters[i])}… <i></i></span></div>`).join('')}</div>
+   <p class="rl-s-unlock rl-ms-unlock">${pm?'✨ This sample shows what your writing task looks like. Press Start writing when ready.':`🔒 Complete this writing task to unlock ${n<10?`${LV[c].name} Text ${n+1}`:c<5?LV[c+1].name+' Station':'your Completion Certificate'}.`}</p>
+  </section>
+  <div class="rl-s-side"><div class="rl-s-card rl-ws-checks"><h3>☑️ My writing checklist</h3><div class="rl-ws-cl">${tk.checks.map(t=>`<div class="check"><i></i>${esc(t)}</div>`).join('')}</div></div></div></div>
+ <div class="rl-s-bottom"><button type="button" class="rl-pl-btn ghost rl-ms-back">${pm?'‹ Back to placement':'📖 View passage'}</button><button type="button" class="rl-pl-btn gold pulse rl-ms-go" aria-label="Start writing">Start Writing ›</button></div>`;
+ rlTheme(page,pm?null:c);pl.replaceChildren(page);rlScreenNav(page);
+ rlOn(page,'.rl-ms-back',()=>pm?(S.pw=false,placement()):passageSheet(b));rlOn(page,'.rl-ms-go',workspace);
+});setTimeout(()=>S.scene==='mission'&&say(`Your writing mission: ${tk.name}. ${tk.tip}`),250)}
+/* ===== 11 · Writing feedback (native) ===== */
+function feedback(fresh){const c=S.c,n=S.n,b=book(c,n),tk=taskOf(b),w=tget(c,n).writing||(DEV?{text:'Sample writing for the developer view. The main idea of the text is clear. I used details from the text to explain it.',rubric:rubric('Sample writing for the developer view. The main idea of the text is clear. I used details from the text to explain it.',c,b)}:null);if(!w)return mission();const r=w.rubric,done=tDone(c,n);show('feedback','native-station',pl=>{
+ const list=(a)=>a.slice(0,3).map(t=>`<li>${esc(t)}</li>`).join('');
+ const rows=[['💡','Ideas','ideas'],['🧱','Organization','org'],['⚙️','Grammar','gram'],['🌱','Vocabulary','vocab']];
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-feedback';
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('Your writing feedback',`${LV[c].name} • Text ${n} of 10 • ${b.title}`,c,4)}
+ ${done?'':'<p class="rl-fb-banner">🌱 Good effort! Revise your writing to unlock the next text.</p>'}
+ <div class="rl-s-main rl-s-3col"><div class="rl-s-owlcol">${rlOllie(done?'Wonderful work! Keep going!':'Read the tips, then revise your writing.')}</div>
+  <section class="rl-s-card rl-fb-rubric" aria-label="Your writing rubric"><h2>📋 Your writing rubric</h2><span class="rl-s-chip">${esc(tk.focus)}</span>
+   ${rows.map(([i,t,k])=>`<div class="rl-fb-row"><span>${i} ${t}</span><span class="rl-fb-bar"><i style="width:0%" data-w="${r[k]*20}"></i></span><b>${r[k]} / 5</b></div>`).join('')}
+   <div class="rl-fb-total"><span>Total score</span><b>${r.total} / 20</b></div>
+   <p class="rl-fb-msg">${!r.passed?`Strong start! Now reach ${r.minS} sentences and ${r.minW} words.`:r.total>=16?'Outstanding! Your writing is strong and clear.':'You are building strong writing habits.'}</p></section>
+  <div class="rl-s-side"><div class="rl-s-card"><h3>✅ Your strengths</h3><ul class="rl-fb-list">${list(r.strengths)}</ul></div>
+   <div class="rl-s-card"><h3>✏️ Try next time</h3><ul class="rl-fb-list">${list(r.tips.slice(0,2))}</ul><p class="rl-fb-ex"><b>Example revision:</b> <i>${esc(r.example)}</i></p></div></div></div>
+ <p class="rl-fb-unlock ${done?'ok':''}">${done?`🔓 <b>${n<10?`${LV[c].name} Text ${n+1} unlocked!`:c<5?`${LV[c+1].name} Station unlocked!`:'Journey complete!'}</b> Your next reading and writing adventure is ready.`:`🔒 <b>Not yet unlocked.</b> Write at least ${r.minS} sentences and ${r.minW} words, and score 11 / 20 or more.`}</p>
+ <div class="rl-s-bottom"><button type="button" class="rl-pl-btn ghost rl-fb-view">📖 View my writing</button><button type="button" class="rl-pl-btn ghost rl-fb-revise">🔁 Revise writing</button><button type="button" class="rl-pl-btn gold pulse rl-fb-go" aria-label="Continue journey">${done?'Continue Journey ›':'Revise to continue ›'}</button></div>`;
+ rlTheme(page,c);pl.replaceChildren(page);rlScreenNav(page);
+ setTimeout(()=>page.querySelectorAll('[data-w]').forEach(i=>i.style.width=i.dataset.w+'%'),200);
+ rlOn(page,'.rl-fb-view',()=>openSheet('📖 My writing · '+b.title,`<div style="white-space:pre-wrap;font-size:1.1em;line-height:1.6">${esc(w.text)}</div><p class="muted">Score: ${r.total}/20 · ${r.wc} words · ${r.sc} sentences</p>`,[]));
+ rlOn(page,'.rl-fb-revise',workspace);rlOn(page,'.rl-fb-go',()=>{if(!done)return workspace();if(n===10&&lvDone(c)===10){levelComplete(c)}else station(c)});
+});if(fresh){if(done){SFX.fanfare();confetti(80);setTimeout(()=>say(`Wonderful work! ${r.total} out of 20. ${n<10?'Text '+(n+1)+' is unlocked!':'You finished this level!'}`,.95,1.3),500)}else{SFX.buzz();setTimeout(()=>say('Good effort! Read the tips, then revise your writing.'),500)}}}
+/* ===== 4 · Dashboard (native) ===== */
+function dashboard(){touch();show('dashboard','native-station',pl=>{const cu=current(),b=book(cu.c,cu.n),st=stage(cu.c,cu.n),rd=sum(lvRead),wr=sum(lvWrite);
+ const tsk=taskOf(b),steps=['Read','Comprehension','Write','Complete'],si={read:0,quiz:1,write:2,done:3}[st];
+ const days=Math.max(1,Math.ceil((Date.now()-new Date(P.startedAt))/864e5)),left=Math.max(0,90-(days-1));
+ const ach=achievements(),nW=Object.values(P.texts).filter(t=>t.writing),lastW=nW.slice().sort((a,b2)=>String(b2.writing.at).localeCompare(a.writing.at))[0],lvC=[0,1,2,3,4,5].filter(c=>lvDone(c)===10).length;
+ const prog=(ic,t,v,unit,blue)=>`<div class="rl-s-card rl-db-prog ${blue?'rl-db-wp':'rl-db-rp'}"><div class="rl-db-progtop"><span class="rl-db-ic">${ic}</span><div><h3>${t}</h3><b class="rl-db-big">${v} / 60 ${unit}</b></div></div><div class="rl-db-barrow"><span class="rl-db-bar${blue?' blue':''}"><i style="width:${v/60*100}%"></i></span><span class="rl-s-chip">${Math.round(v/60*100)}%</span></div><p class="rl-s-small"><i>Every text includes comprehension and writing.</i></p></div>`;
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-dash';
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('My learning dashboard',`Welcome back, ${first()}! • Read. Reflect. Write. Grow.`,cu.c,0)}
+ <div class="rl-db-grid">
+  <nav class="rl-db-map" aria-label="Your journey map progress"><h3>📍 Your journey map progress</h3>${LV.map((l,c)=>{const open=lvOpen(c),d=lvDone(c),now=c===cu.c&&!cu.all;return `<button type="button" class="rl-db-st rl-gemcard${open?'':' locked'}${now?' now':''}" data-c="${c}" style="${rlGemVars(c)}" aria-label="${l.name} station">${rlGem(c,'rl-db-gem')}<span class="rl-db-stt"><b>${l.name}</b><span>${d===10?'✔ Complete':open?`${d} / 10 texts`:'🔒 Locked'}</span><span class="rl-db-stbar"><i style="width:${d*10}%"></i></span></span></button>`}).join('')}</nav>
+  <div class="rl-s-card rl-db-me"><span class="rl-db-av" style="${rlGemVars(cu.c)}">${esc(first()[0]||'R')}</span><div><h3>${esc(learner())}</h3><p class="rl-s-small">${grade()?'Grade '+grade():'READwy Reading Lab learner'}</p><span class="rl-s-chip">${rlGem(cu.c,'rl-db-chipgem')} ${LV[cu.c].name} • ${LV[cu.c].sub}</span> <span class="rl-s-chip">🔥 ${P.streak.days||1}-day streak</span></div></div>
+  ${prog('📖','Reading progress',rd,'texts',false)}${prog('✏️','Writing progress',wr,'tasks',true)}
+  <section class="rl-s-card rl-db-cont"><h2 class="rl-db-h">📖 Continue your learning journey</h2><div class="rl-db-controw"><div class="rl-db-thumb" style="background:linear-gradient(135deg,${gBg(b)},#fff)">${gPic(b)}</div><div class="rl-db-continfo"><h3 class="rl-db-title">${esc(b.title)}</h3><span class="rl-s-chip">${rlGem(cu.c,'rl-db-chipgem')} ${LV[cu.c].name} • Text ${cu.n} of 10</span><div class="rl-db-steps">${steps.map((s,i)=>`<span class="${i<si?'done':i===si?'now':''}">${i+1} ${s}${i<si?' ✔':''}</span>`).join('')}</div><p class="rl-db-task">✏️ <b>Writing task:</b> ${esc(tsk.name)}</p><p class="rl-s-small"><i>👀 Read carefully! Once the questions start, the passage closes — you answer from memory.</i></p></div></div><button type="button" class="rl-pl-btn gold pulse rl-db-go">${cu.all?'Review journey':{read:'Start reading',quiz:'Answer questions',write:'Continue writing',done:'Review'}[st]} ›</button></section>
+  <section class="rl-s-card rl-db-time"><div class="rl-db-progtop"><span class="rl-db-ic">📅</span><div><h3>Journey timeline</h3><b class="rl-db-big">${left} days remaining</b></div></div><span class="rl-db-bar"><i style="width:${sum(lvDone)/60*100}%"></i></span><p class="rl-db-day">Day ${days} of 90 · ${sum(lvDone)} of 60 texts complete</p><div class="rl-db-mile"><b>🚩 Your next milestone</b><span>${cu.all?'Journey complete!':`Complete ${LV[cu.c].name} ${cu.n}`}</span></div></section>
+  <section class="rl-s-card rl-db-ach"><div class="rl-db-head"><h3>🏆 Achievements</h3><button type="button" class="rl-s-link rl-db-all">View all <span>›</span></button></div><div class="rl-db-badges">${ach.map(a=>`<div class="rl-db-badge${a.got?' got':''}"><span>${a.icon}</span><b>${a.name}</b></div>`).join('')}</div></section>
+  <section class="rl-s-card rl-db-port"><h3>📁 My portfolio</h3><p class="rl-db-count"><b>${nW.length}</b> writing piece${nW.length===1?'':'s'} saved</p><p class="rl-s-small"><i>${lastW?`“${esc(lastW.writing.text.slice(0,110))}…”`:'Your first writing piece will appear here.'}</i></p><button type="button" class="rl-pl-btn ghost rl-db-portb">Open portfolio ›</button></section>
+  <section class="rl-s-card rl-db-cert"><h3>🎖️ Certificates</h3><span class="rl-s-chip">${lvC?`🏅 ${lvC} earned`:'In progress'}</span><p class="rl-s-small">● <b>Level certificate:</b> finish all 10 texts in a level.<br>● <b>Completion:</b> finish Diamond 10.</p><div class="rl-db-certgems">${LV.map((l,c)=>`<span class="${lvDone(c)===10?'':'off'}">${rlGem(c,'rl-db-cg')}</span>`).join('')}</div><button type="button" class="rl-pl-btn ghost rl-db-certb">View certificates ›</button></section>
+ </div>`;
+ rlTheme(page,cu.c);pl.replaceChildren(page);rlScreenNav(page);
+ rlOn(page,'.rl-db-st',bt=>{const c=+bt.dataset.c;if(!lvOpen(c)){SFX.buzz();return notice(`🔒 Finish ${LV[c-1].name} to unlock ${LV[c].name}.`)}station(c)});
+ rlOn(page,'.rl-db-go',()=>st==='read'?journey():resume(cu.c,cu.n));rlOn(page,'.rl-db-portb',portfolio);rlOn(page,'.rl-db-certb',certSheet);
+ rlOn(page,'.rl-db-all',()=>{journey();setTimeout(()=>{if(S.scene==='journey')openProgress()},(RL_TRANS_MS||0)+150)});
+ });setTimeout(()=>{if(S.scene==='dashboard'){const cu=current();say(cu.all?`You finished the whole journey, ${first()}! Amazing!`:`Welcome back, ${first()}! Next stop: ${LV[cu.c].name}, text ${cu.n}. Remember, read carefully. The passage closes when the questions start.`)}},800)}
 
 /* ===== 6 · Before you read ===== */
 function wordsToDiscover(b){const txt=b.paragraphs.join(' '),ws=[...new Set((txt.match(/[A-Za-z]{7,}/g)||[]).map(w=>w.toLowerCase()).filter(w=>!STOP.has(w)))];ws.sort((a,b)=>b.length-a.length);return ws.slice(0,3).map(w=>{const i=b.paragraphs.findIndex(p=>p.toLowerCase().includes(w));return [w,`look for it in paragraph ${i+1}`]})}
-function before(){const c=S.c,n=S.n,b=book(c,n),tsk=taskOf(b),mins=Math.max(1,Math.round(b.paragraphs.join(' ').split(/\s+/).length/120));show('before','rw06',pl=>{
- nav(pl,{logo:[20,5,322,90],self:[358,12,192,52],home:[592,12,104,52],map:[732,12,152,52],portfolio:[918,12,128,52],progress:[1078,12,118,52],certs:[1228,12,138,52],settings:[1392,12,120,52]});
- box(pl,[148,116,290,38],`Back to ${LV[c].name} library`,{fs:(LV[c].name.length>6?21:26),css:'display:flex;align-items:center;font-family:Fredoka;font-weight:600;background:#fff8ea;border-radius:99px'});hit(pl,'Back to library',[100,108,348,54],()=>station(c),'999px');
- gemClone(pl,[652,166,66,54],c);box(pl,[722,172,378,42],`${LV[c].name} • Text ${n} of 10`,{fs:30,cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;background:#ecf4d0;border-radius:99px;color:#123'});
- box(pl,[178,250,404,398],`${gPic(b)}<div class="ttl" style="position:absolute;bottom:.45em;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.36em;color:#fff;background:rgba(14,24,48,.82);padding:.18em .7em;border-radius:99px;text-shadow:0 1px 2px #000">${esc(b.genre)}</div>`,{fs:70,cls:'box thumb',css:`border-radius:.25em;background:radial-gradient(circle at 50% 40%,#fff,${gBg(b)} 70%);border:${px(4)} solid #e0c88f`});
- box(pl,[178,654,404,36],`📖 ${esc(b.genre)} &nbsp;|&nbsp; 🕒 About ${mins} minute${mins>1?'s':''}`,{fs:15.5,css:'display:flex;align-items:center;justify-content:center;font-weight:700;white-space:nowrap'});
- box(pl,[602,238,850,166],`<div class="ttl" style="font-size:${b.title.length>32?1.3:b.title.length>24?1.55:2.2}em;line-height:1.05">${esc(b.title)}</div><div style="font-size:.86em;font-weight:600;margin-top:.3em;line-height:1.25;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(b.paragraphs[0].split(/(?<=[.!?])\s/).slice(0,2).join(' '))}</div>`,{fs:28});
- box(pl,[612,478,382,210],wordsToDiscover(b).map(([w,h])=>`<div style="display:flex;gap:.6em;align-items:center;padding:.35em 0;border-bottom:1px solid #e7e0cc"><span class="chip cg" style="font-size:1.05em;min-width:6.5em;justify-content:center">${esc(w)}</span><span class="muted" style="font-size:.9em">— ${h}</span></div>`).join(''),{fs:22});
- const goals=[['🎯',`Understand the ${/Poetry/.test(b.genre)?'poem’s images and message':/Fable|Fiction|Short|Novel/.test(b.genre)?'characters, setting, and events':'main idea and key details'}.`],['🔢','Answer 10 questions — 8 correct to pass.'],['✏️',`${tsk.name} in ${SENT[c][0]}–${SENT[c][1]} sentences.`]];
- box(pl,[1028,478,414,210],goals.map(([i,t])=>`<div style="display:flex;gap:.6em;align-items:center;padding:.4em 0;border-bottom:1px solid #e7e0cc"><span style="font-size:1.5em">${i}</span><span style="font-weight:700">${t}</span></div>`).join(''),{fs:22});
- box(pl,[378,872,580,40],`🔒 Finish the questions and writing to unlock ${n<10?'Text '+(n+1):'the next level'}.`,{fs:20,css:'display:flex;align-items:center;font-style:italic;font-weight:700;background:#ecf2cc;border-radius:99px;padding-left:.6em'});
- hit(pl,'Start reading',[990,852,448,88],()=>{S.page=P.bookmarks[tid(c,n)]||0;reading()},'999px').classList.add('pulse');hit(pl,'Read',[450,742,200,72],()=>{S.page=0;reading()},'999px');
-});setTimeout(()=>S.scene==='before'&&say(`${b.title}. Read at your own pace!`),250)}
-
 /* ===== 7 · Reading time ===== */
 // Realistic, shaded icons (gradients, highlights and soft shadows) used on the Placement page.
 const I3D=(()=>{let n=0;const u=()=>'g'+(++n);const wrap=(body,defs)=>`<svg viewBox="0 0 64 64" width="1em" height="1em" style="overflow:visible;filter:drop-shadow(0 .06em .06em rgba(40,25,10,.35))"><defs>${defs}</defs>${body}</svg>`;
@@ -1444,7 +1654,7 @@ function reading(){const c=S.c,n=S.n,pm=!!S.place,b=pm?PLACEB:book(c,n);S.readSt
    <div class="rl-s-card rl-s-next"><h3>🎯 Next steps</h3><button type="button" class="rl-s-link rl-ask">📖 Answer questions <span>›</span></button><button type="button" class="rl-s-link rl-towrite">✏️ Complete writing task <span>›</span></button></div>
   </div>
  </div>`;
- pl.replaceChildren(page);rlScreenNav(page);
+ rlTheme(page,pm?null:c);pl.replaceChildren(page);rlScreenNav(page);
  const on=(sel,fn)=>page.querySelector(sel).addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();fn()});
  on('.rl-fs-dn',()=>{S.rfs=Math.max(16,S.rfs-2);paginate()});on('.rl-fs-up',()=>{S.rfs=Math.min(28,S.rfs+2);paginate()});
  on('.rl-aloud',()=>{const t=pageText();if(!t)return;ac();if(speechSynthesis.speaking){speechSynthesis.cancel();caption('');return}const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=.9;u.pitch=1.05;speechSynthesis.speak(u);notice('🔊 Reading this page aloud (tap again to stop)')});
@@ -1466,51 +1676,9 @@ function pageText(){const f=S.ui?.fb.querySelector('.flow');if(!f)return '';cons
 function turn(d){setTimeout(remember,0);if(S.place&&(d.ask||(d>0&&S.page+1>=S.pages))){return openSheet('🧠 Ready for the comprehension test?',`<p><b>Once you start, the passage closes.</b> You will answer the questions from memory and cannot go back to the passage.</p><p class="muted">Not sure about some details? Keep reading first.</p>`,[['📖 Keep reading',closeSheet,'ghost'],['Start the test ›',()=>{closeSheet();S.place=false;P.bookmarks.place=0;P.placement={...(P.placement||{}),testing:true};save();placeTest()},'gold']],true)}if(d.ask)return;if(d>0&&S.page+1>=S.pages&&!d.go){return openSheet('🧠 Ready for the questions?',`<p><b>Once you start, the passage closes.</b> You will answer 10 questions from memory and cannot go back to the text.</p><p class="muted">Not sure about some details? Keep reading first.</p>`,[['📖 Keep reading',closeSheet,'ghost'],['Start the questions ›',()=>{closeSheet();turn({go:1})},'gold']],true)}if(d.go)d=1;if(d>0&&S.page+1>=S.pages){const t=T(S.c,S.n);t.read=true;t.readMs=(t.readMs||0)+performance.now()-S.readStart;P.bookmarks[tid(S.c,S.n)]=0;save();SFX.ding();return quiz(true)}if(d<0&&S.page===0)return;S.page=Math.max(0,S.page+d);P.bookmarks[S.place?'place':tid(S.c,S.n)]=S.page;save();SFX.page();const fb=S.ui.fb;fb.classList.remove('swR','swL');void fb.offsetWidth;fb.classList.add(d>0?'swR':'swL');paginate()}
 
 /* ===== 8 · Reading comprehension ===== */
-let qfs=26;
-function quiz(fresh){const c=S.c,n=S.n,b=book(c,n);if(fresh){S.q=0;S.picked={};S.checked={};S.first={}}S.finished=fresh?false:S.finished;show('quiz','rw08',pl=>{
- nav(pl,{logo:[20,5,322,90],self:[355,12,205,52],home:[598,12,112,52],map:[738,12,162,52],portfolio:[922,12,135,52],progress:[1082,12,125,52],certs:[1222,12,150,52],settings:[1392,12,125,52]});
- gemClone(pl,[490,144,54,50],c);box(pl,[546,150,560,38],`${LV[c].name} • Text ${n} of 10 • ${esc(b.title)}`,{fs:fitFs(`${LV[c].name} • Text ${n} of 10 • ${b.title}`,560,24),cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;background:#fbf1d6;border-radius:99px;white-space:nowrap;overflow:hidden'});
- // Left frame: only the reading's picture and title (no passage text).
- box(pl,[42,286,622,596],`<div style="height:100%;display:flex;flex-direction:column;gap:.5em;padding:.6em">
-  <div class="thumb" style="flex:1;border-radius:.6em;overflow:hidden;box-shadow:inset 0 0 0 .08em #e2cd96">${gPic(b)}</div>
-  <div class="ttl" style="text-align:center;font-size:1.45em;line-height:1.15;padding:.1em .3em">${esc(b.title)}</div>
-  <div style="text-align:center"><span class="chip cg" style="font-size:.85em">${esc(b.genre)} • ${LV[c].name} ${n}</span></div></div>`,{fs:24,css:'background:linear-gradient(#fffdf7,#fbf4e4);border-radius:1.2em;border:calc(3*var(--k)) solid #e2cd96'});
- box(pl,[275,922,640,58],'🧠 Answer from memory.',{fs:22,css:'display:flex;align-items:center;justify-content:center;font-style:italic;font-weight:800;background:#fbf6ea'});
- if(S.finished)return quizResult(pl,b);
- const q=b.questions[S.q],ans='ABCD'.indexOf(b.answers[S.q]),chk=S.checked[S.q],pk=S.picked[S.q];const sw=e=>{if(SWIPE)e.classList.add(SWIPE>0?'swR':'swL');return e};
- box(pl,[710,298,272,42],`Question ${S.q+1} of 10`,{fs:28,cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;background:#d6eaaa;border-radius:99px'});
- box(pl,[1024,300,416,30],Array.from({length:10},(_,i)=>`<i style="flex:1;height:.7em;border-radius:99px;background:${i===S.q?'#14254a':S.picked[i]!=null?'#7a8aa8':'#cfd3da'}"></i>`).join(''),{fs:20,cls:'box',css:'display:flex;gap:.25em;align-items:center;background:#faf7f0'});
- el(pl,'',[700,343,782,341],'abs','pointer-events:none;background:#faf7f0');sw(box(pl,[700,345,780,95],`<div style="text-align:center;font:700 1em/1.15 Fredoka;color:#0e1838">${esc(q.question)}</div>`,{fs:30,css:'display:grid;place-items:center;background:#faf7f0'}));
- q.choices.forEach((ch,i)=>{const o=sw(document.createElement('button'));o.type='button';o.className+=' opt'+(pk===i?' sel':'');o.style.cssText=`left:${px(714)};top:${px(445+i*60.5)};width:${px(748)};height:${px(52)};font-size:${px(25)}`;o.innerHTML=`<i></i><span><b>${'ABCD'[i]}.</b> ${esc(ch)}</span>`;
-  o.onclick=()=>{S.picked[S.q]=i;SFX.pop();quiz()};pl.appendChild(o);requestAnimationFrame(()=>{const sp=o.querySelector('span');let f=25;while(sp.scrollHeight>o.clientHeight&&f>15){f--;o.style.fontSize=px(f)}})});
- // no right/wrong feedback during the test: learners retake the same questions if they score below 8
- el(pl,'',[700,684,780,52],'abs','z-index:2;pointer-events:none;background:#fbf9e9');el(pl,'',[700,808,780,56],'abs','z-index:2;pointer-events:none;background:#fbf9e9');
- label(pl,[840,752,490,48],S.q<9?'Next question ›':'Submit answers ›',32);
- if(S.q)pill(pl,'‹ Previous question',[960,812,240,46],()=>{S.q--;SFX.page();SWIPE=-1;quiz()},'ghost',22).style.zIndex=4;
- hit(pl,'Next question or submit',[810,744,552,64],()=>{if(!DEV&&pk==null){SFX.buzz();return notice('Choose an answer first.')}if(S.q<9){S.q++;SFX.page();SWIPE=1;return quiz()}finishQuiz()},'999px');
-
-},{instant:S.scene==='quiz'&&!fresh});}
 function finishQuiz(){const c=S.c,n=S.n,bk=book(c,n),score=bk.answers.reduce((s,a,i)=>s+(S.picked[i]==='ABCD'.indexOf(a)?1:0),0),t=T(c,n);t.read=true;t.quiz={score,at:new Date().toISOString(),tries:(t.quiz?.tries||0)+1};if(score>=8)t.quizPassed=true;save();S.finished=true;S.lastScore=score;quiz();
  if(score>=8){SFX.fanfare();confetti(50);setTimeout(()=>say(`${score} out of 10! Excellent! Now, your writing mission.`),400)}else{SFX.buzz();setTimeout(()=>say(`${score} out of 10. Good try! Read the text again, then try the questions once more.`),400)}}
-function quizResult(pl,b){const sc=S.lastScore??tget(S.c,S.n).quiz?.score??0,ok=sc>=8;
- box(pl,[690,292,790,575],`<div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;text-align:center"><div class="ttl" style="font-size:1.4em">${ok?'Comprehension complete!':'Keep trying!'}</div><div class="ttl pop" style="font-size:4em;color:${ok?'#2f8f10':'#c0392b'}">${sc} / 10</div><div style="font-size:2em;letter-spacing:.1em;color:#f5b301;text-shadow:0 .05em 0 #a86f00">${'★'.repeat(sc>=10?3:sc>=9?2:sc>=8?1:0)}<span style="color:#ccc">${'★'.repeat(3-(sc>=10?3:sc>=9?2:sc>=8?1:0))}</span></div><div style="font-weight:700">${ok?'You passed. Your writing mission is open!':'You need 8 out of 10. Read the text again — you can do it!'}</div></div>`,{fs:28});
- if(ok){pill(pl,'✏️ Go to writing mission ›',[880,770,420,62],mission,'gold pulse',28)}else{pill(pl,'📖 Read again',[740,770,330,62],()=>{S.page=0;reading()},'ghost',26);pill(pl,'🔁 Try the questions again',[1090,770,360,62],()=>quiz(true),'gold',24)}}
-
 /* ===== 9 · Writing mission ===== */
-function mission(){const pm=!!S.pw,c=pm?0:S.c,n=S.n,b=pm?PLACEW:book(c,n),tk=taskOf(b);if(!DEV&&!pm&&!tget(c,n).quizPassed){notice('Pass the questions first (8 of 10).');return quiz(true)}show('mission','rw09',pl=>{
- nav(pl,{logo:[28,5,318,82],self:[368,20,212,48],home:[628,14,112,52],map:[782,14,180,52],portfolio:[992,14,140,52],certs:[1162,14,170,52],settings:[1366,14,135,52]});
- gemClone(pl,[562,176,52,48],c);const chipT=pm?'Placement • Writing Experience':`${LV[c].name} • Text ${n} of 10 • ${b.title}`;box(pl,[618,180,560,40],esc(chipT),{fs:fitFs(chipT,560,27),cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;background:#fdfbec;border-radius:99px;white-space:nowrap;overflow:hidden'});
- box(pl,[140,195,222,98],`<div style="height:100%;display:grid;place-items:center;text-align:center;font:700 1em/1.15 Fredoka;color:#14254a">${esc(tk.tip)}</div>`,{fs:24,css:'background:#fdf8ec;border-radius:1.4em'});
- box(pl,[388,348,244,184],`${gPic(b)}`,{fs:84,cls:'box thumb',css:`border-radius:.15em;background:radial-gradient(circle at 50% 40%,#fff,${gBg(b)} 75%)`});
- box(pl,[656,334,808,104],`<div class="ttl" style="font-size:2em">${esc(tk.name)}</div><div style="font-weight:700">${esc(tk.ask)} ${pm?'Write as much as you can, in your own words.':`Write ${SENT[c][0]}–${SENT[c][1]} sentences (at least ${MINW[c]} words).`}</div>`,{fs:22});
- box(pl,[745,452,710,76],`<div style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(b.paragraphs[0])}</div>`,{fs:21,css:'display:flex;align-items:center;font-weight:600;background:#edefc0;border-radius:.4em'});
- [[388,563],[924,563],[388,688],[924,688]].forEach(([x,y],i)=>{box(pl,[x+8,y+2,170,40],`${tk.icons[i]} ${esc(tk.labels[i])}`,{fs:26,cls:'box',css:'display:flex;align-items:center;gap:.3em;padding-left:.4em;color:#fff;font:600 1em Fredoka;background:#2a7509;border-radius:.4em .4em .4em 0'});
-  box(pl,[x+10,y+48,x===388?496:520,50],`${esc(tk.starters[i])}… <span style="flex:1;border-bottom:.08em solid #556;margin-left:.4em;height:.9em"></span>`,{fs:25,css:'display:flex;align-items:center;font-weight:700;padding-left:.3em;background:#fdf9f0'})});
- box(pl,[402,812,1034,42],pm?'✨ This sample shows what your writing task looks like. Press Start writing when ready.':`🔒 Complete this writing task to unlock ${n<10?`${LV[c].name} Text ${n+1}`:c<5?LV[c+1].name+' Station':'your Completion Certificate'}.`,{fs:24,css:'display:flex;align-items:center;justify-content:center;font-weight:700;background:#e3efc8;border-radius:99px'});
- box(pl,[36,752,306,172],tk.checks.map(t=>`<div class="check"><i></i>${esc(t)}</div>`).join(''),{fs:20,css:'background:#fdf6ec'});
- hit(pl,pm?'Back to placement':'View passage',[448,878,398,70],()=>pm?(S.pw=false,placement()):passageSheet(b),'999px');if(pm)box(pl,[462,885,372,56],'‹ Back to placement',{fs:27,cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;white-space:nowrap;background:#f5f6e8'});hit(pl,'Start writing',[886,876,500,74],workspace,'999px').classList.add('pulse');
-});setTimeout(()=>S.scene==='mission'&&say(`Your writing mission: ${tk.name}. ${tk.tip}`),250)}
-
 /* ===== 10 · Writing workspace ===== */
 let edFs=20;
 /* ===== 10 · Writing workspace (native) ===== */
@@ -1535,7 +1703,7 @@ function workspace(){const pm=!!S.pw,c=pm?0:S.c,n=S.n,b=pm?PLACEW:book(c,n),tk=t
  </div>
  <div class="rl-s-bottom"><button type="button" class="rl-pl-btn ghost rl-ws-back">‹ Back to writing mission</button><button type="button" class="rl-pl-btn ghost rl-ws-save">💾 Save draft</button><button type="button" class="rl-pl-btn gold pulse rl-ws-submit">Submit writing ›</button></div>
  <p class="rl-s-unlock">${pm?'✨ Submit to see your recommended reading level.':`🔒 Submit this writing task to unlock ${n<10?`${LV[c].name} ${n+1}`:'the next level'}.`}</p>`;
- pl.replaceChildren(page);rlScreenNav(page);
+ rlTheme(page,pm?null:c);pl.replaceChildren(page);rlScreenNav(page);
  const ed=page.querySelector('.rl-editor');ed.contentEditable='true';ed.spellcheck=true;ed.dataset.ph=`${tk.starters[0]}…`;ed.innerHTML=P.drafts[k]||'';ed.style.fontSize=edFs+'px';
  const cnt=page.querySelector('.rl-ws-count'),saved=page.querySelector('.rl-ws-saved'),cl=page.querySelector('.rl-ws-cl');
  const on=(el,fn)=>el.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();fn()});
@@ -1557,23 +1725,6 @@ function workspace(){const pm=!!S.pw,c=pm?0:S.c,n=S.n,b=pm?PLACEW:book(c,n),tk=t
 });}
 
 /* ===== 11 · Writing feedback ===== */
-function feedback(fresh){const c=S.c,n=S.n,b=book(c,n),tk=taskOf(b),w=tget(c,n).writing||(DEV?{text:'Sample writing for the developer view. The main idea of the text is clear. I used details from the text to explain it.',rubric:rubric('Sample writing for the developer view. The main idea of the text is clear. I used details from the text to explain it.',c,b)}:null);if(!w)return mission();const r=w.rubric,done=tDone(c,n);show('feedback','rw11',pl=>{
- nav(pl,{logo:[38,5,292,115],self:[335,12,215,46],home:[582,12,110,46],map:[716,12,166,46],portfolio:[912,12,130,46],progress:[1062,12,125,46],certs:[1212,12,150,46],settings:[1388,12,125,46]});
- gemClone(pl,[525,145,55,48],c);box(pl,[584,148,568,38],`${LV[c].name} • Text ${n} of 10 • ${esc(b.title)}`,{fs:fitFs(`${LV[c].name} • Text ${n} of 10 • ${b.title}`,568,26),cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;background:#fafae0;border-radius:99px;white-space:nowrap;overflow:hidden'});
- if(!done)box(pl,[440,270,820,42],'🌱 Good effort! Revise your writing to unlock the next text.',{fs:28,cls:'box',css:'display:flex;align-items:center;justify-content:center;color:#fff;font:600 1em Fredoka;background:#0c4a14;border-radius:99px'});
- box(pl,[396,388,438,30],esc(tk.focus),{fs:fitFs(tk.focus,438,19),css:'display:flex;align-items:center;justify-content:center;font-weight:800;background:#e6f0cc;border-radius:99px;white-space:nowrap;overflow:hidden'});
- [['ideas',440],['org',496],['gram',552],['vocab',610]].forEach(([k2,y])=>box(pl,[556,y,302,36],`<div class="bar" style="flex:1;height:.85em"><i style="width:0%" data-w="${r[k2]*20}"></i></div><b style="width:3.2em;text-align:right">${r[k2]} / 5</b>`,{fs:24,css:'display:flex;align-items:center;gap:.4em;background:#fbf3e6'}));
- setTimeout(()=>pl.querySelectorAll('[data-w]').forEach(i=>i.style.width=i.dataset.w+'%'),250);
- box(pl,[632,672,212,42],`${r.total} / 20`,{fs:38,cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;color:#fff;background:#122341'});
- box(pl,[322,728,526,34],!r.passed?`Strong start! Now reach ${r.minS} sentences and ${r.minW} words.`:r.total>=16?'Outstanding! Your writing is strong and clear.':'You are building strong writing habits.',{fs:21,css:'display:flex;align-items:center;justify-content:center;font-style:italic;font-weight:700;background:#e3edc6;border-radius:99px'});
- const list=(a)=>a.slice(0,3).map(t=>`<div style="display:flex;gap:.5em;margin:.12em 0"><span style="color:#2f8f10">●</span>${esc(t)}</div>`).join('');
- box(pl,[940,392,545,104],list(r.strengths),{fs:18,css:'font-weight:700'});box(pl,[940,568,545,68],list(r.tips.slice(0,2)),{fs:18,css:'font-weight:700'});
- box(pl,[934,688,540,66],`<i>${esc(r.example)}</i>`,{fs:22,css:'display:flex;align-items:center;font-weight:700'});
- box(pl,[150,806,1300,76],done?`<span class="ttl" style="font-size:1.45em;color:#0c3d0c">🔓 ${n<10?`${LV[c].name} Text ${n+1} unlocked!`:c<5?`${LV[c+1].name} Station unlocked!`:'Journey complete!'}</span><span style="margin-left:1em;font-style:italic;font-weight:700">| Your next reading and writing adventure is ready.</span>`:`<span class="ttl" style="font-size:1.25em;color:#7a3b00">🔒 Not yet unlocked</span><span style="margin-left:1em;font-weight:700">Write at least ${r.minS} sentences and ${r.minW} words, and score 11 / 20 or more.</span>`,{fs:24,css:`display:flex;align-items:center;justify-content:center;background:${done?'#eaf3d3':'#fff1d6'};border-radius:99px`});
- hit(pl,'View my writing',[114,904,412,78],()=>openSheet('📖 My writing · '+b.title,`<div style="white-space:pre-wrap;font-size:1.1em;line-height:1.6">${esc(w.text)}</div><p class="muted">Score: ${r.total}/20 · ${r.wc} words · ${r.sc} sentences</p>`,[]),'999px');
- hit(pl,'Revise writing',[544,904,392,78],workspace,'999px');
- label(pl,[1000,912,385,60],done?'Continue Journey ›':'Revise to continue ›',34);hit(pl,'Continue journey',[950,904,488,80],()=>{if(!done)return workspace();if(n===10&&lvDone(c)===10){levelComplete(c)}else station(c)},'999px').classList.add('pulse');
-});if(fresh){if(done){SFX.fanfare();confetti(80);setTimeout(()=>say(`Wonderful work! ${r.total} out of 20. ${n<10?'Text '+(n+1)+' is unlocked!':'You finished this level!'}`,.95,1.3),500)}else{SFX.buzz();setTimeout(()=>say('Good effort! Read the tips, then revise your writing.'),500)}}}
 function levelComplete(c){SFX.fanfare();confetti(140);say(c<5?`Congratulations! You completed ${LV[c].name}. ${LV[c+1].name} Station is now open!`:`You completed the whole READwy Reading Lab Reading and Writing Journey! Hooray!`,.95,1.35);
  openSheet(`🏅 ${LV[c].name} complete!`,`<div style="text-align:center"><div style="font-size:4em">${c<5?'🏅':'🏆'}</div><h3>${esc(learner())}, you finished all 10 ${LV[c].name} texts!</h3><p>${c<5?`${LV[c+1].name} Station is now unlocked.`:'You earned the Certificate of Completion.'}</p></div>`,[['⬇ Download certificate',()=>certificate(c,c===5),'ghost'],[c<5?`Go to ${LV[c+1].name} ›`:'Back to dashboard ›',()=>c<5?station(c+1):dashboard(),'gold']])}
 
