@@ -893,6 +893,237 @@ body:has(.rl-screen) #caption .rl-cap-av{width:52px;height:52px}
 .rl-enter-rail .rl-gem{animation:rlPopIn .2s cubic-bezier(.3,1.6,.5,1) backwards!important;animation-delay:calc(.06s + var(--i,0)*35ms)!important}
 .rl-enter-cards .rl-st-card{animation:rlRise .18s ease-out backwards!important;animation-delay:calc(.04s + var(--i,0)*25ms)!important}
 .rl-db-time .rl-db-bar{flex:none;height:12px}
+
+/* ================= Responsive layout system (all native Reading Lab screens) =================
+   phone < 600px · tablet 600–1023px · laptop 1024–1439px · desktop ≥ 1440px · short screens: height < 720px.
+   Tokens below are the only sizes screens use; breakpoints change the tokens and the grid shapes. */
+:root{
+ --rl-m:clamp(10px,1.6vw,32px);--rl-gap:clamp(10px,1.1vw,24px);
+ --fs-title:clamp(28px,3vw,52px);--fs-ribbon:clamp(16px,1.25vw,24px);--fs-step:clamp(15px,1vw,19px);
+ --fs-q:clamp(20px,1.9vw,32px);--fs-ans:clamp(17px,1.4vw,24px);--ans-h:clamp(56px,6.4vh,76px);
+ --fs-read:clamp(18px,1.3vw,22px);--fs-btn:clamp(16px,1.2vw,22px);--btn-h:clamp(48px,5.6vh,64px);
+ --fs-body:clamp(16px,1.1vw,20px);--fs-h2:clamp(22px,1.8vw,34px);--fs-h3:clamp(18px,1.3vw,24px);--fs-tip:clamp(18px,1.1vw,20px);
+ --owl-share:46%;
+}
+/* page frame: toolbar + header + content area that fills the rest of the viewport */
+.rl-screen{height:100dvh;padding:8px var(--rl-m) var(--rl-m);gap:var(--rl-gap)}
+.rl-screen .rl-s-main,.rl-screen .rl-s-task,.rl-screen .rl-st-stats,.rl-screen .rl-st-grid,.rl-screen .rl-st-foot,.rl-screen .rl-db-grid{width:100%;max-width:none}
+.rl-s-head{gap:clamp(18px,2.4vh,28px);margin-top:0}
+.rl-s-plaque h1,.rl-st-plaque h1{font-size:var(--fs-title)}
+.rl-s-ribbon,.rl-st-head .rl-s-ribbon{font-size:var(--fs-ribbon)}
+.rl-s-step{font-size:var(--fs-step);min-height:clamp(36px,4.4vh,46px)}
+.rl-s-main{gap:var(--rl-gap)}
+.rl-s-card h3{font-size:var(--fs-h3)}
+.rl-pl-btn,.rl-s-bottom .rl-pl-btn,.rl-s-actions .rl-pl-btn,.rl-q-actions .rl-pl-btn,.rl-st-actions .rl-pl-btn{min-height:var(--btn-h);font-size:var(--fs-btn)}
+.rl-s-tool,.rl-s-link,.rl-ws-chip{min-height:48px;font-size:var(--fs-body)}
+/* Ollie: big, standing at the bottom of his column, tip above; never overlaps content (own column) */
+.rl-s-owlcol{align-items:stretch}
+.rl-ollie{height:100%;justify-content:flex-end;gap:10px}
+.rl-ollie-bubble{font-size:var(--fs-tip);width:100%}
+.rl-ollie-img{height:var(--owl-share);min-height:120px;max-height:560px;width:auto;max-width:100%}
+/* ---- laptop & desktop (≥1024): three columns fill the full content width and height ---- */
+@media(min-width:1024px){
+ .scene.rl-native:has(.rl-screen){overflow:hidden}
+ .rl-s-3col,.rl-s-2col,.rl-s-qgrid{grid-template-columns:20% minmax(0,1fr)}
+ .rl-quiz .rl-s-qgrid{grid-template-columns:20% 30% minmax(0,1fr)}
+ .rl-ptest .rl-s-3col{grid-template-columns:20% minmax(0,1fr) 26%}
+ .rl-reading .rl-s-3col{grid-template-columns:20% 28% minmax(0,1fr);grid-template-areas:"owl side main";justify-content:stretch}
+ .rl-workspace .rl-s-3col{grid-template-columns:18% 27% minmax(0,1fr);grid-template-areas:"owl side main"}
+ .rl-reading .rl-s-owlcol,.rl-workspace .rl-s-owlcol{grid-area:owl}.rl-reading .rl-s-side,.rl-workspace .rl-s-side{grid-area:side}.rl-reading .rl-read-card,.rl-workspace .rl-ws-card{grid-area:main}
+ .rl-mission .rl-s-3col{grid-template-columns:18% minmax(0,1fr) 24%}
+ .rl-feedback .rl-s-3col{grid-template-columns:18% minmax(0,1fr) 30%}
+ .rl-bf-card{margin-right:0}
+}
+/* ---- shared card internals that stretch to the content height ---- */
+.rl-q-card{padding:clamp(14px,1.6vw,30px);gap:clamp(10px,1.4vh,18px)}
+.rl-q-text{font-size:var(--fs-q)}
+.rl-q-opts{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-evenly;gap:clamp(8px,1.2vh,16px)}
+.rl-q-opt{min-height:var(--ans-h)!important;font-size:var(--fs-ans)!important}
+.rl-q-actions{justify-content:space-between}
+.rl-q-pic{padding:clamp(10px,1vw,16px)}
+.rl-q-pic h3{font-size:var(--fs-h3)}
+.rl-q-img{flex:1;min-height:120px}
+.rl-q-img img,.rl-s-pic img,.rl-bf-img img,.rl-ms-img img,.rl-db-thumb img{object-fit:cover!important}
+.rl-read-card{padding:clamp(12px,1.4vw,26px)}
+.rl-read-title{font-size:var(--fs-h2)}
+.rl-flowbox{font-size:var(--fs-read);max-width:calc(35em + 40px);align-self:center}
+.rl-reading .rl-s-side{min-height:0}
+.rl-reading .rl-s-pic{flex:1 1 0;height:auto;min-height:140px;max-height:none}
+.rl-editor{font-size:max(18px,var(--fs-read))}
+.rl-ws-status{font-size:var(--fs-body)}
+.rl-s-taskask{font-size:var(--fs-body)}
+.rl-bf-sum,.rl-ms-ask{font-size:var(--fs-body)}
+.rl-bf-title,.rl-ms-name{font-size:var(--fs-h2)}
+.rl-bf-word,.rl-bf-goal,.rl-fb-list,.rl-fb-ex,.rl-ws-cl .check,.rl-s-small,.rl-s-prog,.rl-pl-strip,.rl-pl-bar{font-size:var(--fs-body)}
+.rl-fb-row{font-size:var(--fs-body)}
+.rl-fb-rubric{justify-content:space-evenly}
+.rl-ms-grid{align-content:space-evenly}
+/* ---- short screens (height < 720) and compact laptops (height ≤ 820): smaller header ---- */
+@media(max-height:820px){
+ .rl-s-plaque{padding:4px 24px 16px}.rl-s-plaque .rl-pl-wreath{width:28px}
+ .rl-s-head{gap:20px}
+ .rl-s-step{min-height:34px;padding:2px 10px 2px 4px}.rl-s-num{width:26px;height:26px;font-size:14px}
+ .rl-screen{gap:8px}
+ :root{--owl-share:42%}
+}
+@media(max-height:719px){
+ :root{--fs-title:clamp(24px,2.4vw,40px);--ans-h:52px;--btn-h:48px}
+ .rl-s-head{flex-direction:row;justify-content:center;gap:16px}
+ .rl-s-head .rl-s-banner{transform:scale(.9);transform-origin:center}
+ .rl-s-ribbon{display:none}
+ .rl-s-plaque{padding:4px 22px}
+}
+/* ---- tablet (600–1023): two areas, owl → caption avatar, page may scroll ---- */
+@media(max-width:1023px){
+ .scene.rl-native:has(.rl-screen){overflow-y:auto}
+ .rl-screen{height:auto;min-height:100dvh;overflow:visible}
+ .rl-s-owlcol{display:none}
+ .rl-s-main{flex:none}
+ .rl-s-3col,.rl-s-2col{grid-template-columns:minmax(0,1fr)}
+ .rl-quiz .rl-s-qgrid{grid-template-columns:minmax(200px,34%) minmax(0,1fr)}
+ .rl-q-pic{max-height:none}.rl-q-img{max-height:30vh}
+ .rl-reading .rl-s-3col,.rl-workspace .rl-s-3col{grid-template-columns:minmax(0,1fr)}
+ .rl-reading .rl-s-side{order:-1;display:grid;grid-template-columns:1fr 1fr;gap:var(--rl-gap)}.rl-reading .rl-s-pic{height:26vh;max-height:26vh}.rl-reading .rl-s-next{grid-column:1/-1}
+ .rl-flowbox{flex:none;height:auto;min-height:46vh;overflow:hidden}
+ .rl-read-card{min-height:70vh}
+ .rl-ws-card{min-height:60vh}.rl-editor{min-height:40vh}
+ .rl-workspace .rl-s-side{display:grid;grid-template-columns:1fr 1fr;gap:var(--rl-gap)}
+ .rl-s-task{flex-wrap:wrap;border-radius:22px}
+ .rl-bf-card{grid-template-columns:minmax(0,1fr)}.rl-bf-img{min-height:28vh}
+ .rl-bf-boxes{grid-template-columns:1fr 1fr}
+ .rl-ms-grid{grid-template-columns:1fr 1fr}
+ .rl-s-bottom{flex-wrap:wrap}
+ .rl-nav button{min-height:48px}
+ .rl-topbar .rl-nav{overflow-x:auto;scrollbar-width:none}
+ .rl-q-card{min-height:60vh}
+}
+/* ---- phone (< 600): one column, compact header, sticky action bar ---- */
+@media(max-width:599px){
+ :root{--rl-m:10px;--rl-gap:12px;--fs-title:26px;--fs-ribbon:16px;--fs-q:21px;--fs-ans:18px;--ans-h:56px;--fs-read:18px;--fs-btn:18px;--btn-h:52px;--fs-body:17px;--fs-h2:24px}
+ .rl-s-plaque{padding:4px 14px 14px;border-radius:24px}.rl-s-plaque .rl-pl-wreath,.rl-st-gem{display:none}
+ .rl-s-plaque h1{white-space:normal;text-align:center}
+ .rl-s-ribbon{white-space:normal;max-width:94vw;text-align:center;padding:.3em 1.2em}
+ .rl-s-head{gap:20px}
+ .rl-s-steps{max-width:100%;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
+ .rl-s-step{flex:none}
+ .rl-quiz .rl-s-qgrid{grid-template-columns:minmax(0,1fr)}
+ .rl-q-img{max-height:25vh;min-height:120px}.rl-q-pic{flex-direction:column}
+ .rl-q-card,.rl-read-card,.rl-ws-card{min-height:0}
+ .rl-reading .rl-s-side,.rl-workspace .rl-s-side{grid-template-columns:minmax(0,1fr)}.rl-reading .rl-s-pic{height:25vh}
+ .rl-flowbox{min-height:50vh}
+ .rl-bf-boxes,.rl-ms-grid,.rl-ms-top{grid-template-columns:minmax(0,1fr)}
+ .rl-fb-row{grid-template-columns:minmax(0,1fr) 64px}.rl-fb-row .rl-fb-bar{grid-column:1/-1;grid-row:2}
+ /* sticky action bar */
+ .rl-q-actions,.rl-s-actions,.rl-s-bottom{position:sticky;bottom:0;z-index:15;margin:0 calc(-1*var(--rl-m)) 0;padding:10px var(--rl-m) calc(10px + env(safe-area-inset-bottom));background:rgba(255,250,238,.97);border-top:2px solid #e2cd96;box-shadow:0 -6px 14px rgba(0,0,0,.18);flex-wrap:wrap}
+ .rl-q-actions .rl-pl-btn,.rl-s-actions .rl-pl-btn,.rl-s-bottom .rl-pl-btn{flex:1 1 140px;min-width:0}
+ .rl-q-card .rl-q-actions,.rl-read-card .rl-s-actions{margin:0 -14px -14px;border-radius:0 0 22px 22px}
+ .rl-s-unlock,.rl-fb-unlock,.rl-fb-banner{border-radius:16px;text-align:center}
+}
+
+/* ---- responsive fixes, round 2 ---- */
+@media(max-height:719px){:root{--ans-h:56px}}
+/* pop-up sheets: fit the screen, scroll inside, 48px targets */
+#sheet .panel{max-height:calc(100dvh - 20px)}
+#sheet header button{min-height:48px;min-width:48px}
+#sheet .body button,#sheet .foot button,#sheet .sb{min-height:48px;max-width:100%;white-space:normal}
+#sheet .body input{min-height:48px;font-size:18px}
+@media(max-width:599px){#sheet .panel,#sheet.big .panel{width:100vw;max-height:100dvh;border-radius:0}#sheet.big .body{font-size:22px;padding:18px}#sheet.big header{font-size:26px;padding:14px 16px}}
+@media(max-height:500px){#sheet.big header{font-size:24px;padding:10px 18px}#sheet.big .body{font-size:20px;padding:12px 20px}}
+/* reading actions wrap instead of overflowing on narrow laptops */
+.rl-s-actions{flex-wrap:wrap}.rl-s-actions .rl-pl-btn{min-width:0;flex:1 1 180px}
+/* titles never wider than the screen */
+.rl-s-banner,.rl-s-plaque{max-width:100%}.rl-s-plaque h1{overflow-wrap:anywhere}
+/* Before you read: picture shrinks so the card never overflows */
+.rl-bf-pic{min-height:0}.rl-bf-img{min-height:0}.rl-bf-info{min-height:0;overflow:auto}
+@media(max-width:1023px){.rl-bf-img{min-height:28vh}}
+/* phone: sticky action bar wins over the generic positioning rule */
+@media(max-width:599px){.rl-screen>.rl-s-bottom{position:sticky}.rl-s-head .rl-s-banner{width:100%}.rl-s-plaque{width:100%;justify-content:center}}
+/* Placement page fills the width; scrolls on tablets, phones and very short screens */
+@media(min-width:1024px){.rl-pl-body{width:100%}.rl-pl-banner{width:min(1400px,72vw)}}
+@media(max-width:1023px),(max-height:600px){.scene.rl-native:has(.rl-pl){overflow-y:auto}.rl-pl{height:auto;min-height:100dvh;overflow:visible;padding-bottom:110px}.rl-pl-body{width:100%}.rl-pl-cards{min-height:440px}.rl-pl-banner{width:min(100%,1100px)}}
+@media(max-width:1023px){.rl-pl-gem{min-height:64px}}
+/* Dashboard: laptop = map column + 3 columns (grid scrolls if it must); tablet = 2 columns; phone = 1 column */
+@media(min-width:1024px){
+ .rl-db-grid{grid-template-columns:clamp(210px,16vw,300px) repeat(3,minmax(0,1fr));grid-template-rows:auto minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"map me rp wp" "map cont cont time" "map ach port cert";overflow:visible}
+}
+@media(min-width:1024px) and (max-height:820px){
+ .rl-db-grid{grid-template-rows:auto auto auto;overflow-y:auto;overscroll-behavior:contain}
+ .rl-db-prog .rl-s-small,.rl-db-cont .rl-s-small:last-child{display:none}
+ .rl-db-big{font-size:22px}.rl-db-ic{font-size:28px}.rl-db-title{font-size:22px}.rl-db-thumb{width:150px}
+ .rl-db-badges{grid-template-columns:repeat(6,1fr)}.rl-db-badge span{font-size:24px}.rl-db-badge b{font-size:14px}
+ .rl-db-st{min-height:64px}
+}
+@media(max-width:1023px){
+ .rl-dash{height:auto;min-height:100dvh}
+ .rl-db-grid{flex:none;overflow:visible;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:none;grid-template-areas:"me me" "rp wp" "cont cont" "time time" "ach ach" "port cert" "map map"}
+ .rl-db-st{min-height:72px}
+}
+@media(max-width:599px){
+ .rl-db-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"me" "rp" "wp" "cont" "time" "ach" "port" "cert" "map"}
+ .rl-db-controw{flex-direction:column}.rl-db-thumb{width:100%;height:24vh}
+ .rl-db-badges{grid-template-columns:repeat(3,1fr)}.rl-db-go{min-width:0;width:100%!important}
+}
+/* Journey map on large desktops: bigger gems, cards and text so the map fills the screen */
+@media(min-width:2000px) and (min-height:1300px){
+ .rl-gem{width:112px}.rl-plaque{font-size:22px;padding:5px 16px}
+ .journey-card{padding:16px 22px 18px;gap:10px;width:min(100%,640px)}.journey-gem-name{font-size:28px!important}.journey-badge{font-size:17px!important}
+ .journey-metric{font-size:21px!important;grid-template-columns:110px minmax(20px,1fr) 56px}.journey-meter{height:12px}.journey-action{min-height:58px!important;font-size:21px!important}
+ .journey-heading h1{font-size:52px}.journey-heading p{font-size:22px}
+}
+
+/* ---- responsive fixes, round 3 ---- */
+/* room for READwy's monogram badge at the right end of the toolbar */
+.rl-topbar{margin-right:58px}
+.rl-q-opt{justify-content:flex-start!important;padding:8px 18px!important;gap:14px}
+@media(max-width:599px){
+ .rl-topbar{margin-right:0;padding-right:58px}
+ .rl-s-ribbon,.rl-st-head .rl-s-ribbon{position:static;transform:none;margin:-8px auto 0;display:block;width:fit-content;max-width:100%}
+ .rl-s-banner{display:flex;flex-direction:column;align-items:center}
+ .rl-s-plaque{padding:8px 14px}
+ .rl-s-head{gap:12px}
+ .rl-s-steps{align-self:stretch;max-width:100%}
+ .rl-pl>.rl-topbar{padding-right:58px}
+}
+.rl-s-head,.rl-st-head{align-self:stretch;min-width:0;max-width:100%}.rl-s-head>*,.rl-st-head>*{max-width:100%;min-width:0}.rl-s-steps{min-width:0}
+@media(max-width:599px){.rl-s-head{flex-direction:column;gap:12px}.rl-s-head .rl-s-banner{transform:none}.rl-s-head .rl-s-ribbon{display:block}}
+
+/* dashboard on short laptops: the page scrolls instead of squeezing cards (nothing overlaps or hides) */
+@media(min-width:1024px) and (max-height:820px){
+ .scene.rl-native:has(.rl-dash){overflow-y:auto}
+ .rl-dash{height:auto;min-height:100dvh}
+ .rl-db-grid{flex:none;overflow:visible;grid-template-rows:auto auto auto}
+ .rl-db-cont,.rl-db-controw,.rl-db-time,.rl-db-ach,.rl-db-port,.rl-db-cert{min-height:auto}
+ .rl-db-map{align-self:start}
+}
+/* Ollie about three times larger on laptops/desktops: he fills his column below the tip bubble */
+@media(min-width:1024px){
+ :root{--owl-share:74%}
+ .rl-ollie-img{height:var(--owl-share);max-height:none;max-width:100%;object-fit:contain;object-position:bottom}
+}
+@media(min-width:1024px) and (max-height:820px){:root{--owl-share:70%}}
+/* Comprehension test: bigger question and answers that fill the whole question card */
+:root{--fs-q:clamp(24px,2.3vw,44px);--fs-ans:clamp(20px,1.75vw,32px)}
+.rl-q-card{gap:clamp(12px,1.8vh,22px)}
+.rl-q-text{line-height:1.2;margin:0}
+.rl-q-opts{justify-content:stretch;gap:clamp(10px,1.6vh,20px)}
+.rl-q-opt{flex:1 1 0;line-height:1.25!important;border-width:2.5px!important;border-radius:16px!important;padding:10px 22px!important}
+.rl-q-opt i{width:1.1em;height:1.1em}
+.rl-q-top .rl-s-chip{font-size:clamp(17px,1.1vw,22px)}
+.rl-q-dots i{height:clamp(10px,1.2vh,14px)}
+@media(max-width:1023px){.rl-q-opt{flex:none}}
+@media(max-width:599px){:root{--fs-q:22px;--fs-ans:19px}}
+
+/* comprehension: question card gets the width; text scales with height too; boxes grow to fit their text */
+@media(min-width:1024px){.rl-quiz .rl-s-qgrid{grid-template-columns:20% 24% minmax(0,1fr)}}
+:root{--fs-q:clamp(24px,min(2.3vw,4.3vh),44px);--fs-ans:clamp(19px,min(1.75vw,2.9vh),32px)}
+.rl-q-opt{flex:1 0 auto;height:auto!important}
+.rl-q-opt span{min-width:0}
+@media(min-width:1024px) and (max-height:960px){
+ .scene.rl-native:has(.rl-dash){overflow-y:auto}
+ .rl-dash{height:auto;min-height:100dvh}
+ .rl-db-grid{flex:none;overflow:visible;grid-template-rows:auto auto auto}
+ .rl-db-map{align-self:start}
+}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
@@ -901,6 +1132,9 @@ body:has(.rl-screen) #caption .rl-cap-av{width:52px;height:52px}
 <script>
 /*__BOOKS__*/
 const ART='resources/sra/v3/';
+/* The Reading Lab lays itself out for the real device (phone, tablet, laptop, desktop). While it is open, the parent
+   READwy page shows it at the device's own size instead of its fixed 1920-wide, rotated design canvas. */
+try{const d=parent.document;if(d&&d!==document&&!d.getElementById('rl-device-size')){const st=d.createElement('style');st.id='rl-device-size';st.textContent='html:has(.sra-express-screen) #landscape-shell{left:0!important;top:0!important;width:100vw!important;height:100dvh!important;transform:none!important}html:has(.sra-express-screen) #rwBadge{top:15px!important;right:max(10px,env(safe-area-inset-right))!important;bottom:auto!important;left:auto!important}';d.head.appendChild(st)}}catch(e){}
 const LV=[{name:'Emerald',sub:'Basic',hex:'#1f9d4c',g:'linear-gradient(135deg,#9df5a8,#1f9d4c 55%,#0b5a22)'},{name:'Sapphire',sub:'Developing',hex:'#1f5fd6',g:'linear-gradient(135deg,#a9d0ff,#1f5fd6 55%,#0b2f86)'},{name:'Amber',sub:'Intermediate',hex:'#e48a12',g:'linear-gradient(135deg,#ffe2a0,#f0a020 55%,#a65a00)'},{name:'Ruby',sub:'Advancing',hex:'#d1283d',g:'linear-gradient(135deg,#ffb0b8,#d1283d 55%,#7c0a18)'},{name:'Amethyst',sub:'Proficient',hex:'#8a3fd0',g:'linear-gradient(135deg,#e0c2ff,#8a3fd0 55%,#4a1484)'},{name:'Diamond',sub:'Intensive',hex:'#5aa2e6',g:'linear-gradient(135deg,#ffffff,#bfe0ff 50%,#5aa2e6)'}];
 const KEY=c=>7+c;
 // recolour painted green (Emerald) gems/signs to another level
@@ -1187,7 +1421,9 @@ function show(name,key,build,{instant=false}={}){finishFx();const prevScene=S.sc
  else{clearProgressOverlay()}
  try{parent.document.querySelector('.sra-express-journey')?.style.setProperty('display','none')}catch(e){}
  if(old&&instant&&name!=='journey'){/* same-screen update: keep the backdrop steady, only the content slides */old.style.pointerEvents='none';sc.style.visibility='hidden';const art=sc.querySelector('img.art');let swapped=false;const swap=()=>{if(swapped)return;swapped=true;sc.style.visibility='';old.remove()};(art&&art.decode?art.decode():Promise.resolve()).then(swap,swap);setTimeout(swap,220);return}
- rlTransition(old,sc,prevScene,name)}
+ rlTransition(old,sc,prevScene,name);
+ // tablets and phones hide the big owl: his tip is shown in the caption (round avatar) once the narration has finished
+ if(innerWidth<1024){const tipNow=tries=>{if(cur!==sc)return;const cap=document.getElementById('caption'),t=sc.querySelector('.rl-ollie-tip');if(!t)return;if(cap.classList.contains('on')&&tries>0)return setTimeout(()=>tipNow(tries-1),2500);caption(t.textContent)};setTimeout(()=>tipNow(3),1500)}}
 
 /* Developer view: every screen of the SRA program, for inspecting the UI */
 window.readwyDevScreens=()=>{const L=['Emerald','Sapphire','Amber','Ruby','Amethyst','Diamond'],at=(c,n)=>{S.c=c;S.n=n;S.pw=false;S.place=false};
@@ -1631,7 +1867,7 @@ function rlHeader(title,chip,gemC,step){return `<header class="rl-s-head"><div c
 // Ollie beside his tip; hidden below 900px, where the tip goes to the caption (round avatar) instead
 function rlOllie(tip){return `<aside class="rl-ollie" aria-live="polite"><p class="rl-ollie-bubble"><span class="rl-ollie-tip">${esc(tip)}</span></p><img class="rl-ollie-img" src="${ART}owl.png" alt="Ollie the owl" draggable="false"></aside>`}
 function rlTip(root,text){const a=root.querySelector('.rl-ollie'),t=a?.querySelector('.rl-ollie-tip');if(!t)return;if(t.textContent!==text){t.textContent=text;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){a.classList.remove('rl-tipnew');void a.offsetWidth;a.classList.add('rl-tipnew')}}
- if(innerWidth<900&&root.__capTip!==text){root.__capTip=text;caption(text);setTimeout(()=>{if(root.isConnected&&root.__capTip===text)caption('')},6000)}}
+ if(innerWidth<1024&&root.__capTip!==text){root.__capTip=text;caption(text);setTimeout(()=>{if(root.isConnected&&root.__capTip===text)caption('')},6000)}}
 function rlScreenNav(page){wireToolbar(page,{progress:()=>{journey();setTimeout(()=>{if(S.scene==='journey')openProgress()},(RL_TRANS_MS||0)+150)}});
  const m=page.querySelector('.rl-topbar [data-tb="map"]');if(m){const fresh=m.cloneNode(true);m.replaceWith(fresh);fresh.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();journey()})}}
 S.rfs=S.rfs||19;
