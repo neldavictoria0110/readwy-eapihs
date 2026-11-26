@@ -568,6 +568,19 @@ body:has(.rl-pl) #caption{width:max-content!important;max-width:min(96vw,1760px)
  .rl-pl-ribbon{white-space:normal;width:92%;text-align:center;font-size:18px}
  .rl-pl-body{width:100%}.rl-pl-cards{display:flex;flex-direction:column;gap:18px}.rl-pl-card{min-height:280px}
 }
+
+/* Ollie (owl.png): caption avatar and the My Progress tip */
+#caption{display:flex;align-items:center;justify-content:center;gap:.6em}
+#caption .rl-cap-av{flex:none;width:60px;height:60px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 35%,#fffaf0,#f1e2bd);border:3px solid #e2b24c;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+#caption .rl-cap-av img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0;transform:scale(1.19);transform-origin:50% 0}
+#caption .rl-cap-text{min-width:0}
+#caption.rl-cap-noav .rl-cap-av{display:none}
+.scene.native-journey #caption{padding:4px 14px 4px 4px}
+.scene.native-journey #caption .rl-cap-av{width:56px;height:56px}
+.rl-tip{display:flex;align-items:flex-end;gap:10px}
+.rl-tip-owl{flex:none;height:140px;width:auto;filter:drop-shadow(0 4px 5px rgba(0,0,0,.25))}
+.rl-tip-bubble{position:relative;flex:1;margin:0 0 34px;padding:12px 14px;border-radius:16px;background:#fff9e9;border:2px solid #e2cd96;color:#172743;font:700 17px/1.4 Nunito,sans-serif;box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.rl-tip-bubble::before{content:'';position:absolute;left:-11px;bottom:18px;width:18px;height:18px;background:#fff9e9;border-left:2px solid #e2cd96;border-bottom:2px solid #e2cd96;transform:rotate(45deg)}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
@@ -705,7 +718,8 @@ let voice=null,tok=0;
 function pickVoice(){const vs=speechSynthesis?.getVoices?.()||[];for(const r of [/Guy.*Natural/i,/Ryan.*Natural/i,/Christopher.*Natural/i,/Andrew.*Natural/i,/Eric.*Natural/i,/Google UK English Male/i,/Daniel/i,/David/i,/en-US/i,/^en/i]){const v=vs.find(v=>r.test(v.name)||r.test(v.lang));if(v)return v}return vs[0]||null}
 try{speechSynthesis.onvoiceschanged=()=>{voice=pickVoice()};voice=pickVoice()}catch(e){}
 function owlTalk(on){document.querySelectorAll('.owlrig').forEach(o=>o.classList.toggle('talking',on))}
-function caption(t){const c=document.getElementById('caption');c.textContent=t||'';c.classList.toggle('on',!!t)}
+const RL_OWL_PAGES_WITHOUT_AVATAR={welcome:1,placement:1};
+function caption(t){const c=document.getElementById('caption');let tx=c.querySelector('.rl-cap-text');if(!tx){c.textContent='';c.insertAdjacentHTML('beforeend',`<span class="rl-cap-av" aria-hidden="true"><img src="${ART}owl.png" alt="" draggable="false"></span><span class="rl-cap-text"></span>`);tx=c.querySelector('.rl-cap-text')}tx.textContent=t||'';c.classList.toggle('rl-cap-noav',!!RL_OWL_PAGES_WITHOUT_AVATAR[S.scene]);c.classList.toggle('on',!!t)}
 // [text, rate, pitch, pause after (ms)] — phrase by phrase so Ollie has real pacing, emphasis and pauses
 const NARRATION=[['Well, hello there, reader!',.92,1.32,450],["I'm Ollie, your conductor on the READwy Reading Lab.",.95,1.18,420],["Here's how our adventure works.",.86,1.05,380],['First, a quick placement check finds your best starting station.',.95,1.12,350],['There are six gem stations:',.9,1.15,250],['Emerald… Sapphire… Amber… Ruby… Amethyst…',.82,1.22,300],['and the dazzling Diamond Grand Central!',.98,1.42,520],['At every stop, you read a text, answer the questions, and then write about it.',.92,1.1,380],['Score eight out of ten, finish your writing, and — toot, toot! — the next text opens!',1.0,1.38,450],['Take your time. Read carefully. Write in your own words.',.82,1.0,420],['Ready? Press Start Journey… and all aboard!',1.02,1.4,0]];
 function narrate(lines=NARRATION){if(muted||!('speechSynthesis' in window))return;const k=++tok;speechSynthesis.cancel();let i=0;const nx=()=>{if(k!==tok)return;if(i>=lines.length){owlTalk(false);setTimeout(()=>k===tok&&caption(''),1500);return}const [t,r,p,pz]=lines[i++];const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=Math.min(1.12,Math.max(1,r*1.12));u.pitch=p;caption(t.replace('S R A','READwy Reading Lab'));u.onstart=()=>owlTalk(true);u.onend=u.onerror=()=>{owlTalk(false);setTimeout(nx,Math.min(60,pz*.12))};speechSynthesis.speak(u)};nx()}
@@ -715,7 +729,7 @@ function confetti(n=70){const cols=['#ffd447','#ff6b8b','#4fc3f7','#7ee081','#b4
 
 /* ---------- scene plate: contained artwork with a blurred copy behind any side space ---------- */
 // load every screen's picture once up front so page changes never wait for an image
-['station-bg','journey-bg','rw03','rw05','rw06','rw07','rw08','rw09','rw10','rw11'].forEach(k=>{const i=new Image();i.decoding='async';i.src=ART+k+'.jpg'});
+{const o=new Image();o.decoding='async';o.src=ART+'owl.png'}['station-bg','journey-bg','rw03','rw05','rw06','rw07','rw08','rw09','rw10','rw11'].forEach(k=>{const i=new Image();i.decoding='async';i.src=ART+k+'.jpg'});
 const AW=1536,AH=1024,SAFE=[14,0,1508,1008];
 let cur=null;
 /* The painted "SRA" logo in each picture is covered by a READwy Reading Lab label (positions in picture pixels). */
@@ -1387,7 +1401,7 @@ function clearProgressOverlay(){
 function progressBodyHTML(){
  const rd=sum(lvRead),wr=sum(lvWrite),completed=sum(lvDone),cu=current(),st=cu.all?'done':stage(cu.c,cu.n),b=book(cu.c,cu.n),step={read:'Read',quiz:'Questions',write:'Write',done:'Done'}[st],earned=[0,1,2,3,4,5].filter(c=>lvDone(c)===10).length;
  const stat=(label,value,total,color='')=>`<div class="progress-stat"><b>${label}</b><b>${value}/${total}</b><div class="progress-bar"><i style="width:${Math.min(100,value/total*100)}%;${color?'background:'+color:''}"></i></div></div>`;
- return `<section aria-label="Reading and writing totals">${stat('Reading',rd,60)}${stat('Writing',wr,60,'linear-gradient(90deg,#65a8ff,#2860d5)')}${stat('Completed texts',completed,60)}</section><h3>Current task</h3><section class="progress-task"><b>${esc(LV[cu.c].name)} · Text ${cu.n}</b><div>${esc(b?.title||'Journey complete')}</div><div class="progress-step">Step: ${step}</div><button type="button" class="journey-action" id="journey-progress-continue">${cu.all?'View certificates':'Continue'}</button></section><h3>Ollie’s tip</h3><p style="margin:0;padding:11px;border-radius:12px;background:#fff9e9">${st==='read'?'Read carefully and take your time.':st==='quiz'?'Use what you remember from the passage to answer each question.':st==='write'?'Use your own words and check that every sentence supports your ideas.':'Great work—finish the next open text when you are ready.'}</p><h3>Certificate goal</h3><section class="progress-task"><b>${lvDone(5)===10?'Diamond certificate earned':'Complete Diamond 10'}</b><div style="margin-top:5px">${earned}/6 level certificates earned · ${lvDone(5)}/10 Diamond texts complete</div></section>`;
+ return `<section aria-label="Reading and writing totals">${stat('Reading',rd,60)}${stat('Writing',wr,60,'linear-gradient(90deg,#65a8ff,#2860d5)')}${stat('Completed texts',completed,60)}</section><h3>Current task</h3><section class="progress-task"><b>${esc(LV[cu.c].name)} · Text ${cu.n}</b><div>${esc(b?.title||'Journey complete')}</div><div class="progress-step">Step: ${step}</div><button type="button" class="journey-action" id="journey-progress-continue">${cu.all?'View certificates':'Continue'}</button></section><h3>Ollie’s tip</h3><div class="rl-tip"><img class="rl-tip-owl" src="${ART}owl.png" alt="Ollie the owl" draggable="false"><p class="rl-tip-bubble">${st==='read'?'Read carefully and take your time.':st==='quiz'?'Use what you remember from the passage to answer each question.':st==='write'?'Use your own words and check that every sentence supports your ideas.':'Great work—finish the next open text when you are ready.'}</p></div><h3>Certificate goal</h3><section class="progress-task"><b>${lvDone(5)===10?'Diamond certificate earned':'Complete Diamond 10'}</b><div style="margin-top:5px">${earned}/6 level certificates earned · ${lvDone(5)}/10 Diamond texts complete</div></section>`;
 }
 function _progIsOpen(){const d=document.getElementById('rl-progress-drawer');return !!(d&&d.getAttribute('aria-hidden')==='false')}
 function setProgressOpen(open){
