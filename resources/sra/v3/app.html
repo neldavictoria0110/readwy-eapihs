@@ -23,7 +23,9 @@ button{font:inherit;cursor:pointer;color:inherit}
 .scene.native-journey::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(135deg,rgba(10,20,42,.34),rgba(16,28,54,.48))}
 .scene.native-journey .plate{position:relative;z-index:1;overflow:visible;min-height:100dvh}
 .scene.native-journey .plate>.art{display:none}
-.scene.safe-fit::before{inset:0;background-size:cover;filter:blur(14px) brightness(.48) saturate(.6);transform:scaleX(-1) scale(1.08)}
+.scene.safe-fit::before{display:none!important}
+.scene.safe-fit .plate{z-index:1}
+.safe-extension{position:absolute;z-index:0;overflow:hidden;pointer-events:none;background-repeat:no-repeat;}
 .journey-shell{width:100%;min-height:100dvh;padding:10px clamp(12px,2vw,32px) 18px;display:flex;flex-direction:column;gap:10px;color:#f7f2e3}
 .journey-topbar{position:relative;min-height:52px;display:flex;align-items:center;gap:clamp(10px,2vw,26px);padding:7px 14px;border:1px solid #d9a441aa;border-radius:16px;background:rgba(20,35,67,.99);box-shadow:0 5px 18px #0005}
 .journey-brand{color:#f1d58a;font:700 clamp(15px,1.5vw,21px)/1.1 Fredoka,Nunito,sans-serif;white-space:nowrap}
@@ -40,7 +42,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 .journey-station{min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 .journey-crop{position:relative;width:clamp(112px,21vh,213px);max-width:100%;height:clamp(75px,14vh,142px);aspect-ratio:1.5;flex:none;overflow:hidden;border:2px solid #e6c36a;border-radius:18px;background-color:#142345;box-shadow:0 8px 20px #0007;background-repeat:no-repeat}
 .journey-crop:after{content:"";position:absolute;inset:50% 0 0;background:linear-gradient(transparent,rgba(10,20,40,.72));pointer-events:none}
-.journey-train{position:absolute;right:8px;bottom:5px;z-index:2;width:clamp(25px,3.4vh,38px);height:clamp(19px,2.8vh,31px);filter:drop-shadow(0 2px 3px #0009)}
+.journey-train{filter:drop-shadow(0 2px 3px #0009)}
 .journey-train svg{display:block;width:100%;height:100%}
 .journey-card{width:min(100%,430px);min-height:160px;flex:0 0 auto;display:flex;flex-direction:column;gap:5px;padding:clamp(7px,.8vw,12px) clamp(9px,1vw,15px);border:2px solid var(--station-color);border-radius:17px;color:#17223d;background:linear-gradient(150deg,#fffdf7,#f4eddd);box-shadow:0 7px 18px #0005;font-size:clamp(12px,1vw,16px)}
 .journey-card-head{display:flex;align-items:center;justify-content:space-between;gap:7px}
@@ -228,6 +230,90 @@ textarea{-webkit-user-select:text;user-select:text}
 .confetti{position:fixed;top:-5%;width:1vw;aspect-ratio:.5;pointer-events:none;z-index:47;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--dx),115vh) rotate(var(--rot))}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<style>
+/* Native Page 3 art direction and accessible reading sizes. */
+.scene.native-journey{background:#e9f0e8;overflow-x:hidden;overflow-y:auto}
+.scene.native-journey::before,.scene.native-journey::after{display:none!important;content:none!important}
+.scene.native-journey .plate{background:transparent;z-index:1}
+.scene.native-journey .plate>.art{display:none!important}
+.journey-backdrop{position:fixed;inset:0;width:100vw;height:100dvh;z-index:0;pointer-events:none}
+.journey-shell{position:relative;z-index:1;width:100%;height:100dvh;min-height:0;padding:8px clamp(12px,2vw,32px) 10px;display:flex;flex-direction:column;gap:6px;color:#172743;background:transparent}
+.journey-topbar{position:relative;flex:0 0 auto;min-height:58px;display:flex;align-items:center;gap:clamp(9px,1.4vw,22px);padding:6px 14px;border:1px solid #d9a441;border-radius:16px;background:rgba(20,35,67,.94);box-shadow:0 4px 16px #14234533}
+.journey-logo{flex:none;width:38px;height:38px;display:grid;place-items:center;border:2px solid #f4d27a;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b2,#d9a441 64%,#875c1b);color:#18294d;font:900 23px/1 Georgia,serif;box-shadow:0 2px 7px #0005}
+.journey-brand{color:#f5d77e;font:800 clamp(20px,1.55vw,22px)/1.1 Fredoka,Nunito,sans-serif;white-space:nowrap}
+.journey-nav{display:flex;align-items:center;justify-content:center;gap:clamp(2px,.65vw,10px);flex:1;min-width:0}
+.journey-nav button,.journey-self,.journey-progress button{font-family:Nunito,sans-serif;font-weight:800}
+.journey-nav button{min-height:40px;padding:7px clamp(6px,.8vw,13px);border:1px solid transparent;border-radius:999px;color:#fff8e6;background:transparent;font-size:clamp(16px,1.2vw,18px);white-space:nowrap;transition:background .1s,color .1s,transform .1s}
+.journey-nav button:hover,.journey-nav button:focus-visible{background:#d9a441;color:#15213e;transform:translateY(-1px)}
+.journey-self{padding:8px 13px;border:1px solid #fff1be;border-radius:999px;color:#183050;background:#e6efce;font-size:clamp(15px,1.1vw,16px);white-space:nowrap}
+.journey-heading{display:block!important;visibility:visible!important;position:relative;z-index:3;flex:0 0 auto;text-align:center;align-self:center;max-width:min(960px,96vw);padding:7px 28px 8px;border:2px solid #d9a441;border-radius:24px;background:linear-gradient(135deg,rgba(20,35,67,.96),rgba(29,48,85,.94));box-shadow:0 5px 16px #14234533}
+.journey-heading h1{margin:0;color:#fff8e5;font:700 clamp(32px,2.6vw,40px)/1.05 Fredoka,Nunito,sans-serif}
+.journey-heading p{margin:4px 0 0;color:#f5d77e;font:800 clamp(16px,1.2vw,18px)/1.2 Nunito,sans-serif}
+.journey-grid{position:relative;isolation:isolate;z-index:1;flex:1 1 0;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(6px,.7vw,10px);padding:2px 1px}
+.journey-rail{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:visible}
+.journey-station{position:relative;z-index:1;min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.journey-crop{position:relative;display:block;width:min(100%,300px);height:clamp(70px,9vh,106px);flex:none;padding:0;overflow:visible;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer}
+.journey-crop:after{display:none}
+.station-svg{display:block;width:100%;height:100%;overflow:visible}
+.gem-halo{opacity:.23;filter:blur(8px)}
+.journey-station.is-current .gem-halo{animation:gemBreath 2.4s ease-in-out infinite;transform-origin:center}
+@keyframes gemBreath{50%{opacity:.62;filter:blur(11px)}}
+.journey-card{width:min(100%,470px);min-height:190px;flex:0 0 auto;display:flex;flex-direction:column;gap:6px;padding:11px clamp(12px,1.1vw,17px);border:2px solid var(--station-color);border-radius:17px;color:#172743;background:linear-gradient(150deg,#fffef9,#f5efdf);box-shadow:0 6px 16px #17274330;font-size:16px}
+.journey-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.journey-gem-name{font:800 clamp(20px,1.45vw,22px)/1.08 Fredoka,Nunito,sans-serif;color:#172743}
+.journey-badge{flex:none;padding:5px 9px;border:1px solid #d8deea;border-radius:999px;background:#e8edf6;color:#24365c;font-size:14px;font-weight:900;white-space:nowrap}
+.journey-station.is-current .journey-badge{background:#e3f4d9;color:#205d20;border-color:#8dc779}
+.journey-metric{display:grid;grid-template-columns:82px minmax(20px,1fr) 43px;align-items:center;gap:8px;color:#172743;font-size:16px;font-weight:800}
+.journey-metric>span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.journey-meter{height:9px;overflow:hidden;border-radius:999px;background:#d9dee8;box-shadow:inset 0 1px 2px #0002}
+.journey-meter i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#64c43b,#268a21)}
+.journey-meter.blue i{background:linear-gradient(90deg,#64a7ff,#2860d5)}
+.journey-action{width:100%;min-height:44px;margin-top:auto;border:1px solid #a87214;border-radius:999px;background:linear-gradient(#ffe783,#f6bd28 60%,#e99b0b);color:#211800;font:800 17px/1 Nunito,sans-serif;box-shadow:0 2px 0 #a86d12;transition:filter .1s,transform .1s;cursor:pointer}
+.journey-action:hover:not(:disabled),.journey-action:focus-visible{filter:brightness(1.07);transform:translateY(-1px)}
+.journey-action:active:not(:disabled){transform:scale(.98)}
+.journey-action.secondary{background:linear-gradient(#fffdf7,#eee5d3);color:#1c2948}
+.journey-action:disabled{color:#4b4a45;background:#ddd8ce;border-color:#aaa59c;box-shadow:none;cursor:not-allowed}
+.journey-progress-tab{position:fixed!important;right:0!important;top:38vh!important;z-index:91!important;width:34px!important;height:126px!important;padding:0!important;border:1px solid #e2b24c!important;border-right:0!important;border-radius:12px 0 0 12px!important;background:rgba(20,35,67,.97)!important;color:#fff6dc!important;box-shadow:-4px 0 14px #0005!important;touch-action:none!important;cursor:grab!important}
+.journey-progress{color:#172743!important;background:linear-gradient(150deg,#fffef9,#f1e8d5)!important;border:1px solid #d9a441!important;border-radius:20px 0 0 20px!important;box-shadow:-12px 0 34px #0008!important}
+.journey-progress-inner{padding:clamp(18px,2.2vw,28px);font:700 17px/1.4 Nunito,sans-serif;color:#172743}
+.journey-progress h2{margin:0;font:800 24px/1.1 Fredoka,Nunito,sans-serif;color:#14254a}
+.journey-progress h3{margin:17px 0 8px;font:800 17px/1.15 Fredoka,Nunito,sans-serif;color:#14254a}
+.journey-progress .progress-stat{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;margin:10px 0;font-size:17px;color:#172743}
+.journey-progress .progress-bar{grid-column:1/-1;height:9px;background:#dfe3ea;border-radius:99px;overflow:hidden}
+.journey-progress .progress-bar i{display:block;height:100%;background:linear-gradient(90deg,#73ce44,#2f8f10)}
+.journey-progress .progress-task{padding:13px;border-radius:14px;background:#e6eefc;border:1px solid #9db9df;color:#172743;font-size:17px}
+.journey-progress .progress-task>b{font-size:20px}
+.journey-progress .progress-step{display:inline-flex;align-items:center;margin:7px 0;padding:4px 10px;border-radius:999px;background:#d9e8fb;color:#173b6f;font-size:15px;font-weight:900}
+.journey-progress .journey-action{font-size:17px;min-height:44px}
+.journey-progress .prog-close{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:#22396b;color:#fff6dc;font:800 28px/1 sans-serif;cursor:pointer}
+.journey-progress-inner p{font-size:17px;line-height:1.4;color:#24324d}
+.scene.native-journey #caption{position:relative;left:auto;top:auto;bottom:auto;transform:none;z-index:30;max-width:min(820px,90vw);margin:0 auto;cursor:pointer;pointer-events:auto;font-size:15px;padding:4px 12px;color:#172743;background:#fffef3e8;border:1px solid #d9a441;border-radius:999px}
+@media(max-width:900px){
+ .scene.native-journey{overflow-y:auto}
+ .journey-shell{height:auto;min-height:100dvh;padding:8px 10px 22px;gap:8px}
+ .journey-topbar{display:grid;grid-template-columns:38px minmax(0,1fr) auto;grid-template-rows:auto auto;min-height:unset;gap:5px;padding:8px}
+ .journey-logo{grid-column:1;grid-row:1;width:34px;height:34px}
+ .journey-brand{grid-column:2;grid-row:1;font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .journey-nav{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));order:initial;width:100%;justify-content:stretch;overflow:visible}
+ .journey-nav button{font-size:16px;padding:7px 4px;white-space:normal}
+ .journey-self{grid-column:3;grid-row:1;order:initial;margin-left:auto;font-size:15px}
+ .journey-heading{padding:7px 12px;width:100%}
+ .journey-heading h1{font-size:32px}
+ .journey-heading p{font-size:16px}
+ .journey-grid{display:flex;flex-direction:column;gap:16px;flex:none;padding:0 0 8px}
+ .journey-rail{display:none}
+ .journey-station{width:100%;flex-direction:column;gap:5px;min-height:0}
+ .journey-crop{width:min(100%,300px);height:112px}
+ .journey-card{width:min(calc(100vw - 32px),520px);min-width:0;min-height:190px;padding:11px 12px;gap:6px;border-radius:15px;font-size:16px}
+ .journey-gem-name{font-size:20px}
+ .journey-badge{font-size:14px;padding:5px 8px}
+ .journey-metric{grid-template-columns:82px minmax(20px,1fr) 43px;gap:7px;font-size:16px}
+ .journey-action{min-height:44px;font-size:17px}
+ .scene.native-journey #caption{left:auto;right:auto;top:auto;bottom:auto;max-width:none;width:100%;font-size:15px}
+}
+@media(max-width:600px){.journey-progress{width:100vw!important;border-radius:0!important}.journey-progress-tab{height:116px!important;width:31px!important}.journey-progress-inner{padding:18px}.journey-progress .progress-stat{font-size:17px}}
+@media(min-width:901px) and (max-height:820px){.journey-crop{height:72px}.journey-card{min-height:164px;padding:7px 11px;gap:3px}.journey-grid{gap:4px}}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
@@ -396,7 +482,7 @@ function fit(sc){const W=innerWidth,H=innerHeight,pl=sc.querySelector('.plate');
   sc.style.setProperty('--scene-bg',`url("${ART}${sc.dataset.key}.jpg")`);
   document.documentElement.style.setProperty('--toolbar-h','0px');
   if(sc.dataset.nativeJourney==='1'){
-   const k=1;sc.classList.add('native-journey');sc.style.setProperty('--k',k+'px');
+   const k=1;sc.classList.add('native-journey');sc.style.setProperty('--scene-bg','none');sc.style.setProperty('--k',k+'px');
    Object.assign(pl.style,{left:'0',top:'0',width:'100%',height:'auto',minHeight:'100dvh',fontSize:'16px',transform:'none'});
    sc.style.setProperty('--plate-w',W+'px');sc.style.setProperty('--plate-h',H+'px');sc.style.setProperty('--plate-left','0px');sc.style.setProperty('--plate-top','0px');sc.style.setProperty('--plate-k','1px');requestAnimationFrame(updateJourneyCrops);return;
   }
@@ -410,6 +496,11 @@ function fit(sc){const W=innerWidth,H=innerHeight,pl=sc.querySelector('.plate');
   const left=minX<=maxX?Math.max(minX,Math.min(maxX,(W-w)/2)):(W-w)/2;
   const top=minY<=maxY?Math.max(minY,Math.min(maxY,(H-h)/2)):(H-h)/2;
   if(key==='rw01'||key==='rw02')sc.classList.add('safe-fit');
+  sc.querySelectorAll('.safe-extension').forEach(e=>e.remove());
+  if(key==='rw01'||key==='rw02'){
+   const img=`url("${ART}${key}.jpg")`,addExt=(edge,x,y,ew,eh,pos,axis)=>{if(ew<=0||eh<=0)return;const d=document.createElement('div');d.className='safe-extension';Object.assign(d.style,{left:x+'px',top:y+'px',width:ew+'px',height:eh+'px',backgroundImage:img,backgroundSize:`${w}px ${h}px`,backgroundPosition:pos,transform:axis==='x'?'scaleX(-1)':'scaleY(-1)'});sc.insertBefore(d,pl)};
+   addExt('left',0,top,left,h,'left top','x');addExt('right',left+w,top,W-left-w,h,'right top','x');addExt('top',left,0,w,top,'left top','y');addExt('bottom',left,top+h,w,H-top-h,'left bottom','y');
+  }
   sc.style.setProperty('--plate-w',w+'px');sc.style.setProperty('--plate-h',h+'px');sc.style.setProperty('--plate-left',left+'px');sc.style.setProperty('--plate-top',top+'px');sc.style.setProperty('--plate-k',k+'px');sc.style.setProperty('--k',k+'px');
   Object.assign(pl.style,{left:left+'px',top:top+'px',width:w+'px',height:h+'px',fontSize:k+'px',transformOrigin:'0 0',transform:'none'});
   const art=pl.querySelector(':scope>.art');if(art)Object.assign(art.style,{left:'0',top:'0',width:w+'px',height:h+'px',clipPath:'none'});
@@ -651,10 +742,12 @@ const STN=[{house:[285,272,232,170],card:[288,438,228,142]},{house:[548,268,262,
 const GEMBOX=[[377,277,58,56],[645,274,58,59],[950,275,60,55],[903,616,65,61],[573,619,65,58],[190,601,90,66]];
 const ICON=k=>`<img src="${ART}icons/${k}.png" alt="" style="width:1em;height:1em;object-fit:contain;filter:drop-shadow(0 .05em .06em rgba(40,25,10,.3))">`;
 const JOURNEY_CROPS=[[260,240,278,185],[535,230,300,185],[875,240,278,185],[790,570,270,180],[460,610,255,170],[100,570,270,180]];
-function updateJourneyCrops(){document.querySelectorAll('.native-journey .journey-crop').forEach(tile=>{const [x,y,w,h]=tile.dataset.crop.split(',').map(Number),r=tile.getBoundingClientRect();if(!r.width||!r.height)return;const k=Math.min(r.width/w,r.height/h),ox=(r.width-w*k)/2,oy=(r.height-h*k)/2;tile.style.backgroundImage=`url("${ART}rw04.jpg")`;tile.style.backgroundSize=`${AW*k}px ${AH*k}px`;tile.style.backgroundPosition=`${ox-x*k}px ${oy-y*k}px`})}
+function updateJourneyCrops(){}
+function journeyBackdropSVG(){return `<svg class="journey-backdrop" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="journeySky" x2="0" y2="1"><stop stop-color="#f6d58b"/><stop offset=".48" stop-color="#c7e4ec"/><stop offset="1" stop-color="#e5f0dc"/></linearGradient><linearGradient id="journeyHillA" x2="0" y2="1"><stop stop-color="#b8d4bd"/><stop offset="1" stop-color="#88b6a5"/></linearGradient><linearGradient id="journeyHillB" x2="0" y2="1"><stop stop-color="#9ebdc0"/><stop offset="1" stop-color="#6e9ca3"/></linearGradient><linearGradient id="journeyTrack" x2="0" y2="1"><stop stop-color="#566c7d"/><stop offset="1" stop-color="#354d64"/></linearGradient><radialGradient id="journeySun"><stop stop-color="#fff8d8"/><stop offset="1" stop-color="#f3c96c"/></radialGradient></defs><rect width="1600" height="900" fill="url(#journeySky)"/><circle cx="1270" cy="112" r="61" fill="url(#journeySun)" opacity=".72"/><g fill="#fffdf2" opacity=".42"><path d="M135 148c7-28 48-37 68-14 19-34 73-23 77 12 31 0 43 38 19 52H126c-28-12-19-48 9-50z"/><path d="M1015 210c8-23 38-31 57-12 17-29 62-20 66 11 27 1 35 31 15 43H1008c-24-10-17-40 7-42z"/><path d="M510 105c6-17 33-23 46-8 15-22 48-15 52 9 20 0 28 23 12 32H505c-17-7-12-31 5-33z"/></g><g fill="#9db8c0" opacity=".42"><path d="M0 465 164 237l130 176 142-221 201 273z"/><path d="m865 468 176-271 141 183 132-230 286 318z"/></g><path d="M0 462q160-74 320 0t320 0q160-74 320 0t320 0q160-74 320 0v438H0z" fill="url(#journeyHillA)"/><path d="M0 570q210-117 420 0t420 0q210-117 420 0t420 0v330H0z" fill="url(#journeyHillB)" opacity=".78"/><path d="M0 735q200-115 400 0t400 0q200-115 400 0t400 0v165H0z" fill="#719b88" opacity=".58"/><g fill="#536c7e" opacity=".63"><path d="M710 360h170v132H710zM690 360l105-79 105 79zM730 312v-74h30v74M830 312v-74h30v74M775 397h38v95h-38z"/><path d="M695 360h24v132h-24zm176 0h24v132h-24z"/><path d="M690 362h210v12H690z"/></g><g fill="#fff8d9" opacity=".8"><circle cx="215" cy="300" r="3"/><circle cx="415" cy="191" r="2.5"/><circle cx="590" cy="337" r="2"/><circle cx="1120" cy="315" r="3"/><circle cx="1405" cy="263" r="2"/><circle cx="1515" cy="430" r="3"/></g><g fill="none" stroke="#fff6d4" stroke-linecap="round" opacity=".58"><path d="M330 250v12m-6-6h12"/><path d="M1260 365v10m-5-5h10"/><path d="M955 126v11m-5.5-5.5h11"/><path d="M80 405v10m-5-5h10"/></g></svg>`}
+function journeyStationSVG(c,name,isCurrent,isLocked){const [hi,mid,lo]=GEMC[c],id='journeyGem'+c,labelSize=name.length>15?14:17;return `<svg class="station-svg" viewBox="0 0 320 156" role="img" aria-label="${esc(c+1+' '+name)}"><defs><linearGradient id="${id}Face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${hi}"/><stop offset=".52" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></linearGradient><linearGradient id="${id}Top" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="${hi}"/></linearGradient><radialGradient id="${id}Glow"><stop stop-color="${hi}" stop-opacity=".78"/><stop offset="1" stop-color="${hi}" stop-opacity="0"/></radialGradient></defs><ellipse class="gem-halo" cx="160" cy="48" rx="75" ry="48" fill="url(#${id}Glow)"/><g class="gem-art" opacity="${isLocked?'.66':'1'}"><path d="M116 26 137 8h46l21 18 8 25-52 43-52-43z" fill="url(#${id}Face)" stroke="#fff8dc" stroke-width="2.5"/><path d="m116 26 44 4 23-22h-46z" fill="url(#${id}Top)" opacity=".86"/><path d="m116 26 44 4-8 64-44-43z" fill="${mid}" opacity=".87"/><path d="m160 30 23-22 21 18-44 4 8 64z" fill="${hi}" opacity=".92"/><path d="m204 26 8 25-52 43 23-60z" fill="${lo}" opacity=".76"/><path d="m116 26 44 4 44-4M152 94l8-64 8 64M116 26l-8 25m104-25-8 25" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="2"/><path d="m131 23 13-10 8 2-13 13z" fill="#fff" opacity=".94"/></g><path d="M34 106q0-19 19-19h214q19 0 19 19v26q0 15-17 15H51q-17 0-17-15z" fill="#17294d" stroke="#e0b44f" stroke-width="4"/><path d="M43 105q0-10 11-10h212q10 0 10 10v4H43z" fill="#fff4c9" opacity=".13"/><circle cx="57" cy="119" r="19" fill="#d9a441" stroke="#fff1c4" stroke-width="2"/><text x="57" y="126" fill="#17294d" text-anchor="middle" font-family="Nunito,sans-serif" font-size="19" font-weight="900">${c+1}</text><text x="180" y="126" fill="#fff5da" text-anchor="middle" font-family="Fredoka,Nunito,sans-serif" font-size="${labelSize}" font-weight="700">${esc(name)}</text>${isLocked?'<g transform="translate(275 108)" fill="none" stroke="#fff1c4" stroke-width="3"><rect x="-7" y="-2" width="14" height="12" rx="2" fill="#d5d9dc"/><path d="M-4-2v-5a4 4 0 0 1 8 0v5"/></g>':''}${isCurrent?'<circle cx="283" cy="19" r="6" fill="#fff7d5" stroke="#d9a441" stroke-width="2"/>':''}</svg>`}
 function rlJourneyFull(sc,pl){
  const cu=current(),st=cu.all?'done':stage(cu.c,cu.n),b=book(cu.c,cu.n);
- const drawerWidth='min(470px,92vw)';
+ const drawerWidth='min(410px,100vw)';
  try{mountProgressOverlay({title:'My Progress',bodyHTML:progressBodyHTML(),toggleStyle:'',drawerStyle:`position:fixed;top:0;right:0;bottom:0;width:${drawerWidth};z-index:80;overflow:auto;touch-action:pan-y;background:linear-gradient(150deg,#fffdf7,#eee4cf);border:0;border-left:2px solid #d9a441;box-shadow:-12px 0 34px #0008;transform:translateX(100%);visibility:hidden;pointer-events:none;transition:transform .25s cubic-bezier(.2,.85,.25,1),visibility 0s linear .25s;`})}catch(e){console.error('journey progress overlay failed',e)}
  const tab=document.getElementById('rl-progress-toggle');tab?.classList.add('journey-progress-tab');
  const drawer=document.getElementById('rl-progress-drawer');drawer?.classList.add('journey-progress');
@@ -665,17 +758,18 @@ function rlJourneyFull(sc,pl){
 function journey(){show('journey','rw04',pl=>{
  const sc=cur;sc.dataset.nativeJourney='1';sc.classList.add('native-journey');
  const cu=current(),pathOrder=[0,1,2,3,4,5];
+ const railPoints=[[166,58],[500,58],[834,58],[834,542],[500,542],[166,542]],tp=railPoints[cu.c]||railPoints[0];
  const shell=document.createElement('main');shell.className='journey-shell';
- shell.innerHTML=`<header class="journey-topbar"><div class="journey-brand">READwy Reading Lab</div><nav class="journey-nav" aria-label="Reading Lab navigation"><button type="button" data-nav="home">Home</button><button type="button" data-nav="map">Journey Map</button><button type="button" data-nav="portfolio">Portfolio</button><button type="button" data-nav="certificates">Certificates</button><button type="button" data-nav="settings">Settings</button></nav><button type="button" class="journey-self" data-nav="self">Self Mode</button></header><section class="journey-heading"><h1>Your learning journey</h1><p>Read. Understand. Write. Move forward.</p></section><section class="journey-grid" aria-label="Six gem stations"><svg class="journey-rail" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true"><path d="M166 142 H500 H834 V458 H500 H166" fill="none" stroke="#f2c75d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="18 16" opacity=".94"/></svg></section>`;
+ shell.innerHTML=`${journeyBackdropSVG()}<header class="journey-topbar"><div class="journey-logo" aria-label="READwy">R</div><div class="journey-brand">READwy Reading Lab</div><nav class="journey-nav" aria-label="Reading Lab navigation"><button type="button" data-nav="home">Home</button><button type="button" data-nav="map">Journey Map</button><button type="button" data-nav="portfolio">Portfolio</button><button type="button" data-nav="certificates">Certificates</button><button type="button" data-nav="settings">Settings</button></nav><button type="button" class="journey-self" data-nav="self">Self Mode</button></header><section class="journey-heading"><h1>Your learning journey</h1><p>Read. Understand. Write. Move forward.</p></section><section class="journey-grid" aria-label="Six gem stations"><svg class="journey-rail" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true"><path d="M166 58 H834 Q850 58 850 74 V526 Q850 542 834 542 H166" fill="none" stroke="#465f6d" stroke-width="28" stroke-linecap="round"/><g class="journey-sleepers" stroke="#b58a53" stroke-width="8" stroke-linecap="round" opacity=".72">${Array.from({length:17},(_,i)=>`<path d="M${190+i*40} 40v36"/>`).join('')}${Array.from({length:12},(_,i)=>`<path d="M832 ${100+i*38}h36"/>`).join('')}${Array.from({length:17},(_,i)=>`<path d="M${190+i*40} 524v36"/>`).join('')}</g><path d="M166 51 H834 Q857 51 857 74 V526 Q857 549 834 549 H166" fill="none" stroke="#a37d43" stroke-width="5" stroke-linecap="round"/><path d="M166 65 H834 Q843 65 843 74 V526 Q843 535 834 535 H166" fill="none" stroke="#d2ae69" stroke-width="5" stroke-linecap="round"/><g class="journey-train" transform="translate(${tp[0]-80} ${tp[1]-22}) scale(.6)" aria-label="Train at the current station"><ellipse cx="22" cy="8" rx="10" ry="5" fill="#fff" opacity=".72"><animate attributeName="opacity" values=".7;.2;.7" dur="2s" repeatCount="indefinite"/></ellipse><ellipse cx="11" cy="-2" rx="7" ry="4" fill="#fff" opacity=".52"/><path d="M3 30h42a8 8 0 0 0 8-8v-8H31l-6-9H13v17H3z" fill="#bb3c3a" stroke="#263d55" stroke-width="3"/><path d="M16 9h9l5 7H16zM35 17h11v5H35z" fill="#bde8f0" stroke="#263d55" stroke-width="2"/><path d="M9 29h42v6H9z" fill="#d9a441" stroke="#263d55" stroke-width="2"/><circle cx="19" cy="37" r="5" fill="#25374b" stroke="#f1d27a" stroke-width="2"/><circle cx="40" cy="37" r="5" fill="#25374b" stroke="#f1d27a" stroke-width="2"/><path d="M53 18h7v15h-7zM57 11l5 7h-9z" fill="#e1ae45" stroke="#263d55" stroke-width="2"/></g></svg></section>`;
  pl.replaceChildren(shell);shell.querySelector('.journey-heading').after(document.getElementById('caption'));
  const grid=shell.querySelector('.journey-grid');
  for(const c of pathOrder){
-  const lv=LV[c],open=lvOpen(c),done=lvDone(c)===10,now=c===cu.c&&!cu.all,read=lvRead(c),write=lvWrite(c),name=c===5?'Diamond Grand Central':lv.name,crop=JOURNEY_CROPS[c];
+  const lv=LV[c],open=lvOpen(c),done=lvDone(c)===10,now=c===cu.c&&!cu.all,read=lvRead(c),write=lvWrite(c),name=c===5?'Diamond Grand Central':lv.name;
   const status=done?'Completed':now?'Current station':open?'Open':'Locked';
-  const node=document.createElement('article');node.className='journey-station';node.dataset.station=String(c);
+  const node=document.createElement('article');node.className='journey-station'+(now?' is-current':'')+(open||done?'':' is-locked');node.dataset.station=String(c);
   if(c<3){node.style.gridColumn=String(c+1);node.style.gridRow='1'}else{node.style.gridColumn=String(6-c);node.style.gridRow='2'}
   node.style.setProperty('--station-color',lv.hex);
-  node.innerHTML=`<button type="button" class="journey-crop" data-crop="${crop.join(',')}" aria-label="Open ${esc(name)} station">${c===cu.c?'<span class="journey-train" aria-label="Train at the current station"><svg viewBox="0 0 64 44" aria-hidden="true"><path d="M7 25h35a8 8 0 0 0 8-8v-5H31l-5-7H13v12H7z" fill="#f4c74d" stroke="#142345" stroke-width="3" stroke-linejoin="round"/><path d="M15 9h8l4 6H15zM34 14h10v6H34z" fill="#8ed7ff" stroke="#142345" stroke-width="2"/><path d="M8 25h41v7H8z" fill="#b83232" stroke="#142345" stroke-width="2"/><circle cx="18" cy="34" r="6" fill="#142345" stroke="#f4c74d" stroke-width="3"/><circle cx="40" cy="34" r="6" fill="#142345" stroke="#f4c74d" stroke-width="3"/><path d="M52 17h7v15h-7zM56 11l4 6h-8z" fill="#d94832" stroke="#142345" stroke-width="2"/></svg></span>':''}</button><div class="journey-card"><div class="journey-card-head"><span class="journey-gem-name">${esc(name)}</span><span class="journey-badge">${status}</span></div><div class="journey-metric"><span>Reading</span><span class="journey-meter"><i style="width:${read*10}%"></i></span><span>${read}/10</span></div><div class="journey-metric"><span>Writing</span><span class="journey-meter blue"><i style="width:${write*10}%"></i></span><span>${write}/10</span></div><button type="button" class="journey-action${now?'':' secondary'}" ${open||done?'':'disabled'}>${now?'Start reading':done?'Review':'Open'}</button></div>`;
+  node.innerHTML=`<button type="button" class="journey-crop" aria-label="Open ${esc(name)} station">${journeyStationSVG(c,name,now,!(open||done))}</button><div class="journey-card"><div class="journey-card-head"><span class="journey-gem-name">${esc(name)}</span><span class="journey-badge">${status}</span></div><div class="journey-metric"><span>Reading</span><span class="journey-meter"><i style="width:${read*10}%"></i></span><span>${read}/10</span></div><div class="journey-metric"><span>Writing</span><span class="journey-meter blue"><i style="width:${write*10}%"></i></span><span>${write}/10</span></div><button type="button" class="journey-action${now?'':' secondary'}" ${open||done?'':'disabled'}>${now?'Start reading':done?'Review':'Open'}</button></div>`;
   const stationAction=()=>{ac();SFX.pop();if(open||done)station(c);else{SFX.buzz();notice(`🔒 Finish ${LV[c-1]?.name||'the previous station'} to unlock ${lv.name}.`)}};
   node.querySelector('.journey-crop').onclick=stationAction;
   node.querySelector('.journey-action').onclick=stationAction;
@@ -872,7 +966,7 @@ function closeSheet(){document.getElementById('sheet').classList.remove('on')}
 document.getElementById('sheetClose').onclick=closeSheet;document.getElementById('sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
 
 /* Shared My Progress overlay (single instance, no duplicate IDs/listeners). */
-let _progEscBound=false,_progDrag=null,_progSuppressClick=0;
+let _progEscBound=false,_progDrag=null,_progSuppressClick=0;function _progEscHandler(e){if(e.key!=='Escape')return;const d=document.getElementById('rl-progress-drawer');if(d&&d.getAttribute('aria-hidden')==='false'){e.preventDefault();setProgressOpen(false)}}
 function clearProgressOverlay(){
  try{
   ['rl-progress-toggle','rl-progress-backdrop','rl-progress-drawer'].forEach(id=>document.getElementById(id)?.remove());
@@ -880,15 +974,10 @@ function clearProgressOverlay(){
   _progDrag=null;
  }catch(e){console.error('clearProgressOverlay failed',e)}
 }
-function _progEscHandler(e){
- if(e.key!=='Escape')return;
- const d=document.getElementById('rl-progress-drawer');
- if(d&&d.getAttribute('aria-hidden')==='false'){e.preventDefault();setProgressOpen(false)}
-}
 function progressBodyHTML(){
  const rd=sum(lvRead),wr=sum(lvWrite),completed=sum(lvDone),cu=current(),st=cu.all?'done':stage(cu.c,cu.n),b=book(cu.c,cu.n),step={read:'Read',quiz:'Questions',write:'Write',done:'Done'}[st],earned=[0,1,2,3,4,5].filter(c=>lvDone(c)===10).length;
  const stat=(label,value,total,color='')=>`<div class="progress-stat"><b>${label}</b><b>${value}/${total}</b><div class="progress-bar"><i style="width:${Math.min(100,value/total*100)}%;${color?'background:'+color:''}"></i></div></div>`;
- return `<section aria-label="Reading and writing totals">${stat('Reading',rd,60)}${stat('Writing',wr,60,'linear-gradient(90deg,#65a8ff,#2860d5)')}${stat('Completed texts',completed,60)}</section><h3>Current task</h3><section class="progress-task"><b>${esc(LV[cu.c].name)} · Text ${cu.n}</b><div>${esc(b?.title||'Journey complete')}</div><div style="margin:6px 0;color:#465775;font-weight:900">Step: ${step}</div><button type="button" class="journey-action" id="journey-progress-continue">${cu.all?'View certificates':'Continue'}</button></section><h3>Ollie’s tip</h3><p style="margin:0;padding:11px;border-radius:12px;background:#fff9e9">${st==='read'?'Read carefully and take your time.':st==='quiz'?'Use what you remember from the passage to answer each question.':st==='write'?'Use your own words and check that every sentence supports your ideas.':'Great work—finish the next open text when you are ready.'}</p><h3>Certificate goal</h3><section class="progress-task"><b>${lvDone(5)===10?'Diamond certificate earned':'Complete Diamond 10'}</b><div style="margin-top:5px">${earned}/6 level certificates earned · ${lvDone(5)}/10 Diamond texts complete</div></section>`;
+ return `<section aria-label="Reading and writing totals">${stat('Reading',rd,60)}${stat('Writing',wr,60,'linear-gradient(90deg,#65a8ff,#2860d5)')}${stat('Completed texts',completed,60)}</section><h3>Current task</h3><section class="progress-task"><b>${esc(LV[cu.c].name)} · Text ${cu.n}</b><div>${esc(b?.title||'Journey complete')}</div><div class="progress-step">Step: ${step}</div><button type="button" class="journey-action" id="journey-progress-continue">${cu.all?'View certificates':'Continue'}</button></section><h3>Ollie’s tip</h3><p style="margin:0;padding:11px;border-radius:12px;background:#fff9e9">${st==='read'?'Read carefully and take your time.':st==='quiz'?'Use what you remember from the passage to answer each question.':st==='write'?'Use your own words and check that every sentence supports your ideas.':'Great work—finish the next open text when you are ready.'}</p><h3>Certificate goal</h3><section class="progress-task"><b>${lvDone(5)===10?'Diamond certificate earned':'Complete Diamond 10'}</b><div style="margin-top:5px">${earned}/6 level certificates earned · ${lvDone(5)}/10 Diamond texts complete</div></section>`;
 }
 function _progIsOpen(){const d=document.getElementById('rl-progress-drawer');return !!(d&&d.getAttribute('aria-hidden')==='false')}
 function setProgressOpen(open){
