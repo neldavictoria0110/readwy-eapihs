@@ -515,6 +515,59 @@ textarea{-webkit-user-select:text;user-select:text}
 .rl-wportrait .rl-wstage{background:linear-gradient(180deg,#13203d 0%,#1b2d57 55%,#101a33 100%)}
 .rl-wportrait .rl-wfoot{display:flex;position:absolute;left:0;right:0;bottom:0;justify-content:center;padding:24px 18px calc(24px + env(safe-area-inset-bottom))}
 .rl-wportrait .rl-wfoot .rl-start{width:min(100%,520px);font-size:34px;min-height:76px}
+
+/* ---------- Page 2 (placement), matched to design/placement-reference.png ---------- */
+.rl-pl{height:100dvh;min-height:0;overflow:hidden;align-items:center;gap:0;padding:8px clamp(10px,1.6vw,28px) 88px}
+.rl-pl>.rl-topbar{align-self:stretch}
+.rl-pl-banner{position:relative;flex:none;margin:28px 0 40px;width:min(1180px,64vw);filter:drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.rl-pl-plaque{display:flex;align-items:center;justify-content:center;gap:clamp(12px,1.4vw,26px);padding:12px 40px 38px;background:radial-gradient(130% 120% at 50% 0%,#24407a,#14275a 55%,#0e1d44);border:3px solid #e8bf5a;border-radius:46px;box-shadow:inset 0 0 0 5px #13264f,inset 0 0 0 7.5px #c99a3d}
+.rl-pl-plaque h1{margin:0;font:700 clamp(40px,min(3vw,5.4vh),56px)/1.08 Fredoka,Nunito,sans-serif;letter-spacing:.005em;color:#ffe7a6;background:linear-gradient(180deg,#fff7dc 0%,#ffe3a0 45%,#f3c25c 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 0 #3a2706) drop-shadow(0 3px 6px rgba(0,0,0,.45));white-space:nowrap}
+.rl-pl-wreath{flex:none;width:clamp(40px,2.8vw,56px);height:auto}
+.rl-pl-wreath.r{transform:scaleX(-1)}
+.rl-pl-ribbon{position:absolute;left:50%;bottom:0;transform:translate(-50%,42%);white-space:nowrap;padding:.3em 2.1em .36em;background:linear-gradient(#fff9e6,#f6e5b8 55%,#e8cc8b);color:#14254a;font:700 clamp(22px,min(1.6vw,2.8vh),28px)/1.15 Fredoka,Nunito,sans-serif;clip-path:polygon(0 0,100% 0,97.2% 50%,100% 100%,0 100%,2.8% 50%);border-top:2px solid #fffaf0;border-bottom:3px solid #c39a48}
+.rl-pl-body{flex:1;min-height:0;width:min(1420px,74vw);display:flex;flex-direction:column;gap:12px}
+.rl-pl-cards{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1vw,20px)}
+.rl-pl-col{position:relative;min-height:0;display:flex;flex-direction:column}
+.rl-pl-head{position:relative;z-index:2;flex:none;display:flex;align-items:center;justify-content:center;gap:.4em;min-height:68px;margin:0;padding:6px 18px;border-radius:999px;border:3px solid var(--c);background:linear-gradient(#ffffff,var(--t1));color:#0e1b3e;font:700 clamp(26px,min(1.7vw,3vh),32px)/1 Fredoka,Nunito,sans-serif;white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,.22)}
+.rl-pl-col.now .rl-pl-head{box-shadow:0 0 0 3px rgba(255,255,255,.6),0 0 22px var(--c2),0 4px 10px rgba(0,0,0,.22)}
+.rl-pl-num{flex:none;display:grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;color:#fff;background:radial-gradient(circle at 35% 30%,var(--c2),var(--c1) 55%,var(--c));box-shadow:inset 0 2px 0 rgba(255,255,255,.4),0 2px 4px rgba(0,0,0,.3);font-size:1.02em}
+.rl-pl-num.done{background:radial-gradient(circle at 35% 30%,#8be06a,#3aa51e 55%,#237312)}
+.rl-pl-card{position:relative;flex:1;min-height:0;margin-top:-16px;padding:30px clamp(14px,1.2vw,24px) 22px;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,1.6vh,18px);text-align:center;border:3px solid var(--c);border-radius:26px;background:linear-gradient(180deg,#fffefb 0%,var(--t1) 48%,var(--t2) 100%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.75),0 10px 22px rgba(0,0,0,.32)}
+.rl-pl-badge{flex:none;display:inline-flex;align-items:center;gap:.4em;padding:.28em .85em;border-radius:999px;background:#ece8de;border:1.5px solid #d6cfbf;color:#1d2440;font:700 clamp(18px,1.15vw,20px)/1.1 Nunito,sans-serif}
+.rl-pl-badge.on{background:#e3f4d9;border-color:#8dc779;color:#205d20}
+.rl-pl-ring{display:inline-block;width:.95em;height:.95em;border-radius:50%;border:3px solid #8b8f98;background:#d9dce2}
+.rl-pl-say{flex:1;display:grid;place-items:center;margin:0;color:#14254a;font:700 clamp(24px,min(1.6vw,2.9vh),30px)/1.25 Fredoka,Nunito,sans-serif}
+.rl-pl-say.small{flex:none;font-size:clamp(22px,min(1.3vw,2.5vh),26px)}
+.rl-pl-gems{flex:1;min-height:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:8px}
+.rl-pl-gem{min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px 2px;border:0;border-radius:14px;background:rgba(246,239,224,.85);color:#14254a;font:inherit}
+.rl-pl-gem .rl-gemsvg{width:clamp(40px,min(2.9vw,5vh),56px);height:auto;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.rl-pl-gem b{font:700 18px/1 Nunito,sans-serif}
+.rl-pl-gem.best{background:#e6f0cc;box-shadow:0 0 0 3px #2f8f10}
+.rl-pl-gem.off{opacity:.4}
+.rl-pl-best{font:900 14px/1 Nunito,sans-serif;color:#1f4d0f}
+.rl-pl-btn{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:.4em;width:min(100%,330px);min-height:60px;padding:6px 18px;border-radius:999px;font:700 clamp(22px,1.4vw,26px)/1 Fredoka,Nunito,sans-serif;cursor:pointer;transition:filter .12s,transform .12s}
+.rl-pl-btn.gold{color:#17213f;border:3px solid #fff1b5;background:linear-gradient(180deg,#fff19a 0%,#ffd84a 32%,#f6b71e 70%,#e7990c 100%);box-shadow:0 0 0 2px #b77a10,0 4px 0 #a3680e,0 0 18px rgba(255,205,80,.55)}
+.rl-pl-btn.ghost{color:#17213f;border:3px solid #e3c372;background:linear-gradient(#fffef8,#f3e9d2);box-shadow:0 0 0 1.5px #c49a43,0 4px 0 #c3a466}
+.rl-pl-btn:hover,.rl-pl-btn:focus-visible{filter:brightness(1.06);transform:translateY(-1px);outline:none}
+.rl-pl-btn:focus-visible{box-shadow:0 0 0 3px #fff,0 0 0 6px #1f5fd6}
+.rl-pl-btn:active{transform:scale(.97)}
+.rl-pl-bar{flex:none;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.25em .8em;min-height:64px;padding:6px 22px;border-radius:999px;color:#fff;background:linear-gradient(#22396b,#10224a);border:3px solid #e2b24c;box-shadow:inset 0 0 0 2px #0d1c3c,0 6px 14px rgba(0,0,0,.35);font:700 clamp(19px,1.2vw,22px)/1.2 Fredoka,Nunito,sans-serif}
+.rl-pl-bar>b{font-size:1.12em;color:#fff6dc}
+.rl-pl-bar>i{width:2px;height:1.3em;background:#e2b24c;opacity:.85}
+.rl-pl-star{display:inline-flex;font-size:40px}
+.rl-pl-bargems{display:inline-flex;gap:6px}
+.rl-pl-bargems .rl-gemsvg{width:36px;height:auto;filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+.rl-pl-strip{flex:none;display:flex;align-items:center;justify-content:center;gap:.5em;min-height:52px;padding:4px 22px;border-radius:999px;color:#14254a;background:linear-gradient(#fffcf2,#f6ecd4);border:2px solid #e2cd96;box-shadow:0 4px 12px rgba(0,0,0,.25);font:700 clamp(19px,1.2vw,22px)/1.2 Fredoka,Nunito,sans-serif;text-align:center}
+.rl-pl-trophy{display:inline-flex;font-size:30px}
+body:has(.rl-pl) #caption{width:max-content!important;max-width:min(96vw,1760px)!important;bottom:16px!important;font-size:22px!important;padding:.4em 1.2em!important;line-height:1.3!important}
+.rl-enter-place .rl-pl-banner{animation:rlDrop .42s cubic-bezier(.2,.9,.3,1.15) .16s backwards}
+.rl-enter-place .rl-pl-col,.rl-enter-place .rl-pl-bar,.rl-enter-place .rl-pl-strip{animation:rlRise .38s ease-out backwards;animation-delay:calc(.26s + var(--i,0)*60ms)}
+@media(max-width:760px){
+ .rl-pl{height:auto;min-height:100dvh;overflow:visible;padding-bottom:96px}
+ .rl-pl-banner{width:100%}.rl-pl-plaque{padding:10px 14px 34px}.rl-pl-plaque h1{white-space:normal;text-align:center;font-size:34px}.rl-pl-wreath{display:none}
+ .rl-pl-ribbon{white-space:normal;width:92%;text-align:center;font-size:18px}
+ .rl-pl-body{width:100%}.rl-pl-cards{display:flex;flex-direction:column;gap:18px}.rl-pl-card{min-height:280px}
+}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
@@ -971,25 +1024,41 @@ function startJourney(){narrated=true;ac();startMusic();SFX.whistle();say('All a
  setTimeout(()=>P.start==null?placement(true):dashboard(),450)}
 
 /* ===== 2 · Placement assessment ===== */
+/* Page 3's faceted gem as a standalone SVG, so Page 2 uses the same gems (unique gradient ids per use). */
+let rlGemN=0;
+function rlGem(c,cls=''){const [hi,mid,lo]=GEMC[c],id='rlg'+(++rlGemN);
+ return `<svg class="rl-gemsvg ${cls}" viewBox="104 2 112 98" aria-hidden="true"><defs><linearGradient id="${id}F" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${hi}"/><stop offset=".52" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></linearGradient><linearGradient id="${id}T" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="${hi}"/></linearGradient></defs><path d="M116 26 137 8h46l21 18 8 25-52 43-52-43z" fill="url(#${id}F)" stroke="#fff8dc" stroke-width="2.5"/><path d="m116 26 44 4 23-22h-46z" fill="url(#${id}T)" opacity=".86"/><path d="m116 26 44 4-8 64-44-43z" fill="${mid}" opacity=".87"/><path d="m160 30 23-22 21 18-44 4 8 64z" fill="${hi}" opacity=".92"/><path d="m204 26 8 25-52 43 23-60z" fill="${lo}" opacity=".76"/><path d="m116 26 44 4 44-4M152 94l8-64 8 64M116 26l-8 25m104-25-8 25" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="2"/><path d="m131 23 13-10 8 2-13 13z" fill="#fff" opacity=".94"/></svg>`}
+const RL_WREATH=(flip)=>`<svg class="rl-pl-wreath${flip?' r':''}" viewBox="0 0 60 80" aria-hidden="true"><path d="M44 76C22 64 12 44 18 8" fill="none" stroke="#e8bf5a" stroke-width="3.2" stroke-linecap="round"/><g fill="#f2c14e" stroke="#9c6b17" stroke-width=".9">${[[18,12,-20],[11,24,-40],[24,26,30],[9,38,-55],[24,40,25],[12,52,-65],[28,53,20],[20,64,-75],[35,64,10]].map(([x,y,r])=>`<ellipse cx="${x}" cy="${y}" rx="8.5" ry="4" transform="rotate(${r} ${x} ${y})"/>`).join('')}</g></svg>`;
+const RL_PL_REASSURE='This is your starting point, not a final grade. Work at your own pace — your progress is saved.';
 function placement(intro){show('placement','native-station',pl=>{const pa=P.placement||{},rd=pa.reading!=null,wr=pa.writing!=null,both=rd&&wr;
- // Page 2 (native): banner, left info card with owl slot, three steps with their cards, journey bar, certificate strip.
- const RLC=[['#1c9a6c','#dcf4ea','#4fd3a0','#bfe9d6'],['#2f6fd6','#dfeafc','#6aa4f5','#c5daf8'],['#d9831a','#fdecd6','#f6b552','#f8d6a8']];const rec=pa.rec??null,IC=ICON;
- const stepState=[rd,wr,both],stepNow=[!rd,rd&&!wr,both];
- const gems=LV.map((l,c)=>{const ok=both&&c<=rec,star=both&&c===rec;return `<button type="button" aria-label="Start at ${l.name}" onclick="${ok?`chooseStart(${c})`:`notice('${both?'Choose your recommended level or an easier one.':'Finish the Reading and Writing Experiences first.'}')`}" style="font:inherit;color:inherit;cursor:${ok?'pointer':'not-allowed'};border:0;display:flex;flex-direction:column;align-items:center;gap:.15em;padding:.35em 0;border-radius:.7em;${star?'background:#e6f0cc;box-shadow:0 0 0 .12em #2f8f10':'background:#f6f1e4'};${both&&!ok?'opacity:.4':''}"><span style="font-size:1.7em;display:inline-flex">${gem3d(c)}</span><b style="font-size:.72em">${l.name}</b>${star?'<span style="font-size:.6em;color:#1f4d0f;font-weight:900">⭐ Best</span>':''}</button>`}).join('');
+ // Page 2 (native, matches design/placement-reference.png): banner, three live step cards, journey bar, certificate strip.
+ const rec=pa.rec??null,IC=ICON,stepState=[rd,wr,both],stepNow=[!rd,rd&&!wr,both];
+ const LOCK='<svg viewBox="0 0 20 22" width="1em" height="1.1em" aria-hidden="true"><path d="M5 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="#9a6a12" stroke-width="2.6"/><rect x="2.5" y="9.5" width="15" height="11" rx="2.5" fill="#f2b62f" stroke="#9a6a12" stroke-width="1.4"/><circle cx="10" cy="15" r="1.8" fill="#7a4f0a"/></svg>';
+ const badge=(txt,on)=>{const t=String(txt);const lock=t.startsWith('🔒'),ring=t.startsWith('○'),done=t.startsWith('✔');const label=t.replace(/^(🔒|○|✔)\s*/,'');
+  return `<span class="rl-pl-badge${on?' on':''}">${lock?LOCK:ring?'<i class="rl-pl-ring"></i>':done?'<b aria-hidden="true">✔</b>':''}<span>${esc(label)}</span></span>`};
+ const btnLabel=t=>String(t).startsWith('🔒')?`${LOCK}<span>${esc(String(t).replace(/^🔒\s*/,''))}</span>`:esc(t);
+ // live gem grid: same rules and handlers as before (recommended level or easier; the best one is highlighted)
+ const gems=LV.map((l,c)=>{const ok=both&&c<=rec,star=both&&c===rec;return `<button type="button" class="rl-pl-gem${star?' best':''}${both&&!ok?' off':''}" aria-label="Start at ${l.name}" onclick="${ok?`chooseStart(${c})`:`notice('${both?'Choose your recommended level or an easier one.':'Finish the Reading and Writing Experiences first.'}')`}" style="cursor:${ok?'pointer':'not-allowed'}">${rlGem(c)}<b>${l.name}</b>${star?'<span class="rl-pl-best">⭐ Best</span>':''}</button>`}).join('');
  const cards=[
   {step:'Reading Experience',state:rd?`✔ Done · ${pa.reading}/${pa.readingOf||PLACE.questions.length}`:'○ Not started',on:rd,say:'Read a short story, then answer questions from memory.',btn:rd?'✔ Completed':'Start reading ›',cls:rd?'ghost':'gold pulse',fn:()=>rd?notice('Reading Experience is done.'):journey()},
   {step:'Writing Experience',state:wr?`✔ Done · ${pa.writing.r.total}/20`:rd?'○ Ready':'🔒 After reading',on:wr,say:'Write about a journey you remember, in your own words.',btn:wr?'✔ Completed':'Start writing ›',cls:wr?'ghost':rd?'gold pulse':'ghost',fn:()=>wr?notice('Writing Experience is done.'):(rd||DEV)?placeWriting():notice('Finish the Reading Experience first.')},
   {step:'Reading Level',state:both?`${LV[rec].name} recommended`:'🔒 After both',on:both,say:'Your results show your best starting station.',gems:true,btn:both?`Start at ${LV[rec].name} ›`:'🔒 Locked',cls:both?'gold pulse':'ghost',fn:()=>(both||DEV)?chooseStart(rec):notice('Finish the Reading and Writing Experiences first.')}];
- const cols=cards.map((k,i)=>{const [c0,c1,c2,c3]=RLC[i],done=stepState[i]&&i<2,now=stepNow[i];
-  return `<div class="rl-col" style="--c:${c0};--c1:${c1};--c2:${c2};--c3:${c3};--i:${i+1}"><div class="rl-step${done?' done':''}${now?' now':''}"><span class="rl-step-num">${done?'✓':i+1}</span><span>${k.step}</span></div><div class="rl-pcard"><span class="chip ${k.on?'cg':'cl'}">${k.state}</span>${k.gems?`<p class="rl-pcard-say small">${k.say}</p><div class="rl-gemgrid">${gems}</div>`:`<p class="rl-pcard-say">${k.say}</p>`}<button type="button" class="rl-pbtn ${k.cls}" data-card="${i}">${k.btn}</button></div></div>`}).join('');
- const page=document.createElement('div');page.className='rl-page rl-placement';
- page.innerHTML=`${rlToolbar('main',{back:true})}<div class="rl-p-banner"><h1>${RL_LAUREL('l')}<span>Placement Assessment Station</span>${RL_LAUREL('r')}</h1><div class="rl-p-sub">Let’s find a comfortable place to start your journey.</div></div>
- <div class="rl-p-main"><aside class="rl-p-left" style="--i:0"><div class="rl-p-owl rl-owl-slot owlrig">${rlOwl('owl-ticket.png','Ollie the owl holding a reading ticket')}</div><div class="rl-p-info"><div class="rl-p-green">Your starting point, not a final grade</div><p>Read a short passage, answer a few questions, and share your ideas in writing.</p><div class="rl-p-pill">${RL_ICON.clock}Work at your own pace</div><div class="rl-p-pill">${RL_ICON.cloud}Your progress is saved</div></div></aside>
- <section class="rl-p-right"><div class="rl-cards">${cols}</div><div class="rl-p-journey" style="--i:4">${IC('star')}<b>Your journey:</b><span class="rl-p-gems">${LV.map((l,c)=>gem3d(c)).join('')}</span><b>6 stations</b>·<b>10 texts each</b>·<b>60 readings + 60 writings</b></div><div class="rl-p-finish" style="--i:5">${IC('trophy')}<span>Finish each station to earn a certificate — Diamond completes the journey!</span></div></section></div>`;
+ const TONE=[['#1f9d57','#24b56a','#58d08e','#e9f8ef','#c9eed8'],['#2a63d4','#3b7cf0','#7aaaf7','#eaf1fd','#cfdffa'],['#de8f12','#f2a51d','#f7c45a','#fdf3e1','#f8e1b4']];
+ const cols=cards.map((k,i)=>{const [c0,c1,c2,t1,t2]=TONE[i],done=stepState[i]&&i<2,now=stepNow[i];
+  return `<section class="rl-pl-col${now?' now':''}" style="--c:${c0};--c1:${c1};--c2:${c2};--t1:${t1};--t2:${t2};--i:${i+1}" aria-label="Step ${i+1}: ${k.step}"><h2 class="rl-pl-head"><span class="rl-pl-num${done?' done':''}">${done?'✓':i+1}</span><span>${k.step}</span></h2><div class="rl-pl-card">${badge(k.state,k.on)}${k.gems?`<p class="rl-pl-say small">${k.say}</p><div class="rl-pl-gems">${gems}</div>`:`<p class="rl-pl-say">${k.say}</p>`}<button type="button" class="rl-pl-btn ${k.cls}" data-card="${i}">${btnLabel(k.btn)}</button></div></section>`}).join('');
+ const page=document.createElement('div');page.className='rl-page rl-pl';
+ page.innerHTML=`${rlToolbar('main',{back:true})}<header class="rl-pl-banner"><div class="rl-pl-plaque">${RL_WREATH(false)}<h1>Placement Assessment Station</h1>${RL_WREATH(true)}</div><div class="rl-pl-ribbon">Let’s find a comfortable place to start your journey.</div></header>
+ <div class="rl-pl-body"><div class="rl-pl-cards">${cols}</div>
+ <div class="rl-pl-bar" style="--i:4"><span class="rl-pl-star">${IC('star')}</span><b>Your Journey:</b><span class="rl-pl-bargems">${LV.map((l,c)=>rlGem(c)).join('')}</span><i aria-hidden="true"></i><span>6 stations</span><i aria-hidden="true"></i><span>10 texts each</span><i aria-hidden="true"></i><span>60 readings + 60 writings</span></div>
+ <div class="rl-pl-strip" style="--i:5"><span class="rl-pl-trophy">${IC('trophy')}</span><span>Finish each station to earn a certificate — Diamond completes the journey!</span></div></div>`;
  pl.replaceChildren(page);
  wireToolbar(page,{back:()=>P.start==null?welcome():dashboard(),progress:dashboard});
- page.querySelectorAll('.rl-pbtn').forEach(b=>b.onclick=e=>{e.stopPropagation();ac();SFX.pop();cards[+b.dataset.card].fn()});
-});if(intro)setTimeout(()=>say(`Welcome aboard, ${first()}! Your journey has three parts: a reading experience, a writing experience, and then your reading level.`),300)}
+ page.querySelectorAll('.rl-pl-btn').forEach(b=>b.onclick=e=>{e.stopPropagation();ac();SFX.pop();cards[+b.dataset.card].fn()});
+});
+ // Ollie's caption carries the reassurance from the old left card (shown even when sound is off)
+ const msg=intro?`Welcome aboard, ${first()}! Your journey has three parts: a reading experience, a writing experience, and then your reading level. ${RL_PL_REASSURE}`:RL_PL_REASSURE;
+ setTimeout(()=>{if(S.scene!=='placement')return;if(muted||!('speechSynthesis' in window)){caption(RL_PL_REASSURE);setTimeout(()=>{if(S.scene==='placement')caption('')},7000)}else say(msg)},300)}
+
 // Reading Inventory: read (and reread) the passage freely; once the comprehension test starts, the passage closes.
 function placeReading(){if(P.placement?.testing&&P.placement.reading==null)return placeTest();S.place=true;S.page=P.bookmarks.place||0;reading()}
 // Placement comprehension test: shown on the Reading time page itself, titled "Comprehension Test", one question at a time in the reading frame. The passage is closed.
