@@ -581,6 +581,149 @@ body:has(.rl-pl) #caption{width:max-content!important;max-width:min(96vw,1760px)
 .rl-tip-owl{flex:none;height:140px;width:auto;filter:drop-shadow(0 4px 5px rgba(0,0,0,.25))}
 .rl-tip-bubble{position:relative;flex:1;margin:0 0 34px;padding:12px 14px;border-radius:16px;background:#fff9e9;border:2px solid #e2cd96;color:#172743;font:700 17px/1.4 Nunito,sans-serif;box-shadow:0 3px 8px rgba(0,0,0,.12)}
 .rl-tip-bubble::before{content:'';position:absolute;left:-11px;bottom:18px;width:18px;height:18px;background:#fff9e9;border-left:2px solid #e2cd96;border-bottom:2px solid #e2cd96;transform:rotate(45deg)}
+
+/* ===== Native later screens: shared kit ===== */
+.rl-screen{height:100dvh;min-height:0;overflow:hidden;align-items:center;gap:12px;padding:8px clamp(10px,1.6vw,28px) 100px}
+.rl-screen>.rl-topbar{align-self:stretch}
+.rl-s-head{flex:none;display:flex;flex-direction:column;align-items:center;gap:26px;margin-top:4px}
+.rl-s-banner{position:relative;filter:drop-shadow(0 8px 14px rgba(0,0,0,.4))}
+.rl-s-plaque{padding:6px 34px 22px;border-radius:36px}
+.rl-s-plaque h1{font-size:clamp(34px,min(2.4vw,4.2vh),44px)}
+.rl-s-plaque .rl-pl-wreath{width:38px}
+.rl-s-ribbon{display:inline-flex;align-items:center;gap:.4em;font-size:clamp(18px,min(1.2vw,2.2vh),21px);padding:.24em 1.8em .28em;max-width:min(980px,80vw);overflow:hidden;text-overflow:ellipsis}
+.rl-s-ribbon>span{overflow:hidden;text-overflow:ellipsis}
+.rl-s-chipgem{width:30px;height:auto;flex:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.rl-s-steps{display:flex;align-items:center;gap:6px;margin:0;padding:6px 10px;list-style:none;border-radius:999px;background:rgba(255,252,242,.94);border:2px solid #e2cd96;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.rl-s-step{display:flex;align-items:center;gap:.4em;min-height:40px;padding:4px 14px 4px 6px;border-radius:999px;color:#5a6075;font:700 18px/1 Fredoka,Nunito,sans-serif;white-space:nowrap}
+.rl-s-num{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:2px solid currentColor;font-size:16px}
+.rl-s-step.done{color:#1f6b22}
+.rl-s-step.done .rl-s-num{background:#2f8f10;border-color:#2f8f10;color:#fff}
+.rl-s-step.now{color:#fff;background:linear-gradient(#2f9a3e,#1c6a2a);box-shadow:0 0 0 2px #e2b24c}
+.rl-s-step.now .rl-s-num{background:#fff;color:#1c6a2a;border-color:#fff}
+.rl-s-arrow{width:22px;height:2px;background:#c9b37a}
+.rl-s-main{flex:1;min-height:0;width:min(1680px,94vw);display:grid;gap:22px}
+.rl-s-3col{grid-template-columns:clamp(150px,13vw,250px) minmax(0,1fr) clamp(300px,21vw,400px)}
+.rl-reading .rl-s-3col{grid-template-columns:clamp(150px,13vw,250px) minmax(0,760px) clamp(300px,21vw,400px);justify-content:center}
+.rl-s-card{position:relative;min-height:0;border-radius:24px;border:2px solid #e2cd96;background:linear-gradient(180deg,#fffef9,#f8f0de);box-shadow:inset 0 0 0 2px rgba(255,255,255,.7),0 10px 22px rgba(0,0,0,.3);color:#14254a}
+.rl-s-card h3{margin:0 0 10px;font:700 22px/1.1 Fredoka,Nunito,sans-serif;color:#14254a}
+.rl-s-small{margin:4px 0;font:700 16px/1.3 Nunito,sans-serif;color:#3a3f52}
+.rl-s-side{min-height:0;display:flex;flex-direction:column;gap:14px}
+.rl-s-side>.rl-s-card{padding:14px 16px}
+.rl-s-tools{flex:none;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.rl-s-toollabel{font:800 17px/1 Nunito,sans-serif;color:#3a3f52}
+.rl-s-tool{min-width:48px;min-height:48px;padding:6px 14px;border-radius:14px;border:2px solid #d8c592;background:linear-gradient(#fffefa,#f3e9d2);color:#14254a;font:800 17px/1 Nunito,sans-serif;cursor:pointer;transition:filter .12s,transform .12s}
+.rl-s-tool:hover,.rl-s-tool:focus-visible{filter:brightness(1.05);transform:translateY(-1px);outline:none;box-shadow:0 0 0 3px #1f5fd6}
+.rl-s-sep{width:2px;height:30px;background:#e2cd96;margin:0 4px}
+.rl-s-chip{display:inline-block;align-self:flex-start;padding:4px 12px;border-radius:999px;background:#e3f4d9;border:1.5px solid #8dc779;color:#205d20;font:800 16px/1.2 Nunito,sans-serif}
+.rl-s-actions{flex:none;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.rl-s-actions .rl-pl-btn{width:auto;min-width:230px;min-height:56px;font-size:22px}
+.rl-s-saved{font:italic 700 16px/1.2 Nunito,sans-serif;color:#2f6b2f}
+.rl-s-foot{flex:none;margin:0;text-align:center;font:italic 700 16px/1.2 Nunito,sans-serif;color:#5a6075}
+.rl-s-link{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:48px;margin-top:8px;padding:6px 14px;border-radius:14px;border:2px solid #e2cd96;background:#fffdf6;color:#14254a;font:800 17px/1.2 Nunito,sans-serif;text-align:left;cursor:pointer}
+.rl-s-link:hover,.rl-s-link:focus-visible{background:#fff3cf;outline:none;box-shadow:0 0 0 3px #1f5fd6}
+.rl-s-link span{font-size:22px;color:#b07a14}
+/* Ollie column: never overlaps content (own grid column); smaller when space is tight; hidden below 900px */
+.rl-s-owlcol{min-height:0;display:flex;align-items:flex-end;justify-content:center}
+.rl-ollie{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%}
+.rl-ollie-bubble{position:relative;margin:0 0 4px;padding:12px 14px;border-radius:18px;background:#fff9e9;border:2px solid #e2cd96;color:#172743;font:700 17px/1.35 Nunito,sans-serif;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+.rl-ollie-bubble::after{content:'';position:absolute;left:50%;bottom:-10px;width:16px;height:16px;margin-left:-8px;background:#fff9e9;border-right:2px solid #e2cd96;border-bottom:2px solid #e2cd96;transform:rotate(45deg)}
+.rl-ollie-img{display:block;height:clamp(120px,min(16vh,13vw),180px);width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35));animation:rlOllieBob 4s ease-in-out infinite}
+.rl-ollie.rl-tipnew .rl-ollie-img{animation:rlOllieHop .5s cubic-bezier(.3,1.6,.5,1),rlOllieBob 4s ease-in-out .5s infinite}
+.rl-ollie.rl-tipnew .rl-ollie-bubble{animation:rlRise .3s ease-out}
+@keyframes rlOllieBob{50%{transform:translateY(-3px)}}
+@keyframes rlOllieHop{40%{transform:translateY(-14px) scale(1.03)}70%{transform:translateY(0) scale(.98,1.02)}}
+@media(prefers-reduced-motion:reduce){.rl-ollie-img,.rl-ollie.rl-tipnew .rl-ollie-img,.rl-ollie.rl-tipnew .rl-ollie-bubble{animation:none!important}}
+@media(max-width:899px){.rl-s-owlcol{display:none}.rl-s-3col{grid-template-columns:minmax(0,1fr)}}
+body:has(.rl-screen) #caption{width:max-content!important;max-width:min(96vw,1760px)!important;bottom:16px!important;font-size:22px!important;padding:.3em 1.2em .3em .3em!important;line-height:1.3!important}
+/* ----- Reading time ----- */
+.rl-read-card{display:flex;flex-direction:column;gap:10px;padding:16px 26px 14px}
+.rl-read-title{margin:4px 0 0;font:700 clamp(28px,1.9vw,34px)/1.1 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-flowbox{position:relative;flex:1;min-height:0;width:100%;max-width:calc(34.5em + 36px);overflow:hidden;font:600 19px/1.6 Nunito,"Segoe UI",sans-serif;padding:8px 18px;border-radius:14px;background:#fffefa;border:1.5px solid #ece0c2}
+.rl-flowbox .flow{line-height:1.6;color:#151a2e}
+.rl-flowbox .flow p{margin:0 0 .75em}
+.rl-read-src{font-size:.75em!important;color:#6a6f80;font-style:italic}
+.rl-s-pic{flex:none;height:clamp(150px,22vh,240px);overflow:hidden;padding:0!important}
+.rl-s-pic img{border-radius:22px}
+.rl-s-prog{flex:none;font:700 17px/1.3 Nunito,sans-serif}
+.rl-s-prog .rl-prog-t{font:700 22px/1.1 Fredoka,Nunito,sans-serif;margin-bottom:4px}
+.rl-s-prog .rl-prog-bar{height:12px;margin-top:8px;border-radius:99px;background:#e4ddc9;overflow:hidden}
+.rl-s-prog .rl-prog-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#64c43b,#268a21)}
+.rl-s-next{flex:none}
+/* ----- Writing workspace ----- */
+.rl-s-task{flex:none;display:flex;align-items:center;gap:12px;width:min(1680px,94vw);padding:6px 8px 6px 6px;border-radius:999px;background:rgba(255,252,242,.95);border:2px solid #e2cd96;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.rl-s-taskname{flex:none;padding:8px 18px;border-radius:999px;background:#13264f;color:#fff;font:700 19px/1.1 Fredoka,Nunito,sans-serif}
+.rl-s-taskask{font:700 18px/1.3 Nunito,sans-serif;color:#14254a}
+.rl-ws-card{display:flex;flex-direction:column;gap:10px;padding:14px 20px}
+.rl-ws-h{margin:0 8px 0 0;font:700 24px/1 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-editor{position:relative!important;flex:1;min-height:0;font-size:20px;border:2px solid #d8c592;border-radius:14px;padding:.5em .9em}
+.rl-editor:focus{border-color:#1f5fd6;box-shadow:0 0 0 3px rgba(31,95,214,.25)}
+.rl-ws-status{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;font:800 17px/1.2 Nunito,sans-serif;color:#3a3f52}
+.rl-ws-saved{padding:6px 14px;border-radius:999px;background:#e6f2d4;color:#205d20}
+.rl-ws-chips{display:flex;flex-wrap:wrap;gap:8px}
+.rl-ws-chip{min-height:48px;padding:6px 14px;border-radius:12px;border:2px solid #9cc38d;background:#e8f4d6;color:#1f3a22;font:800 17px/1 Nunito,sans-serif;cursor:pointer}
+.rl-ws-chip:hover,.rl-ws-chip:focus-visible{background:#d6ecbd;outline:none;box-shadow:0 0 0 3px #1f5fd6}
+.rl-ws-checks{flex:1;min-height:0}
+.rl-ws-cl .check{font-size:17px;margin:6px 0}
+.rl-s-bottom{flex:none;display:flex;align-items:center;justify-content:center;gap:18px}
+.rl-s-bottom .rl-pl-btn{width:auto;min-width:240px;min-height:56px;font-size:22px}
+.rl-s-unlock{flex:none;margin:-4px 0 0;padding:4px 18px;border-radius:999px;background:rgba(233,250,214,.95);color:#1f4d0f;font:italic 700 17px/1.3 Nunito,sans-serif}
+
+/* ----- Station (native, themed by --tint / --gem) ----- */
+.rl-station{gap:10px;padding-bottom:10px}
+.rl-st-tint{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 115% 95% at 50% 45%,rgba(8,16,36,0) 55%,rgba(8,16,36,.38) 100%),linear-gradient(rgba(var(--tint),.13),rgba(var(--tint),.13))}
+.rl-station{isolation:isolate}
+.rl-station>*:not(.rl-st-tint){position:relative}
+.rl-st-head{flex:none;display:flex;align-items:flex-start;justify-content:center;gap:22px;margin-top:2px;padding-bottom:18px}
+.rl-st-plaque{padding:6px 40px 20px 26px;gap:14px}
+.rl-st-plaque h1{font-size:clamp(40px,min(2.6vw,4.6vh),52px)}
+.rl-st-gem{width:62px;height:auto;flex:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
+.rl-st-head .rl-s-ribbon{font-size:clamp(20px,min(1.25vw,2.3vh),24px)}
+.rl-st-platform{display:flex;align-items:center;gap:.4em;margin-top:12px;padding:8px 18px;border-radius:999px;white-space:nowrap;background:linear-gradient(#24407a,#13264f);border:3px solid #e2b24c;color:#fff6dc;box-shadow:0 6px 14px rgba(0,0,0,.4);font:700 17px/1.1 Fredoka,Nunito,sans-serif;text-align:center}
+.rl-st-platform b{font-size:20px;color:#ffe08a}
+.rl-st-stats{flex:none;display:flex;align-items:center;justify-content:space-around;gap:16px;width:min(1680px,94vw);min-height:54px;padding:6px 22px;border-radius:999px;background:rgba(255,250,238,.96);border:2px solid #e2cd96;box-shadow:0 4px 12px rgba(0,0,0,.25);color:#14254a;font:700 18px/1.2 Nunito,sans-serif;white-space:nowrap}
+.rl-st-level{padding:4px 14px;border-radius:999px;background:#e3f4d9;border:1.5px solid #8dc779;color:#205d20}
+.rl-st-bar{flex:0 1 220px;height:12px;border-radius:99px;background:#e4ddc9;overflow:hidden}
+.rl-st-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#64c43b,#268a21)}
+.rl-st-pct{padding:3px 12px;border-radius:999px;background:#e3f4d9;color:#205d20}
+.rl-st-grid{flex:1;min-height:0;width:min(1680px,94vw);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:14px;overflow-y:auto;overscroll-behavior:contain;padding:4px}
+.rl-st-card{position:relative;min-height:0;display:flex;flex-direction:column;align-items:stretch;gap:5px;padding:8px 8px 10px;border-radius:20px;border:2px solid #e2cd96;background:linear-gradient(180deg,#fffef9,#f8f0de);box-shadow:0 6px 14px rgba(0,0,0,.28);color:#14254a;font:inherit;text-align:left;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.rl-st-card:hover,.rl-st-card:focus-visible{transform:translateY(-2px);outline:none;box-shadow:0 0 0 3px #1f5fd6,0 8px 18px rgba(0,0,0,.3)}
+.rl-st-card.now{border-color:#2f9a3e;box-shadow:0 0 0 3px rgba(47,154,62,.55),0 0 26px rgba(80,200,90,.65),0 6px 14px rgba(0,0,0,.28)}
+.rl-st-card.locked{background:linear-gradient(180deg,#f7f4ec,#ece6d8);cursor:not-allowed}
+.rl-st-card.locked .rl-st-thumb{filter:grayscale(.55) brightness(.92)}
+.rl-st-thumb{position:relative;flex:1 1 0;min-height:64px;max-height:150px;border-radius:14px;overflow:hidden}
+.rl-st-num{position:absolute;left:4px;top:4px;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--gem);border:2.5px solid #fff;color:#fff;font:800 17px/1 Nunito,sans-serif;box-shadow:0 2px 4px rgba(0,0,0,.4);text-shadow:0 1px 1px rgba(0,0,0,.4)}
+.rl-st-card.done .rl-st-num{background:#2f7d14}.rl-st-card.locked .rl-st-num{background:#6b6f78}
+.rl-st-ready{position:absolute;right:12px;top:12px;padding:4px 12px;border-radius:999px;background:#2f7d14;color:#fff;font:800 15px/1 Nunito,sans-serif;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.rl-st-lock{position:absolute;right:12px;top:12px;font-size:22px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+.rl-st-title{flex:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.3em;margin:2px 2px 0;font:700 18px/1.15 Fredoka,Nunito,sans-serif;color:#0e1b3e}
+.rl-st-genre{flex:none;align-self:flex-start;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 10px;border-radius:999px;background:#e3f4d9;border:1px solid #9cc38d;color:#205d20;font:800 14px/1.3 Nunito,sans-serif}
+.rl-st-row{flex:none;display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;background:#f3ecdb;font:700 15px/1.25 Nunito,sans-serif;white-space:nowrap;overflow:hidden}
+.rl-st-row>span:last-child{margin-left:auto;flex:none}
+.rl-st-ok{color:#2f8f10;font-weight:900}
+.rl-st-ring{display:inline-block;width:14px;height:14px;border-radius:50%;border:2.5px solid #8b8f98}
+.rl-st-btn{flex:none;display:grid;place-items:center;min-height:44px;margin-top:2px;border-radius:999px;background:linear-gradient(#ffe783,#f6bd28 60%,#e99b0b);border:2px solid #b07a14;color:#211800;font:700 17px/1 Fredoka,Nunito,sans-serif;box-shadow:0 2px 0 #a86d12}
+.rl-st-card.locked .rl-st-btn{background:#ddd8ce;border-color:#b5ae9f;color:#4b4a45;box-shadow:none}
+.rl-st-foot{flex:none;display:flex;align-items:center;gap:22px;width:min(1680px,94vw);min-height:132px;padding:8px 20px 8px 14px;border-radius:26px;background:rgba(255,250,238,.97);border:2px solid #e2cd96;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.rl-st-ollie{flex:0 1 560px;display:flex;align-items:center;gap:12px;min-width:0}
+.rl-st-ollie img{flex:none;height:118px;width:auto;filter:drop-shadow(0 4px 5px rgba(0,0,0,.3));animation:rlOllieBob 4s ease-in-out infinite}
+.rl-st-tip{position:relative;margin:0;padding:12px 16px;border-radius:16px;background:#fff9e9;border:2px solid #e2cd96;color:#172743;font:700 17px/1.35 Nunito,sans-serif}
+.rl-st-tip::before{content:'';position:absolute;left:-10px;top:50%;width:16px;height:16px;margin-top:-8px;background:#fff9e9;border-left:2px solid #e2cd96;border-bottom:2px solid #e2cd96;transform:rotate(45deg)}
+.rl-st-chips{flex:1 1 auto;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;font:800 16px/1 Nunito,sans-serif;color:#14254a}
+.rl-st-chips li:not([aria-hidden]){padding:9px 12px;border-radius:999px;background:#fffdf6;border:2px solid #e2cd96;white-space:nowrap}
+.rl-st-chips li[aria-hidden]{color:#2f8f10;font-weight:900}
+.rl-st-actions{flex:none;display:flex;align-items:center;gap:14px}
+.rl-st-actions .rl-pl-btn{width:auto;min-width:200px;min-height:56px;font-size:22px;padding:6px 22px}
+.rl-enter-cards .rl-st-card{animation:rlRise .36s ease-out backwards;animation-delay:calc(.12s + var(--i,0)*40ms)}
+@media(prefers-reduced-motion:reduce){.rl-enter-cards .rl-st-card,.rl-st-ollie img{animation:none!important}}
+@media(max-width:1300px){.rl-st-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:minmax(300px,auto)}.rl-st-chips{display:none}}
+@media(max-width:900px){.rl-st-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rl-st-ollie img{display:none}.rl-st-head{flex-direction:column;gap:6px}}
+@media(max-width:600px){.rl-station{height:auto;min-height:100dvh;overflow:visible}.rl-st-grid{grid-template-columns:minmax(0,1fr);overflow:visible}.rl-st-stats{flex-wrap:wrap;border-radius:22px;white-space:normal}.rl-st-foot{flex-direction:column}.rl-st-actions{flex-direction:column;width:100%}.rl-st-actions .rl-pl-btn{width:100%}}
+/* ----- Caption: a toast under the toolbar (top-right) on native screens; never over content; auto-hides ----- */
+body:has(.rl-screen) #caption{left:auto!important;right:24px!important;top:76px!important;bottom:auto!important;transform:none!important;width:auto!important;max-width:min(460px,40vw)!important;font-size:18px!important;line-height:1.3!important;padding:.3em 1em .3em .3em!important;text-align:left!important;justify-content:flex-start!important;border-radius:18px!important}
+body:has(.rl-screen) #caption .rl-cap-av{width:52px;height:52px}
+@media(min-width:601px){.scene.rl-native:has(.rl-screen){overflow:hidden}}
+.scene.rl-native>.ext,.scene.native-journey>.ext{display:none!important}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
@@ -719,7 +862,7 @@ function pickVoice(){const vs=speechSynthesis?.getVoices?.()||[];for(const r of 
 try{speechSynthesis.onvoiceschanged=()=>{voice=pickVoice()};voice=pickVoice()}catch(e){}
 function owlTalk(on){document.querySelectorAll('.owlrig').forEach(o=>o.classList.toggle('talking',on))}
 const RL_OWL_PAGES_WITHOUT_AVATAR={welcome:1,placement:1};
-function caption(t){const c=document.getElementById('caption');let tx=c.querySelector('.rl-cap-text');if(!tx){c.textContent='';c.insertAdjacentHTML('beforeend',`<span class="rl-cap-av" aria-hidden="true"><img src="${ART}owl.png" alt="" draggable="false"></span><span class="rl-cap-text"></span>`);tx=c.querySelector('.rl-cap-text')}tx.textContent=t||'';c.classList.toggle('rl-cap-noav',!!RL_OWL_PAGES_WITHOUT_AVATAR[S.scene]);c.classList.toggle('on',!!t)}
+function caption(t){const c=document.getElementById('caption');let tx=c.querySelector('.rl-cap-text');if(!tx){c.textContent='';c.insertAdjacentHTML('beforeend',`<span class="rl-cap-av" aria-hidden="true"><img src="${ART}owl.png" alt="" draggable="false"></span><span class="rl-cap-text"></span>`);tx=c.querySelector('.rl-cap-text')}tx.textContent=t||'';c.classList.toggle('rl-cap-noav',!!RL_OWL_PAGES_WITHOUT_AVATAR[S.scene]);c.classList.toggle('on',!!t);clearTimeout(caption.t);if(t)caption.t=setTimeout(()=>{if(tx.textContent===t)c.classList.remove('on')},5000)}
 // [text, rate, pitch, pause after (ms)] — phrase by phrase so Ollie has real pacing, emphasis and pauses
 const NARRATION=[['Well, hello there, reader!',.92,1.32,450],["I'm Ollie, your conductor on the READwy Reading Lab.",.95,1.18,420],["Here's how our adventure works.",.86,1.05,380],['First, a quick placement check finds your best starting station.',.95,1.12,350],['There are six gem stations:',.9,1.15,250],['Emerald… Sapphire… Amber… Ruby… Amethyst…',.82,1.22,300],['and the dazzling Diamond Grand Central!',.98,1.42,520],['At every stop, you read a text, answer the questions, and then write about it.',.92,1.1,380],['Score eight out of ten, finish your writing, and — toot, toot! — the next text opens!',1.0,1.38,450],['Take your time. Read carefully. Write in your own words.',.82,1.0,420],['Ready? Press Start Journey… and all aboard!',1.02,1.4,0]];
 function narrate(lines=NARRATION){if(muted||!('speechSynthesis' in window))return;const k=++tok;speechSynthesis.cancel();let i=0;const nx=()=>{if(k!==tok)return;if(i>=lines.length){owlTalk(false);setTimeout(()=>k===tok&&caption(''),1500);return}const [t,r,p,pz]=lines[i++];const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=Math.min(1.12,Math.max(1,r*1.12));u.pitch=p;caption(t.replace('S R A','READwy Reading Lab'));u.onstart=()=>owlTalk(true);u.onend=u.onerror=()=>{owlTalk(false);setTimeout(nx,Math.min(60,pz*.12))};speechSynthesis.speak(u)};nx()}
@@ -1204,28 +1347,32 @@ function journey(){show('journey','native-map',pl=>{
  const cap=document.getElementById('caption');if(cap)cap.onclick=()=>caption('');
 });setTimeout(()=>{if(S.scene==='journey')say(P.start==null?'Here is your whole journey: six gem stations, ten texts each. Press Start reading at your current station when you are ready.':'Choose a station and continue your reading and writing journey.')},700)}
 /* ===== 5 · Station (the 10 texts of a level) ===== */
-function station(c){if(!lvOpen(c)){SFX.buzz();return notice(`🔒 Finish ${LV[c-1].name} to unlock ${LV[c].name}.`)}S.c=c;show('station','rw05',pl=>{
- nav(pl,{logo:[60,10,470,46],self:[565,12,172,44],home:[792,10,96,46],map:[910,10,145,46],portfolio:[1072,10,115,46],certs:[1203,10,135,46],settings:[1356,10,128,46]});
- // Emerald is painted already. For other gems the painted words are wiped with the banner's own texture and re-lettered, so the text looks printed on the sign/ribbon (no overlay box).
- const stretch=(par,[sx,sy,sw,sh],[dx,dy,dw,dh])=>{const kx=dw/sw,ky=dh/sh;return el(par,'',[dx,dy,dw,dh],'clone',`background-image:url(${ART}rw05.jpg);background-size:calc(${AW*kx}*var(--k)) calc(${AH*ky}*var(--k));background-position:calc(${-sx*kx}*var(--k)) calc(${-sy*ky}*var(--k))`)};
- const print=(r,html,fs,css='')=>el(pl,html,r,'abs',`z-index:2;pointer-events:none;display:flex;align-items:center;justify-content:center;white-space:nowrap;font-size:calc(${fs}*var(--k));${css}`);
- if(c){const sg=el(pl,'',[0,0,AW,AH],'abs',`filter:${HUEG[c]};pointer-events:none;z-index:1`);stretch(sg,[100,100,6,58],[100,94,154,70]).style.borderRadius='calc(8*var(--k))';
-  const bn=stretch(pl,[1056,82,6,54],[584,80,470,58]);bn.style.zIndex=1;stretch(pl,[1056,82,6,54],[488,80,96,68]).style.zIndex=1;
-  const GP=[[536,85],[562,93],[573,117],[563,137],[537,149],[510,139],[497,118],[508,95]];const gw=el(pl,'',[0,0,AW,AH],'abs',`z-index:1;pointer-events:none;filter:${HUEG[c]}`);clone(gw,[490,78,90,78],'clone',outlineMask(GP,490,78,90,78,.6));
-  print([96,92,160,72],`<div style="text-align:center;line-height:1.02;color:#fffaf0;text-shadow:0 .06em 0 #12300f,0 0 .25em #0006"><div style="font:600 .8em 'Segoe UI',Nunito,sans-serif">Platform ${c+1}</div><div style="font:700 1.32em 'Segoe UI',Nunito,sans-serif;letter-spacing:-.01em">${LV[c].name}</div></div>`,24);
-  print([580,80,476,58],`<span style="font:700 1em 'Segoe UI',Nunito,sans-serif;letter-spacing:.005em;background:linear-gradient(#fffdf5,#f3e3c2);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 .05em 0 #07142e) drop-shadow(0 0 .08em #0008)">${LV[c].name} Station</span>`,58)}
- const d=lvDone(c);box(pl,[186,203,1168,40],`<span class="chip cg" style="font-size:1.05em">${LV[c].sub} level</span><span>📚 Texts completed <b>${d} / 10</b></span><span>📖 Reading <b>${lvRead(c)} / 10</b></span><span>✏️ Writing <b>${lvWrite(c)} / 10</b></span><div class="bar" style="width:8em"><i style="width:${d*10}%"></i></div><span class="chip cg">${d*10}%</span>`,{fs:22,css:'display:flex;align-items:center;justify-content:space-around;font-weight:700;background:#fcf1df;border-radius:99px'});
- el(pl,'',[194,262,1186,582],'abs cream','border-radius:1em');
- for(let n=1;n<=10;n++){const b=book(c,n),i=n-1,x=200+(i%5)*236,y=268+Math.floor(i/5)*290,open=tOpen(c,n),dn=tDone(c,n),st=stage(c,n),now=open&&!dn&&(n===1||tDone(c,n-1));
-  const card=document.createElement('button');card.type='button';card.className='card'+(open?'':' locked')+(now?' now':'');card.setAttribute('aria-label',`Text ${n}: ${b.title}`+(open?'':' (locked)'));
-  card.style.cssText=`left:${px(x)};top:${px(y)};width:${px(222)};height:${px(278)};font-size:${px(17)}`;
-  const row=(ic,t,v,ok)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:.12em .5em;font-weight:700;font-size:.92em;background:#f6f1e4;border-radius:.4em;margin:.12em .35em;white-space:nowrap">${ic} ${t}: ${v}<span>${ok?'✅':open?'○':'🔒'}</span></div>`;
-  card.innerHTML=`<div class="thumb" style="height:5.4em;background:linear-gradient(135deg,${gBg(b)},#fff)">${gPic(b)}</div><span class="num" style="background:${dn?'#2f7d14':open?LV[c].hex:'#555'}">${n}</span>${open?'':'<span class="lockb">🔒</span>'}${now?'<span class="chip cg" style="position:absolute;right:.3em;top:.35em;font-size:.8em;background:#2f7d14;color:#fff">Ready</span>':''}
-   <div class="ttl" style="font-size:1.08em;margin:.2em .3em 0;height:2.1em;line-height:1.02;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(b.title)}</div><span class="chip cg" style="font-size:.8em">${esc(b.genre)}</span>${row('📖','Reading',tget(c,n).quizPassed?'Complete':open?(st==='read'?'Not started':'In progress'):'Locked',tget(c,n).quizPassed)}${row('✏️','Writing',tget(c,n).writing?.passed?'Complete':open?'Not started':'Locked',tget(c,n).writing?.passed)}
-   <div style="margin:.3em auto 0;width:82%;height:1.9em;border-radius:99px;display:grid;place-items:center;font:600 1.05em Fredoka;${open?'background:linear-gradient(#ffe27a,#f2a50c);color:#241600':'background:#ddd;color:#555'}">${!open?'🔒 Locked':dn?'Review ›':now&&st==='read'?`Start Text ${n} ›`:'Continue ›'}</div>`;
-  card.onclick=()=>{ac();if(!open){SFX.buzz();return notice(`🔒 Finish Text ${n-1} (reading, questions and writing) first.`)}SFX.pop();S.c=c;S.n=n;dn?feedback():resume(c,n)};pl.appendChild(card)}
- hit(pl,'Back to journey map',[775,928,312,56],journey,'999px');
- const nx=(()=>{for(let n=1;n<=10;n++)if(!tDone(c,n))return n;return 0})();label(pl,[1140,934,318,44],nx?`Continue to Text ${nx} ›`:'Level complete! 🏅',28);hit(pl,'Continue',[1110,926,380,60],()=>nx?resume(c,nx):certSheet(),'999px').classList.add('pulse');
+/* ===== 5 · Station (native template, themed per gem) ===== */
+RL_NATIVE.station=1;
+const RL_ST_TINT=['31,157,76','31,95,214','240,160,32','214,40,60','140,70,210','150,205,240'];
+function station(c){if(!lvOpen(c)){SFX.buzz();return notice(`🔒 Finish ${LV[c-1].name} to unlock ${LV[c].name}.`)}S.c=c;show('station','native-station',pl=>{
+ const lv=LV[c],d=lvDone(c),nx=(()=>{for(let n=1;n<=10;n++)if(!tDone(c,n))return n;return 0})();
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-station rl-enter-cards';page.style.setProperty('--tint',RL_ST_TINT[c]);page.style.setProperty('--gem',lv.hex);
+ const cards=[];for(let n=1;n<=10;n++){const b=book(c,n),open=tOpen(c,n),dn=tDone(c,n),st=stage(c,n),now=open&&!dn&&(n===1||tDone(c,n-1)),t=tget(c,n);
+  const rd=t.quizPassed?'Complete':open?(st==='read'?'Not started':'In progress'):'Locked',wr=t.writing?.passed?'Complete':open?'Not started':'Locked';
+  const ic=(ok)=>ok?'<span class="rl-st-ok" aria-hidden="true">✔</span>':open?'<span class="rl-st-ring" aria-hidden="true"></span>':'<span aria-hidden="true">🔒</span>';
+  cards.push(`<button type="button" class="rl-st-card${open?'':' locked'}${now?' now':''}${dn?' done':''}" data-n="${n}" style="--i:${n-1}" aria-label="Text ${n}: ${esc(b.title)}${open?'':' (locked)'}">
+   <span class="rl-st-thumb" style="background:linear-gradient(135deg,${gBg(b)},#fff)">${gPic(b)}</span><span class="rl-st-num">${n}</span>${now?'<span class="rl-st-ready">Ready</span>':''}${open?'':'<span class="rl-st-lock" aria-hidden="true">🔒</span>'}
+   <span class="rl-st-title">${esc(b.title)}</span><span class="rl-st-genre">${esc(b.genre)}</span>
+   <span class="rl-st-row">📖 Reading: ${rd}${ic(t.quizPassed)}</span><span class="rl-st-row">✏️ Writing: ${wr}${ic(t.writing?.passed)}</span>
+   <span class="rl-st-btn">${!open?'🔒 Locked':dn?'Review ›':now&&st==='read'?`Start Text ${n} ›`:'Continue ›'}</span></button>`)}
+ page.innerHTML=`<div class="rl-st-tint" aria-hidden="true"></div>${rlToolbar('main')}
+ <header class="rl-st-head"><div class="rl-s-banner"><div class="rl-pl-plaque rl-s-plaque rl-st-plaque">${rlGem(c,'rl-st-gem')}<h1>${esc(lv.name)} Station</h1></div><div class="rl-pl-ribbon rl-s-ribbon">Read a story. Check your understanding. Write to move forward.</div></div><div class="rl-st-platform"><span>Platform ${c+1}</span><span aria-hidden="true">·</span><b>${esc(lv.name)}</b></div></header>
+ <div class="rl-st-stats"><span class="rl-st-level">${esc(lv.sub)} level</span><span>📚 Texts completed <b>${d}/10</b></span><span>📖 Reading <b>${lvRead(c)}/10</b></span><span>✏️ Writing <b>${lvWrite(c)}/10</b></span><span class="rl-st-bar" role="progressbar" aria-valuenow="${d*10}" aria-valuemin="0" aria-valuemax="100"><i style="width:${d*10}%"></i></span><b class="rl-st-pct">${d*10}%</b></div>
+ <section class="rl-st-grid" aria-label="${esc(lv.name)} texts">${cards.join('')}</section>
+ <footer class="rl-st-foot"><div class="rl-st-ollie"><img src="${ART}owl.png" alt="Ollie the owl" draggable="false"><p class="rl-st-tip">Complete reading, comprehension and writing to unlock the next text.</p></div>
+  <ol class="rl-st-chips" aria-label="How to unlock the next text"><li>📖 Read</li><li aria-hidden="true">→</li><li>🔍 Comprehension</li><li aria-hidden="true">→</li><li>✏️ Write</li><li aria-hidden="true">→</li><li>🔓 Unlock</li></ol>
+  <div class="rl-st-actions"><button type="button" class="rl-pl-btn ghost rl-st-back">← Back to map</button><button type="button" class="rl-pl-btn gold pulse rl-st-go" aria-label="Continue">${nx?`Continue to Text ${nx} ›`:'Level complete! 🏅'}</button></div></footer>`;
+ pl.replaceChildren(page);rlScreenNav(page);
+ page.querySelectorAll('.rl-st-card').forEach(card=>card.onclick=()=>{const n=+card.dataset.n,open=tOpen(c,n),dn=tDone(c,n);ac();if(!open){SFX.buzz();return notice(`🔒 Finish Text ${n-1} (reading, questions and writing) first.`)}SFX.pop();S.c=c;S.n=n;dn?feedback():resume(c,n)});
+ page.querySelector('.rl-st-back').onclick=e=>{e.stopPropagation();ac();SFX.pop();journey()};
+ page.querySelector('.rl-st-go').onclick=e=>{e.stopPropagation();ac();SFX.pop();nx?resume(c,nx):certSheet()};
+ setTimeout(()=>page.classList.remove('rl-enter-cards'),1200);
 });setTimeout(()=>S.scene==='station'&&say(`${LV[c].name} Station! Pick a text that's ready.`),250)}
 
 /* ===== 6 · Before you read ===== */
@@ -1264,26 +1411,55 @@ const GEMC=[['#b9f7c6','#1f9d4c','#0b5a22'],['#c7e2ff','#1f5fd6','#0b2f86'],['#f
 let gemN=0;function gem3d(c){const [hi,mid,lo]=GEMC[c],i='gm'+(++gemN);return `<svg viewBox="0 0 64 56" width="1.15em" height="1em" style="overflow:visible;filter:drop-shadow(0 .06em .07em rgba(30,20,10,.35))"><defs><linearGradient id="${i}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hi}"/><stop offset=".55" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></linearGradient><linearGradient id="${i}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${hi}"/><stop offset="1" stop-color="${mid}"/></linearGradient></defs><path d="M14 4h36l12 16-30 34L2 20z" fill="url(#${i}a)"/><path d="M14 4h36l12 16H2z" fill="url(#${i}b)"/><path d="M2 20h60M14 4l8 16 10-16 10 16 8-16M22 20l10 34 10-34" stroke="#fff" stroke-width="1.4" fill="none" opacity=".6"/><path d="M18 8l4 8 6-8z" fill="#fff" opacity=".7"/></svg>`}const _P0=BOOKS.find(x=>x.id==='7-1');PLACE.title=_P0.title;PLACE.paragraphs=_P0.paragraphs;PLACE.questions=_P0.questions.map((q,i)=>[q.question,q.choices,'ABCD'.indexOf(_P0.answers[i])]);
 const PLACEB={id:'7-1',title:PLACE.title,genre:'Informational Passage',paragraphs:PLACE.paragraphs,source:'READwy Reading Lab Placement Assessment'};
 // Reading page. With S.place set it shows the Placement Reading Inventory passage instead of a station text.
-function reading(){const c=S.c,n=S.n,pm=!!S.place,b=pm?PLACEB:book(c,n);S.readStart=performance.now();touch();show('reading','rw07',pl=>{
- nav(pl,{logo:[40,10,560,52],self:[630,14,188,46],home:[866,14,110,46],map:[1002,14,158,46],portfolio:[1182,14,140,46],settings:[1358,14,140,46]});
- if(!pm)gemClone(pl,[160,106,44,40],c);if(!pm)box(pl,[208,108,240,38],`${LV[c].name} / Text ${n} of 10`,{fs:pm?17:20,cls:'box',css:'display:flex;align-items:center;white-space:nowrap;font-weight:800;background:#f7f0cf;border-radius:.3em'});
- box(pl,[120,318,912,520],`<div style="padding:.2em .8em"><div class="ttl" style="font-size:2.1em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.title)}</div><span class="chip cg">${pm?'Reading Inventory passage':esc(b.genre)+' • '+LV[c].name+' '+n}</span></div>`,{fs:24});
- const fb=el(pl,`<div class="flow">${b.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}<p class="muted ital" style="font-size:.7em">Source: ${esc(b.source)}</p></div>`,[138,432,880,395],'flowbox');
- box(pl,[1073,255,412,262],`${gPic(b)}`,{fs:88,cls:'box thumb',css:`border-radius:calc(22*var(--k));background:radial-gradient(ellipse at 50% 35%,#fffefa 0,${gBg(b)} 62%,color-mix(in srgb,${gBg(b)} 75%,#8a7a5a));box-shadow:inset 0 0 calc(18*var(--k)) rgba(90,70,40,.18)`});
- const pr=box(pl,[1084,532,398,98],'',{fs:22});
- hit(pl,'Smaller text',[294,264,72,38],()=>{S.fs=Math.max(22,S.fs-3);paginate()},'.4em');hit(pl,'Bigger text',[368,264,72,38],()=>{S.fs=Math.min(42,S.fs+3);paginate()},'.4em');
- hit(pl,'Read aloud',[524,258,208,48],()=>{const t=pageText();if(!t)return;ac();if(speechSynthesis.speaking){speechSynthesis.cancel();caption('');return}const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=.9;u.pitch=1.05;speechSynthesis.speak(u);notice('🔊 Reading this page aloud (tap again to stop)')},'.5em');
- hit(pl,'Bookmark',[808,258,194,48],()=>{P.bookmarks[pm?'place':tid(c,n)]=S.page;save();SFX.ding();notice(`🔖 Bookmarked page ${S.page+1}.`)},'.5em');
+/* ===== Native kit for the later Reading Lab screens (same design system as Page 2) ===== */
+RL_NATIVE.reading=1;RL_NATIVE.workspace=1;
+const RL_STEPS=['Read','Comprehension','Write','Complete'];
+// step bar: `now` = 1-based current step; steps before it are done
+function rlSteps(now){return `<ol class="rl-s-steps" aria-label="Progress steps">${RL_STEPS.map((t,i)=>{const n=i+1,st=n<now?'done':n===now?'now':'next';return `${i?'<li class="rl-s-arrow" aria-hidden="true"></li>':''}<li class="rl-s-step ${st}"${st==='now'?' aria-current="step"':''}><span class="rl-s-num">${st==='done'?'✓':n}</span><span>${t}</span></li>`}).join('')}</ol>`}
+function rlHeader(title,chip,gemC,step){return `<header class="rl-s-head"><div class="rl-s-banner"><div class="rl-pl-plaque rl-s-plaque">${RL_WREATH(false)}<h1>${esc(title)}</h1>${RL_WREATH(true)}</div><div class="rl-pl-ribbon rl-s-ribbon">${gemC!=null?rlGem(gemC,'rl-s-chipgem'):''}<span>${esc(chip)}</span></div></div>${step?rlSteps(step):''}</header>`}
+// Ollie beside his tip; hidden below 900px, where the tip goes to the caption (round avatar) instead
+function rlOllie(tip){return `<aside class="rl-ollie" aria-live="polite"><p class="rl-ollie-bubble"><span class="rl-ollie-tip">${esc(tip)}</span></p><img class="rl-ollie-img" src="${ART}owl.png" alt="Ollie the owl" draggable="false"></aside>`}
+function rlTip(root,text){const a=root.querySelector('.rl-ollie'),t=a?.querySelector('.rl-ollie-tip');if(!t)return;if(t.textContent!==text){t.textContent=text;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){a.classList.remove('rl-tipnew');void a.offsetWidth;a.classList.add('rl-tipnew')}}
+ if(innerWidth<900&&root.__capTip!==text){root.__capTip=text;caption(text);setTimeout(()=>{if(root.isConnected&&root.__capTip===text)caption('')},6000)}}
+function rlScreenNav(page){wireToolbar(page,{progress:()=>{journey();setTimeout(()=>{if(S.scene==='journey')openProgress()},(RL_TRANS_MS||0)+150)}});
+ const m=page.querySelector('.rl-topbar [data-tb="map"]');if(m){const fresh=m.cloneNode(true);m.replaceWith(fresh);fresh.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();journey()})}}
+S.rfs=S.rfs||19;
+/* ===== 7 · Reading time (native) ===== */
+function reading(){const c=S.c,n=S.n,pm=!!S.place,b=pm?PLACEB:book(c,n);S.readStart=performance.now();touch();show('reading','native-station',pl=>{
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-reading';
+ const tool=(cls,label,html)=>`<button type="button" class="rl-s-tool ${cls}" aria-label="${label}">${html}</button>`;
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('Reading time',pm?'Reading Inventory passage':`${LV[c].name} • Text ${n} of 10`,pm?null:c,1)}
+ <div class="rl-s-main rl-s-3col">
+  <div class="rl-s-owlcol">${rlOllie('Take your time. Read again if you need to.')}</div>
+  <section class="rl-s-card rl-read-card" aria-label="Reading passage">
+   <div class="rl-s-tools"><span class="rl-s-toollabel">Text size</span>${tool('rl-fs-dn','Smaller text','A−')}${tool('rl-fs-up','Bigger text','A+')}<span class="rl-s-sep"></span>${tool('rl-aloud','Read aloud','🔊 Read aloud')}${tool('rl-mark','Bookmark','🔖 Bookmark')}</div>
+   <h2 class="rl-read-title">${esc(b.title)}</h2><span class="rl-s-chip">${pm?'Reading Inventory passage':esc(b.genre)+' • '+LV[c].name+' '+n}</span>
+   <div class="rl-flowbox"><div class="flow">${b.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}<p class="rl-read-src">Source: ${esc(b.source)}</p></div></div>
+   <div class="rl-s-actions"><button type="button" class="rl-pl-btn ghost rl-read-back">‹ Back</button><span class="rl-s-saved">✔ Your place is saved</span><button type="button" class="rl-pl-btn gold pulse rl-read-next" aria-label="Next page or finish reading">Next page ›</button></div>
+   <p class="rl-s-foot">Next: comprehension, then your writing activity.</p>
+  </section>
+  <div class="rl-s-side">
+   <div class="rl-s-card rl-s-pic" style="background:radial-gradient(ellipse at 50% 35%,#fffefa 0,${gBg(b)} 62%,color-mix(in srgb,${gBg(b)} 75%,#8a7a5a))">${gPic(b)}</div>
+   <div class="rl-s-card rl-s-prog"></div>
+   <div class="rl-s-card rl-s-next"><h3>🎯 Next steps</h3><button type="button" class="rl-s-link rl-ask">📖 Answer questions <span>›</span></button><button type="button" class="rl-s-link rl-towrite">✏️ Complete writing task <span>›</span></button></div>
+  </div>
+ </div>`;
+ pl.replaceChildren(page);rlScreenNav(page);
+ const on=(sel,fn)=>page.querySelector(sel).addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();fn()});
+ on('.rl-fs-dn',()=>{S.rfs=Math.max(16,S.rfs-2);paginate()});on('.rl-fs-up',()=>{S.rfs=Math.min(28,S.rfs+2);paginate()});
+ on('.rl-aloud',()=>{const t=pageText();if(!t)return;ac();if(speechSynthesis.speaking){speechSynthesis.cancel();caption('');return}const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=.9;u.pitch=1.05;speechSynthesis.speak(u);notice('🔊 Reading this page aloud (tap again to stop)')});
+ on('.rl-mark',()=>{P.bookmarks[pm?'place':tid(c,n)]=S.page;save();SFX.ding();notice(`🔖 Bookmarked page ${S.page+1}.`)});
  // Left button: on pages 2+ it turns back one passage page; on page 1 it leaves the reading (to the library or the previous screen).
- const backLbl=box(pl,[140,854,250,46],'',{fs:26,cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;gap:.3em;white-space:nowrap;background:#fdf6e6;z-index:3'});
- const backHit=hit(pl,'Back',[118,848,282,58],()=>{if(S.page>0)return turn(-1);if(pm){S.place=false;const p=S.prev;return p&&p!=='reading'&&RESUME[p]?RESUME[p]():placement()}station(c)},'999px');backHit.style.zIndex=4;
- const fin=label(pl,[718,850,290,52],'',30);hit(pl,'Next page or finish reading',[698,842,330,68],()=>turn(1),'999px').classList.add('pulse');
- hit(pl,'Answer questions',[1090,846,388,46],()=>pm?turn({ask:1}):tget(c,n).read?quiz(true):notice('Finish reading first — then the questions open.'),'.5em');hit(pl,'Complete writing task',[1090,902,388,48],()=>pm?notice('The Writing Sample opens after the comprehension test.'):tget(c,n).quizPassed?mission():notice('Pass the questions (8 of 10) to open the writing task.'),'.5em');
- S.ui={fb,pr,fin,backLbl,backHit,pm};requestAnimationFrame(paginate);
+ const backHit=page.querySelector('.rl-read-back');on('.rl-read-back',()=>{if(S.page>0)return turn(-1);if(pm){S.place=false;const p=S.prev;return p&&p!=='reading'&&RESUME[p]?RESUME[p]():placement()}station(c)});
+ on('.rl-read-next',()=>turn(1));
+ on('.rl-ask',()=>pm?turn({ask:1}):tget(c,n).read?quiz(true):notice('Finish reading first — then the questions open.'));
+ on('.rl-towrite',()=>pm?notice('The Writing Sample opens after the comprehension test.'):tget(c,n).quizPassed?mission():notice('Pass the questions (8 of 10) to open the writing task.'));
+ S.ui={fb:page.querySelector('.rl-flowbox'),pr:page.querySelector('.rl-s-prog'),fin:page.querySelector('.rl-read-next'),backLbl:backHit,backHit,pm,native:true};
+ rlTip(page,'Take your time. Read again if you need to.');requestAnimationFrame(paginate);
 });}
-function paginate(){const u=S.ui;if(!u||!u.fb.isConnected)return;const f=u.fb.querySelector('.flow'),w=u.fb.clientWidth,g=w*.06;f.style.fontSize=px(S.fs);f.style.columnWidth=w+'px';f.style.columnGap=g+'px';f.style.transform='none';
+function paginate(){const u=S.ui;if(!u||!u.fb.isConnected)return;const f=u.fb.querySelector('.flow'),w=u.fb.clientWidth,g=w*.06;if(u.native){u.fb.style.fontSize=S.rfs+'px';f.style.fontSize=S.rfs+'px'}else f.style.fontSize=px(S.fs);f.style.columnWidth=w+'px';f.style.columnGap=g+'px';f.style.transform='none';
  S.pages=Math.max(1,Math.round((f.scrollWidth+g)/(w+g)));S.page=Math.min(S.page,S.pages-1);f.style.transform=`translateX(${-S.page*(w+g)}px)`;
- u.pr.innerHTML=`<div style="padding:.15em .3em"><div class="ttl" style="font-size:1.15em">Reading progress</div><div style="font-weight:800">Page ${S.page+1} of ${S.pages}</div><div class="bar" style="margin-top:.35em"><i style="width:${(S.page+1)/S.pages*100}%"></i></div></div>`;
+ u.pr.innerHTML=u.native?`<div class="rl-prog-t">Reading progress</div><div>Page ${S.page+1} of ${S.pages}</div><div class="rl-prog-bar"><i style="width:${(S.page+1)/S.pages*100}%"></i></div>`:`<div style="padding:.15em .3em"><div class="ttl" style="font-size:1.15em">Reading progress</div><div style="font-weight:800">Page ${S.page+1} of ${S.pages}</div><div class="bar" style="margin-top:.35em"><i style="width:${(S.page+1)/S.pages*100}%"></i></div></div>`;
  u.fin.innerHTML=S.page+1<S.pages?'Next page ›':'Finish reading ›';
  if(u.backLbl){const prev=S.page>0;u.backLbl.innerHTML=prev?'‹ Previous page':(u.pm?'‹ Back':'‹ Back to library');u.backHit.setAttribute('aria-label',prev?'Previous page':(u.pm?'Back':'Back to library'))}}
 function pageText(){const f=S.ui?.fb.querySelector('.flow');if(!f)return '';const r=S.ui.fb.getBoundingClientRect();return [...f.querySelectorAll('p')].filter(p=>{const q=p.getBoundingClientRect();return q.right>r.left+5&&q.left<r.right-5}).map(p=>p.textContent).join(' ')}
@@ -1336,30 +1512,47 @@ function mission(){const pm=!!S.pw,c=pm?0:S.c,n=S.n,b=pm?PLACEW:book(c,n),tk=tas
 });setTimeout(()=>S.scene==='mission'&&say(`Your writing mission: ${tk.name}. ${tk.tip}`),250)}
 
 /* ===== 10 · Writing workspace ===== */
-let edFs=26;
-function workspace(){const pm=!!S.pw,c=pm?0:S.c,n=S.n,b=pm?PLACEW:book(c,n),tk=taskOf(b),k=pm?'place':tid(c,n);show('workspace','rw10',pl=>{
- nav(pl,{logo:[34,5,322,88],self:[372,16,188,44],home:[598,14,128,48],map:[748,14,170,48],portfolio:[938,14,140,48],progress:[1098,14,130,48],certs:[1248,14,160,48],settings:[1422,14,82,48]});
- gemClone(pl,[533,150,50,46],c);const chipW=pm?'Placement • Writing Experience':`${LV[c].name} • Text ${n} of 10 • ${b.title}`;box(pl,[586,154,454,36],esc(chipW),{fs:fitFs(chipW,454,23),cls:'box ttl',css:'display:flex;align-items:center;justify-content:center;background:#fbf3dc;border-radius:99px;white-space:nowrap;overflow:hidden'});
- box(pl,[302,270,258,40],esc(tk.name),{fs:tk.name.length>20?20:25,cls:'box',css:'display:flex;align-items:center;color:#fff;font:600 1em Fredoka;background:#022140;white-space:nowrap'});
- box(pl,[602,268,770,44],pm?esc(tk.ask):`${esc(tk.ask)} (${SENT[c][0]}–${SENT[c][1]} sentences)`,{fs:(tk.ask.length>70?16:20),css:'display:flex;align-items:center;font-weight:700;line-height:1.15;background:#fbf8ee;border-radius:99px;padding:0 .6em 0 .5em'});
- const ed=el(pl,'',[100,404,868,388],'editor',`font-size:${px(edFs)}`);ed.contentEditable='true';ed.spellcheck=true;ed.dataset.ph=`${tk.starters[0]}…`;ed.innerHTML=P.drafts[k]||'';
- const cnt=box(pl,[140,800,320,32],'',{fs:21,css:'display:flex;align-items:center;font-weight:800;background:#fff6f5'});const saved=box(pl,[774,798,182,36],'',{fs:20,css:'display:flex;align-items:center;justify-content:center;font-weight:800;border-radius:99px;background:#e6f2d4'});
- const chips=[1022,1169,1314].map((x,i)=>{box(pl,[x+2,412,134,32],esc(tk.starters[i===2?3:i].split(' ').slice(0,2).join(' ')+'…'),{fs:17,cls:'box',css:'display:flex;align-items:center;justify-content:center;font-weight:800;background:#e3efc0;border-radius:.4em;white-space:nowrap'});return hit(pl,`Insert “${tk.starters[i===2?3:i]}”`,[x,410,138,36],()=>{ed.focus();document.execCommand('insertText',false,(ed.innerText.trim()?' ':'')+tk.starters[i===2?3:i]+' ');upd()},'.4em')});
- const cl=box(pl,[1022,540,428,128],'',{fs:16.5});
- const tip=box(pl,[1216,696,222,78],'',{fs:19,css:'display:grid;place-items:center;text-align:center;font-weight:800;line-height:1.15;background:#fff;border-radius:1.4em'});
+let edFs=20;
+/* ===== 10 · Writing workspace (native) ===== */
+function workspace(){const pm=!!S.pw,c=pm?0:S.c,n=S.n,b=pm?PLACEW:book(c,n),tk=taskOf(b),k=pm?'place':tid(c,n);show('workspace','native-station',pl=>{
+ const page=document.createElement('div');page.className='rl-page rl-screen rl-workspace';
+ const starters=[0,1,3].map(i=>tk.starters[i]);
+ page.innerHTML=`${rlToolbar('main')}${rlHeader('Writing Workspace',pm?'Placement • Writing Experience':`${LV[c].name} • Text ${n} of 10 • ${b.title}`,pm?null:c,3)}
+ <div class="rl-s-task"><span class="rl-s-taskname">✏️ ${esc(tk.name)}</span><span class="rl-s-taskask">${pm?esc(tk.ask):`${esc(tk.ask)} (${SENT[c][0]}–${SENT[c][1]} sentences)`}</span></div>
+ <div class="rl-s-main rl-s-3col">
+  <div class="rl-s-owlcol">${rlOllie('Start with a sentence starter!')}</div>
+  <section class="rl-s-card rl-ws-card" aria-label="My writing">
+   <div class="rl-s-tools"><h2 class="rl-ws-h">✏️ My writing</h2><button type="button" class="rl-s-tool rl-ws-passage">📖 View passage</button><span class="rl-s-sep"></span>
+    <button type="button" class="rl-s-tool" data-cmd="bold" aria-label="Bold"><b>B</b></button><button type="button" class="rl-s-tool" data-cmd="italic" aria-label="Italic"><i>I</i></button><button type="button" class="rl-s-tool" data-cmd="undo" aria-label="Undo">↶</button><button type="button" class="rl-s-tool" data-cmd="redo" aria-label="Redo">↷</button><span class="rl-s-sep"></span>
+    <button type="button" class="rl-s-tool rl-ed-dn" aria-label="Smaller text">A−</button><button type="button" class="rl-s-tool rl-ed-up" aria-label="Bigger text">A+</button></div>
+   <div class="editor rl-editor" role="textbox" aria-multiline="true" aria-label="My writing"></div>
+   <div class="rl-ws-status"><span class="rl-ws-count"></span><span class="rl-ws-saved"></span></div>
+  </section>
+  <div class="rl-s-side">
+   <div class="rl-s-card rl-ws-support"><h3>💬 Sentence support</h3><p class="rl-s-small">Try a sentence starter:</p><div class="rl-ws-chips">${starters.map((s,i)=>`<button type="button" class="rl-ws-chip" data-i="${i}" aria-label="Insert “${esc(s)}”">${esc(s.split(' ').slice(0,2).join(' '))}…</button>`).join('')}</div><p class="rl-s-small"><i>Use your own words.</i></p></div>
+   <div class="rl-s-card rl-ws-checks"><h3>☑️ My writing checklist</h3><div class="rl-ws-cl"></div></div>
+  </div>
+ </div>
+ <div class="rl-s-bottom"><button type="button" class="rl-pl-btn ghost rl-ws-back">‹ Back to writing mission</button><button type="button" class="rl-pl-btn ghost rl-ws-save">💾 Save draft</button><button type="button" class="rl-pl-btn gold pulse rl-ws-submit">Submit writing ›</button></div>
+ <p class="rl-s-unlock">${pm?'✨ Submit to see your recommended reading level.':`🔒 Submit this writing task to unlock ${n<10?`${LV[c].name} ${n+1}`:'the next level'}.`}</p>`;
+ pl.replaceChildren(page);rlScreenNav(page);
+ const ed=page.querySelector('.rl-editor');ed.contentEditable='true';ed.spellcheck=true;ed.dataset.ph=`${tk.starters[0]}…`;ed.innerHTML=P.drafts[k]||'';ed.style.fontSize=edFs+'px';
+ const cnt=page.querySelector('.rl-ws-count'),saved=page.querySelector('.rl-ws-saved'),cl=page.querySelector('.rl-ws-cl');
+ const on=(el,fn)=>el.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();fn()});
  const cmd=(c2)=>{ed.focus();document.execCommand(c2);upd()};
- hit(pl,'View passage',[435,344,206,42],()=>pm?notice('This writing is about your own journey — no passage needed.'):passageSheet(b),'99px');hit(pl,'Bold',[668,344,42,42],()=>cmd('bold'),'.3em');hit(pl,'Italic',[710,344,42,42],()=>cmd('italic'),'.3em');hit(pl,'Undo',[763,344,40,42],()=>cmd('undo'),'.3em');hit(pl,'Redo',[803,344,40,42],()=>cmd('redo'),'.3em');
- hit(pl,'Smaller text',[860,344,48,42],()=>{edFs=Math.max(18,edFs-2);ed.style.fontSize=px(edFs)},'.3em');hit(pl,'Bigger text',[910,344,48,42],()=>{edFs=Math.min(40,edFs+2);ed.style.fontSize=px(edFs)},'.3em');
- hit(pl,'Back to writing mission',[128,892,272,36],mission,'.3em');
+ page.querySelectorAll('[data-cmd]').forEach(bt=>on(bt,()=>cmd(bt.dataset.cmd)));
+ on(page.querySelector('.rl-ws-passage'),()=>pm?notice('This writing is about your own journey — no passage needed.'):passageSheet(b));
+ on(page.querySelector('.rl-ed-dn'),()=>{edFs=Math.max(18,edFs-2);ed.style.fontSize=edFs+'px'});on(page.querySelector('.rl-ed-up'),()=>{edFs=Math.min(32,edFs+2);ed.style.fontSize=edFs+'px'});
+ page.querySelectorAll('.rl-ws-chip').forEach(bt=>on(bt,()=>{const s=starters[+bt.dataset.i];ed.focus();document.execCommand('insertText',false,(ed.innerText.trim()?' ':'')+s+' ');upd()}));
+ on(page.querySelector('.rl-ws-back'),mission);
  const saveDraft=(quiet)=>{P.drafts[k]=ed.innerHTML;save();saved.innerHTML='✅ Draft saved';if(!quiet){SFX.ding();notice('💾 Draft saved.')}};
- hit(pl,'Save draft',[545,882,362,56],()=>saveDraft(false),'999px');
- hit(pl,'Submit writing',[962,880,440,62],()=>{const txt=ed.innerText.trim(),r=rubric(txt,c,pm?null:b);if(!DEV&&r.wc<10){SFX.buzz();return notice('Write your response first.')}saveDraft(true);
+ on(page.querySelector('.rl-ws-save'),()=>saveDraft(false));
+ on(page.querySelector('.rl-ws-submit'),()=>{const txt=ed.innerText.trim(),r=rubric(txt,c,pm?null:b);if(!DEV&&r.wc<10){SFX.buzz();return notice('Write your response first.')}saveDraft(true);
   const iss=checkWriting(txt,pm?null:b);if(!pm&&r.wc<MINW[c])iss.unshift(`Write at least ${MINW[c]} words (you have ${r.wc}).`);if(!pm&&r.sc<SENT[c][0])iss.unshift(`Write at least ${SENT[c][0]} complete sentences (you have ${r.sc}).`);
-  if(DEV)iss.length=0;if(iss.length){SFX.buzz();return openSheet('✏️ Not ready to check yet',`<div style="text-align:left"><p><b>Please fix these before your writing is checked:</b></p><ol>${iss.map(x=>`<li style="margin:.35em 0">${esc(x)}</li>`).join('')}</ol><p class="muted">Your draft is saved. Revise it, then press Submit writing again.</p></div>`,[['✏️ Back to my writing',closeSheet,'gold']],true)}if(pm)return finishPlaceWriting(txt);const t=T(c,n);t.writing={text:txt,html:ed.innerHTML,rubric:r,total:r.total,passed:r.passed,at:new Date().toISOString(),tries:(t.writing?.tries||0)+1};save();touch();feedback(true)},'999px').classList.add('pulse');
- box(pl,[505,952,560,34],pm?'✨ Submit to see your recommended reading level.':`🔒 Submit this writing task to unlock ${n<10?`${LV[c].name} ${n+1}`:'the next level'}.`,{fs:21,css:'display:flex;align-items:center;justify-content:center;font-style:italic;font-weight:700;background:#e9fad6;border-radius:99px'});
- let tmr=0;function upd(){const txt=ed.innerText,r=rubric(txt,c,pm?null:b),low=txt.toLowerCase();cnt.innerHTML=`📄 ${r.wc} words &nbsp;|&nbsp; ☰ ${r.sc} sentences`;saved.innerHTML='✏️ Editing…';clearTimeout(tmr);tmr=setTimeout(()=>saveDraft(true),1200);
+  if(DEV)iss.length=0;if(iss.length){SFX.buzz();return openSheet('✏️ Not ready to check yet',`<div style="text-align:left"><p><b>Please fix these before your writing is checked:</b></p><ol>${iss.map(x=>`<li style="margin:.35em 0">${esc(x)}</li>`).join('')}</ol><p class="muted">Your draft is saved. Revise it, then press Submit writing again.</p></div>`,[['✏️ Back to my writing',closeSheet,'gold']],true)}if(pm)return finishPlaceWriting(txt);const t=T(c,n);t.writing={text:txt,html:ed.innerHTML,rubric:r,total:r.total,passed:r.passed,at:new Date().toISOString(),tries:(t.writing?.tries||0)+1};save();touch();feedback(true)});
+ let tmr=0;function upd(){const txt=ed.innerText,r=rubric(txt,c,pm?null:b);cnt.innerHTML=`📄 ${r.wc} words &nbsp;|&nbsp; ☰ ${r.sc} sentences`;saved.innerHTML='✏️ Editing…';clearTimeout(tmr);tmr=setTimeout(()=>saveDraft(true),1200);
   const iss=r.wc>=8?checkWriting(txt,pm?null:b):['x'],onTopic=!iss.some(x=>/not show enough|not about the text|copied/.test(x)),clean=!iss.some(x=>/not real words|repeated|too short/.test(x));const ok=[r.ideas>=3&&onTopic,r.org>=3&&onTopic,r.sc>=(pm?3:SENT[c][0])&&clean,r.gram>=4&&clean];cl.innerHTML=tk.checks.map((t,i)=>`<div class="check ${ok[i]?'on':''}"><i>${ok[i]?'✓':''}</i>${esc(t)}</div>`).join('');
-  tip.textContent=r.wc<5?'Start with a sentence starter!':!onTopic&&r.wc>=8?'Write about the text you read.':r.sc<SENT[c][0]?`${SENT[c][0]-r.sc} more sentence${SENT[c][0]-r.sc>1?'s':''} to go!`:r.gram<4?'Check capitals and full stops.':'Read your writing once more.'}
+  rlTip(page,r.wc<5?'Start with a sentence starter!':!onTopic&&r.wc>=8?'Write about the text you read.':r.sc<SENT[c][0]?`${SENT[c][0]-r.sc} more sentence${SENT[c][0]-r.sc>1?'s':''} to go!`:r.gram<4?'Check capitals and full stops.':'Read your writing once more.')}
  ed.addEventListener('input',upd);upd();saved.innerHTML=P.drafts[k]?'✅ Draft saved':'📝 New draft';setTimeout(()=>ed.focus(),400);
 });}
 
