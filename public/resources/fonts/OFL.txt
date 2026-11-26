@@ -17,6 +17,10 @@ resources/gst-book/fonts/cinzel.woff2
 resources/gst-book/fonts/lora.woff2, lora-italic.woff2
     Lora - Copyright The Lora Project Authors / Cyreal (https://github.com/cyrealtype/Lora-Cyrillic).
 
+resources/fonts/playfair-display-var.woff2, playfair-display-italic-var.woff2
+    Playfair Display - Copyright The Playfair Display Project Authors / Claus Eggers Sørensen
+    (https://github.com/clauseggers/Playfair-Display). Latin subset.
+
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 -----------------------------------------------------------

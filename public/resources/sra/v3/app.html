@@ -23,7 +23,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 .scene.native-journey::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(135deg,rgba(10,20,42,.34),rgba(16,28,54,.48))}
 .scene.native-journey .plate{position:relative;z-index:1;overflow:visible;min-height:100dvh}
 .scene.native-journey .plate>.art{display:none}
-.scene.safe-fit{background:linear-gradient(180deg,#1b2a4c 0%,#3c3654 45%,#5d4b63 100%)}
+.scene.safe-fit{background:#17233d}
 .scene.safe-fit::before{display:none!important}
 .scene.safe-fit .plate{z-index:1}
 .safe-extension{position:absolute;z-index:0;overflow:hidden;pointer-events:none;background-repeat:no-repeat;}
@@ -60,7 +60,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 .journey-action:disabled{color:#635c50;background:#ddd8ce;border-color:#c6beb1;box-shadow:none;cursor:not-allowed}
 .journey-progress-tab{position:fixed!important;right:0!important;top:38vh!important;z-index:91!important;width:31px!important;height:118px!important;padding:0!important;border:1px solid #e2b24c!important;border-right:0!important;border-radius:12px 0 0 12px!important;background:rgba(20,35,67,.96)!important;color:#fff6dc!important;box-shadow:-4px 0 14px #0005!important;touch-action:none!important;cursor:grab!important}
 .journey-progress{color:#1d2440!important;background:linear-gradient(150deg,#fffdf7,#eee4cf)!important;border:1px solid #d9a441!important;border-radius:20px 0 0 20px!important;box-shadow:-12px 0 34px #0008!important}
-.journey-progress-inner{padding:clamp(16px,3vw,28px);font:600 15px/1.35 Nunito,sans-serif}
+.journey-progress-inner{padding:clamp(16px,3vw,28px);padding-right:44px;font:600 15px/1.35 Nunito,sans-serif}
 .journey-progress h2{margin:0;font:700 27px/1 Fredoka,Nunito,sans-serif;color:#14254a}
 .journey-progress h3{margin:18px 0 8px;font:700 17px/1.1 Fredoka,Nunito,sans-serif;color:#14254a}
 .journey-progress .progress-stat{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:8px 0}
@@ -251,7 +251,7 @@ textarea{-webkit-user-select:text;user-select:text}
 .journey-heading{display:block!important;visibility:visible!important;position:relative;z-index:3;flex:0 0 auto;text-align:center;align-self:center;max-width:min(960px,96vw);padding:7px 28px 8px;border:2px solid #d9a441;border-radius:24px;background:linear-gradient(135deg,rgba(20,35,67,.96),rgba(29,48,85,.94));box-shadow:0 5px 16px #14234533}
 .journey-heading h1{margin:0;color:#fff8e5;font:700 clamp(32px,2.6vw,40px)/1.05 Fredoka,Nunito,sans-serif}
 .journey-heading p{margin:4px 0 0;color:#f5d77e;font:800 clamp(16px,1.2vw,18px)/1.2 Nunito,sans-serif}
-.journey-grid{position:relative;isolation:isolate;z-index:1;flex:1 1 0;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(6px,.7vw,10px);padding:2px 1px}
+.journey-grid{position:relative;isolation:isolate;z-index:1;flex:1 1 0;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(6px,.7vw,10px);padding:2px 46px 2px 1px}
 .journey-rail{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:visible}
 .journey-train-overlay{position:absolute;z-index:2;width:clamp(34px,3.4vw,50px);height:32px;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 2px 3px #0009)}
 .journey-train-overlay svg{display:block;width:100%;height:100%;overflow:visible}
@@ -279,7 +279,7 @@ textarea{-webkit-user-select:text;user-select:text}
 .journey-action:disabled{color:#4b4a45;background:#ddd8ce;border-color:#aaa59c;box-shadow:none;cursor:not-allowed}
 .journey-progress-tab{position:fixed!important;right:0!important;top:38vh!important;z-index:91!important;width:34px!important;height:126px!important;padding:0!important;border:1px solid #e2b24c!important;border-right:0!important;border-radius:12px 0 0 12px!important;background:rgba(20,35,67,.97)!important;color:#fff6dc!important;box-shadow:-4px 0 14px #0005!important;touch-action:none!important;cursor:grab!important}
 .journey-progress{color:#172743!important;background:linear-gradient(150deg,#fffef9,#f1e8d5)!important;border:1px solid #d9a441!important;border-radius:20px 0 0 20px!important;box-shadow:-12px 0 34px #0008!important}
-.journey-progress-inner{padding:clamp(18px,2.2vw,28px);padding-right:48px;font:700 17px/1.4 Nunito,sans-serif;color:#172743}
+.journey-progress-inner{box-sizing:border-box;width:100%;padding:clamp(18px,2.2vw,28px);padding-right:80px;font:700 17px/1.4 Nunito,sans-serif;color:#172743}
 .journey-progress h2{margin:0;font:800 24px/1.1 Fredoka,Nunito,sans-serif;color:#14254a}
 .journey-progress h3{margin:17px 0 8px;font:800 17px/1.15 Fredoka,Nunito,sans-serif;color:#14254a}
 .journey-progress .progress-stat{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;margin:10px 0;font-size:17px;color:#172743}
@@ -308,17 +308,213 @@ textarea{-webkit-user-select:text;user-select:text}
  .journey-rail{display:block}
  .journey-station{width:100%;flex-direction:column;gap:5px;min-height:0}
  .journey-crop{width:min(100%,300px);height:112px}
- .journey-card{width:min(calc(100vw - 32px),520px);min-width:0;min-height:190px;padding:11px 12px;gap:6px;border-radius:15px;font-size:16px}
+ .journey-card{width:min(calc(100vw - 64px),520px);min-width:0;min-height:190px;padding:11px 12px;gap:6px;border-radius:15px;font-size:16px}
  .journey-gem-name{font-size:20px}
  .journey-badge{font-size:14px;padding:5px 8px}
  .journey-metric{grid-template-columns:82px minmax(20px,1fr) 43px;gap:7px;font-size:16px}
  .journey-action{min-height:44px;font-size:17px}
  .scene.native-journey #caption{left:auto;right:auto;top:auto;bottom:auto;max-width:none;width:100%;font-size:15px}
 }
-@media(max-width:600px){.journey-progress{width:100vw!important;border-radius:0!important}.journey-progress-tab{height:116px!important;width:31px!important}.journey-progress-inner{padding:18px;padding-right:48px!important}.journey-progress .progress-stat{font-size:17px}}
+@media(max-width:600px){.journey-progress{width:100vw!important;border-radius:0!important}.journey-progress-tab{height:116px!important;width:31px!important}.journey-progress-inner{padding:18px;padding-right:80px!important}.journey-progress .progress-stat{font-size:17px}}
 @media(min-width:901px) and (max-height:820px){.journey-crop{height:72px}.journey-card{min-height:164px;padding:7px 11px;gap:3px}.journey-grid{gap:4px}}
-@media(min-width:901px) and (max-height:640px){.journey-shell{padding:4px 10px;gap:3px}.journey-topbar{min-height:50px;padding:4px 10px}.journey-nav button{min-height:38px;padding:5px 8px;font-size:16px}.journey-heading{padding:4px 18px 5px}.journey-heading h1{font-size:32px}.journey-heading p{font-size:16px}.journey-grid{gap:0}.journey-station{gap:0}.journey-crop{height:54px}.journey-card{min-height:156px;padding:6px 10px;gap:3px}}
-@media(min-width:601px) and (max-height:640px){.journey-progress-inner{padding:10px 16px}.journey-progress-inner>div:first-child{margin-bottom:6px!important}.journey-progress h3{margin:8px 0 4px}.journey-progress .progress-stat{margin:5px 0;gap:5px 10px}.journey-progress .progress-bar{height:7px}.journey-progress .progress-task{padding:8px}.journey-progress .progress-step{margin:4px 0;padding:3px 8px}.journey-progress-inner p{padding:8px!important;line-height:1.25}}
+@media(min-width:901px) and (max-height:640px){.journey-shell{padding:4px 10px 6px;gap:2px}.journey-topbar{min-height:48px;padding:4px 10px}.journey-nav button{min-height:36px;padding:4px 8px;font-size:16px}.journey-heading{padding:4px 18px}.journey-heading h1{font-size:30px}.journey-heading p{font-size:15px}.journey-grid{gap:0;padding-top:0;padding-bottom:0}.journey-station{gap:0}.journey-crop.rl-stop{gap:1px}.rl-gem{width:40px}.rl-plaque{font-size:14px;padding:2px 8px}.journey-card{min-height:140px;padding:6px 10px;gap:3px}.journey-metric{grid-template-columns:70px minmax(20px,1fr) 40px;gap:5px;font-size:14px}.journey-action{min-height:40px;font-size:16px}}
+@media(min-width:601px) and (max-height:640px){.journey-progress-inner{padding:10px 80px 10px 16px}.journey-progress-inner>div:first-child{margin-bottom:6px!important}.journey-progress h3{margin:8px 0 4px}.journey-progress .progress-stat{margin:5px 0;gap:5px 10px}.journey-progress .progress-bar{height:7px}.journey-progress .progress-task{padding:8px}.journey-progress .progress-step{margin:4px 0;padding:3px 8px}.journey-progress-inner p{padding:8px!important;line-height:1.25}}
+/* ===== Native pages 1-3: shared toolbar, station backdrop, welcome, placement, journey map, transitions ===== */
+@font-face{font-family:'Playfair Display';src:url(resources/fonts/playfair-display-var.woff2) format('woff2');font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Playfair Display';src:url(resources/fonts/playfair-display-italic-var.woff2) format('woff2');font-weight:400 900;font-style:italic;font-display:swap}
+.rl-owl[hidden]{display:none!important}
+/* shared toolbar */
+.rl-topbar{position:relative;z-index:20;flex:0 0 auto;display:flex;align-items:center;gap:clamp(8px,1.1vw,18px);min-height:58px;padding:6px clamp(8px,1vw,14px);border:1px solid #d9a441;border-radius:16px;background:rgba(18,32,62,.95);box-shadow:0 4px 16px #0005;color:#fff8e6}
+.rl-brand{flex:none;display:flex;align-items:center;gap:10px;min-width:0}
+.rl-logo{flex:none;width:38px;height:38px;display:grid;place-items:center;border:2px solid #f4d27a;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b2,#d9a441 64%,#875c1b);color:#18294d;font:900 22px/1 Georgia,serif;box-shadow:0 2px 7px #0005}
+.rl-brand-text{color:#f5d77e;font:700 clamp(20px,1.5vw,22px)/1.1 Fredoka,Nunito,sans-serif;white-space:nowrap}
+.rl-nav{flex:1;min-width:0;display:flex;align-items:center;gap:clamp(2px,.45vw,8px)}
+.rl-spacer{flex:1}
+.rl-nav button{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:6px clamp(8px,.75vw,14px);border:1px solid transparent;border-radius:999px;background:transparent;color:#fff8e6;font:800 clamp(16px,1.05vw,17px)/1 Nunito,sans-serif;white-space:nowrap;transition:background .12s,color .12s,transform .12s}
+.rl-nav button:hover,.rl-nav button:focus-visible{background:#d9a441;color:#15213e;transform:translateY(-1px);outline:none}
+.rl-nav .rl-self{background:#e6efce;color:#183050;border-color:#fff1be}
+.rl-nav .rl-back{border-color:#e2b24c;color:#ffe9a8}
+.rl-nav svg{flex:none}
+@media(max-width:1180px) and (min-width:761px){.rl-nav button{padding:6px 7px}.rl-brand-text{font-size:20px}}
+@media(max-width:760px){
+ .rl-topbar{flex-wrap:wrap;row-gap:4px;padding:6px 8px}
+ .rl-brand{width:100%;justify-content:center}
+ .rl-nav{flex:1 1 100%;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+ .rl-nav::-webkit-scrollbar{display:none}
+ .rl-spacer{display:none}
+}
+/* native scene: station backdrop, never stretched, no side bars */
+.scene.rl-native{overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;background:#24324f url(resources/sra/v3/station-bg.jpg) center/cover no-repeat}
+.scene.rl-native::-webkit-scrollbar{display:none}
+.scene.rl-native::before,.scene.rl-native::after{display:none!important;content:none!important}
+.scene.rl-native .plate{position:relative;z-index:1;background:transparent}
+.scene.rl-native .plate>.art,.scene.rl-native .safe-extension{display:none!important}
+.rl-page{position:relative;width:100%;min-height:100dvh;display:flex;flex-direction:column;gap:clamp(8px,1.4vh,16px);padding:8px clamp(10px,1.6vw,28px) clamp(10px,2vh,22px);color:#fff8e6}
+/* ---------- Page 1: welcome ---------- */
+.rl-w-main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,40fr) minmax(0,60fr);align-items:center}
+.rl-w-owl{align-self:stretch;display:flex;align-items:flex-end;justify-content:flex-end;padding-right:clamp(0px,2vw,40px);min-height:0}
+.rl-w-owl .rl-owl{display:block;height:min(66vh,100%);max-width:100%;width:auto;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.35))}
+.rl-w-right{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.5vh,18px);padding:clamp(4px,1vh,12px) 0}
+.rl-w-right::before{content:'';position:absolute;inset:-2% -4%;z-index:-1;pointer-events:none;background:radial-gradient(closest-side,rgba(12,22,46,.35),rgba(12,22,46,.2) 62%,rgba(12,22,46,0))}
+.rl-crest{position:relative;width:min(100%,900px);margin-bottom:clamp(18px,2.6vh,28px);padding:clamp(18px,3.4vh,40px) clamp(20px,3vw,56px) clamp(34px,5vh,52px);text-align:center;background:radial-gradient(120% 90% at 50% 18%,#223764,#142649 58%,#0d1b38);border:3px solid #e8bf5a;border-radius:50% 50% 30px 30px/24% 24% 30px 30px;box-shadow:inset 0 0 0 6px #132447,inset 0 0 0 8.5px #c9973a,0 16px 34px rgba(0,0,0,.55)}
+.rl-crest-brand{display:flex;align-items:center;justify-content:center;gap:.35em;font:700 clamp(28px,min(2.5vw,4.6vh),40px)/1.1 'Playfair Display',Georgia,serif;color:#f6cf63;text-shadow:0 2px 0 #4a2f08,0 3px 8px rgba(0,0,0,.5)}
+.rl-laurel{flex:none;width:1.6em;height:.8em}
+.rl-laurel.r{transform:scaleX(-1)}
+.rl-crest-title{margin:.12em 0 0;font:800 clamp(56px,min(5.2vw,9.2vh),90px)/1.02 'Playfair Display',Georgia,serif;letter-spacing:.005em;color:#f6c955;background:linear-gradient(180deg,#fff6d2 0%,#ffe08a 36%,#f2bb45 66%,#c98a1f 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;-webkit-text-stroke:1.4px #3d2707;paint-order:stroke fill;filter:drop-shadow(0 4px 4px rgba(0,0,0,.55)) drop-shadow(0 0 14px rgba(255,200,90,.25))}
+.rl-ribbon-wrap{position:absolute;left:50%;bottom:0;transform:translate(-50%,52%);filter:drop-shadow(0 6px 8px rgba(0,0,0,.45));white-space:nowrap}
+.rl-ribbon{padding:.16em 1.5em .22em;background:linear-gradient(#fff8e2,#f3e0b2 55%,#e1c387);color:#14254a;font:700 clamp(28px,min(2.4vw,4.4vh),40px)/1.15 'Playfair Display',Georgia,serif;clip-path:polygon(0 0,100% 0,96.5% 50%,100% 100%,0 100%,3.5% 50%);border-top:2px solid #fffaf0;border-bottom:3px solid #b98d3c}
+.rl-w-tag{margin:0;text-align:center;color:#fff;font:700 clamp(26px,min(2.1vw,4.2vh),36px)/1.2 Fredoka,Nunito,sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.75),0 0 18px rgba(0,0,0,.55)}
+.rl-start{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:.45em;width:min(100%,640px);min-height:max(72px,9.6vh);padding:.12em 1.2em;border:3px solid #fff1b5;border-radius:999px;background:linear-gradient(180deg,#fff2a3 0%,#ffd64c 30%,#f6b71e 64%,#e2970b 100%);color:#13213f;font:700 clamp(36px,min(3.1vw,6vh),48px)/1 Fredoka,Nunito,sans-serif;box-shadow:0 0 0 2px #b77a10,0 6px 0 #a3680e,0 0 30px rgba(255,205,80,.6),inset 0 2px 0 #fffbe0;cursor:pointer;animation:rlStartGlow 2.4s ease-in-out infinite;transition:transform .12s,filter .12s}
+.rl-start::before{content:'';position:absolute;left:6%;right:6%;top:5%;height:42%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,0));pointer-events:none}
+.rl-start span{font-size:1.1em;line-height:.8}
+.rl-start:hover,.rl-start:focus-visible{filter:brightness(1.06);transform:translateY(-2px);outline:none}
+.rl-start:active{transform:scale(.98)}
+.rl-start.rl-go{animation:trainShake .5s linear infinite}
+@keyframes rlStartGlow{50%{box-shadow:0 0 0 2px #b77a10,0 6px 0 #a3680e,0 0 46px rgba(255,214,100,.9),inset 0 2px 0 #fffbe0}}
+.rl-w-sub{display:flex;align-items:center;justify-content:center;gap:.6em;margin:0;color:#fff;font:italic 700 clamp(22px,min(1.7vw,3.4vh),28px)/1.2 Nunito,sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.75),0 0 14px rgba(0,0,0,.5)}
+.rl-w-sub::before,.rl-w-sub::after{content:'';flex:none;width:clamp(28px,3.6vw,64px);height:3px;border-radius:2px;background:linear-gradient(90deg,rgba(242,193,78,0),#f2c14e)}
+.rl-w-sub::after{transform:scaleX(-1)}
+@media(max-width:760px){
+ .rl-w-main{display:flex;flex-direction:column;align-items:stretch;gap:14px}
+ .rl-w-right{display:contents}
+ .rl-crest{order:1;align-self:center;padding:22px 16px 40px;border-radius:50% 50% 24px 24px/14% 14% 24px 24px}
+ .rl-crest-brand{font-size:24px}
+ .rl-crest-title{font-size:clamp(44px,12vw,56px)}
+ .rl-ribbon{font-size:clamp(18px,5vw,24px);padding:.16em 1.1em .22em}
+ .rl-ribbon-wrap{max-width:96vw}
+ .rl-w-owl{order:2;justify-content:center;padding:0;min-height:0}
+ .rl-w-owl .rl-owl{height:min(34vh,300px)}
+ .rl-w-tag{order:3;font-size:24px}
+ .rl-start{order:4;align-self:center;font-size:34px;min-height:72px}
+ .rl-w-sub{order:5;font-size:20px}
+}
+/* ---------- Page 2: placement ---------- */
+.rl-p-banner{position:relative;align-self:center;max-width:min(1120px,98%);margin:clamp(24px,2.8vh,32px) 0 clamp(20px,2.8vh,28px);padding:clamp(6px,1vh,12px) clamp(36px,4.6vw,90px) clamp(24px,3vh,32px);text-align:center;background:linear-gradient(#1f3869,#10234b);border:3px solid #e2b24c;border-radius:22px;box-shadow:inset 0 0 0 4px #10234b,inset 0 0 0 6px #b98a35,0 10px 24px rgba(0,0,0,.5)}
+.rl-p-banner h1{display:flex;align-items:center;justify-content:center;gap:.4em;margin:0;color:#fff;font:700 clamp(36px,min(3vw,5.6vh),48px)/1.1 Fredoka,Nunito,sans-serif;text-shadow:0 2px 0 rgba(0,0,0,.45)}
+.rl-p-banner .rl-laurel{width:1.3em;height:.65em}
+.rl-p-sub{position:absolute;left:50%;bottom:0;transform:translate(-50%,58%);white-space:nowrap;padding:.22em 1.4em .26em;background:linear-gradient(#fff8e2,#f1dcab 60%,#e2c487);color:#14254a;font:700 clamp(18px,min(1.45vw,2.8vh),24px)/1.15 Fredoka,Nunito,sans-serif;clip-path:polygon(0 0,100% 0,97% 50%,100% 100%,0 100%,3% 50%);filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
+.rl-p-main{flex:1;min-height:0;width:min(100%,1780px);margin:0 auto;display:grid;grid-template-columns:minmax(230px,23%) minmax(0,1fr);gap:clamp(12px,1.4vw,24px)}
+.rl-p-left{display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;gap:8px;min-height:0}
+.rl-p-owl{flex:1 1 0;min-height:0;display:flex;align-items:flex-end;justify-content:center}
+.rl-p-owl .rl-owl{display:block;max-height:100%;max-width:100%;width:auto;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35))}
+.rl-p-info{margin-top:16px;padding:0 clamp(12px,1vw,18px) clamp(12px,1.6vh,18px);text-align:center;color:#1d2440;background:linear-gradient(#fffdf6,#f5ecd8);border:2px solid #e2cd96;border-radius:20px;box-shadow:0 8px 22px rgba(0,0,0,.4)}
+.rl-p-green{margin:-16px -8px 10px;padding:.32em .5em .38em;color:#fff;font:700 clamp(22px,1.5vw,26px)/1.12 Fredoka,Nunito,sans-serif;background:linear-gradient(#2f8a3a,#1c6a2a);border:2px solid #d9b45a;border-radius:14px;box-shadow:0 4px 10px rgba(0,0,0,.35);text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.rl-p-info p{margin:0 0 10px;font:600 17px/1.35 Nunito,sans-serif}
+.rl-p-pill{display:flex;align-items:center;justify-content:center;gap:.45em;min-height:40px;margin-top:6px;padding:4px 10px;border-radius:999px;background:#f3f6e8;border:2px solid #9cc38d;color:#1f3a22;font:800 16px/1.15 Nunito,sans-serif}
+.rl-p-right{display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px);min-height:0}
+.rl-cards{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1vw,18px)}
+.rl-col{position:relative;display:flex;flex-direction:column;gap:clamp(6px,1vh,10px);min-height:0}
+.rl-step{position:relative;display:flex;align-items:center;justify-content:center;gap:.45em;min-height:clamp(48px,6.2vh,60px);padding:4px 12px;border-radius:999px;background:linear-gradient(#fffdf7,var(--c1));border:2.5px solid var(--c);color:#0e1838;font:700 clamp(22px,1.55vw,26px)/1 Fredoka,Nunito,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.3);white-space:nowrap}
+.rl-step.now{border-width:3.5px;box-shadow:0 0 18px var(--c),0 4px 12px rgba(0,0,0,.3)}
+.rl-step-num{flex:none;display:grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;color:#fff;background:linear-gradient(var(--c2),var(--c));box-shadow:0 .08em .2em rgba(0,0,0,.3),inset 0 .1em 0 rgba(255,255,255,.35)}
+.rl-step.done .rl-step-num{background:linear-gradient(#5cc22b,#2f8f10)}
+.rl-col:not(:last-child) .rl-step::after{content:'›';position:absolute;right:calc(-1*clamp(10px,1vw,18px) + 1px);top:50%;transform:translate(50%,-55%);color:#3fae2c;font:900 28px/1 Nunito,sans-serif;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.rl-pcard{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1vh,12px);padding:clamp(10px,1.4vh,16px) clamp(10px,1vw,16px);text-align:center;color:#1d2440;background:linear-gradient(#fffdf7 0%,var(--c1) 55%,var(--c3) 100%);border:3px solid var(--c);border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.rl-pcard .chip{font-size:16px;padding:.2em .8em}
+.rl-pcard-say{flex:1;display:grid;place-items:center;margin:0;font:600 18px/1.35 Fredoka,Nunito,sans-serif}
+.rl-pcard-say.small{flex:none}
+.rl-gemgrid{flex:1;min-height:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;align-content:center;font-size:20px}
+.rl-gemgrid button{min-height:44px}
+.rl-pbtn{flex:none;width:min(100%,300px);min-height:48px;padding:6px 14px;border-radius:999px;font:700 clamp(18px,1.25vw,21px)/1 Fredoka,Nunito,sans-serif;cursor:pointer;transition:filter .12s,transform .12s}
+.rl-pbtn.gold{color:#211800;border:2px solid #b07a14;background:linear-gradient(#ffe783,#f6bd28 60%,#e99b0b);box-shadow:0 3px 0 #a86d12,0 0 14px rgba(255,200,70,.45)}
+.rl-pbtn.ghost{color:#1c2948;border:2px solid #c9a24f;background:linear-gradient(#fffdf7,#efe5d0);box-shadow:0 2px 0 #b8954a}
+.rl-pbtn:hover,.rl-pbtn:focus-visible{filter:brightness(1.06);transform:translateY(-1px);outline:none}
+.rl-p-journey{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.3em .6em;min-height:54px;padding:6px 16px;border-radius:18px;color:#fff6dc;background:linear-gradient(#22396b,#11234a);border:3px solid #e2b24c;box-shadow:0 4px 12px rgba(0,0,0,.35);font:700 18px/1.2 Nunito,sans-serif}
+.rl-p-journey b:first-of-type{font-family:Fredoka,Nunito,sans-serif;font-size:1.1em}
+.rl-p-gems{display:inline-flex;gap:.12em;font-size:24px}
+.rl-p-journey>img:first-child{width:28px!important;height:28px!important}
+.rl-p-finish{display:flex;align-items:center;justify-content:center;gap:.5em;min-height:46px;padding:4px 16px;border-radius:999px;color:#3a3f52;background:#fbf6ea;border:2px solid #e2cd96;box-shadow:0 4px 12px rgba(0,0,0,.25);font:800 17px/1.2 Nunito,sans-serif;text-align:center}
+.rl-p-finish img{width:24px!important;height:24px!important}
+@media(max-width:760px){
+ .rl-p-banner{width:100%;padding:8px 14px 12px}
+ .rl-p-banner h1{font-size:36px}
+ .rl-p-banner .rl-laurel{display:none}
+ .rl-p-sub{position:static;transform:none;white-space:normal;margin-top:8px;font-size:18px}
+ .rl-p-main{display:flex;flex-direction:column}
+ .rl-p-owl .rl-owl{max-height:28vh}
+ .rl-cards{display:flex;flex-direction:column;gap:16px}
+ .rl-col:not(:last-child) .rl-step::after{display:none}
+ .rl-pcard{min-height:220px}
+ .rl-step{font-size:22px}
+}
+/* ---------- Page 3: journey map ---------- */
+.scene.native-journey{background:#3c5a3a}
+.journey-backdrop.rl-jbg{position:fixed;inset:0;width:100vw;height:100dvh;z-index:0;pointer-events:none;background:none}
+.journey-backdrop.rl-jbg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,35,67,.08),rgba(20,35,67,.12) 60%,rgba(20,35,67,.2))}
+.journey-shell{gap:clamp(4px,.9vh,10px)}
+.journey-shell .rl-topbar{margin:0}
+.journey-heading{padding:6px 28px 8px}
+.journey-grid{flex:1 1 auto;min-height:0;grid-template-rows:repeat(2,auto);align-content:space-evenly;row-gap:clamp(8px,1.6vh,22px);column-gap:clamp(10px,1vw,18px);padding:4px 0}
+.journey-rail{display:block!important;position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:visible}
+.journey-station{position:relative;z-index:1;justify-content:flex-start;gap:4px}
+.journey-crop.rl-stop{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;width:auto;height:auto;padding:0;border:0;background:none;box-shadow:none;cursor:pointer}
+.rl-gem{position:relative;display:block;width:clamp(64px,min(5vw,9.2vh),80px);aspect-ratio:112/98}
+.rl-gem-glow{position:absolute;left:50%;top:82%;width:160%;height:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,var(--glow),rgba(255,255,255,0));opacity:.75;pointer-events:none}
+.rl-gem-svg{position:relative;display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 3px 3px rgba(0,0,0,.4))}
+.rl-gem.is-current .rl-gem-glow{animation:rlGlow 2.2s ease-in-out infinite}
+.rl-gem.is-current .rl-gem-svg{animation:rlBob 2.2s ease-in-out infinite}
+@keyframes rlGlow{50%{opacity:1;transform:translate(-50%,-50%) scale(1.25)}}
+@keyframes rlBob{50%{transform:scale(1.07)}}
+.rl-gem.is-locked .rl-gem-svg{opacity:.72}
+.rl-gem-num{position:absolute;left:-8px;top:-4px;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#d9a441;border:2px solid #fff1c4;color:#17294d;font:900 15px/1 Nunito,sans-serif;box-shadow:0 2px 4px rgba(0,0,0,.35)}
+.rl-gem-lock{position:absolute;right:-8px;top:-4px;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:#22396b;border:2px solid #fff1c4}
+.rl-plaque{max-width:min(100%,240px);padding:3px 12px 4px;border-radius:10px;background:#17294d;border:2px solid #e0b44f;color:#fff5da;font:700 17px/1.15 Fredoka,Nunito,sans-serif;text-align:center;white-space:normal;box-shadow:0 3px 8px rgba(0,0,0,.4)}
+.journey-card{min-height:0;gap:6px;padding:10px 14px 12px}
+.journey-gem-name{font-size:clamp(20px,1.45vw,22px)}
+.journey-badge{font-size:14px}
+.journey-metric{font-size:17px;grid-template-columns:84px minmax(20px,1fr) 46px}
+.journey-action{min-height:44px;font-size:17px;margin-top:4px}
+.journey-progress .progress-stat{font-size:17px}
+.journey-progress h2{font-size:24px}
+.journey-progress-inner{font-size:17px}
+.rl-train{position:absolute;left:0;top:0;width:64px;height:44px;z-index:2;transform-origin:0 0;pointer-events:none;will-change:transform}
+.rl-train svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 3px 2px rgba(0,0,0,.45))}
+.rl-puff{position:absolute;left:0;top:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;z-index:3;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.95) 0,rgba(255,255,255,.75) 42%,rgba(255,255,255,0) 70%);animation:rlPuff 1.15s ease-out forwards}
+@keyframes rlPuff{from{opacity:.9;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(var(--dx,6px),-48px) scale(2.5)}}
+.rl-spark{position:absolute;left:0;top:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;z-index:4;pointer-events:none;background:#fff6c4;box-shadow:0 0 10px #ffd86a;animation:rlSpark .75s ease-out forwards}
+@keyframes rlSpark{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.4)}}
+.journey-station.rl-pre .journey-card{opacity:.72}
+.journey-station.rl-pop .journey-card{animation:rlCardPop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes rlCardPop{40%{transform:scale(1.06)}}
+.journey-station.rl-arrive .rl-gem-svg{animation:rlArrive .45s ease-in-out 3}
+@keyframes rlArrive{50%{transform:scale(1.28)}}
+@media(min-width:901px) and (max-height:820px){.journey-heading{padding:4px 22px 6px}.journey-heading h1{font-size:30px}.journey-heading p{font-size:16px}.journey-card{padding:8px 12px 10px;gap:4px}}
+@media(max-width:900px){
+ .journey-grid{gap:76px;padding-top:56px}
+ .journey-card{min-height:0}
+}
+/* ---------- Page transitions ---------- */
+#rl-fx{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden}
+.rl-steam-puff{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.97),rgba(250,252,255,.88) 45%,rgba(240,244,250,.5) 72%,rgba(255,255,255,0));will-change:transform}
+.rl-fx-train{position:absolute;left:0;bottom:16vh;height:30vh;width:auto;will-change:transform}
+.rl-enter-place .rl-p-banner{animation:rlDrop .42s cubic-bezier(.2,.9,.3,1.15) .16s backwards}
+.rl-enter-place .rl-p-left,.rl-enter-place .rl-col,.rl-enter-place .rl-p-journey,.rl-enter-place .rl-p-finish{animation:rlRise .38s ease-out backwards;animation-delay:calc(.26s + var(--i,0)*60ms)}
+.rl-enter-rail .rl-gem{animation:rlPopIn .38s cubic-bezier(.3,1.6,.5,1) backwards;animation-delay:calc(.28s + var(--i,0)*50ms)}
+@keyframes rlDrop{from{opacity:0;transform:translateY(-34px)}}
+@keyframes rlRise{from{opacity:0;transform:translateY(26px)}}
+@keyframes rlPopIn{from{opacity:0;transform:scale(.3)}}
+@keyframes rlDraw{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){
+ .rl-enter-place *,.rl-enter-rail *{animation:none!important}
+ .rl-start,.rl-gem.is-current .rl-gem-glow,.rl-gem.is-current .rl-gem-svg{animation:none!important}
+}
+
+/* Page 1: finished design picture, cover-fitted around a measured safe area; one invisible button on the painted pill */
+.scene.rl-welcome{background:#13203d}
+.rl-wpic{height:100dvh;min-height:0;overflow:hidden}
+.rl-wpic .rl-topbar{z-index:20}
+.rl-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.rl-wstage{position:absolute;inset:0;overflow:hidden;z-index:0}
+.rl-wimg{position:absolute;background:url(resources/sra/v3/welcome-bg.jpg) 0 0/100% 100% no-repeat}
+.rl-whit{position:absolute;z-index:5;margin:0;padding:0;border:0;border-radius:999px;background-color:transparent;background-image:url(resources/sra/v3/welcome-bg.jpg);background-repeat:no-repeat;cursor:pointer;transition:box-shadow .15s ease,transform .1s ease}
+.rl-whit:hover{box-shadow:0 0 0 3px rgba(255,230,130,.55),0 0 34px 10px rgba(255,205,80,.55)}
+.rl-whit:active{transform:scale(.97)}
+.rl-whit:focus-visible{outline:4px solid #fff;outline-offset:4px;box-shadow:0 0 0 9px #1f5fd6,0 0 30px 8px rgba(255,205,80,.5)}
+.rl-whit.rl-go{animation:trainShake .5s linear infinite}
+.rl-wfoot{display:none}
+.rl-wportrait .rl-wstage{background:linear-gradient(180deg,#13203d 0%,#1b2d57 55%,#101a33 100%)}
+.rl-wportrait .rl-wfoot{display:flex;position:absolute;left:0;right:0;bottom:0;justify-content:center;padding:24px 18px calc(24px + env(safe-area-inset-bottom))}
+.rl-wportrait .rl-wfoot .rl-start{width:min(100%,520px);font-size:34px;min-height:76px}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
@@ -466,7 +662,7 @@ function confetti(n=70){const cols=['#ffd447','#ff6b8b','#4fc3f7','#7ee081','#b4
 
 /* ---------- scene plate: contained artwork with a blurred copy behind any side space ---------- */
 // load every screen's picture once up front so page changes never wait for an image
-['rw01','rw02','rw03','rw04','rw05','rw06','rw07','rw08','rw09','rw10','rw11'].forEach(k=>{const i=new Image();i.decoding='async';i.src=ART+k+'.jpg'});
+['station-bg','journey-bg','rw03','rw05','rw06','rw07','rw08','rw09','rw10','rw11'].forEach(k=>{const i=new Image();i.decoding='async';i.src=ART+k+'.jpg'});
 const AW=1536,AH=1024,SAFE=[14,0,1508,1008];
 let cur=null;
 /* The painted "SRA" logo in each picture is covered by a READwy Reading Lab label (positions in picture pixels). */
@@ -481,21 +677,49 @@ function transparentBrandText(key){
  }).join('');
 }
 document.head.insertAdjacentHTML('beforeend','<style>.rl-drawer{display:none!important}.rl-pull{display:none!important}</style>');
-function plate(key){const sc=document.createElement('section');sc.className='scene';sc.dataset.key=key;sc.innerHTML=`<div class="ext t"></div><div class="ext b"></div><div class="ext l"></div><div class="ext r"></div><div class="plate"><img class="art" src="${ART}${key}.jpg" alt="" draggable="false">${rlBrand(key)}</div>`;return sc}
+function plate(key){const sc=document.createElement('section');sc.className='scene';sc.dataset.key=key;sc.innerHTML=`<div class="ext t"></div><div class="ext b"></div><div class="ext l"></div><div class="ext r"></div><div class="plate">${key.startsWith('native')?'':`<img class="art" src="${ART}${key}.jpg" alt="" draggable="false">`}${rlBrand(key)}</div>`;return sc}
+function paintSafeExtensions(sc,img,W,H,left,top,w,h,k){
+ let canvas=sc.querySelector(':scope>.safe-extension');
+ if(!canvas){canvas=document.createElement('canvas');canvas.className='safe-extension';canvas.setAttribute('aria-hidden','true');sc.insertBefore(canvas,sc.querySelector('.plate'))}
+ canvas.style.cssText='position:absolute;inset:0;z-index:0;width:100%;height:100%;pointer-events:none';
+ if(!img.complete||!img.naturalWidth){if(!img.__safeFitWait){img.__safeFitWait=true;img.addEventListener('load',()=>{img.__safeFitWait=false;if(sc.isConnected)fit(sc)},{once:true})}return}
+ const dpr=Math.min(2,Math.max(1,devicePixelRatio||1)),cw=Math.max(1,Math.ceil(W*dpr)),ch=Math.max(1,Math.ceil(H*dpr));
+ canvas.width=cw;canvas.height=ch;
+ const base=document.createElement('canvas');base.width=cw;base.height=ch;const b=base.getContext('2d');b.setTransform(dpr,0,0,dpr,0,0);b.drawImage(img,left,top,w,h);
+ const leftGap=Math.max(0,left),rightGap=Math.max(0,W-left-w),logicalEdge=Math.min(32,AW);
+ const mirrorX=(side,gap)=>{if(gap<=0)return;const srcW=Math.min(img.naturalWidth,logicalEdge*img.naturalWidth/AW,gap*img.naturalWidth/w),tile=srcW*w/img.naturalWidth;if(!tile)return;
+  for(let offset=0,index=0;offset<gap;offset+=tile,index++){
+   const band=Math.min(tile,gap-offset),flip=index%2===0;
+   if(side==='left'){
+    if(flip){b.save();b.translate(left-offset,0);b.scale(-1,1);b.drawImage(img,0,0,srcW,img.naturalHeight,0,top,band,h);b.restore()}
+    else b.drawImage(img,0,0,srcW,img.naturalHeight,left-offset-band,top,band,h);
+   }else{
+    const sx=img.naturalWidth-srcW;
+    if(flip){b.save();b.translate(left+w+offset+band,0);b.scale(-1,1);b.drawImage(img,sx,0,srcW,img.naturalHeight,0,top,band,h);b.restore()}
+    else b.drawImage(img,sx,0,srcW,img.naturalHeight,left+w+offset,top,band,h);
+   }
+  }
+ };
+ mirrorX('left',leftGap);mirrorX('right',rightGap);
+ const ctx=canvas.getContext('2d');ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cw,ch);ctx.drawImage(base,0,0);ctx.setTransform(dpr,0,0,dpr,0,0);
+ const topGap=Math.max(0,top),bottomGap=Math.max(0,H-top-h);
+ if(topGap){const band=Math.min(topGap,h),sy=Math.round(top*dpr),sh=Math.max(1,Math.round(band*dpr));ctx.save();ctx.translate(0,top);ctx.scale(1,-1);ctx.drawImage(base,0,sy,cw,sh,0,0,W,band);ctx.restore();if(topGap>band)ctx.drawImage(base,0,sy,cw,1,0,0,W,topGap-band)}
+ if(bottomGap){const band=Math.min(bottomGap,h),bottom=top+h,sy=Math.round((bottom-band)*dpr),sh=Math.max(1,Math.round(band*dpr));ctx.save();ctx.translate(0,bottom);ctx.scale(1,-1);ctx.drawImage(base,0,sy,cw,sh,0,-band,W,band);ctx.restore();if(bottomGap>band)ctx.drawImage(base,0,Math.round((top+h)*dpr)-1,cw,1,0,bottom,W,bottomGap-band)}
+}
 // One scale and one offset govern both the backdrop and every art-coordinate hit area.
 function fit(sc){const W=innerWidth,H=innerHeight,pl=sc.querySelector('.plate');
   sc.style.setProperty('--scene-bg',`url("${ART}${sc.dataset.key}.jpg")`);
   document.documentElement.style.setProperty('--toolbar-h','0px');
-  if(sc.dataset.nativeJourney==='1'){
-   const k=1;sc.classList.add('native-journey');sc.style.setProperty('--scene-bg','none');sc.style.setProperty('--k',k+'px');
+  if(sc.dataset.nativeJourney==='1'||sc.dataset.native==='1'){
+   const k=1;sc.classList.add(sc.dataset.native==='1'?'rl-native':'native-journey');sc.style.setProperty('--scene-bg','none');sc.style.setProperty('--k',k+'px');
    Object.assign(pl.style,{left:'0',top:'0',width:'100%',height:'auto',minHeight:'100dvh',fontSize:'16px',transform:'none'});
    sc.style.setProperty('--plate-w',W+'px');sc.style.setProperty('--plate-h',H+'px');sc.style.setProperty('--plate-left','0px');sc.style.setProperty('--plate-top','0px');sc.style.setProperty('--plate-k','1px');requestAnimationFrame(updateJourneyCrops);return;
   }
   const aw=AW,ah=AH,key=sc.dataset.key;
   // Edge-to-edge (cover) fit. One scale k and one offset place the picture and every element on it; the scale only drops
   // below cover when that would cut into the safe rectangle (every painted title, label, button and card), so only outer
-  // scenery is ever trimmed. rw01/rw02 keep their UI inside the top 836/852 rows, so 16:9 screens are filled completely.
-  const FULL_BLEED_SAFE={rw01:[12,6,1500,830],rw02:[10,4,1516,848]};
+  // scenery is ever trimmed. Page 2 includes the painted footer banner in its safe area.
+  const FULL_BLEED_SAFE={rw01:[0,0,1536,1024],rw02:[10,4,1516,1018]};
   const safe=FULL_BLEED_SAFE[key]||[0,0,AW,AH];
   const [sx,sy,sw,sh]=safe,coverK=Math.max(W/aw,H/ah),safeK=Math.min(W/sw,H/sh);
   const k=Math.min(coverK,safeK),w=aw*k,h=ah*k;
@@ -504,10 +728,10 @@ function fit(sc){const W=innerWidth,H=innerHeight,pl=sc.querySelector('.plate');
   const left=minX<=maxX?Math.max(minX,Math.min(maxX,(W-w)/2)):(W-w)/2;
   const top=minY<=maxY?Math.max(minY,Math.min(maxY,(H-h)/2)):(H-h)/2;
   sc.classList.toggle('safe-fit',!!FULL_BLEED_SAFE[key]);
-  sc.querySelectorAll('.safe-extension').forEach(e=>e.remove());
   sc.style.setProperty('--plate-w',w+'px');sc.style.setProperty('--plate-h',h+'px');sc.style.setProperty('--plate-left',left+'px');sc.style.setProperty('--plate-top',top+'px');sc.style.setProperty('--plate-k',k+'px');sc.style.setProperty('--k',k+'px');
   Object.assign(pl.style,{left:left+'px',top:top+'px',width:w+'px',height:h+'px',fontSize:k+'px',transformOrigin:'0 0',transform:'none'});
   const art=pl.querySelector(':scope>.art');if(art)Object.assign(art.style,{left:'0',top:'0',width:w+'px',height:h+'px',clipPath:'none'});
+  if(art)paintSafeExtensions(sc,art,W,H,left,top,w,h,k);
   sc.querySelectorAll('.ext').forEach(e=>e.style.display='none');
   pl.querySelectorAll('[data-toolbar],[data-toolbar-nav]').forEach(el=>{
    const x=+(el.dataset.x||0),y=+(el.dataset.y||0),ew=+(el.dataset.w||0),eh=+(el.dataset.h||0),fs=+(el.dataset.fs||0);
@@ -576,86 +800,195 @@ function toREADwyJourney(){try{if(parent.readwyGo)return parent.readwyGo('index.
 let fx=null,SWIPE=0;
 function finishFx(){if(!fx)return;cancelAnimationFrame(fx.raf);fx.done()}
 /* Page change: the SRA train steams across the screen from left to right; the next page appears in its wake, behind a trail of steam. */
-function show(name,key,build,{instant=false}={}){finishFx();if(S.scene&&S.scene!==name)S.prev=S.scene;S.scene=name;S.key=key;setTimeout(remember,0);speechSynthesis?.cancel();tok++;owlTalk(false);caption('');closeSheet();
+function show(name,key,build,{instant=false}={}){finishFx();const prevScene=S.scene;if(S.scene&&S.scene!==name)S.prev=S.scene;S.scene=name;S.key=key;setTimeout(remember,0);speechSynthesis?.cancel();tok++;owlTalk(false);caption('');closeSheet();
  clearProgressOverlay();
  const narrationCaption=document.getElementById('caption');if(name!=='journey'&&narrationCaption&&narrationCaption.parentElement!==document.body)document.body.appendChild(narrationCaption);
- const w=document.getElementById('world'),old=cur,sc=plate(key);if(name==='journey')sc.dataset.nativeJourney='1';w.appendChild(sc);fit(sc);cur=sc;const pl=sc.querySelector('.plate');if(name!=='journey')decorate(pl,key);build(pl);fit(sc);SWIPE=0;if(name==='journey')rlJourneyFull(sc,pl);
+ const w=document.getElementById('world'),old=cur,sc=plate(key);if(name==='journey')sc.dataset.nativeJourney='1';if(RL_NATIVE[name]){sc.dataset.native='1';sc.classList.add('rl-native','rl-'+name)}w.appendChild(sc);fit(sc);cur=sc;const pl=sc.querySelector('.plate');if(name!=='journey'&&!RL_NATIVE[name])decorate(pl,key);build(pl);fit(sc);SWIPE=0;if(name==='journey')rlJourneyFull(sc,pl);
  else{clearProgressOverlay()}
  try{parent.document.querySelector('.sra-express-journey')?.style.setProperty('display','none')}catch(e){}
- if(name==='journey'){old?.remove();return}
- if(old&&instant){/* same-screen update: keep the backdrop steady, only the content slides */old.style.pointerEvents='none';sc.style.visibility='hidden';const art=sc.querySelector('img.art');let swapped=false;const swap=()=>{if(swapped)return;swapped=true;sc.style.visibility='';old.remove()};(art&&art.decode?art.decode():Promise.resolve()).then(swap,swap);setTimeout(swap,220);return}
- if(!old||matchMedia('(prefers-reduced-motion: reduce)').matches){old?.remove();return}
- const W=innerWidth,H=innerHeight,box=document.createElement('div');box.id='trainfx';box.innerHTML=`<img src="${ART}train.png" alt="">`;document.body.appendChild(box);
- const img=box.querySelector('img'),tw=H*.62*(624/664),dur=420,t0=performance.now();const reveal=x=>{const m=`linear-gradient(90deg,#000 ${x-W*.16}px,transparent ${x}px)`;sc.style.webkitMaskImage=m;sc.style.maskImage=m};reveal(0);
- SFX.chuff(5);setTimeout(()=>SFX.whistle(),80);let lastPuff=0;
- const done=()=>{sc.style.webkitMaskImage=sc.style.maskImage='';old.remove();box.remove();fx=null};
- const step=now=>{const p=Math.min(1,(now-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
-  const front=-tw*.2+(W+tw*1.35)*e,rear=front-tw;img.style.transform=`translateX(${front-tw}px) translateY(${Math.sin(now/45)*1.2}px)`;
-  const edge=rear+tw*.5;reveal(edge+W*.16*e);
-  if(now-lastPuff>45&&edge>-tw*.2&&edge<W+tw*.2){lastPuff=now;for(let i=0;i<3;i++){const s=document.createElement('i'),z=H*(.2+Math.random()*.16);s.style.cssText=`left:${edge-z/2-W*.06+(Math.random()-.5)*60}px;top:${H*(Math.random()*1.05)-z/2}px;width:${z}px;height:${z}px`;box.appendChild(s);setTimeout(()=>s.remove(),900)}
-   const c=document.createElement('i'),cz=H*.12;c.style.cssText=`left:${front-tw*.33-cz/2}px;top:${H*.32-cz}px;width:${cz}px;height:${cz}px`;box.appendChild(c);setTimeout(()=>c.remove(),900)}
-  if(p<1)fx.raf=requestAnimationFrame(step);else setTimeout(()=>{if(fx&&fx.box===box)done()},160)};
- fx={raf:requestAnimationFrame(step),done,box}}
+ if(old&&instant&&name!=='journey'){/* same-screen update: keep the backdrop steady, only the content slides */old.style.pointerEvents='none';sc.style.visibility='hidden';const art=sc.querySelector('img.art');let swapped=false;const swap=()=>{if(swapped)return;swapped=true;sc.style.visibility='';old.remove()};(art&&art.decode?art.decode():Promise.resolve()).then(swap,swap);setTimeout(swap,220);return}
+ rlTransition(old,sc,prevScene,name)}
 
 /* Developer view: every screen of the SRA program, for inspecting the UI */
 window.readwyDevScreens=()=>{const L=['Emerald','Sapphire','Amber','Ruby','Amethyst','Diamond'],at=(c,n)=>{S.c=c;S.n=n;S.pw=false;S.place=false};
  return [['Welcome',()=>welcome()],['Placement summary',()=>placement()],['Placement reading',()=>{S.place=true;S.page=0;reading()}],['Placement test',()=>placeTest()],['Placement writing mission',()=>placeWriting()],
   ['Dashboard',()=>dashboard()],['Journey map',()=>journey()],...L.map((l,c)=>[l+' station',()=>station(c)]),
   ['Before reading',()=>{at(0,1);before()}],['Reading time',()=>{at(0,1);S.page=0;reading()}],['Comprehension questions',()=>{at(0,1);quiz(true)}],
-  ['Writing mission',()=>{at(0,1);mission()}],['Writing workspace',()=>{at(0,1);workspace()}],['Writing feedback',()=>{at(0,1);feedback()}]]};/* ===== 1 · Welcome ===== */
+  ['Writing mission',()=>{at(0,1);mission()}],['Writing workspace',()=>{at(0,1);workspace()}],['Writing feedback',()=>{at(0,1);feedback()}]]};/* ===== Native pages: shared toolbar (pages 1-3), station backdrop (pages 1-2), journey rail + train ride (page 3), page transitions ===== */
+const RL_NATIVE={welcome:1,placement:1};
+const RL_ICON={
+ self:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="7.5" r="4.2" fill="currentColor"/><path d="M3.8 21c.7-4.7 4-7.2 8.2-7.2s7.5 2.5 8.2 7.2z" fill="currentColor"/></svg>',
+ sound:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 9.5h4l5-4v13l-5-4H3z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+ soundOff:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 9.5h4l5-4v13l-5-4H3z" fill="currentColor"/><path d="m16 9.5 5 5m0-5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+ help:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.3 9.4a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2 1-1.2 1.9v.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.2" fill="currentColor"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="#2f7d32" stroke-width="2.4"/><path d="M12 6.5V12l3.6 2.2" fill="none" stroke="#2f7d32" stroke-width="2.4" stroke-linecap="round"/></svg>',
+ cloud:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 18.5h10.2a4.3 4.3 0 0 0 .4-8.6A6 6 0 0 0 6 11.2a3.7 3.7 0 0 0 1 7.3z" fill="none" stroke="#2f7d32" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 16v-5m-2.4 2.3L12 10.9l2.4 2.4" fill="none" stroke="#2f7d32" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
+const RL_LAUREL=(cls='')=>`<svg class="rl-laurel ${cls}" viewBox="0 0 80 40" aria-hidden="true"><path d="M4 34C24 31 46 23 75 7" fill="none" stroke="#e8bf5a" stroke-width="3" stroke-linecap="round"/><g fill="#f2c14e" stroke="#9c6b17" stroke-width=".8"><ellipse cx="20" cy="25" rx="8" ry="3.6" transform="rotate(-38 20 25)"/><ellipse cx="25" cy="35" rx="8" ry="3.6" transform="rotate(12 25 35)"/><ellipse cx="38" cy="19" rx="8" ry="3.6" transform="rotate(-42 38 19)"/><ellipse cx="44" cy="29" rx="8" ry="3.6" transform="rotate(8 44 29)"/><ellipse cx="56" cy="13" rx="7.5" ry="3.4" transform="rotate(-46 56 13)"/><ellipse cx="62" cy="22" rx="7.5" ry="3.4" transform="rotate(4 62 22)"/><ellipse cx="74" cy="7" rx="6" ry="3" transform="rotate(-30 74 7)"/></g></svg>`;
+// One toolbar for pages 1-3. kind 'welcome': Self Mode, Sound, Help. kind 'main': (Back) + Home ... Settings, Self Mode.
+function rlToolbar(kind,{back=false}={}){
+ const b=(key,label,icon='',cls='')=>`<button type="button" class="${cls}" data-tb="${key}" aria-label="${label}">${icon}<span>${label}</span></button>`;
+ const nav=kind==='welcome'
+  ?`${b('self','Self Mode',RL_ICON.self,'rl-self')}<span class="rl-spacer"></span>${b('sound',muted?'Sound off':'Sound',muted?RL_ICON.soundOff:RL_ICON.sound,'rl-sound')}${b('help','Help',RL_ICON.help)}`
+  :`${back?b('back','Back','<span aria-hidden="true">←</span>','rl-back'):''}<span class="rl-spacer"></span>${b('home','Home')}${b('map','Journey Map')}${b('portfolio','Portfolio')}${b('progress','Progress')}${b('certs','Certificates')}${b('settings','Settings')}${b('self','Self Mode',RL_ICON.self,'rl-self')}`;
+ return `<header class="rl-topbar"><div class="rl-brand"><span class="rl-logo" aria-hidden="true">R</span><span class="rl-brand-text">READwy Reading Lab</span></div><nav class="rl-nav" aria-label="Reading Lab navigation">${nav}</nav></header>`}
+function wireToolbar(root,acts={}){
+ const H={self:GO.self,help:helpSheet,home:dashboard,map:toREADwyJourney,portfolio,progress:acts.progress||openProgress,certs:certSheet,settings,back:acts.back,
+  sound:btn=>{toggleSound();btn.innerHTML=`${muted?RL_ICON.soundOff:RL_ICON.sound}<span>${muted?'Sound off':'Sound'}</span>`;btn.setAttribute('aria-label',muted?'Sound off':'Sound');btn.setAttribute('aria-pressed',muted?'false':'true')}};
+ root.querySelectorAll('.rl-topbar [data-tb]').forEach(btn=>{if(btn.dataset.tb==='sound')btn.setAttribute('aria-pressed',muted?'false':'true');btn.addEventListener('click',e=>{e.stopPropagation();ac();SFX.pop();H[btn.dataset.tb]?.(btn)})})}
+function rlOwl(file,alt){return `<svg class="rl-owl" viewBox="0 0 420 540" role="img" aria-label="${esc(alt)}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ollieFeathers" x2="0" y2="1"><stop stop-color="#9a6540"/><stop offset="1" stop-color="#57341f"/></linearGradient><linearGradient id="ollieHat" x2="0" y2="1"><stop stop-color="#344a79"/><stop offset="1" stop-color="#14264d"/></linearGradient><linearGradient id="ollieScarf" x2="0" y2="1"><stop stop-color="#e23f48"/><stop offset="1" stop-color="#a91c31"/></linearGradient></defs><ellipse cx="210" cy="506" rx="132" ry="17" fill="#142345" opacity=".2"/><path d="M115 270C58 242 44 205 60 181c35-1 70 26 95 66zm190 0c57-28 71-65 55-89-35-1-70 26-95 66z" fill="url(#ollieFeathers)" stroke="#432719" stroke-width="8"/><path d="M105 249c-42-17-64-40-70-63 39 8 68 30 88 57zm210 0c42-17 64-40 70-63-39 8-68 30-88 57z" fill="#c08a55" opacity=".8"/><ellipse cx="210" cy="331" rx="126" ry="155" fill="url(#ollieFeathers)" stroke="#432719" stroke-width="9"/><ellipse cx="210" cy="354" rx="83" ry="113" fill="#f3e5ca" stroke="#d7bd96" stroke-width="5"/><path d="M93 161c8-73 59-115 117-115s109 42 117 115l-19 75c-25 31-61 49-98 49s-73-18-98-49z" fill="url(#ollieFeathers)" stroke="#432719" stroke-width="9"/><path d="M103 164c16-42 60-65 107-65s91 23 107 65c-8 65-52 112-107 112s-99-47-107-112z" fill="#f2e3c9"/><ellipse cx="158" cy="168" rx="42" ry="48" fill="#fffaf0" stroke="#c5aa81" stroke-width="5"/><ellipse cx="262" cy="168" rx="42" ry="48" fill="#fffaf0" stroke="#c5aa81" stroke-width="5"/><ellipse cx="164" cy="173" rx="19" ry="25" fill="#17213b"/><ellipse cx="256" cy="173" rx="19" ry="25" fill="#17213b"/><circle cx="170" cy="164" r="7" fill="#fff"/><circle cx="262" cy="164" r="7" fill="#fff"/><path d="m210 181-28 32q28 27 56 0z" fill="#e8a12c" stroke="#9e5b16" stroke-width="5"/><path d="M83 133c4-47 48-83 127-83s123 36 127 83H83z" fill="url(#ollieHat)" stroke="#101d3b" stroke-width="8"/><path d="M139 55q71-55 142 0" fill="none" stroke="#edc451" stroke-width="8"/><path d="M210 45v-18m-10 9h20" stroke="#f5d77e" stroke-width="6" stroke-linecap="round"/><path d="M95 241q115 42 230 0l-9 45q-106 35-212 0z" fill="url(#ollieScarf)" stroke="#7f1728" stroke-width="7"/><path d="M282 266q56 15 48 68l-18 81q-37-7-55-34l21-82z" fill="url(#ollieScarf)" stroke="#7f1728" stroke-width="7"/><path d="M146 472q-37 19-64 13-15-4-7-17 14-20 58-19m141 23q37 19 64 13 15-4 7-17-14-20-58-19" fill="#e5a82f" stroke="#9b5b16" stroke-width="7" stroke-linecap="round"/><path d="M155 320q55-28 110 0v111H155z" fill="#17294d" stroke="#c9953e" stroke-width="6"/><path d="M210 320v111m-43-80h29m28 0h29m-86 28h29m28 0h29" fill="none" stroke="#f4d27a" stroke-width="5"/><path d="M169 340q16-13 31 0m20 0q16-13 31 0" fill="none" stroke="#fff2c6" stroke-width="4"/>${file.includes('ticket')?'<g transform="rotate(-10 324 304)"><path d="M270 282h111v62h-111q-12-10 0-20-12-10 0-21-12-10 0-21z" fill="#f2d28a" stroke="#6e4a1d" stroke-width="6"/><text x="325" y="308" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#342519">READING</text><text x="325" y="328" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#342519">TICKET</text></g>':''}</svg>`}
+function rlDemoTrain(){try{if(new URLSearchParams(parent.location.search).get('demoTrain')==='1')return true}catch(e){}try{return new URLSearchParams(location.search).get('demoTrain')==='1'}catch(e){return false}}
+
+/* ---------- Page 3 rail: drawn through the real gem positions, so the train always sits on it ---------- */
+const RL_TRAIN_SVG='<svg viewBox="0 0 64 44" aria-hidden="true"><path d="M40 14V6h7v8" fill="#263d55"/><path d="M38.5 4h10v3.5h-10z" fill="#d9a441" stroke="#263d55" stroke-width="1.5"/><path d="M3 30h42a8 8 0 0 0 8-8v-8H31l-6-9H13v17H3z" fill="#bb3c3a" stroke="#263d55" stroke-width="3"/><path d="M16 9h9l5 7H16z" fill="#bde8f0" stroke="#263d55" stroke-width="2"/><path d="M33 17h13v4H33z" fill="#e7a43c" stroke="#263d55" stroke-width="1.6"/><path d="M9 29h42v6H9z" fill="#d9a441" stroke="#263d55" stroke-width="2"/><circle cx="19" cy="37" r="5.5" fill="#25374b" stroke="#f1d27a" stroke-width="2"/><circle cx="40" cy="37" r="5.5" fill="#25374b" stroke="#f1d27a" stroke-width="2"/><path d="M19 37h21" stroke="#f1d27a" stroke-width="2"/><path d="M53 18h7v15h-7zM57 11l5 7h-9z" fill="#e1ae45" stroke="#263d55" stroke-width="2"/><circle cx="58" cy="24" r="2.2" fill="#fff6c8"/></svg>';
+const RL_CHIMNEY=[43.5-32,4-44*.88]; // chimney top relative to the wheel anchor (px)
+function layoutJourneyRail(shell){
+ const grid=shell?.querySelector('.journey-grid'),svg=grid?.querySelector('.journey-rail');if(!grid||!svg||!grid.isConnected)return null;
+ const gr=grid.getBoundingClientRect(),W=Math.max(1,Math.round(grid.clientWidth)),H=Math.max(1,Math.round(grid.clientHeight));
+ const pts=[0,1,2,3,4,5].map(c=>{const g=grid.querySelector(`.journey-station[data-station="${c}"] .rl-gem`);if(!g)return null;const r=g.getBoundingClientRect();return [r.left+r.width/2-gr.left,r.top+r.height*.6-gr.top]});
+ if(pts.some(p=>!p))return null;
+ const mobile=getComputedStyle(grid).display==='flex';let d;
+ if(mobile){const x=pts[0][0];d=`M${x} ${Math.max(4,pts[0][1]-110)} V${pts[5][1]+6}`}
+ else{const y0=(pts[0][1]+pts[1][1]+pts[2][1])/3,y1=(pts[3][1]+pts[4][1]+pts[5][1])/3,xr=Math.min(W-14,Math.max(pts[2][0],pts[3][0])+72),r=Math.max(10,Math.min(56,(y1-y0)/2-4)),x0=Math.max(8,pts[0][0]-96),x5=Math.max(8,pts[5][0]-96);
+  d=`M${x0} ${y0} H${xr-r} Q${xr} ${y0} ${xr} ${y0+r} V${y1-r} Q${xr} ${y1} ${xr-r} ${y1} H${x5}`}
+ const draw=!!shell.__drawPending;
+ svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('preserveAspectRatio','none');
+ svg.innerHTML=`<defs><mask id="rlRailCut" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#fff"/><path d="${d}" fill="none" stroke="#000" stroke-width="13" stroke-linejoin="round"/></mask><mask id="rlRailHi" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#fff"/><path d="${d}" fill="none" stroke="#000" stroke-width="17" stroke-linejoin="round"/></mask>${draw?`<mask id="rlDraw" maskUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}"><path class="rl-draw-path" d="${d}" fill="none" stroke="#fff" stroke-width="70" stroke-linecap="round" stroke-linejoin="round"/></mask>`:''}</defs>
+ <g ${draw?'mask="url(#rlDraw)"':''}>
+  <path d="${d}" transform="translate(0 6)" fill="none" stroke="rgba(18,30,20,.28)" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="rgba(120,104,84,.55)" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#4e321b" stroke-width="31" stroke-dasharray="9 13" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#9a6b3c" stroke-width="27" stroke-dasharray="7 15" stroke-dashoffset="-1" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#c8965f" stroke-width="20" stroke-dasharray="3 19" stroke-dashoffset="-2" stroke-linejoin="round"/>
+  <path d="${d}" fill="none" stroke="#56636d" stroke-width="23" stroke-linejoin="round" mask="url(#rlRailCut)"/>
+  <path d="${d}" fill="none" stroke="#e4ebef" stroke-width="20" stroke-linejoin="round" mask="url(#rlRailHi)" opacity=".9"/>
+ </g><path class="rl-rail-geom" d="${d}" fill="none" stroke="none"/>`;
+ const path=svg.querySelector('.rl-rail-geom'),total=path.getTotalLength();
+ if(draw){const dp=svg.querySelector('.rl-draw-path');dp.style.strokeDasharray=total;dp.style.strokeDashoffset=total;dp.style.animation='rlDraw .62s cubic-bezier(.4,.1,.2,1) .1s forwards';shell.__drawPending=false}
+ // length along the rail closest to each gem
+ const near=([x,y])=>{let best=0,bd=1e12;for(let s=0;s<=total;s+=6){const p=path.getPointAtLength(s),dd=(p.x-x)**2+(p.y-y)**2;if(dd<bd){bd=dd;best=s}}for(let s=Math.max(0,best-6);s<=Math.min(total,best+6);s++){const p=path.getPointAtLength(s),dd=(p.x-x)**2+(p.y-y)**2;if(dd<bd){bd=dd;best=s}}return best};
+ const R={path,total,L:pts.map(near),pts,mobile};shell.__rail=R;return R}
+const rlRest=(R,c)=>Math.max(2,R.L[c]-(R.mobile?58:70));
+function placeTrain(shell,len){const R=shell.__rail,tr=shell.querySelector('.rl-train');if(!R||!tr)return null;
+ const s=Math.max(0,Math.min(R.total-1,len)),p=R.path.getPointAtLength(s),q=R.path.getPointAtLength(Math.min(R.total,s+2));
+ let a=Math.atan2(q.y-p.y,q.x-p.x)*180/Math.PI;const flip=Math.cos(a*Math.PI/180)<-.2;
+ tr.style.transform=flip?`translate(${p.x}px,${p.y}px) rotate(${a-180}deg) scaleX(-1) translate(-50%,-88%)`:`translate(${p.x}px,${p.y}px) rotate(${a}deg) translate(-50%,-88%)`;
+ shell.__trainLen=s;return {x:p.x,y:p.y,a,flip}}
+function rlSteam(shell,pos){const grid=shell.querySelector('.journey-grid');if(!grid||!pos)return;
+ let [cx,cy]=RL_CHIMNEY;if(pos.flip)cx=-cx;const ang=(pos.flip?pos.a-180:pos.a)*Math.PI/180,x=pos.x+cx*Math.cos(ang)-cy*Math.sin(ang),y=pos.y+cx*Math.sin(ang)+cy*Math.cos(ang);
+ const s=document.createElement('i');s.className='rl-puff';s.style.left=x+'px';s.style.top=y+'px';s.style.setProperty('--dx',(Math.random()*14-7)+'px');grid.appendChild(s);setTimeout(()=>s.remove(),1200)}
+function rlSparkle(shell,c){const R=shell.__rail,grid=shell.querySelector('.journey-grid');if(!R||!grid)return;const [x,y]=R.pts[c];
+ for(let i=0;i<14;i++){const s=document.createElement('i'),a=i/14*Math.PI*2,d=34+Math.random()*26;s.className='rl-spark';s.style.left=x+'px';s.style.top=(y-10)+'px';s.style.setProperty('--sx',Math.cos(a)*d+'px');s.style.setProperty('--sy',Math.sin(a)*d+'px');grid.appendChild(s);setTimeout(()=>s.remove(),800)}}
+// Part 4: the train drives along the rail from station `from` to `to`; the next station unlocks when it arrives.
+function journeyTrainRide(shell,from,to){
+ const node=shell.querySelector(`.journey-station[data-station="${to}"]`),badge=node?.querySelector('.journey-badge'),finalText=badge?.textContent,wasLocked=node?.classList.contains('is-locked');
+ node?.classList.add('is-locked','rl-pre');if(badge)badge.textContent='Locked';
+ let done=false,raf=0;
+ const arrive=()=>{if(done)return;done=true;cancelAnimationFrame(raf);removeEventListener('pointerdown',skip,true);shell.__riding=false;
+  shell.__restC=to;const R=shell.__rail;if(R)placeTrain(shell,rlRest(R,to));if(!node)return;node.classList.remove('rl-pre');if(!wasLocked)node.classList.remove('is-locked');if(badge)badge.textContent=finalText;
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){node.classList.add('rl-pop','rl-arrive');rlSparkle(shell,to);setTimeout(()=>node.classList.remove('rl-pop','rl-arrive'),1500)}};
+ const skip=()=>arrive();
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches||!shell.__rail){arrive();return}
+ shell.__riding=true;addEventListener('pointerdown',skip,true);SFX.whistle();setTimeout(()=>{if(!done)SFX.chuff(6)},350);
+ const dur=3000;let t0=null,lastPuff=0;
+ const step=now=>{if(done)return;if(!shell.isConnected){done=true;removeEventListener('pointerdown',skip,true);return}const R=shell.__rail;t0??=now;
+  const p=Math.min(1,(now-t0)/dur),e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2,a=rlRest(R,from),b=rlRest(R,to),pos=placeTrain(shell,a+(b-a)*e);
+  if(now-lastPuff>130){lastPuff=now;rlSteam(shell,pos)}
+  if(p<1)raf=requestAnimationFrame(step);else arrive()};
+ raf=requestAnimationFrame(step)}
+function rlJourneyTrain(shell){
+ const R=layoutJourneyRail(shell);if(!R)return;
+ const cu=current(),restC=cu.all?5:cu.c;let ride=null;
+ if(rlDemoTrain()){const to=Math.max(1,restC);ride=[to-1,to]}
+ else{const rides=Array.isArray(P.trainRides)?P.trainRides:[],fresh=[0,1,2,3,4].filter(c=>lvDone(c)===10&&!rides.includes(c));
+  if(fresh.length){const from=Math.max(...fresh);ride=[from,from+1];P.trainRides=[...new Set([...rides,...fresh])];save()}}
+ if(ride){placeTrain(shell,rlRest(R,ride[0]));shell.__riding=true;setTimeout(()=>{if(shell.isConnected)journeyTrainRide(shell,ride[0],ride[1])},RL_TRANS_MS+120)}
+ else placeTrain(shell,rlRest(R,restC));
+ // keep the rail and the parked train aligned when the layout changes (window size, caption appearing)
+ if(window.ResizeObserver){let t=0;const ro=new ResizeObserver(()=>{if(!shell.isConnected){ro.disconnect();return}clearTimeout(t);t=setTimeout(()=>{const R2=layoutJourneyRail(shell);if(R2&&!shell.__riding){const c2=current();placeTrain(shell,rlRest(R2,shell.__restC??(c2.all?5:c2.c)))}},60)});ro.observe(shell.querySelector('.journey-grid'))}}
+
+/* ---------- Part 5: page transitions (transform/opacity only) ---------- */
+const RL_ORDER=['welcome','placement','placetest','dashboard','journey','station','before','reading','quiz','mission','workspace','feedback','feedback'];
+let RL_TRANS_MS=0;
+function rlTransition(old,sc,from,to){
+ RL_TRANS_MS=0;if(!old)return;
+ old.style.pointerEvents='none';old.style.zIndex='0';sc.style.zIndex='1';
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let fxBox=null,timer=0;
+ const fin=()=>{clearTimeout(timer);old.remove();fxBox?.remove();fx=null;setTimeout(()=>sc.classList.remove('rl-enter-place','rl-enter-rail'),900)};
+ const end=ms=>{RL_TRANS_MS=ms;timer=setTimeout(fin,ms);fx={raf:0,done:fin,box:null}};
+ if(reduce){sc.animate([{opacity:0},{opacity:1}],{duration:150,easing:'linear'});end(150);return}
+ const W=innerWidth,H=innerHeight;
+ if(from==='welcome'&&to==='placement'){
+  fxBox=document.createElement('div');fxBox.id='rl-fx';document.body.appendChild(fxBox);SFX.chuff(3);
+  for(let i=0;i<9;i++){const p=document.createElement('i'),z=H*(.42+Math.random()*.38);p.className='rl-steam-puff';Object.assign(p.style,{width:z+'px',height:z+'px',top:(H*(i/8)-z/2+(Math.random()-.5)*H*.12)+'px',left:(-z)+'px'});fxBox.appendChild(p);
+   p.animate([{transform:'translateX(0) scale(.85)',opacity:.0},{transform:`translateX(${W*.55+z*.5}px) scale(1.05)`,opacity:1,offset:.45},{transform:`translateX(${W+z*1.4}px) scale(1.2)`,opacity:0}],{duration:640,delay:i*14,easing:'cubic-bezier(.3,.1,.3,1)',fill:'both'})}
+  old.animate([{opacity:1},{opacity:0}],{duration:300,delay:80,fill:'forwards'});
+  sc.animate([{opacity:0},{opacity:1}],{duration:300,delay:150,fill:'backwards'});sc.classList.add('rl-enter-place');end(720);return}
+ if(from==='placement'&&to==='journey'){
+  fxBox=document.createElement('div');fxBox.id='rl-fx';document.body.appendChild(fxBox);SFX.chuff(4);
+  fxBox.innerHTML=`<svg class="rl-fx-train" viewBox="0 0 420 120" aria-hidden="true"><g fill="#132035"><path d="M250 92h150l10-10V58l-24-6V20h-22v32h-26V8h-46l-10 12v72z"/><rect x="128" y="34" width="112" height="58" rx="8"/><rect x="6" y="34" width="112" height="58" rx="8"/><rect x="118" y="70" width="10" height="8"/><rect x="240" y="70" width="10" height="8"/><g><circle cx="282" cy="98" r="15"/><circle cx="330" cy="98" r="15"/><circle cx="374" cy="102" r="10"/><circle cx="154" cy="100" r="11"/><circle cx="214" cy="100" r="11"/><circle cx="32" cy="100" r="11"/><circle cx="92" cy="100" r="11"/></g></g><g fill="#fff" opacity=".85"><ellipse cx="372" cy="8" rx="22" ry="12"/><ellipse cx="344" cy="-6" rx="16" ry="9"/></g></svg>`;
+  const tr=fxBox.firstChild,tw=H*.3*420/120;
+  tr.animate([{transform:`translateX(${-tw}px)`},{transform:`translateX(${W+tw*.1}px)`}],{duration:620,easing:'cubic-bezier(.45,.05,.4,1)',fill:'both'});
+  old.animate([{opacity:1},{opacity:0}],{duration:320,delay:60,fill:'forwards'});
+  const shell=sc.querySelector('.journey-shell');if(shell)shell.__drawPending=true;sc.classList.add('rl-enter-rail');
+  sc.animate([{opacity:0},{opacity:1}],{duration:320,delay:140,fill:'backwards'});end(680);return}
+ const dir=(RL_ORDER.indexOf(to)>=RL_ORDER.indexOf(from))?1:-1;
+ sc.animate([{opacity:0,transform:`translateX(${dir*56}px)`},{opacity:1,transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'});
+ old.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-dir*56}px)`}],{duration:320,easing:'ease-in',fill:'forwards'});
+ end(500)}
+/* ===== 1 · Welcome ===== */
 let narrated=false;
-function welcome(){show('welcome','rw01',pl=>{
- const tw=el(pl,'',[0,200,312,332],'abs trainwrap','pointer-events:none');clone(tw,[0,200,312,332],'clone',`left:0;top:0;${outlineMask(TRAIN,0,200,312,332,1.2)}`);
- [[222,262,30],[222,330,22],[152,418,20],[282,418,20]].forEach(([gx,gy,r],i)=>el(tw,'',[gx-r,gy-200-r,r*2,r*2],'glow',`animation-delay:${i*.4}s`));
- owl(pl,[170,238,500,600],{eyes:[[410,415,27],[505,408,26]],key:'rw01'});
-sparks(pl,[[850,150,26],[1300,190,22],[700,470,20],[1250,520,24],[560,120,18]]);
- const st=hit(pl,'Start Journey',[688,582,604,122],startJourney,'999px');st.classList.add('pulse');
- hit(pl,'Sound on or off',[1160,20,172,56],toggleSound,'999px');hit(pl,'Help — hear Ollie explain',[1345,20,152,56],helpSheet,'999px');
+/* Page 1 is the finished design picture welcome-bg.jpg (2560x1440). Measured in picture pixels:
+   SAFE = owl cap + wing, whole title sign, button, tagline, top of the owl's feet; BTN = the painted Start Journey pill. */
+const RL_WBG={w:2560,h:1440,safe:[430,330,1950,920],btn:[1406,928,766,158]};
+function layoutWelcome(page){const st=page.querySelector('.rl-wstage'),img=page.querySelector('.rl-wimg'),hit=page.querySelector('.rl-whit'),tb=page.querySelector('.rl-topbar');if(!st||!img||!hit)return;
+ const W=st.clientWidth,H=st.clientHeight,top=tb?Math.round(tb.getBoundingClientRect().bottom-st.getBoundingClientRect().top+6):0;
+ const {w:IW,h:IH,safe:[sx,sy,sw,sh],btn:[bx,by,bw,bh]}=RL_WBG,portrait=W/H<1.1;let k,left,tp;
+ page.classList.toggle('rl-wportrait',portrait);
+ if(portrait){k=W/IW;left=0;tp=top}
+ else{const uH=H-top,coverK=Math.max(W/IW,H/IH),safeK=Math.min(W/sw,uH/sh);k=Math.min(coverK,safeK);const w=IW*k,h=IH*k;
+  // centre the safe area in the usable area (viewport minus toolbar), keep the picture covering the viewport,
+  // and never let the safe area leave the usable area
+  left=W/2-(sx+sw/2)*k;tp=top+uH/2-(sy+sh/2)*k;
+  left=Math.min(0,Math.max(W-w,left));tp=Math.min(0,Math.max(H-h,tp));
+  left=Math.max(-sx*k,Math.min(W-(sx+sw)*k,left));tp=Math.max(top-sy*k,Math.min(H-(sy+sh)*k,tp))}
+ Object.assign(img.style,{left:left+'px',top:tp+'px',width:IW*k+'px',height:IH*k+'px'});
+ // the hit area uses the same scale and offset; its background is the painted pill itself, so pressing visibly scales it
+ Object.assign(hit.style,{left:left+bx*k+'px',top:tp+by*k+'px',width:bw*k+'px',height:bh*k+'px',backgroundSize:`${IW*k}px ${IH*k}px`,backgroundPosition:`${-bx*k}px ${-by*k}px`});
+ page.__fit={k,left,top:tp}}
+function welcome(){show('welcome','native-station',pl=>{
+ const page=document.createElement('div');page.className='rl-page rl-wpic';
+ page.innerHTML=`${rlToolbar('welcome')}<h1 class="rl-sr">READwy Reading Lab — Reading &amp; Writing Journey. Read, Learn, Write, Achieve. Your learning adventure starts here. Read at your pace. Write with confidence.</h1><div class="rl-wstage"><div class="rl-wimg" aria-hidden="true"></div><button type="button" class="rl-whit" data-rl="start" aria-label="Start Journey"></button><div class="rl-wfoot"><button type="button" class="rl-start" data-rl="start" aria-label="Start Journey">Start Journey <span aria-hidden="true">›</span></button></div></div>`;
+ pl.replaceChildren(page);wireToolbar(page);
+ page.querySelectorAll('[data-rl="start"]').forEach(b=>b.onclick=e=>{e.stopPropagation();ac();SFX.pop();startJourney()});
+ layoutWelcome(page);requestAnimationFrame(()=>layoutWelcome(page));
+ if(window.ResizeObserver){const ro=new ResizeObserver(()=>{if(!page.isConnected){ro.disconnect();return}layoutWelcome(page)});ro.observe(page)}
 });setTimeout(()=>{if(S.scene==='welcome')autoNarrate()},300)}
 function autoNarrate(){if(narrated||muted)return;const go=()=>{if(narrated)return;narrated=true;document.getElementById('tap')?.remove();ac();startMusic();SFX.chuff(3);narrate()};
- addEventListener('pointerdown',function once(e){if(e.target.closest('.hit[aria-label="Start Journey"],.hit[aria-label^="Sound"]'))return;removeEventListener('pointerdown',once,true);go()},true)}
+ addEventListener('pointerdown',function once(e){if(e.target.closest('.hit[aria-label="Start Journey"],.hit[aria-label^="Sound"],[data-rl="start"],[data-tb="sound"]'))return;removeEventListener('pointerdown',once,true);go()},true)}
 // Start Journey: whistle, the painted train strains and shakes as if about to leave, then it pulls out and carries the learner to the next page.
 function startJourney(){narrated=true;ac();startMusic();SFX.whistle();say('All aboard!',1.05,1.45);touch();
- const tw=cur.querySelector('.trainwrap');if(tw){tw.style.animation='trainShake .5s linear infinite'}setTimeout(()=>SFX.chuff(4),200);
+ const tw=cur.querySelector('.trainwrap');if(tw){tw.style.animation='trainShake .5s linear infinite'}cur.querySelectorAll('[data-rl="start"]').forEach(b=>b.classList.add('rl-go'));setTimeout(()=>SFX.chuff(4),200);
  setTimeout(()=>P.start==null?placement(true):dashboard(),450)}
 
 /* ===== 2 · Placement assessment ===== */
-function placement(intro){show('placement','rw02',pl=>{const pa=P.placement||{},rd=pa.reading!=null,wr=pa.writing!=null,both=rd&&wr;
- // Page 2: Home opens the SRA dashboard; Journey Map returns to the READwy journey ticket.
- // Toolbar (repainted): Home · Journey Map · Certificates · Settings · My Progress — equal spaces, yellow on hover
- toolbar(pl,[572,14,937,46],[566,13,945,42],[['home','Home'],['map','Journey Map'],['certs','Certificates'],['settings','Settings'],['progress','My Progress']],{home:dashboard,progress:dashboard,map:toREADwyJourney});
- // ---- Page 2 layout: big 1-2-3 steps sitting exactly above three short cards (painted step bar and cards are covered) ----
- const IC=ICON;
- clone(el(pl,'',[0,0,AW,AH],'abs','pointer-events:none;z-index:2'),[206,186,118,72],'clone feather','left:calc(318*var(--k))');
- el(pl,'',[316,186,108,72],'abs','z-index:2;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(247,239,223,.0))');
- el(pl,'',[424,186,1082,608],'abs','background:linear-gradient(#f7efdf,#f2e6cf);border-radius:calc(24*var(--k));z-index:2');
- const RLC=[['#1c9a6c','#dcf4ea','#4fd3a0','#bfe9d6'],['#2f6fd6','#dfeafc','#6aa4f5','#c5daf8'],['#d9831a','#fdecd6','#f6b552','#f8d6a8']];const rec=pa.rec??null,X=[434,792,1150],W3=344;
+function placement(intro){show('placement','native-station',pl=>{const pa=P.placement||{},rd=pa.reading!=null,wr=pa.writing!=null,both=rd&&wr;
+ // Page 2 (native): banner, left info card with owl slot, three steps with their cards, journey bar, certificate strip.
+ const RLC=[['#1c9a6c','#dcf4ea','#4fd3a0','#bfe9d6'],['#2f6fd6','#dfeafc','#6aa4f5','#c5daf8'],['#d9831a','#fdecd6','#f6b552','#f8d6a8']];const rec=pa.rec??null,IC=ICON;
  const stepState=[rd,wr,both],stepNow=[!rd,rd&&!wr,both];
- ['Reading Experience','Writing Experience','Reading Level'].forEach((s,i)=>{const done=stepState[i]&&i<2,now=stepNow[i];
-  el(pl,`<div style="display:flex;align-items:center;justify-content:center;gap:.4em;height:100%"><span style="flex:none;display:grid;place-items:center;width:1.7em;height:1.7em;border-radius:50%;font:700 1.15em Fredoka,sans-serif;color:#fff;background:${done?'linear-gradient(#5cc22b,#2f8f10)':`linear-gradient(${RLC[i][2]},${RLC[i][0]})`};box-shadow:0 .08em .2em #0004,inset 0 .1em 0 #fff5">${done?'✓':i+1}</span><span style="font:700 1.08em Fredoka,sans-serif;white-space:nowrap;color:#0e1838">${s}</span></div>`,[X[i],196,W3,64],'abs',`z-index:3;font-size:calc(26*var(--k));border-radius:99px;background:linear-gradient(#fffdf7,${RLC[i][1]});border:calc(${now?3.5:2.5}*var(--k)) solid ${RLC[i][0]};${now?`box-shadow:0 0 calc(16*var(--k)) ${RLC[i][0]}aa`:''}`);
-  if(i<2)el(pl,'<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M4 12h13M12 5l7 7-7 7" stroke="#2f8f10" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',[X[i]+W3+1,212,12,32],'abs','z-index:3;pointer-events:none')});
- const card=(x,{icon,title,state,stateOn,lines,body='',say=''})=>{const CC=RLC[[434,792,1150].indexOf(x)]||RLC[0];const c=el(pl,'',[x,272,W3,352],'abs',`z-index:3;display:flex;flex-direction:column;border-radius:calc(20*var(--k));overflow:hidden;background:linear-gradient(#fffdf7 0%,${CC[1]} 50%,${CC[3]} 100%);border:calc(3.5*var(--k)) solid ${CC[0]};box-shadow:0 calc(5*var(--k)) calc(12*var(--k)) #6b4a1c33;font-size:calc(22*var(--k))`);
-  c.innerHTML=`<div style="text-align:center;padding:.8em .6em .2em"><span class="chip ${stateOn?'cg':'cl'}" style="font-size:.9em">${state}</span></div>
-   ${lines?`<div style="flex:1;display:grid;place-items:center;padding:0 1em 3.2em;text-align:center;font:600 1.25em/1.25 Fredoka,sans-serif;color:#1d2440">${say}</div>`:`<div style="text-align:center;font-weight:700;color:#3a3f52;padding:.3em .9em .2em;line-height:1.25">${say}</div>`}
-   ${body}`;return c};
- const btn=(x,txt,fn,cls)=>{const b=pill(pl,txt,[x+34,560,276,50],fn,cls,22);b.style.zIndex=4;return b};
- card(434,{icon:IC('book'),say:'Read a short story, then answer questions from memory.',state:rd?`✔ Done · ${pa.reading}/${pa.readingOf||PLACE.questions.length}`:'○ Not started',stateOn:rd,lines:1});
- btn(434,rd?'✔ Completed':'Start reading ›',()=>rd?notice('Reading Experience is done.'):journey(),rd?'ghost':'gold pulse');
- card(792,{icon:IC('pen'),say:'Write about a journey you remember, in your own words.',state:wr?`✔ Done · ${pa.writing.r.total}/20`:rd?'○ Ready':'🔒 After reading',stateOn:wr,lines:1});
- btn(792,wr?'✔ Completed':'Start writing ›',()=>wr?notice('Writing Experience is done.'):(rd||DEV)?placeWriting():notice('Finish the Reading Experience first.'),wr?'ghost':rd?'gold pulse':'ghost');
  const gems=LV.map((l,c)=>{const ok=both&&c<=rec,star=both&&c===rec;return `<button type="button" aria-label="Start at ${l.name}" onclick="${ok?`chooseStart(${c})`:`notice('${both?'Choose your recommended level or an easier one.':'Finish the Reading and Writing Experiences first.'}')`}" style="font:inherit;color:inherit;cursor:${ok?'pointer':'not-allowed'};border:0;display:flex;flex-direction:column;align-items:center;gap:.15em;padding:.35em 0;border-radius:.7em;${star?'background:#e6f0cc;box-shadow:0 0 0 .12em #2f8f10':'background:#f6f1e4'};${both&&!ok?'opacity:.4':''}"><span style="font-size:1.7em;display:inline-flex">${gem3d(c)}</span><b style="font-size:.72em">${l.name}</b>${star?'<span style="font-size:.6em;color:#1f4d0f;font-weight:900">⭐ Best</span>':''}</button>`}).join('');
- card(1150,{icon:IC('gem'),say:'Your results show your best starting station.',state:both?`${LV[rec].name} recommended`:'🔒 After both',stateOn:both,body:`<div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.3em;padding:0 .6em 3em;align-content:center">${gems}</div>`});
- // the journey ahead, under the three cards
- el(pl,`<div style="display:flex;align-items:center;justify-content:center;gap:.6em;height:100%;white-space:nowrap"><span style="font-size:1.9em;display:inline-flex">${IC('star')}</span><b style="font-family:Fredoka,sans-serif;font-size:1.1em">Your journey:</b><span style="display:inline-flex;gap:.12em;font-size:1.2em">${LV.map((l,c)=>gem3d(c)).join('')}</span><b>6 stations</b>·<b>10 texts each</b>·<b>60 readings + 60 writings</b></div>`,[434,634,1060,66],'abs',`z-index:3;font-size:calc(21*var(--k));border-radius:calc(18*var(--k));background:linear-gradient(#22396b,#11234a);color:#fff6dc;border:calc(3*var(--k)) solid #e2b24c;box-shadow:0 calc(4*var(--k)) calc(10*var(--k)) #0004`);
- el(pl,`<div style="display:flex;align-items:center;justify-content:center;gap:.5em;height:100%;font-weight:800;color:#3a3f52"><span style="font-size:1.5em;display:inline-flex">${IC('trophy')}</span>Finish each station to earn a certificate — Diamond completes the journey!</div>`,[434,708,1060,46],'abs','z-index:3;font-size:calc(19*var(--k));border-radius:99px;background:#fbf6ea;border:calc(2*var(--k)) solid #e2cd96'); btn(1150,both?`Start at ${LV[rec].name} ›`:'🔒 Locked',()=>(both||DEV)?chooseStart(rec):notice('Finish the Reading and Writing Experiences first.'),both?'gold pulse':'ghost');
- // Left panel text and chips, re-set compactly under the painted "Your starting point" banner
- el(pl,`<div style="display:flex;flex-direction:column;justify-content:flex-start;gap:.3em;height:100%;padding:.55em .55em 0"><div style="font:600 1.05em/1.18 Fredoka,Nunito,sans-serif;color:#1d2440;text-align:center">Read a short passage, answer a few questions, and share your ideas in writing.</div><div class="chip" style="justify-content:center;gap:.45em;padding:.3em .6em;font-size:.92em;color:#1f3a22;background:#f3f6e8;border:calc(2*var(--k)) solid #9cc38d"><svg viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="#2f7d32" stroke-width="2.4"/><path d="M12 6.5V12l3.6 2.2" fill="none" stroke="#2f7d32" stroke-width="2.4" stroke-linecap="round"/></svg>Work at your own pace</div><div class="chip" style="justify-content:center;gap:.45em;padding:.3em .6em;font-size:.92em;color:#1f3a22;background:#f3f6e8;border:calc(2*var(--k)) solid #9cc38d"><svg viewBox="0 0 24 24" width="1.25em" height="1.25em" aria-hidden="true"><path d="M7 18.5h10.2a4.3 4.3 0 0 0 .4-8.6A6 6 0 0 0 6 11.2a3.7 3.7 0 0 0 1 7.3z" fill="none" stroke="#2f7d32" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 16v-5m-2.4 2.3L12 10.9l2.4 2.4" fill="none" stroke="#2f7d32" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your progress is saved</div></div>`,[78,628,334,166],'abs','z-index:3;font-size:calc(18*var(--k));background:linear-gradient(#fbf5e8,#f5ecd8)');
- // Footer bar (replaces the painted bottom bar, which is trimmed on wide screens)
- const foot=el(pl,'',[0,790,AW,AH-790],'abs','z-index:3;background:linear-gradient(#22396b,#11234a 60%,#0d1c3c);border-top:calc(3*var(--k)) solid #e2b24c;box-shadow:0 calc(-4*var(--k)) calc(12*var(--k)) #0004');
- el(pl,'<i style="font-style:italic">You can review the instructions before starting.</i>',[560,796,900,46],'abs','z-index:4;display:flex;align-items:center;font-size:calc(20*var(--k));font-weight:700;color:#f5e8c4;pointer-events:none');
- pill(pl,'← Back to dashboard',[180,796,340,46],()=>P.start==null?welcome():dashboard(),'ghost',22).style.zIndex=5;
- // Begin Assessment removed: the painted button is covered; each card has its own start button
- 
+ const cards=[
+  {step:'Reading Experience',state:rd?`✔ Done · ${pa.reading}/${pa.readingOf||PLACE.questions.length}`:'○ Not started',on:rd,say:'Read a short story, then answer questions from memory.',btn:rd?'✔ Completed':'Start reading ›',cls:rd?'ghost':'gold pulse',fn:()=>rd?notice('Reading Experience is done.'):journey()},
+  {step:'Writing Experience',state:wr?`✔ Done · ${pa.writing.r.total}/20`:rd?'○ Ready':'🔒 After reading',on:wr,say:'Write about a journey you remember, in your own words.',btn:wr?'✔ Completed':'Start writing ›',cls:wr?'ghost':rd?'gold pulse':'ghost',fn:()=>wr?notice('Writing Experience is done.'):(rd||DEV)?placeWriting():notice('Finish the Reading Experience first.')},
+  {step:'Reading Level',state:both?`${LV[rec].name} recommended`:'🔒 After both',on:both,say:'Your results show your best starting station.',gems:true,btn:both?`Start at ${LV[rec].name} ›`:'🔒 Locked',cls:both?'gold pulse':'ghost',fn:()=>(both||DEV)?chooseStart(rec):notice('Finish the Reading and Writing Experiences first.')}];
+ const cols=cards.map((k,i)=>{const [c0,c1,c2,c3]=RLC[i],done=stepState[i]&&i<2,now=stepNow[i];
+  return `<div class="rl-col" style="--c:${c0};--c1:${c1};--c2:${c2};--c3:${c3};--i:${i+1}"><div class="rl-step${done?' done':''}${now?' now':''}"><span class="rl-step-num">${done?'✓':i+1}</span><span>${k.step}</span></div><div class="rl-pcard"><span class="chip ${k.on?'cg':'cl'}">${k.state}</span>${k.gems?`<p class="rl-pcard-say small">${k.say}</p><div class="rl-gemgrid">${gems}</div>`:`<p class="rl-pcard-say">${k.say}</p>`}<button type="button" class="rl-pbtn ${k.cls}" data-card="${i}">${k.btn}</button></div></div>`}).join('');
+ const page=document.createElement('div');page.className='rl-page rl-placement';
+ page.innerHTML=`${rlToolbar('main',{back:true})}<div class="rl-p-banner"><h1>${RL_LAUREL('l')}<span>Placement Assessment Station</span>${RL_LAUREL('r')}</h1><div class="rl-p-sub">Let’s find a comfortable place to start your journey.</div></div>
+ <div class="rl-p-main"><aside class="rl-p-left" style="--i:0"><div class="rl-p-owl rl-owl-slot owlrig">${rlOwl('owl-ticket.png','Ollie the owl holding a reading ticket')}</div><div class="rl-p-info"><div class="rl-p-green">Your starting point, not a final grade</div><p>Read a short passage, answer a few questions, and share your ideas in writing.</p><div class="rl-p-pill">${RL_ICON.clock}Work at your own pace</div><div class="rl-p-pill">${RL_ICON.cloud}Your progress is saved</div></div></aside>
+ <section class="rl-p-right"><div class="rl-cards">${cols}</div><div class="rl-p-journey" style="--i:4">${IC('star')}<b>Your journey:</b><span class="rl-p-gems">${LV.map((l,c)=>gem3d(c)).join('')}</span><b>6 stations</b>·<b>10 texts each</b>·<b>60 readings + 60 writings</b></div><div class="rl-p-finish" style="--i:5">${IC('trophy')}<span>Finish each station to earn a certificate — Diamond completes the journey!</span></div></section></div>`;
+ pl.replaceChildren(page);
+ wireToolbar(page,{back:()=>P.start==null?welcome():dashboard(),progress:dashboard});
+ page.querySelectorAll('.rl-pbtn').forEach(b=>b.onclick=e=>{e.stopPropagation();ac();SFX.pop();cards[+b.dataset.card].fn()});
 });if(intro)setTimeout(()=>say(`Welcome aboard, ${first()}! Your journey has three parts: a reading experience, a writing experience, and then your reading level.`),300)}
 // Reading Inventory: read (and reread) the passage freely; once the comprehension test starts, the passage closes.
 function placeReading(){if(P.placement?.testing&&P.placement.reading==null)return placeTest();S.place=true;S.page=P.bookmarks.place||0;reading()}
@@ -752,8 +1085,9 @@ const GEMBOX=[[377,277,58,56],[645,274,58,59],[950,275,60,55],[903,616,65,61],[5
 const ICON=k=>`<img src="${ART}icons/${k}.png" alt="" style="width:1em;height:1em;object-fit:contain;filter:drop-shadow(0 .05em .06em rgba(40,25,10,.3))">`;
 const JOURNEY_CROPS=[[260,240,278,185],[535,230,300,185],[875,240,278,185],[790,570,270,180],[460,610,255,170],[100,570,270,180]];
 function updateJourneyCrops(){}
-function journeyBackdropSVG(){return `<svg class="journey-backdrop" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="journeySky" x2="0" y2="1"><stop stop-color="#f6d58b"/><stop offset=".48" stop-color="#c7e4ec"/><stop offset="1" stop-color="#e5f0dc"/></linearGradient><linearGradient id="journeyHillA" x2="0" y2="1"><stop stop-color="#b8d4bd"/><stop offset="1" stop-color="#88b6a5"/></linearGradient><linearGradient id="journeyHillB" x2="0" y2="1"><stop stop-color="#9ebdc0"/><stop offset="1" stop-color="#6e9ca3"/></linearGradient><linearGradient id="journeyTrack" x2="0" y2="1"><stop stop-color="#566c7d"/><stop offset="1" stop-color="#354d64"/></linearGradient><radialGradient id="journeySun"><stop stop-color="#fff8d8"/><stop offset="1" stop-color="#f3c96c"/></radialGradient></defs><rect width="1600" height="900" fill="url(#journeySky)"/><circle cx="1270" cy="112" r="61" fill="url(#journeySun)" opacity=".72"/><g fill="#fffdf2" opacity=".42"><path d="M135 148c7-28 48-37 68-14 19-34 73-23 77 12 31 0 43 38 19 52H126c-28-12-19-48 9-50z"/><path d="M1015 210c8-23 38-31 57-12 17-29 62-20 66 11 27 1 35 31 15 43H1008c-24-10-17-40 7-42z"/><path d="M510 105c6-17 33-23 46-8 15-22 48-15 52 9 20 0 28 23 12 32H505c-17-7-12-31 5-33z"/></g><g fill="#9db8c0" opacity=".42"><path d="M0 465 164 237l130 176 142-221 201 273z"/><path d="m865 468 176-271 141 183 132-230 286 318z"/></g><path d="M0 462q160-74 320 0t320 0q160-74 320 0t320 0q160-74 320 0v438H0z" fill="url(#journeyHillA)"/><path d="M0 570q210-117 420 0t420 0q210-117 420 0t420 0v330H0z" fill="url(#journeyHillB)" opacity=".78"/><path d="M0 735q200-115 400 0t400 0q200-115 400 0t400 0v165H0z" fill="#719b88" opacity=".58"/><g fill="#536c7e" opacity=".36"><path d="M714 492V396h24v-36h28v36h22v-89h32v89h22v-59h28v59h22v96z"/><path d="M690 393h238v11H690z"/></g><g fill="#d6e6dc" opacity=".58"><path d="M729 416h10v19h-10zm36 0h10v19h-10zm39 0h10v19h-10zm40 0h10v19h-10zm39 0h10v19h-10zM778 373h10v23h-10zm28-43h10v23h-10zm43 27h10v23h-10z"/></g><g fill="#fff8d9" opacity=".8"><circle cx="215" cy="300" r="3"/><circle cx="415" cy="191" r="2.5"/><circle cx="590" cy="337" r="2"/><circle cx="1120" cy="315" r="3"/><circle cx="1405" cy="263" r="2"/><circle cx="1515" cy="430" r="3"/></g><g fill="none" stroke="#fff6d4" stroke-linecap="round" opacity=".58"><path d="M330 250v12m-6-6h12"/><path d="M1260 365v10m-5-5h10"/><path d="M955 126v11m-5.5-5.5h11"/><path d="M80 405v10m-5-5h10"/></g></svg>`}
-function journeyStationSVG(c,name,isCurrent,isLocked){const [hi,mid,lo]=GEMC[c],id='journeyGem'+c,labelSize=name.length>15?18:24;return `<svg class="station-svg" viewBox="0 0 320 156" role="img" aria-label="${esc(c+1+' '+name)}"><defs><linearGradient id="${id}Face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${hi}"/><stop offset=".52" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></linearGradient><linearGradient id="${id}Top" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="${hi}"/></linearGradient><radialGradient id="${id}Glow"><stop stop-color="${hi}" stop-opacity=".78"/><stop offset="1" stop-color="${hi}" stop-opacity="0"/></radialGradient></defs><ellipse class="gem-halo" cx="160" cy="48" rx="75" ry="48" fill="url(#${id}Glow)"/><g class="gem-art" opacity="${isLocked?'.66':'1'}"><path d="M116 26 137 8h46l21 18 8 25-52 43-52-43z" fill="url(#${id}Face)" stroke="#fff8dc" stroke-width="2.5"/><path d="m116 26 44 4 23-22h-46z" fill="url(#${id}Top)" opacity=".86"/><path d="m116 26 44 4-8 64-44-43z" fill="${mid}" opacity=".87"/><path d="m160 30 23-22 21 18-44 4 8 64z" fill="${hi}" opacity=".92"/><path d="m204 26 8 25-52 43 23-60z" fill="${lo}" opacity=".76"/><path d="m116 26 44 4 44-4M152 94l8-64 8 64M116 26l-8 25m104-25-8 25" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="2"/><path d="m131 23 13-10 8 2-13 13z" fill="#fff" opacity=".94"/></g><path d="M34 106q0-19 19-19h214q19 0 19 19v26q0 15-17 15H51q-17 0-17-15z" fill="#17294d" stroke="#e0b44f" stroke-width="4"/><path d="M43 105q0-10 11-10h212q10 0 10 10v4H43z" fill="#fff4c9" opacity=".13"/><circle cx="57" cy="119" r="19" fill="#d9a441" stroke="#fff1c4" stroke-width="2"/><text x="57" y="126" fill="#17294d" text-anchor="middle" font-family="Nunito,sans-serif" font-size="21" font-weight="900">${c+1}</text><text x="180" y="126" fill="#fff5da" text-anchor="middle" font-family="Fredoka,Nunito,sans-serif" font-size="${labelSize}" font-weight="700">${esc(name)}</text>${isLocked?'<g transform="translate(275 108)" fill="none" stroke="#fff1c4" stroke-width="3"><rect x="-7" y="-2" width="14" height="12" rx="2" fill="#d5d9dc"/><path d="M-4-2v-5a4 4 0 0 1 8 0v5"/></g>':''}${isCurrent?'<circle cx="283" cy="19" r="6" fill="#fff7d5" stroke="#d9a441" stroke-width="2"/>':''}</svg>`}
+function journeyBackdropSVG(){return `<svg class="journey-backdrop rl-jbg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="jSky" x2="0" y2="1"><stop stop-color="#f4d58f"/><stop offset=".47" stop-color="#c9e3ec"/><stop offset="1" stop-color="#e4eedc"/></linearGradient><linearGradient id="jHillA" x2="0" y2="1"><stop stop-color="#b7d0b7"/><stop offset="1" stop-color="#91b7a3"/></linearGradient><linearGradient id="jHillB" x2="0" y2="1"><stop stop-color="#9dbbc1"/><stop offset="1" stop-color="#789fa2"/></linearGradient><radialGradient id="jSun"><stop stop-color="#fff8d9"/><stop offset="1" stop-color="#efc66c"/></radialGradient></defs><rect width="1600" height="900" fill="url(#jSky)"/><circle cx="1270" cy="112" r="62" fill="url(#jSun)" opacity=".7"/><g fill="#fffdf3" opacity=".52"><path d="M135 148c7-28 48-37 68-14 19-34 73-23 77 12 31 0 43 38 19 52H126c-28-12-19-48 9-50z"/><path d="M1015 210c8-23 38-31 57-12 17-29 62-20 66 11 27 1 35 31 15 43H1008c-24-10-17-40 7-42z"/><path d="M510 105c6-17 33-23 46-8 15-22 48-15 52 9 20 0 28 23 12 32H505c-17-7-12-31 5-33z"/></g><path d="M0 478 164 247l131 181 144-227 205 277 171-212 152 205 136-238 170 245 146-184 181 205z" fill="#9fb8c0" opacity=".38"/><g fill="#657b84" opacity=".28"><path d="M706 373V303h30v-40h29v40h26v-82h34v82h25v-55h28v55h27v70z"/><path d="M687 301h236v11H687z"/></g><g fill="#edf3e8" opacity=".54"><path d="M727 323h11v19h-11zm40 0h11v19h-11zm41 0h11v19h-11zm42 0h11v19h-11zm41 0h11v19h-11zM779 271h11v26h-11zm34-49h11v28h-11zm48 31h11v27h-11z"/></g><path d="M0 478q160-78 320 0t320 0q160-78 320 0t320 0q160-78 320 0v422H0z" fill="url(#jHillA)"/><path d="M0 585q210-120 420 0t420 0q210-120 420 0t420 0v315H0z" fill="url(#jHillB)" opacity=".8"/><path d="M0 740q200-110 400 0t400 0q200-110 400 0t400 0v160H0z" fill="#779a82" opacity=".58"/><g fill="#fff8da" opacity=".9"><circle cx="215" cy="300" r="3"/><circle cx="415" cy="191" r="2.5"/><circle cx="590" cy="337" r="2"/><circle cx="1120" cy="315" r="3"/><circle cx="1405" cy="263" r="2"/><circle cx="1515" cy="430" r="3"/></g><g fill="none" stroke="#fff6d4" stroke-linecap="round" opacity=".72"><path d="M330 250v12m-6-6h12"/><path d="M1260 365v10m-5-5h10"/><path d="M955 126v11m-5.5-5.5h11"/><path d="M80 405v10m-5-5h10"/></g></svg>`}
+function journeyStationSVG(c,name,isCurrent,isLocked){const [hi,mid,lo]=GEMC[c],id='journeyGem'+c;
+ return `<span class="rl-gem${isCurrent?' is-current':''}${isLocked?' is-locked':''}"><span class="rl-gem-glow" style="--glow:${hi}"></span><svg class="rl-gem-svg" viewBox="104 2 112 98" aria-hidden="true"><defs><linearGradient id="${id}Face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${hi}"/><stop offset=".52" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></linearGradient><linearGradient id="${id}Top" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="${hi}"/></linearGradient></defs><path d="M116 26 137 8h46l21 18 8 25-52 43-52-43z" fill="url(#${id}Face)" stroke="#fff8dc" stroke-width="2.5"/><path d="m116 26 44 4 23-22h-46z" fill="url(#${id}Top)" opacity=".86"/><path d="m116 26 44 4-8 64-44-43z" fill="${mid}" opacity=".87"/><path d="m160 30 23-22 21 18-44 4 8 64z" fill="${hi}" opacity=".92"/><path d="m204 26 8 25-52 43 23-60z" fill="${lo}" opacity=".76"/><path d="m116 26 44 4 44-4M152 94l8-64 8 64M116 26l-8 25m104-25-8 25" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="2"/><path d="m131 23 13-10 8 2-13 13z" fill="#fff" opacity=".94"/></svg><span class="rl-gem-num">${c+1}</span>${isLocked?'<span class="rl-gem-lock"><svg viewBox="-10 -10 20 22" width="14" height="15" fill="none" stroke="#fff1c4" stroke-width="2.4"><rect x="-7" y="-1" width="14" height="11" rx="2" fill="#d5d9dc"/><path d="M-4-1v-4a4 4 0 0 1 8 0v4"/></svg></span>':''}</span><span class="rl-plaque">${esc(name)}</span>`}
 function rlJourneyFull(sc,pl){
  const cu=current(),st=cu.all?'done':stage(cu.c,cu.n),b=book(cu.c,cu.n);
  const drawerWidth='min(410px,100vw)';
@@ -762,37 +1096,30 @@ function rlJourneyFull(sc,pl){
  const drawer=document.getElementById('rl-progress-drawer');drawer?.classList.add('journey-progress');
  const close=drawer?.querySelector('.prog-close');if(close)close.textContent='×';
  const go=drawer?.querySelector('#journey-progress-continue');if(go)go.onclick=()=>{setProgressOpen(false);cu.all?certSheet():resume(cu.c,cu.n)};
- requestAnimationFrame(updateJourneyCrops);
+ requestAnimationFrame(()=>rlJourneyTrain(pl.querySelector('.journey-shell')));
 }
-function journey(){show('journey','rw04',pl=>{
+function journey(){show('journey','native-map',pl=>{
  const sc=cur;sc.dataset.nativeJourney='1';sc.classList.add('native-journey');
- const cu=current(),pathOrder=[0,1,2,3,4,5],mobileLayout=innerWidth<=900;
- const railPoints=mobileLayout?[[500,55],[500,260],[500,465],[500,670],[500,875],[500,1080]]:[[166,58],[500,58],[834,58],[834,360],[500,360],[166,360]],tp=railPoints[cu.c]||railPoints[0];
- const railView=mobileLayout?'0 0 1000 1200':'0 0 1000 600';
- const sleepers=mobileLayout?`<path d="M500 38V1162" fill="none" stroke="#9a7547" stroke-width="28" stroke-dasharray="6 23" stroke-linecap="round"/>${railPoints.map(([x,y])=>`<path d="M500 ${y}H820" fill="none" stroke="#8d704a" stroke-width="12" stroke-linecap="round"/>`).join('')}`:`<g stroke="#b58a53" stroke-width="8" stroke-linecap="round" opacity=".78">${Array.from({length:17},(_,i)=>`<path d="M${190+i*40} 40v36"/>`).join('')}${Array.from({length:16},(_,i)=>`<path d="M832 ${90+i*17}h36"/>`).join('')}${Array.from({length:17},(_,i)=>`<path d="M${190+i*40} 342v36"/>`).join('')}</g>`;
- const track=mobileLayout?`<path d="M500 38V1162" fill="none" stroke="#465f6d" stroke-width="28" stroke-linecap="round"/><path d="M493 38V1162M507 38V1162" fill="none" stroke="#d2ae69" stroke-width="5" stroke-linecap="round"/>${sleepers}`:`<path d="M166 58 H834 Q850 58 850 74 V344 Q850 360 834 360 H166" fill="none" stroke="#465f6d" stroke-width="28" stroke-linecap="round"/>${sleepers}<path d="M166 51 H834 Q857 51 857 74 V344 Q857 367 834 367 H166" fill="none" stroke="#a37d43" stroke-width="5" stroke-linecap="round"/><path d="M166 65 H834 Q843 65 843 74 V344 Q843 353 834 353 H166" fill="none" stroke="#d2ae69" stroke-width="5" stroke-linecap="round"/>`;
- const trainX=mobileLayout?820:tp[0]-50,trainY=tp[1],trainMarkup=`<div class="journey-train-overlay" style="left:${trainX/10}%;top:${trainY/(mobileLayout?12:6)}%" aria-label="Train at the current station"><svg viewBox="0 0 64 44" aria-hidden="true"><ellipse cx="22" cy="5" rx="10" ry="5" fill="#fff" opacity=".72"><animate attributeName="opacity" values=".7;.2;.7" dur="2s" repeatCount="indefinite"/></ellipse><ellipse cx="11" cy="-2" rx="7" ry="4" fill="#fff" opacity=".52"/><path d="M3 30h42a8 8 0 0 0 8-8v-8H31l-6-9H13v17H3z" fill="#bb3c3a" stroke="#263d55" stroke-width="3"/><path d="M16 9h9l5 7H16zM35 17h11v5H35z" fill="#bde8f0" stroke="#263d55" stroke-width="2"/><path d="M9 29h42v6H9z" fill="#d9a441" stroke="#263d55" stroke-width="2"/><circle cx="19" cy="37" r="5" fill="#25374b" stroke="#f1d27a" stroke-width="2"/><circle cx="40" cy="37" r="5" fill="#25374b" stroke="#f1d27a" stroke-width="2"/><path d="M53 18h7v15h-7zM57 11l5 7h-9z" fill="#e1ae45" stroke="#263d55" stroke-width="2"/></svg></div>`;
+ const cu=current(),pathOrder=[0,1,2,3,4,5];
  const shell=document.createElement('main');shell.className='journey-shell';
- shell.innerHTML=`${journeyBackdropSVG()}<header class="journey-topbar"><div class="journey-logo" aria-label="READwy">R</div><div class="journey-brand">READwy Reading Lab</div><nav class="journey-nav" aria-label="Reading Lab navigation"><button type="button" data-nav="home">Home</button><button type="button" data-nav="map">Journey Map</button><button type="button" data-nav="portfolio">Portfolio</button><button type="button" data-nav="certificates">Certificates</button><button type="button" data-nav="settings">Settings</button></nav><button type="button" class="journey-self" data-nav="self">Self Mode</button></header><section class="journey-heading"><h1>Your learning journey</h1><p>Read. Understand. Write. Move forward.</p></section><section class="journey-grid" aria-label="Six gem stations"><svg class="journey-rail" viewBox="${railView}" preserveAspectRatio="none" aria-hidden="true">${track}</svg>${trainMarkup}</section>`;
+ shell.innerHTML=`${journeyBackdropSVG()}${rlToolbar('main')}<section class="journey-heading"><h1>Your learning journey</h1><p>Read. Understand. Write. Move forward.</p></section><section class="journey-grid" aria-label="Six gem stations"><svg class="journey-rail" aria-hidden="true"></svg><div class="journey-train-overlay rl-train" aria-label="Train at the current station">${RL_TRAIN_SVG}</div></section>`;
  pl.replaceChildren(shell);shell.querySelector('.journey-heading').after(document.getElementById('caption'));
+ wireToolbar(shell);
  const grid=shell.querySelector('.journey-grid');
  for(const c of pathOrder){
   const lv=LV[c],open=lvOpen(c),done=lvDone(c)===10,now=c===cu.c&&!cu.all,read=lvRead(c),write=lvWrite(c),name=c===5?'Diamond Grand Central':lv.name;
   const status=done?'Completed':now?'Current station':open?'Open':'Locked';
   const node=document.createElement('article');node.className='journey-station'+(now?' is-current':'')+(open||done?'':' is-locked');node.dataset.station=String(c);
-  node.style.gridRow=c<3?'1':'2';
-  node.style.setProperty('--station-color',lv.hex);
+  node.style.gridRow=c<3?'1':'2';node.style.setProperty('--station-color',lv.hex);node.style.setProperty('--i',String(c));
   node.style.gridColumn=innerWidth<=900?'auto':String(c<3?c+1:6-c);
-  node.innerHTML=`<button type="button" class="journey-crop" aria-label="Open ${esc(name)} station">${journeyStationSVG(c,name,now,!(open||done))}</button><div class="journey-card"><div class="journey-card-head"><span class="journey-gem-name">${esc(name)}</span><span class="journey-badge">${status}</span></div><div class="journey-metric"><span>Reading</span><span class="journey-meter"><i style="width:${read*10}%"></i></span><span>${read}/10</span></div><div class="journey-metric"><span>Writing</span><span class="journey-meter blue"><i style="width:${write*10}%"></i></span><span>${write}/10</span></div><button type="button" class="journey-action${now?'':' secondary'}" ${open||done?'':'disabled'}>${now?'Start reading':done?'Review':'Open'}</button></div>`;
+  node.innerHTML=`<button type="button" class="journey-crop rl-stop" aria-label="Open ${esc(name)} station">${journeyStationSVG(c,name,now,!(open||done))}</button><div class="journey-card"><div class="journey-card-head"><span class="journey-gem-name">${esc(name)}</span><span class="journey-badge">${status}</span></div><div class="journey-metric"><span>Reading</span><span class="journey-meter"><i style="width:${read*10}%"></i></span><span>${read}/10</span></div><div class="journey-metric"><span>Writing</span><span class="journey-meter blue"><i style="width:${write*10}%"></i></span><span>${write}/10</span></div><button type="button" class="journey-action${now?'':' secondary'}" ${open||done?'':'disabled'}>${now?'Start reading':done?'Review':'Open'}</button></div>`;
   const stationAction=()=>{ac();SFX.pop();if(open||done)station(c);else{SFX.buzz();notice(`🔒 Finish ${LV[c-1]?.name||'the previous station'} to unlock ${lv.name}.`)}};
   node.querySelector('.journey-crop').onclick=stationAction;
   node.querySelector('.journey-action').onclick=stationAction;
   grid.appendChild(node);
  }
- shell.querySelectorAll('[data-nav]').forEach(button=>button.addEventListener('click',()=>{ac();SFX.pop();({home:dashboard,map:toREADwyJourney,portfolio,certificates:certSheet,settings,self:()=>notice('🧑‍🎓 Self Mode — you are learning at your own pace.')})[button.dataset.nav]?.()}));
  const cap=document.getElementById('caption');if(cap)cap.onclick=()=>caption('');
 });setTimeout(()=>{if(S.scene==='journey')say(P.start==null?'Here is your whole journey: six gem stations, ten texts each. Press Start reading at your current station when you are ready.':'Choose a station and continue your reading and writing journey.')},700)}
-
 /* ===== 5 · Station (the 10 texts of a level) ===== */
 function station(c){if(!lvOpen(c)){SFX.buzz();return notice(`🔒 Finish ${LV[c-1].name} to unlock ${LV[c].name}.`)}S.c=c;show('station','rw05',pl=>{
  nav(pl,{logo:[60,10,470,46],self:[565,12,172,44],home:[792,10,96,46],map:[910,10,145,46],portfolio:[1072,10,115,46],certs:[1203,10,135,46],settings:[1356,10,128,46]});
@@ -1072,5 +1399,5 @@ document.getElementById('fileimport').addEventListener('change',e=>{const f=e.ta
 function certificate(c,final){const col=LV[c],cc=document.createElement('canvas');cc.width=1800;cc.height=1100;const x=cc.getContext('2d'),g=x.createLinearGradient(0,0,1800,1100);g.addColorStop(0,'#efdcb4');g.addColorStop(.5,'#fff8e6');g.addColorStop(1,'#ecd6a8');x.fillStyle=g;x.fillRect(0,0,1800,1100);x.strokeStyle='#14254a';x.lineWidth=22;x.strokeRect(40,40,1720,1020);x.strokeStyle='#d9a441';x.lineWidth=6;x.strokeRect(70,70,1660,960);x.strokeStyle=col.hex;x.lineWidth=10;x.strokeRect(90,90,1620,920);x.textAlign='center';x.fillStyle='#14254a';x.font='bold 46px Georgia';x.fillText('READwy Reading Lab Reading & Writing Journey',900,210);x.fillStyle='#8a672a';x.font='bold 72px Georgia';x.fillText(final?'CERTIFICATE OF COMPLETION':'LEVEL CERTIFICATE',900,330);x.fillStyle='#303a32';x.font='30px Georgia';x.fillText('is proudly awarded to',900,430);x.font='bold 80px Georgia';x.fillText(learner(),900,560);x.font='34px Georgia';x.fillText(final?'for completing the READwy Reading Lab Reading & Writing Journey, from Emerald to Diamond':`for completing all 10 texts of the ${col.name} Level — reading, comprehension and writing`,900,650);x.fillStyle=col.hex;x.font='bold 60px Georgia';x.fillText(final?'ADVANCED READER & WRITER':col.name.toUpperCase()+' READER & WRITER',900,770);x.fillStyle='#33453c';x.font='26px Georgia';x.fillText(new Intl.DateTimeFormat('en',{dateStyle:'long'}).format(new Date()),900,904);x.save();x.translate(1530,872);x.fillStyle='#d9a441';x.beginPath();for(let i=0;i<48;i++){const a=i*Math.PI/24,r=i%2?92:104;x.lineTo(Math.cos(a)*r,Math.sin(a)*r)}x.closePath();x.fill();const sg=x.createRadialGradient(-22,-22,8,0,0,86);sg.addColorStop(0,'#fff3c8');sg.addColorStop(.6,'#e8bd57');sg.addColorStop(1,'#b5842a');x.fillStyle=sg;x.beginPath();x.arc(0,0,84,0,Math.PI*2);x.fill();x.strokeStyle='#8a672a';x.lineWidth=3;x.beginPath();x.arc(0,0,72,0,Math.PI*2);x.stroke();x.fillStyle='#14254a';x.textAlign='center';x.font='bold 25px Georgia';x.fillText('READwy',0,-6);x.font='bold 17px Georgia';x.fillText(final?'COMPLETION':col.name.toUpperCase(),0,22);x.font='20px Georgia';x.fillText('★ ★ ★',0,48);x.restore();x.strokeStyle='#33453c';x.lineWidth=2;x.beginPath();x.moveTo(230,925);x.lineTo(650,925);x.stroke();x.fillStyle='#33453c';x.textAlign='center';x.font='24px Georgia';x.fillText('Signature of Teacher / Adviser',440,962);x.textAlign='center';
  cc.toBlob(bl=>{const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=(final?'READwy_Reading_Lab_Completion':col.name+'_Level')+'_Certificate.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)},'image/png');notice('Certificate downloaded.')}
 // The READwy page may reload this frame once while it finishes signing in; come back to the same screen.
-(function(){let h=null;try{h=JSON.parse(sessionStorage.getItem('sra-rw-here'))}catch(e){}if(h&&h.scene&&h.scene!=='welcome'&&RESUME[h.scene]&&Date.now()-h.at<36e5&&(P.start!=null||h.place||h.pw||h.scene==='placement'||h.scene==='placetest')){S.c=h.c||0;S.n=h.n||1;S.page=h.page||0;S.place=!!h.place;S.pw=!!h.pw;narrated=true;try{RESUME[h.scene]()}catch(e){welcome()}}else welcome()})();
+(function(){let h=null;try{h=JSON.parse(sessionStorage.getItem('sra-rw-here'))}catch(e){}if(h&&h.scene&&h.scene!=='welcome'&&RESUME[h.scene]&&Date.now()-h.at<36e5&&(P.start!=null||h.place||h.pw||h.scene==='placement'||h.scene==='placetest')){S.c=h.c||0;S.n=h.n||1;S.page=h.page||0;S.place=!!h.place;S.pw=!!h.pw;narrated=true;try{RESUME[h.scene]()}catch(e){welcome()}}else if(rlDemoTrain())journey();else welcome()})();
 </script></body></html>
