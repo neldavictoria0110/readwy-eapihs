@@ -1041,7 +1041,8 @@ function confetti(n=70){const cols=['#ffd447','#ff6b8b','#4fc3f7','#7ee081','#b4
 
 /* ---------- scene plate: contained artwork with a blurred copy behind any side space ---------- */
 // load every screen's picture once up front so page changes never wait for an image
-{const o=new Image();o.decoding='async';o.src=ART+'owl.png'}['station-bg','journey-bg','rw03','rw05','rw06','rw07','rw08','rw09','rw10','rw11'].forEach(k=>{const i=new Image();i.decoding='async';i.src=ART+k+'.jpg'});
+{const o=new Image();o.decoding='async';o.src=ART+'owl.png'}// Preload only what the native pages use, so no transition waits for an image (the old painted rw pictures are no longer shown).
+['station-bg.jpg','journey-bg.jpg','welcome-bg.jpg'].forEach(k=>{const i=new Image();i.decoding='async';i.src=ART+k});
 const AW=1536,AH=1024,SAFE=[14,0,1508,1008];
 let cur=null;
 /* The painted "SRA" logo in each picture is covered by a READwy Reading Lab label (positions in picture pixels). */
