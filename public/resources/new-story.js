@@ -8,12 +8,18 @@
   if(['Filipino','Mathematics'].includes(savedAssessment))pendingAssessment=savedAssessment
  }catch(error){console.error('READwy selected subject could not be restored.',error)}
  let joiningRole='',signupEmail='',selectedLearningArea=pendingAssessment||'English';
- if(pendingAssessment)window.addEventListener('load',()=>{
+ // Show the chosen subject's journey (its six stations); the learner starts the check-in from there.
+ // Runs as soon as the page's scripts have run (DOMContentLoaded), not after every image has loaded,
+ // so a slow connection does not leave the learner looking at the start screen.
+ const openPendingSubject=()=>{
   if(!user||user.role!=='student'||!window.READwySubjectLabs){console.error('READwy subject assessment could not start because the student session or module is unavailable.');return}
   try{sessionStorage.removeItem(pendingAssessmentKey)}catch(error){console.error('READwy selected subject could not be cleared.',error)}
-  // Show the chosen subject's journey (its six stations); the learner starts the check-in from there.
   window.READwySubjectLabs.openJourney(pendingAssessment)
- },{once:true});
+ };
+ if(pendingAssessment){
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',openPendingSubject,{once:true});
+  else setTimeout(openPendingSubject,0);
+ }
  window.getStoryViewState=()=>({joiningRole,selectedLearningArea});
  window.restoreStoryViewState=function(state){joiningRole=['student','teacher'].includes(state?.joiningRole)?state.joiningRole:'';selectedLearningArea=['English','Filipino','Mathematics'].includes(state?.selectedLearningArea)?state.selectedLearningArea:'English'};
  // Outlines measured in the original 1672 x 940 map coordinates.
