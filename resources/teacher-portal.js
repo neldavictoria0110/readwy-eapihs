@@ -658,7 +658,7 @@ function readwyTPOverview() {
         const locked = ['assessments','journeys','reports'].includes(page) && classes.length === 0;
         return `<button type="button" data-tp-page="${page}" aria-current="${current === page ? 'page' : 'false'}"${locked ? ' disabled title="Add a section in My Sections to unlock this page"' : ''}><span class="tp-nav-icon">${readwyTPIcon(page)}</span><span class="tp-nav-label">${label}</span></button>`;
       }).join('')}</nav>
-      <div class="tp-profile"><span class="tp-avatar">${readwyTPIcon('person')}</span><span class="tp-profile-name"><strong>${readwyTPEscape(user?.name || 'Teacher')}</strong><small>Teacher</small></span><button class="tp-profile-out" type="button" data-tp-action="refresh" aria-label="Refresh records">${readwyTPIcon('refresh')}</button><button class="tp-profile-out" type="button" data-tp-action="signout" aria-label="Sign out">${readwyTPIcon('signout')}</button></div>
+      <div class="tp-profile"><span class="tp-avatar">${readwyTPIcon('person')}</span><span class="tp-profile-name" title="${readwyTPEscape(user?.name || 'Teacher')}"><strong>${readwyTPEscape(user?.name || 'Teacher')}</strong><small>Teacher</small></span><button class="tp-profile-out" type="button" data-tp-action="signout" aria-label="Sign out" title="Sign out">${readwyTPIcon('signout')}</button></div>
     </aside>
     <main class="tp-workspace tp-scene-workspace tp-view-${view}">${readwyTPScenery()}<div class="tp-scene-content">${body}</div>${readwyTPLocomotive()}</main>
   </div>`;
@@ -1065,13 +1065,22 @@ document.addEventListener('click', async event => {
       try {
         sessionStorage.removeItem('READwy_current_view_v1');
         sessionStorage.removeItem('READWY_startup_teacher_preview');
+        sessionStorage.removeItem('readwyJourneyOpened');
       } catch {}
       readwyStartupTeacherPreviewActive = false;
-      location.href = 'index.html?view=startup';
+      location.href = 'index.html?view=train';
       return;
     }
-    try { await (await window.readwyFirebaseReady).signOut(); go('login'); }
-    catch (error) { showPageStatus(error.message || 'Sign out failed.'); }
+    // Sign out first (shared school devices), then open the boarding pass (Student / Teacher).
+    try { await (await window.readwyFirebaseReady).signOut(); }
+    catch (error) { showPageStatus(error.message || 'Sign out failed.'); return; }
+    readwyTeacherData = null;
+    user = null;
+    try {
+      sessionStorage.removeItem('READwy_current_view_v1');
+      sessionStorage.removeItem('readwyJourneyOpened');
+    } catch {}
+    location.href = 'index.html?view=train';
   }
 });
 

@@ -29,7 +29,7 @@
 .tp-profile{display:flex;align-items:center;gap:12px;margin-top:auto;padding:16px 6px 0;border-top:1px solid #ffffff2e}
 .tp-avatar{display:grid;place-items:center;width:52px;height:52px;flex:0 0 52px;padding:9px;border-radius:50%;background:#fff;color:#1f4b2d}
 .tp-profile-name{display:grid;min-width:0;flex:1}
-.tp-profile-name strong{overflow:hidden;font:800 17px/1.15 var(--tp-round);white-space:nowrap;text-overflow:ellipsis}
+.tp-profile-name strong{font:800 17px/1.15 var(--tp-round);white-space:normal;overflow-wrap:break-word;text-wrap:balance}
 .tp-profile-name small{color:#d4e2f5;font:600 14px/1.2 var(--tp-round)}
 .tp-profile-out{display:grid;place-items:center;width:36px;height:36px;flex:0 0 36px;padding:7px;border:1px solid #ffffff40;border-radius:10px;background:#ffffff10;color:#fff}
 .tp-profile-out:hover{background:#ffffff26}
