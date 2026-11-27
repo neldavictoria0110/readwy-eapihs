@@ -154,21 +154,40 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
 })();
 
 
-/* Journey ticket: the seven destination stops are always the same width, whatever the stop name
-   (Keypass, Spellscript, Inkventure …). A long one-word name gets a slightly smaller size so it
-   stays inside its stop instead of widening it. */
+/* Journey ticket: the seven destination stops are always the same width, whatever the stop name.
+   Each name stays inside its stop in at most two lines:
+   - Spellscript and Inkventure may wrap with a hyphen (SPELL- / SCRIPT, INK- / VENTURE);
+   - Catch-Up Express keeps "CATCH-UP" together, so it reads CATCH-UP / EXPRESS;
+   - a name that still does not fit gets a slightly smaller size. */
 (() => {
   const style = document.createElement('style');
   style.textContent = `
 .pf-dests{grid-template-columns:repeat(7,minmax(0,1fr))!important}
-.pf-dest{min-width:0!important}
-.pf-dest span{display:block;max-width:100%;overflow-wrap:normal;word-break:normal}`;
+.pf-dest{min-width:0!important;grid-template-columns:minmax(0,1fr)!important}
+.pf-dest>*{min-width:0}
+.pf-dest span{display:block;min-width:0;max-width:100%;overflow-wrap:normal;word-break:normal;hyphens:manual;-webkit-hyphens:manual;text-align:center}`;
   document.head.append(style);
-  const fit = () => document.querySelectorAll('.pf-dest span').forEach(s => {
+  const SHAPES = [[/^spellscript$/i, 'Spell­script'], [/^inkventure$/i, 'Ink­venture'], [/^catch-up express$/i, 'Catch‑Up Express']];
+  const lines = s => { const r = document.createRange(); r.selectNodeContents(s); return new Set([...r.getClientRects()].map(x => Math.round(x.top))).size; };
+  const isCatchUp = s => /catch.up express/i.test(s.textContent.replace(/‑/g, '-'));
+  const fitOne = s => {
+    const plain = s.textContent.replace(/­/g, '').replace(/‑/g, '-').trim();
+    const shape = SHAPES.find(([re]) => re.test(plain));
+    if (shape && s.textContent !== shape[1]) s.textContent = shape[1];
     s.style.fontSize = '';
+    if (!s.clientWidth) return 0;
     let size = parseFloat(getComputedStyle(s).fontSize), guard = 0;
-    while (s.scrollWidth > s.clientWidth + 1 && size > 8 && guard++ < 40) { size -= .5; s.style.fontSize = size + 'px'; }
-  });
+    while ((s.scrollWidth > s.clientWidth + 1 || lines(s) > 2) && size > 8 && guard++ < 40) { size -= .5; s.style.fontSize = size + 'px'; }
+    return size;
+  };
+  // All stops share one size (the largest at which every name fits); Catch-Up Express may be a little smaller.
+  const fit = () => {
+    const spans = [...document.querySelectorAll('.pf-dest span')];
+    const sizes = spans.map(fitOne);
+    const shared = Math.min(...spans.map((s, i) => isCatchUp(s) ? Infinity : sizes[i]).filter(Boolean));
+    if (!isFinite(shared)) return;
+    spans.forEach((s, i) => { s.style.fontSize = (isCatchUp(s) ? Math.min(sizes[i], shared) : shared) + 'px'; });
+  };
   let t = 0; const later = () => { clearTimeout(t); t = setTimeout(fit, 80); };
   addEventListener('load', later); addEventListener('resize', later);
   addEventListener('DOMContentLoaded', () => { later(); new MutationObserver(later).observe(document.body, {childList: true, subtree: true}); });
