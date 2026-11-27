@@ -150,6 +150,9 @@ if (typeof pages.train === 'string') {
   patch(" const subjectStatus=document.getElementById('subjectStatus');\n if(subjectStatus)subjectStatus.textContent='Opening your English learning journey…';\n if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.assign('index.html?view=map');return}",
     " const subjectStatus=document.getElementById('subjectStatus');\n if(subjectStatus)subjectStatus.textContent='Opening your English learning journey…';\n try{history.replaceState(null,'',location.pathname+'?view=map');sessionStorage.setItem('readwyJourneyOpened','1')}catch{}\n if(matchMedia('(prefers-reduced-motion:reduce)').matches){location.assign('index.html?view=map');return}",
     'journey address memory');
+  patch(" if(button.dataset.subject==='English')openPortraitJourney();",
+    " if(button.dataset.subject==='English')openPortraitJourney();\n else if(['Mathematics','Filipino'].includes(button.dataset.subject))window.openReadwySubjectAssessment(button.dataset.subject);",
+    'subject assessment launch');
   // Going back to the sign-in card clears the journey guard.
   patch("function returnToTrainLogin(){\n window.__readwyAuthEntered=false;",
     "function returnToTrainLogin(){\n window.__readwyAuthEntered=false;\n try{sessionStorage.removeItem('readwyJourneyOpened')}catch{}",
@@ -160,6 +163,12 @@ if (typeof pages.train === 'string') {
   const trainBodyClose = findHtmlClosingTag(train, 'body');
   if (trainBodyClose < 0) throw new Error('The sign-up page has no closing body tag.');
   pages.train = train.slice(0, trainBodyClose) + profileSyncTag + train.slice(trainBodyClose);
+  const subjectLaunchSource = fs.readFileSync(path.join(root, 'resources/train-subject-launch.js'), 'utf8');
+  const subjectLaunchTag = `<script data-source="resources/train-subject-launch.js">${subjectLaunchSource}</script>`;
+  pages.train = pages.train.replace(/<script data-source="resources\/train-subject-launch\.js">[\s\S]*?<\/script>/gi, '');
+  const launchBodyClose = findHtmlClosingTag(pages.train, 'body');
+  if (launchBodyClose < 0) throw new Error('The sign-up page has no closing body tag.');
+  pages.train = pages.train.slice(0, launchBodyClose) + subjectLaunchTag + pages.train.slice(launchBodyClose);
 }
 // Startup / login page: spacing between the frames and the card, and the title's position.
 if (typeof pages.train === 'string') {

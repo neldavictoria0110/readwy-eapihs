@@ -1,7 +1,18 @@
 /* Front-of-book views retain the application's existing authentication and modules. */
 (()=>{
  const originalRender=render;
- let joiningRole='',signupEmail='',selectedLearningArea='English';
+ const pendingAssessmentKey='readwy-subject-assessment-v1';
+ let pendingAssessment='';
+ try{
+  const savedAssessment=sessionStorage.getItem(pendingAssessmentKey);
+  if(['Filipino','Mathematics'].includes(savedAssessment))pendingAssessment=savedAssessment
+ }catch(error){console.error('READwy selected subject could not be restored.',error)}
+ let joiningRole='',signupEmail='',selectedLearningArea=pendingAssessment||'English';
+ if(pendingAssessment)window.addEventListener('load',()=>{
+  if(!user||user.role!=='student'||!window.READwySubjectLabs){console.error('READwy subject assessment could not start because the student session or module is unavailable.');return}
+  try{sessionStorage.removeItem(pendingAssessmentKey)}catch(error){console.error('READwy selected subject could not be cleared.',error)}
+  window.READwySubjectLabs.startPlacement()
+ },{once:true});
  window.getStoryViewState=()=>({joiningRole,selectedLearningArea});
  window.restoreStoryViewState=function(state){joiningRole=['student','teacher'].includes(state?.joiningRole)?state.joiningRole:'';selectedLearningArea=['English','Filipino','Mathematics'].includes(state?.selectedLearningArea)?state.selectedLearningArea:'English'};
  // Outlines measured in the original 1672 x 940 map coordinates.
@@ -24,6 +35,7 @@
  window.chooseLearningArea=function(name){if(navigationBusy||!learningAreas.includes(name))return;selectedLearningArea=name;
   // Remove unselected subjects before the outgoing transition is captured.
   app.querySelectorAll('.flashlight-subject,.learning-subject-card').forEach(node=>{if(!node.textContent.includes(name))node.remove()});
+  if(name!=='English'&&window.READwySubjectLabs){window.READwySubjectLabs.startPlacement();return}
   go('journey')};
  const artwork='UI%20and%20owl/background/new-story/';
  const bookObserver=new ResizeObserver(positionBookForm);let observedBoard;

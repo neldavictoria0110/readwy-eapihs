@@ -76,6 +76,19 @@ test('welcome and map render the selected subject without the English journey ma
  assert.match(context.app.innerHTML,/Grade 7 focus/);
 });
 
+test('starting a selected subject saves a learner-specific placement session and opens the questions',()=>{
+ const {api,sessionRecords,context}=setup(),routes=[];
+ context.selectedLearningArea='Filipino';
+ context.go=route=>routes.push(route);
+ api.startPlacement();
+ const task=JSON.parse(sessionRecords.get('readwy-subject-task-v1'));
+ assert.equal(task.area,'Filipino');
+ assert.equal(task.grade,7);
+ assert.equal(task.mode,'placement');
+ assert.equal(task.index,0);
+ assert.deepEqual(routes,['subject-task']);
+});
+
 test('invalid writing submission retains the learner draft and self-review checks',()=>{
  const {api,sessionRecords,context}=setup();
  context.selectedLearningArea='Filipino';
