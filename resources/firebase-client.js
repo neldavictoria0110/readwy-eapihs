@@ -96,7 +96,7 @@ function recordsFromLocalKey(key, value) {
   if (/^assessment_(7|8|9|10)$/.test(key) && finite(value.score) && finite(value.total) && Number(value.total) > 0) {
     const percent = finite(value.percentage) ? value.percentage : 100 * value.score / value.total;
     rows.push(reportEvent(
-      'GST', 'gst-score', `Reading Check-In score · Grade ${grade}`, 'completed',
+      'GST', 'gst-score', `Keypass score · Grade ${grade}`, 'completed',
       `Overall result: ${value.score}/${value.total} (${percent.toFixed(1)}%). The digital result does not provide verified objective-category scores; no literal, inferential, or critical breakdown is inferred.`,
       { score: value.score, total: value.total, percent, answered: value.answered, elapsedMs: value.elapsedMs, answerKeyVersion: value.answerKeyVersion, keyNote: 'Passage-reviewed classroom key; not an official published answer key.' },
       value.completedAt || value.submittedAt || value.date, value.score, value.total, percent
@@ -160,7 +160,7 @@ function recordsFromLocalKey(key, value) {
     const reviewed = value.reviewed === true && finite(value.score) && finite(value.total);
     const percent = reviewed ? 100 * value.score / value.total : null;
     rows.push(reportEvent(
-      'WST', 'writing-submission', `Story Depot writing · Grade ${grade}`, reviewed ? 'completed' : 'awaiting-review',
+      'WST', 'writing-submission', `Spellscript writing · Grade ${grade}`, reviewed ? 'completed' : 'awaiting-review',
       reviewed
         ? `Writing score: ${value.score}/${value.total} (${percent.toFixed(1)}%).`
         : `Writing submitted (${Number(value.words) || value.text.trim().split(/\s+/).length} words); waiting for teacher scoring. No score was generated.`,
@@ -172,7 +172,7 @@ function recordsFromLocalKey(key, value) {
   if (/^wst_score_(7|8|9|10)$/.test(key) && finite(value.score) && finite(value.total) && Number(value.total) > 0) {
     const percent = 100 * Number(value.score) / Number(value.total);
     rows.push(reportEvent(
-      'WST', 'writing-score', `Story Depot score · Grade ${grade}`, 'completed',
+      'WST', 'writing-score', `Spellscript score · Grade ${grade}`, 'completed',
       `Teacher-recorded writing score: ${value.score}/${value.total} (${percent.toFixed(1)}%).`,
       { score: value.score, total: value.total, percent, components: value.components || null },
       value.date || value.completedAt, value.score, value.total, percent
@@ -268,7 +268,7 @@ async function syncIntervention(store) {
   const details = { activitiesCompleted: completed, activitiesAvailable: 25, stations };
   const objectiveReport = stations.map(station => `${station.name}: ${station.tasksCompleted}/${station.tasksAvailable} tasks completed`).join('. ');
   const record = reportEvent(
-    'Intervention', 'interv-station-progress', 'InterV station progress', 'submitted',
+    'Intervention', 'interv-station-progress', 'Inkventure station progress', 'submitted',
     `${completed}/25 station tasks completed. Completion and points are progress indicators, not a reading mastery diagnosis. ${objectiveReport}.`,
     details, new Date().toISOString(), undefined, undefined, undefined
   );

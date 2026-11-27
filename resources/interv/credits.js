@@ -1,4 +1,4 @@
-/* Hint credits never read or write InterV answer scores. */
+/* Hint credits never read or write Inkventure answer scores. */
 (()=>{
 'use strict';
 function createWallet(storage,owner){

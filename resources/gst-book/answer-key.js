@@ -1,4 +1,4 @@
-// READwy Reading Check-In answer key (original READwy items; replaces the DepEd GST items).
+// READwy Keypass answer key (original READwy items; replaces the DepEd GST items).
 const GST_ANSWER_KEY_VERSION='reading-check-in-2026-11-25-v1';
 const GST_ANSWER_KEYS={
   "7": [

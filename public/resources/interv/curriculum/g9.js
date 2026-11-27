@@ -1,4 +1,4 @@
-/* InterV Grade 9 curriculum (format: see g7.js). */
+/* Inkventure Grade 9 curriculum (format: see g7.js). */
 (globalThis.IV_CUR=globalThis.IV_CUR||{})[9]={
 fl:[
 {n:'Academic Word Decoding',s:'Break the long academic word into parts, then read it smoothly.',t:['Find the prefix, root, and suffix.','Stress the right syllable.'],

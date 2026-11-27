@@ -1,5 +1,5 @@
 
-/* InterV Reading Adventure Dashboard: the supplied artwork is the full-screen backdrop.
+/* Inkventure Reading Adventure Dashboard: the supplied artwork is the full-screen backdrop.
    Live values (avatar, greeting, points, progress ring, activity count) are drawn in the artwork's
    own coordinate space (1672 x 941) so they stay locked to the painted panels at every screen size. */
 const INTERV_DASH={w:1672,h:941,activities:25};
@@ -12,7 +12,7 @@ const INTERV_STATIONS=[
 ];
 function intervLearnerKey(){return encodeURIComponent(String(typeof user!=='undefined'&&user?(user.id||user.lrn||user.email||user.name):'local'))}
 // Learner progress for every station, task, writing task and game (per grade).
-// Content version 2: station tasks are built from the original InterV program, so answers saved against the
+// Content version 2: station tasks are built from the original Inkventure program, so answers saved against the
 // earlier task content are moved aside (kept as stV1) instead of being shown against different questions.
 const INTERV_CONTENT_VERSION=3; // 3: station tasks became arcade games (results kept in r.g)
 function intervStationStore(){let s;try{s=JSON.parse(localStorage.getItem('readwy-interv-stations-v1-'+intervLearnerKey())||'{}')||{}}catch(e){s={}}
@@ -49,7 +49,7 @@ function intervDashSpeak(button,text){
  synth.cancel();synth.speak(u);intervDashSpeaking=true;button.setAttribute('aria-pressed','true');
 }
 function renderInterDashboard(){
- // InterV uses one painted hall for every page; the home page is drawn on it by stations.js.
+ // Inkventure uses one painted hall for every page; the home page is drawn on it by stations.js.
  if(typeof ivRenderHome==='function')return ivRenderHome();
  page='work';activeModule='interv';nav.innerHTML='';setOwl('signup-form');
  window.speechSynthesis?.cancel();intervDashSpeaking=false;
@@ -69,7 +69,7 @@ function renderInterDashboard(){
   +'<text class="ivd-text ivd-pts" x="1482.5" y="72.5" filter="url(#ivdShadow)"></text>'
   +'<text class="ivd-text ivd-card" x="1252" y="479" text-anchor="middle" filter="url(#ivdShadow)">Critical</text><text class="ivd-text ivd-card" x="1252" y="505" text-anchor="middle" filter="url(#ivdShadow)">Depot</text>'
   +'</svg>';
- app.innerHTML='<section class="sra-welcome-screen interv-welcome-screen ivd-screen" aria-label="InterV Reading Adventure Dashboard"><div class="interv-welcome-board ivd-board"><img src="resources/interv/reading-adventure-dashboard-live.hd.webp" onerror="this.onerror=null;this.src=\'resources/interv/reading-adventure-dashboard-live.png\'" alt="" draggable="false" decoding="async">'+svg+'<p class="ivd-sr" role="status"></p></div></section>';
+ app.innerHTML='<section class="sra-welcome-screen interv-welcome-screen ivd-screen" aria-label="Inkventure Reading Adventure Dashboard"><div class="interv-welcome-board ivd-board"><img src="resources/interv/reading-adventure-dashboard-live.hd.webp" onerror="this.onerror=null;this.src=\'resources/interv/reading-adventure-dashboard-live.png\'" alt="" draggable="false" decoding="async">'+svg+'<p class="ivd-sr" role="status"></p></div></section>';
  const board=app.querySelector('.ivd-board'),q=s=>board.querySelector(s);
  q('.ivd-avatar').setAttribute('href',intervDashAvatar(profile));
  q('.ivd-pct').textContent=stats.pct+'%';
@@ -88,12 +88,12 @@ function renderInterDashboard(){
  hit('Profile',[1035,20,130,62],()=>go('profile'),'99px');
  hit('Settings',[1170,20,142,62],()=>go('settings'),'99px');
  hit('Your profile',[1354,9,86,86],()=>go('profile'),'50%');
- hit('Leave InterV and return to the learning journey',[1585,25,56,56],()=>go('map'),'14px');
+ hit('Leave Inkventure and return to the learning journey',[1585,25,56,56],()=>go('map'),'14px');
  INTERV_STATIONS.forEach(s=>hit(s.name,s.box,()=>station(s.key),'4.5vh 4.5vh 2.5vh 2.5vh'));
  hit('Your progress: '+stats.pct+' percent',[458,607,330,205],summary);
  hit('Your achievements',[806,607,332,205],summary);
  hit('Claim rewards',[1192,752,228,56],summary,'99px');
- const tts=hit('Text-to-Speech: read this page aloud',[200,872,222,56],()=>{if(!intervDashSpeaking&&typeof ivOwlTalk==='function')ivOwlTalk(board,9000);intervDashSpeak(tts,`Welcome to InterV, ${first}! Your reading adventure awaits. You have ${stats.points} points, and you have completed ${stats.done} of ${INTERV_DASH.activities} activities. Choose your reading station: Fluency Junction, Vocabulary Terminal, Comprehension Crossing, Inference Station, or Critical Depot. Small steps, big progress!`)},'99px');
+ const tts=hit('Text-to-Speech: read this page aloud',[200,872,222,56],()=>{if(!intervDashSpeaking&&typeof ivOwlTalk==='function')ivOwlTalk(board,9000);intervDashSpeak(tts,`Welcome to Inkventure, ${first}! Your reading adventure awaits. You have ${stats.points} points, and you have completed ${stats.done} of ${INTERV_DASH.activities} activities. Choose your reading station: Fluency Junction, Vocabulary Terminal, Comprehension Crossing, Inference Station, or Critical Depot. Small steps, big progress!`)},'99px');
  tts.setAttribute('aria-pressed','false');
  hit('Continue your journey',[1276,848,358,86],()=>station(INTERV_STATIONS[Math.max(0,stats.next)].key),'99px').classList.add('ivh-idle');
  if(typeof ivDecorate==='function'){ivDecorate(board,'resources/interv/reading-adventure-dashboard-live.png',W,H);setTimeout(()=>ivOwlTalk(board,1800),900)}

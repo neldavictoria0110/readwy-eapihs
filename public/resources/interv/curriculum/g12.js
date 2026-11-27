@@ -1,4 +1,4 @@
-/* InterV Grade 12 curriculum (Senior High; research, argument and disciplinary reading). Format: see g7.js. */
+/* Inkventure Grade 12 curriculum (Senior High; research, argument and disciplinary reading). Format: see g7.js. */
 (globalThis.IV_CUR=globalThis.IV_CUR||{})[12]={
 fl:[
 {n:'Scholarly Term Fluency',s:'Read advanced scholarly terms with accuracy and confidence.',t:['Chunk by morphemes.','Keep stress patterns natural.'],

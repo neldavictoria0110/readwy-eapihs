@@ -1,4 +1,4 @@
-/* InterV objective writing rubric.
+/* Inkventure objective writing rubric.
    Five analytic criteria, each scored 1–4 (Beginning, Developing, Proficient, Advanced), adapted from the
    6+1 Trait Writing model (ideas, organization, word choice, sentence fluency, conventions), common analytic
    rubrics for text-based writing (claim/evidence/elaboration), and DepEd analytic scoring practice.

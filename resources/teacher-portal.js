@@ -1,10 +1,10 @@
 const READWY_TEACHER_JOURNEYS = [
-  ['GST', 'Reading Check-In'],
+  ['GST', 'Keypass'],
   ['Post-Test', 'Post-Test Express'],
   ['ORST', 'Voice Station'],
-  ['WST', 'Story Depot'],
+  ['WST', 'Spellscript'],
   ['ARAL', 'Catch-Up Express learning journey'],
-  ['Intervention', 'InterV intervention journey'],
+  ['Intervention', 'Inkventure learning journey'],
   ['SRA', 'READwy Reading Lab']
 ];
 const READWY_TEACHER_GRADES = [7, 8, 9, 10, 11, 12];
@@ -307,7 +307,7 @@ function readwyTPStudentView(student) {
       ? readwyTPInterventionForm(student)
       : `<section class="tp-table-card tp-fill-card"><div class="tp-card-head"><h3>${readwyTPIcon('reports', 'tp-head-icon tp-teal')}Teacher intervention reports</h3><div class="tp-inline-actions">${reports.length ? `<button class="tp-cta tp-cta-light" type="button" data-tp-action="export-intervention">${readwyTPIcon('download')}Download (CSV)</button>` : ''}<button class="tp-cta" type="button" data-tp-action="new-intervention">${readwyTPIcon('plus')}Create intervention report</button></div></div>${readwyTPInterventionList(student)}</section>`;
   } else {
-    body = `<section class="tp-table-card tp-fill-card"><div class="tp-panel-track">${readwyTPTrack(records)}</div><p class="tp-note">Saved app data only. Missing results show as “No digital record received”; no score or mastery is inferred. Reading Check-In uses a passage-reviewed classroom key; Post-Test Express results are provisional pending teacher verification.</p><div class="tp-fill" data-tp-pages=".tp-journey">${readwyTPJourneyCards(student)}</div></section>`;
+    body = `<section class="tp-table-card tp-fill-card"><div class="tp-panel-track">${readwyTPTrack(records)}</div><p class="tp-note">Saved app data only. Missing results show as “No digital record received”; no score or mastery is inferred. Keypass uses a passage-reviewed classroom key; Post-Test Express results are provisional pending teacher verification.</p><div class="tp-fill" data-tp-pages=".tp-journey">${readwyTPJourneyCards(student)}</div></section>`;
   }
   return tabs + body;
 }
@@ -327,8 +327,8 @@ function readwyTPInterventionForm(student) {
     </form></section>`;
 }
 // Stations shown on a learner's journey track, in classroom order.
-const READWY_TP_STATIONS = [['GST','Check-In'],['ORST','Voice Station'],['WST','Story Depot'],['Post-Test','Post-test'],['ARAL','Catch-Up Express'],['Intervention','InterV'],['SRA','Reading Lab']];
-const READWY_TP_PROGRAMS = [['ARAL','Catch-Up Express','aral'],['Intervention','InterV','interv'],['SRA','Reading Lab','sra']];
+const READWY_TP_STATIONS = [['GST','Keypass'],['ORST','Voice Station'],['WST','Spellscript'],['Post-Test','Post-test'],['ARAL','Catch-Up Express'],['Intervention','Inkventure'],['SRA','Reading Lab']];
+const READWY_TP_PROGRAMS = [['ARAL','Catch-Up Express','aral'],['Intervention','Inkventure','interv'],['SRA','Reading Lab','sra']];
 const READWY_TP_STAT_ART = {
   sections: '<svg viewBox="0 0 64 64"><circle cx="14" cy="24" r="7" fill="#60a5fa"/><path d="M2 52c0-9 5-15 12-15 3 0 6 1 8 3-3 4-5 8-5 12Z" fill="#3b82f6"/><circle cx="50" cy="24" r="7" fill="#60a5fa"/><path d="M62 52c0-9-5-15-12-15-3 0-6 1-8 3 3 4 5 8 5 12Z" fill="#3b82f6"/><circle cx="32" cy="19" r="9" fill="#3b82f6"/><path d="M16 54c0-11 7-18 16-18s16 7 16 18Z" fill="#1d4ed8"/></svg>',
   checks: '<svg viewBox="0 0 64 64"><rect x="12" y="10" width="40" height="49" rx="7" fill="#8b5cf6"/><rect x="18" y="18" width="28" height="35" rx="3" fill="#f5f3ff"/><rect x="23" y="5" width="18" height="10" rx="3" fill="#6d28d9"/><path d="m24 35 6 6 11-12" fill="none" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>',

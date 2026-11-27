@@ -467,7 +467,7 @@ function preTest(){const oral=pLoad('oral_'+G,{})||{},gst=pLoad('assessment_'+G,
  return {oral:oral.readingLevel||oral.level||null,oralComp:Number.isFinite(oral.comprehension)?Math.round(oral.comprehension):null,gst:Number.isFinite(gst.score)&&gst.total?`${gst.score}/${gst.total}`:null,wst:wst&&wst.writer?`${wst.writer} (${wst.score}/${wst.total})`:null}}
 function results(){const pr=profile();if(!pr)return welcome();const pre=preTest(),col={Independent:'var(--ind)',Instructional:'var(--ins)',Frustration:'var(--fru)'}[pr.band];
  const rows=ST.runs.slice().sort((a,b)=>b.level-a.level).map(r=>`<tr><td>Grade ${r.level}</td><td>${esc(r.title)}</td><td>${r.score}/${r.total} (${r.pct}%)</td><td><span class="band ${r.band}">${r.band}</span></td><td>${Math.floor(r.secs/60)}:${String(r.secs%60).padStart(2,'0')}${r.wpm?` · ${r.wpm} wpm`:''}</td></tr>`).join('');
- const preRows=[['Voice Station (oral reading)',pre.oral?esc(pre.oral)+(pre.oralComp!=null?` · ${pre.oralComp}% comprehension`:''):'—'],['Group screening (GST)',pre.gst||'—'],['Story Depot (writing)',pre.wst||'—']];
+ const preRows=[['Voice Station (oral reading)',pre.oral?esc(pre.oral)+(pre.oralComp!=null?` · ${pre.oralComp}% comprehension`:''):'—'],['Group screening (GST)',pre.gst||'—'],['Spellscript (writing)',pre.wst||'—']];
  show('results',`<div class="bg" style="background-image:url(${BACK});filter:saturate(.85) brightness(.65)"></div>${steam([[50,22,12]])}${bar()}<main class="result"><section class="cert">
   <div class="stamp" style="color:${col}">ARRIVED<br>${pr.band.toUpperCase()}</div>
   <h1>Journey Certificate</h1><div class="tag">READWY POST-TEST · PHIL-IRI SILENT READING</div>

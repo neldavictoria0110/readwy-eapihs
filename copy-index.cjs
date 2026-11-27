@@ -408,18 +408,18 @@ pages.application = application;
   syncLabel("sra:'Reading Lab'", "sra:'READwy Reading Lab'", 2, 'labelOf');
   syncLabel("sra: 'Reading Lab'", "sra: 'READwy Reading Lab'", 1, 'journey names');
   syncLabel("['Reading Lab','index.html?journeyModule=sra']", "['READwy Reading Lab','index.html?journeyModule=sra']", 0, 'programme list');
-  syncLabel("['Journey map','InterV','Reading Lab']", "['Journey map','InterV','READwy Reading Lab']", 6, 'grade filter');
+  syncLabel("['Journey map','Inkventure','Reading Lab']", "['Journey map','Inkventure','READwy Reading Lab']", 6, 'grade filter');
   syncLabel("['.sra-express-frame','Reading Lab']", "['.sra-express-frame','READwy Reading Lab']", 6, 'screen titles');
-  syncLabel("' · InterV and Reading Lab only'", "' · InterV and READwy Reading Lab only'", 6, 'grade note');
+  syncLabel("' · Inkventure and Reading Lab only'", "' · Inkventure and READwy Reading Lab only'", 6, 'grade note');
   syncLabel('aria-label="6. Reading Lab"', 'aria-label="6. READwy Reading Lab"', 1, 'station label');
   syncLabel("['Reading Lab Guided Reading','Read at your own level.'", "['READwy Reading Lab Guided Reading','Read at your own level.'", 1, 'station name');
-  syncLabel("const short=['Check-In','Voice Station','Story Depot','Catch-Up Express','Intervention','Reading Lab','Post-Test'];", "const short=['Check-In','Voice Station','Story Depot','Catch-Up Express','Intervention','READwy Reading Lab','Post-Test'];", 1, 'short labels');
-  syncLabel("['Check-In','Voice Station','Story Depot','Catch-Up Express','Intervention','Reading Lab','Post-Test'][i]", "['Check-In','Voice Station','Story Depot','Catch-Up Express','Intervention','READwy Reading Lab','Post-Test'][i]", 1, 'board labels');
+  syncLabel("const short=['Keypass','Voice Station','Spellscript','Catch-Up Express','Inkventure','Reading Lab','Post-Test'];", "const short=['Keypass','Voice Station','Spellscript','Catch-Up Express','Inkventure','READwy Reading Lab','Post-Test'];", 1, 'short labels');
+  syncLabel("['Keypass','Voice Station','Spellscript','Catch-Up Express','Inkventure','Reading Lab','Post-Test'][i]", "['Keypass','Voice Station','Spellscript','Catch-Up Express','Inkventure','READwy Reading Lab','Post-Test'][i]", 1, 'board labels');
   syncLabel("'READING LAB','POST'", "'READWY READING LAB','POST'", 1, 'stop caps');
-  syncLabel("This school year, explore the Catch-Up Express, InterV and Reading Lab programs.", "This school year, explore the Catch-Up Express, InterV and READwy Reading Lab programs.", 1, 'grade message');
-  syncLabel("the open journeys are InterV and Reading Lab.", "the open journeys are InterV and READwy Reading Lab.", 1, 'grade note message');
+  syncLabel("This school year, explore the Catch-Up Express, Inkventure and Reading Lab programs.", "This school year, explore the Catch-Up Express, Inkventure and READwy Reading Lab programs.", 1, 'grade message');
+  syncLabel("the open journeys are Inkventure and Reading Lab.", "the open journeys are Inkventure and READwy Reading Lab.", 1, 'grade note message');
   // The journey ticket keeps its own short title; SINGLE JOURNEY and Platform 7½ are unchanged.
-  syncLabel("const SH=['Check-In','Voice Station','Story Depot','Catch-Up Express','Inter-V','Reading Lab','Post-Test'];", "const SH=['Check-In','Voice Station','Story Depot','Catch-Up Express','Inter-V','READwy Lab','Post-Test'];", 1, 'ticket title');
+  syncLabel("const SH=['Keypass','Voice Station','Spellscript','Catch-Up Express','Inkventure','Reading Lab','Post-Test'];", "const SH=['Keypass','Voice Station','Spellscript','Catch-Up Express','Inkventure','READwy Lab','Post-Test'];", 1, 'ticket title');
 }
 
 const safePayload = JSON.stringify(pages)

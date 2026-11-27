@@ -1,4 +1,4 @@
-/* InterV Grade 7 curriculum. Item formats:
+/* Inkventure Grade 7 curriculum. Item formats:
    ['r', text]                       read aloud ([..] marks the focus part, · marks syllables)
    ['m', 'context § question', correct, wrong, wrong, wrong]   multiple choice (correct listed first; shuffled at runtime)
    w: {p:prompt, u:[target words/marks], k:[content keywords], e:evidence required, src:source text} */

@@ -18,7 +18,7 @@ window.addEventListener('load',()=>{
  };
  const enter=async()=>{
   if(navigationBusy){setTimeout(enter,80);return}
-  // Reading Check-In enters directly after the new guidance/morph flow; skip the old map portal.
+  // Keypass enters directly after the new guidance/morph flow; skip the old map portal.
   try{
    if(programs[requested]==='gst')openGSTBook();
    else await openModule(programs[requested]);

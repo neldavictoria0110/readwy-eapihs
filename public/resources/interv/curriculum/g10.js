@@ -1,4 +1,4 @@
-/* InterV Grade 10 curriculum (format: see g7.js). */
+/* Inkventure Grade 10 curriculum (format: see g7.js). */
 (globalThis.IV_CUR=globalThis.IV_CUR||{})[10]={
 fl:[
 {n:'Technical Term Reading',s:'Read specialized terms accurately by chunking their parts.',t:['Chunk the word into meaningful parts.','Keep a steady rhythm.'],

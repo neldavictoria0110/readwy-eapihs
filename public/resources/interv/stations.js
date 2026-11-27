@@ -1,7 +1,7 @@
-/* InterV painted pages, in program order:
+/* Inkventure painted pages, in program order:
    Dashboard (welcome.js) -> Station page (5 tasks) -> Task page (10 activities + writing task)
-   -> Station games (original InterV games, distributed by competency) -> InterV Games arcade.
-   Task content comes only from the original InterV program (InterVLegacyData: G vocabulary, F fluency,
+   -> Station games (original Inkventure games, distributed by competency) -> Inkventure Games arcade.
+   Task content comes only from the original Inkventure program (InterVLegacyData: G vocabulary, F fluency,
    I inference, R reading passages, W writing) for the learner's profile grade; see IV_BUILD below.
    Every activity is scored automatically; hints cost Playlab credits. */
 
@@ -14,7 +14,7 @@ const IV_ST={
  in:{name:'Inference Station',sub:'Spot clues. Think deeper. Read between the lines!',motto:['Clues','Lead to','Smart','Answers'],book:['Think','Deeper'],goal:'Back every conclusion with a clue!',hint:'Choose the answer that fits ALL the clues.'},
  cr:{name:'Critical Depot',sub:'Write clearly. Revise wisely. Build strong paragraphs!',motto:['Clear','Writing','Shows','Thinking'],book:['Write','Clearly'],goal:'Build correct, clear sentences and paragraphs!',hint:'Read the whole sentence carefully and check every word.'}
 };
-/* The original InterV challenge games, placed in the competency closest to each game's goal.
+/* The original Inkventure challenge games, placed in the competency closest to each game's goal.
    [old competency index, old game index]: 0 Vocabulary, 1 Fluency, 2 Inferencing, 3 Comprehension, 4 Writing. All 25 are used. */
 const IV_ST_GAMES={fl:[[1,0],[1,1],[1,2],[1,3],[1,4],[4,0]],vo:[[0,0],[0,1],[0,2],[0,3],[0,4],[4,1]],co:[[3,0],[3,1],[3,2],[3,4],[4,2]],in:[[2,0],[2,1],[2,2],[2,4],[4,4]],cr:[[3,3],[2,3],[4,3]]};
 function ivGrade(){const u=(typeof user!=='undefined'&&user)||{},g=Number(u.grade);if(g>=7&&g<=12)return g;const s=typeof selectedGrade!=='undefined'?Number(selectedGrade):NaN;return s>=7&&s<=12?s:7}
@@ -22,7 +22,7 @@ const IV_COMP={vo:0,fl:1,in:2,co:3,cr:4},IV_TASK_CACHE={};
 function ivTasks(key){
  const g=ivGrade(),id=g+':'+key;if(IV_TASK_CACHE[id])return IV_TASK_CACHE[id];
  try{ivLegacyMerge()}catch(e){}const L=globalThis.InterVLegacyData;if(!L||!L.G?.[g]||!IV_BUILD[key])return [];
- let tasks;try{tasks=IV_BUILD[key](L,g)}catch(e){console.error('InterV: could not build tasks',e);return []}
+ let tasks;try{tasks=IV_BUILD[key](L,g)}catch(e){console.error('Inkventure: could not build tasks',e);return []}
  const cat=globalThis.InterVGames?.catalog?.[IV_COMP[key]]||[];tasks.forEach((t,i)=>{t.n=cat[i]?.[0]||('Task '+(i+1))});
  // Writing difficulty grows from Task 1 (a few sentences) to Task 5 (a full composition with evidence).
  const base=(typeof IV_RUBRIC!=='undefined'&&IV_RUBRIC.minWords[g])||80,bs=(typeof IV_RUBRIC!=='undefined'&&IV_RUBRIC.minSentences[g])||5;
@@ -57,7 +57,7 @@ function ivSay(text,rate=.95){const s=window.speechSynthesis,U=window.SpeechSynt
 let ivTimers=[],ivRec=null,ivLegacyRuntime=null;
 function ivLater(fn,ms){const t=setTimeout(fn,ms);ivTimers.push(t);return t}
 function ivStopAll(){ivTimers.forEach(clearTimeout);ivTimers=[];clearInterval(ivRaceClock);try{ivRec?.abort()}catch(e){}ivRec=null;window.speechSynthesis?.cancel();try{ivLegacyRuntime?.destroy()}catch(e){}ivLegacyRuntime=null;if(typeof ivArcStop==='function')ivArcStop()}
-// Points from tasks go to the station; points from the InterV Games bar are reward points (s.gpts, per game in s.gp)
+// Points from tasks go to the station; points from the Inkventure Games bar are reward points (s.gpts, per game in s.gp)
 // that pay for hints (s.gspent).
 let ivCurGame='';
 function ivAward(points,key){const s=intervStationStore();s.points=(Number(s.points)||0)+points;if(key){const d=ivStData(s,key);d.pts=(d.pts||0)+points}
@@ -100,11 +100,11 @@ function ivPage(cfg){
  api.pts();
  const toStation=()=>renderStation(ivLast.st);
  const navActions=[()=>renderInter(),cfg.stations||toStation,()=>ivRenderProgress(),()=>ivRenderRewards(),()=>ivRenderProfile(),()=>ivRenderSettings()];
- const navNames=['InterV home','Stations','Progress','Rewards','Profile','Settings'];
+ const navNames=['Inkventure home','Stations','Progress','Rewards','Profile','Settings'];
  if(img===IV_PAGE_ART&&typeof ivHallLayout==='function'){ivHallLayout(api,cfg,navActions,navNames);app.scrollTo(0,0);return api}
  cfg.nav.x.forEach((x,i)=>api.hit(navNames[i],[x[0],cfg.nav.y[0],x[1]-x[0],cfg.nav.y[1]-cfg.nav.y[0]],navActions[i],'99px'));
  api.hit('Your profile',[ax-ar-3,ay-ar-3,ar*2+6,ar*2+6],()=>go('profile'),'50%');
- if(cfg.exit)api.hit('Leave InterV and return to the learning journey',cfg.exit,()=>go('map'),'1vh');
+ if(cfg.exit)api.hit('Leave Inkventure and return to the learning journey',cfg.exit,()=>go('map'),'1vh');
  if(typeof ivDecorate==='function')ivDecorate(board,img,w,h);
  app.scrollTo(0,0);
  return api;
@@ -123,9 +123,9 @@ function ivHallLayout(api,cfg,acts,names){
  // Top toolbar over the painted one (same size, no highlighted tab).
  const icons=['🏠','🚉','📊','🏆','👤','⚙️'],labels=['Home','Stations','Progress','Rewards','Profile','Settings'];
  const tb=api.layer('ivnav3',V.tabs);
- tb.innerHTML=`<nav class="ivnav3-tabs" aria-label="InterV menu">${labels.map((l,i)=>`<button type="button" data-i="${i}" aria-label="${ivEsc(names[i])}"><span>${icons[i]}</span>${l}</button>`).join('')}</nav>`;
+ tb.innerHTML=`<nav class="ivnav3-tabs" aria-label="Inkventure menu">${labels.map((l,i)=>`<button type="button" data-i="${i}" aria-label="${ivEsc(names[i])}"><span>${icons[i]}</span>${l}</button>`).join('')}</nav>`;
  const me=api.layer('ivnav3 ivnav3-me',V.me);
- me.innerHTML=`<button type="button" class="ivnav3-av" data-me aria-label="Your profile"><img src="${ivEsc(intervDashAvatar(profile))}" alt=""></button><span><b>Hello, ${ivEsc(ivFirstName())}!</b><small>⭐ <em class="ivnav3-pts"></em> pts</small></span><button type="button" class="ivnav3-exit" data-exit aria-label="Leave InterV and return to the learning journey">⎋</button>`;
+ me.innerHTML=`<button type="button" class="ivnav3-av" data-me aria-label="Your profile"><img src="${ivEsc(intervDashAvatar(profile))}" alt=""></button><span><b>Hello, ${ivEsc(ivFirstName())}!</b><small>⭐ <em class="ivnav3-pts"></em> pts</small></span><button type="button" class="ivnav3-exit" data-exit aria-label="Leave Inkventure and return to the learning journey">⎋</button>`;
  const click=e=>{const t=e.target.closest('button');if(!t)return;if(t.dataset.i)return acts[Number(t.dataset.i)]();if('me' in t.dataset)return ivRenderProfile();if('exit' in t.dataset)return go('map')};
  tb.addEventListener('click',click);me.addEventListener('click',click);
  const pts0=api.pts;api.pts=()=>{pts0();const p=me.querySelector('.ivnav3-pts');if(p)p.textContent=intervDashStats().points.toLocaleString()};api.pts();
@@ -146,7 +146,7 @@ function ivStationArt(S){
  const book=`<g transform="rotate(24 246 560)">${S.book.map((b,i)=>`<text class="ivp-book" x="246" y="${552+i*33}" font-size="${Math.min(27,96/(b.length*.55)).toFixed(1)}" text-anchor="middle">${ivEsc(b)}</text>`).join('')}</g>`;
  return motto+book}
 
-/* ---------- One backdrop for all of InterV ----------
+/* ---------- One backdrop for all of Inkventure ----------
    Home, stations, tasks and games all use the same painted hall (task page art): the owl, hall, train, top
    navigation and bottom games bar never move. Only the title banner, the central board, the plaques and the
    owl's speech bubble change from page to page. */
@@ -167,8 +167,8 @@ function ivStationProgress(key){const D=ivStData(intervStationStore(),key);let w
 const IV_HOME_ART='resources/interv/reading-adventure-dashboard-live.hd.webp',IV_HOME_PANEL=[505,284,845,304];
 function ivRenderHome(){
  const stats=intervDashStats(),first=ivFirstName(),next=INTERV_STATIONS[Math.max(0,stats.next)]||INTERV_STATIONS[0];
- const P=ivHallPage('InterV home: choose a reading station',()=>renderStation(next.key));
- P.draw('title',ivTitle('Welcome to InterV!','Your Reading Adventure Awaits!',false));
+ const P=ivHallPage('Inkventure home: choose a reading station',()=>renderStation(next.key));
+ P.draw('title',ivTitle('Welcome to Inkventure!','Your Reading Adventure Awaits!',false));
  P.draw('goal',ivTaskGoal('Pick a station. Small steps, big progress!'));P.draw('tips',ivTips(['Finish every task in a station.','Win the game, then write.']));
  ivPlaque(P,'Progress');P.draw('attempts',ivAttemptStars(Math.round(stats.pct/100*3),`${stats.pct}%`));
  const frame=P.layer('ivx ivhome',IV_FRAME);
@@ -197,7 +197,7 @@ function ivRenderProgress(){
   tot.won+=won;tot.writ+=writ;tot.correct+=correct;tot.stars+=stars;tot.pts+=D.pts||0;tot.grades.push(...grades);
   return {key,won,writ,correct,stars,avg,pts:D.pts||0,mastery}});
  const avgAll=tot.grades.length?Math.round(tot.grades.reduce((a,b)=>a+b,0)/tot.grades.length):null,pctAll=Math.round((tot.won+tot.writ)/50*100);
- const P=ivHallPage('InterV: my progress',()=>renderStation(ivLast.st));
+ const P=ivHallPage('Inkventure: my progress',()=>renderStation(ivLast.st));
  P.draw('title',ivTitle('My Progress',`Grade ${g} · scores in every competency`,false));
  P.draw('goal',ivTaskGoal('Win every game and write well in all five!'));P.draw('tips',ivTips(['Mastery = games won + writing done.','Grade = average writing score.']));
  ivPlaque(P,'Overall');P.draw('attempts',ivAttemptStars(Math.round(pctAll/100*3),`${pctAll}%`));
@@ -211,26 +211,26 @@ function ivRenderProgress(){
  ivGamesBar(P,()=>ivRenderProgress());
  P.bubble(`You have won ${tot.won} of 25 games. Tap a competency to practise it!`);
 }
-/* ---------- Rewards: points earned in the InterV Games; they unlock hints in the tasks ---------- */
+/* ---------- Rewards: points earned in the Inkventure Games; they unlock hints in the tasks ---------- */
 function ivRenderRewards(){
  const s=intervStationStore(),w=ivWallet(),earned=Number(s.gpts)||0,spent=Number(s.gspent)||0,bal=Math.max(0,earned-spent),cred=w?w.balance():0,gp=s.gp||{},plays=s.games||{};
  const list=[['Word Puzzle','🧩',renderIvWordPuzzle],['Memory Match','🃏',renderIvMemory],['Reading Race','🏁',renderIvReadingRace],['Word Spinner','🎡',renderIvSpinner],['Challenge Game','🏆',renderIvChallenge]];
  const hints=Math.floor(bal/IV_HINT_COST)+cred;
- const P=ivHallPage('InterV: my rewards',()=>renderStation(ivLast.st));
- P.draw('title',ivTitle('My Rewards','Points from the InterV Games',false));
+ const P=ivHallPage('Inkventure: my rewards',()=>renderStation(ivLast.st));
+ P.draw('title',ivTitle('My Rewards','Points from the Inkventure Games',false));
  P.draw('goal',ivTaskGoal('Play games, earn points, unlock hints!'));P.draw('tips',ivTips([`1 hint = ${IV_HINT_COST} points.`,'Or use 1 Bonus Game credit.']));
  ivPlaque(P,'Hints');P.draw('attempts',ivAttemptStars(Math.min(3,hints),`${hints} ready`));
  const frame=P.layer('ivx ivrew',IV_FRAME);
- frame.innerHTML=`<div class="ivx-in"><header class="ivx-head"><div class="ivx-meta"><b>🏆 Points earned in the InterV Games</b><span>Each hint in a task costs ${IV_HINT_COST} reward points (or 1 Bonus Game credit).</span></div></header>
+ frame.innerHTML=`<div class="ivx-in"><header class="ivx-head"><div class="ivx-meta"><b>🏆 Points earned in the Inkventure Games</b><span>Each hint in a task costs ${IV_HINT_COST} reward points (or 1 Bonus Game credit).</span></div></header>
   <div class="ivrw-body"><div class="ivrw-sum"><div><small>Earned</small><b>${earned.toLocaleString()}</b></div><div><small>Spent on hints</small><b>${spent.toLocaleString()}</b></div><div class="big"><small>Reward points left</small><b>${bal.toLocaleString()}</b></div><div><small>🎁 Bonus credits</small><b>${cred}</b></div><div class="hint"><small>💡 Hints you can unlock</small><b>${hints}</b></div></div>
    <div class="ivrw-list">${list.map(([n,ic],i)=>`<button type="button" class="ivrw-row" data-g="${i}"><span>${ic}</span><b>${n}</b><small>played ${plays[n]||0}×</small><em>${(gp[n]||0).toLocaleString()} pts</em></button>`).join('')}<button type="button" class="ivrw-row bonus" data-bonus><span>🎁</span><b>Bonus Game</b><small>win rounds for credits</small><em>${cred} credit${cred===1?'':'s'}</em></button></div></div></div>`;
  frame.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.g){ivGamesBack=()=>ivRenderRewards();return list[Number(b.dataset.g)][2]()}if('bonus' in b.dataset)return ivOpenPlaylab(P,()=>ivRenderRewards())});
  P.hit('Keep going',[1310,825,338,92],()=>renderInter(),'99px').classList.add('ivh-idle');
  ivGamesBar(P,()=>ivRenderRewards());
- P.bubble(hints?`You can unlock ${hints} hint${hints===1?'':'s'}! Play more games to earn more.`:`Play the InterV Games to earn points for hints!`);
+ P.bubble(hints?`You can unlock ${hints} hint${hints===1?'':'s'}! Play more games to earn more.`:`Play the Inkventure Games to earn points for hints!`);
 }
 
-/* ---------- Colour themes: each InterV page carries its own tone (frame, title strip, roll) ---------- */
+/* ---------- Colour themes: each Inkventure page carries its own tone (frame, title strip, roll) ---------- */
 const IV_THEMES={home:['#3f4fc4','#ff8a3d'],fl:['#2f7de1','#ffd447'],vo:['#23a05a','#ffe27a'],co:['#8e5bd6','#ffd447'],in:['#13a19c','#ffcf5a'],cr:['#e8742b','#fff0b8'],
  progress:['#5b4fd6','#7fe0c2'],rewards:['#d98a12','#fff3c4'],games:['#d6457e','#ffe27a'],profile:['#c2417a','#ffd6e6'],settings:['#4a6378','#bfe3ff']};
 function ivThemeOf(label){const l=String(label||'').toLowerCase();
@@ -239,11 +239,11 @@ function ivThemeOf(label){const l=String(label||'').toLowerCase();
  if(l.includes('home'))return 'home';return 'games'}
 function ivApplyTheme(board,label){const k=ivThemeOf(label),[c,a]=IV_THEMES[k];const sc=board.closest('.ivp-screen');sc.dataset.ivTheme=k;sc.style.setProperty('--ivc',c);sc.style.setProperty('--iva',a)}
 
-/* ---------- Profile and Settings inside the InterV hall ---------- */
+/* ---------- Profile and Settings inside the Inkventure hall ---------- */
 function ivRenderProfile(){
  const u=(typeof user!=='undefined'&&user)||{},st=intervDashStats(),g=ivGrade();
- const P=ivHallPage('InterV: my profile',()=>renderStation(ivLast.st));
- P.draw('title',ivTitle('My Profile','Your InterV passenger card',false));P.draw('goal',ivTaskGoal('Keep your details up to date!'));
+ const P=ivHallPage('Inkventure: my profile',()=>renderStation(ivLast.st));
+ P.draw('title',ivTitle('My Profile','Your Inkventure passenger card',false));P.draw('goal',ivTaskGoal('Keep your details up to date!'));
  const frame=P.layer('ivx ivprof',IV_FRAME);
  const f=(n,l,v,a='')=>`<label class="ivpf-f"><span>${l}</span><input name="${n}" value="${ivEsc(v||'')}" ${a}></label>`;
  frame.innerHTML=`<div class="ivx-in"><header class="ivx-head"><div class="ivx-meta"><b>👤 Passenger card</b><span>Changes are saved to your READwy profile.</span></div></header>
@@ -263,8 +263,8 @@ function ivRenderProfile(){
 }
 function ivRenderSettings(){
  const p=load('preferences',{});
- const P=ivHallPage('InterV: settings',()=>renderStation(ivLast.st));
- P.draw('title',ivTitle('Settings','Make InterV comfortable for you',false));P.draw('goal',ivTaskGoal('Set sound, speed and reading size.'));
+ const P=ivHallPage('Inkventure: settings',()=>renderStation(ivLast.st));
+ P.draw('title',ivTitle('Settings','Make Inkventure comfortable for you',false));P.draw('goal',ivTaskGoal('Set sound, speed and reading size.'));
  const frame=P.layer('ivx ivset',IV_FRAME);
  const sw=(n,t,d,on)=>`<label class="ivse-row"><span><b>${t}</b><small>${d}</small></span><input type="checkbox" role="switch" name="${n}"${on?' checked':''}></label>`;
  const sl=(n,t,d,v,min,max,step,unit)=>`<label class="ivse-row"><span><b>${t} <output>${v}${unit}</output></b><small>${d}</small></span><input type="range" name="${n}" min="${min}" max="${max}" step="${step}" value="${v}" data-unit="${unit}"></label>`;
@@ -278,7 +278,7 @@ function ivRenderSettings(){
  frame.querySelector('[data-save]').onclick=()=>{const e=form.elements,np={...load('preferences',{}),sound:e.sound.checked,volume:Number(e.volume.value)/100,speechRate:Number(e.speechRate.value),readingSize:Number(e.readingSize.value),reduceMotion:e.reduceMotion.checked,highContrast:e.highContrast.checked};
   try{localStorage.setItem(STORE+'preferences',JSON.stringify(np));if(typeof applyPreferences==='function')applyPreferences();msg.textContent='Settings saved ✓';P.bubble('Settings saved!')}catch(err){msg.textContent='Unable to save settings.'}};
  P.hit('Keep going',[1310,825,338,92],()=>renderInter(),'99px');ivGamesBar(P,()=>ivRenderSettings());
- P.bubble('Make InterV just right for you.');
+ P.bubble('Make Inkventure just right for you.');
 }
 /* ---------- Station: choose a task ---------- */
 function renderStation(key,mode){
@@ -313,7 +313,7 @@ function ivRingSectors(cx,cy,r0,r1,pct){
  for(let i=0;i<steps;i++){const a0=i/180*Math.PI*2,a1=Math.min(steps,i+1.25)/180*Math.PI*2;out+='<path d="M'+pt(r1,a0)+'A'+r1+' '+r1+' 0 0 1 '+pt(r1,a1)+'L'+pt(r0,a1)+'A'+r0+' '+r0+' 0 0 0 '+pt(r0,a0)+'Z" fill="'+colour(i/180)+'"/>'}
  return out;
 }
-/* Station games: the original InterV games that belong to this competency, shown over the task board. */
+/* Station games: the original Inkventure games that belong to this competency, shown over the task board. */
 function ivStationGames(P,key){
  const IG=globalThis.InterVGames;const g=ivGrade(),list=IV_ST_GAMES[key],store=intervStationStore();
  P.board.querySelector('.ivp-gpanel')?.remove();const panel=P.layer('ivp-gpanel',IV_FRAME);
@@ -324,8 +324,8 @@ function ivStationGames(P,key){
  P.say(IV_ST[key].name+' games. Choose a game.');
 }
 
-/* ---------- Task content: built only from the original InterV program ----------
-   Each station = one old competency; each task = one old InterV game (names from InterVGames.catalog).
+/* ---------- Task content: built only from the original Inkventure program ----------
+   Each station = one old competency; each task = one old Inkventure game (names from InterVGames.catalog).
    A task has 10 auto-scored activities: two question types x the grade's five old content sets,
    plus a ★ writing task on old content, scored by the rubric. */
 const ivUniq=a=>{const seen=new Set();return a.filter(x=>{if(x==null)return false;const k=String(x).trim().toLowerCase();if(!k||seen.has(k))return false;seen.add(k);return true})};
@@ -510,11 +510,11 @@ function ivFitBox(box,inner,min,max){if(!box||!inner)return;const ov=box.style.o
  box.style.overflow=ov}
 function ivFitFrame(frame,qMax=.085,pMax=.05){const h=frame.clientHeight||400;ivFitBox(frame.querySelector('.ivx-q'),frame.querySelector('.ivx-qin'),9,h*qMax);ivFitBox(frame.querySelector('.ivx-pass'),frame.querySelector('.ivx-ptext'),10,h*pMax)}
 function ivAttemptStars(n,label){return IV_ATT_STARS.slice(0,Math.max(0,Math.min(3,n))).map(x=>ivStar(x,IV_ATT_Y,IV_ATT_R)).join('')+`<text class="ivp-ink" x="1491" y="489" font-size="32" text-anchor="middle">${ivEsc(label)}</text>`}
-/* Bottom games bar: InterV Games, the six painted games, and the Bonus Game (Playlab) added at the right end of the same bar. */
+/* Bottom games bar: Inkventure Games, the six painted games, and the Bonus Game (Playlab) added at the right end of the same bar. */
 function ivOpenPlaylab(P,after){const wallet=ivWallet();if(!globalThis.ReadwyPlaylab||!wallet){P.bubble('The Bonus Game is not available right now.');return}
  globalThis.ReadwyPlaylab.open({wallet,onResult:won=>{const g=ivCurGame;ivCurGame='Bonus Game';ivPoint(!!won);ivCurGame=g},onReturn:()=>{if(!P.board.isConnected)return;ivBarBadge(P);P.bubble(`You have ${wallet.balance()} hint credit${wallet.balance()===1?'':'s'}. Use them for hints!`);after?.()}})}
 function ivBarBadge(P){const b=P.board.querySelector('.ivbar-badge');if(b){const w=ivWallet();b.textContent=w?w.balance():0}}
-/* InterV games toolbar: one wide "InterV Games" button fills the bottom bar. Tapping it slides the six mini-games
+/* Inkventure games toolbar: one wide "Inkventure Games" button fills the bottom bar. Tapping it slides the six mini-games
    (Word Puzzle, Memory Match, Reading Race, Word Spinner, Challenge, Bonus Game) out inside the same bar; tapping it
    again folds them away. The game list never opens in the middle of the screen. The open/closed state is kept while
    the learner moves between pages. */
@@ -525,9 +525,9 @@ function ivGamesBar(P,back){
  const bar=P.layer('ivbar ivgb-bar',IV_BAR),w=ivWallet();
  const games=[['puzzle','🧩','Word Puzzle',()=>renderIvWordPuzzle()],['memory','🃏','Memory Match',()=>renderIvMemory()],['race','🏁','Reading Race',()=>renderIvReadingRace()],
   ['spinner','🎡','Word Spinner',()=>renderIvSpinner()],['challenge','🏆','Challenge',()=>renderIvChallenge()],['bonus','🎁','Bonus Game',null]];
- bar.innerHTML=`<nav class="ivbar-in ivgb" aria-label="InterV games"><button type="button" class="ivbar-b hub ivgb-hub" data-k="hub" aria-expanded="false" aria-controls="ivgb-games"><span class="ivbar-ic">🎮</span><span class="ivbar-t">InterV Games</span><span class="ivgb-arrow" aria-hidden="true">▸</span></button><div class="ivgb-games" id="ivgb-games">${games.map(([k,ic,n])=>`<button type="button" class="ivbar-b${k==='bonus'?' bonus':''}" data-k="${k}"><span class="ivbar-ic">${ic}</span><span class="ivbar-t">${n}</span>${k==='bonus'?`<i class="ivbar-badge" title="Bonus credits">${w?w.balance():0}</i>`:''}</button>`).join('')}</div></nav>`;
+ bar.innerHTML=`<nav class="ivbar-in ivgb" aria-label="Inkventure games"><button type="button" class="ivbar-b hub ivgb-hub" data-k="hub" aria-expanded="false" aria-controls="ivgb-games"><span class="ivbar-ic">🎮</span><span class="ivbar-t">Inkventure Games</span><span class="ivgb-arrow" aria-hidden="true">▸</span></button><div class="ivgb-games" id="ivgb-games">${games.map(([k,ic,n])=>`<button type="button" class="ivbar-b${k==='bonus'?' bonus':''}" data-k="${k}"><span class="ivbar-ic">${ic}</span><span class="ivbar-t">${n}</span>${k==='bonus'?`<i class="ivbar-badge" title="Bonus credits">${w?w.balance():0}</i>`:''}</button>`).join('')}</div></nav>`;
  const hub=bar.querySelector('.ivgb-hub'),btns=[...bar.querySelectorAll('.ivgb-games .ivbar-b')];
- const set=on=>{ivBarOpen=on;bar.classList.toggle('ivgb-open',on);hub.setAttribute('aria-expanded',on?'true':'false');hub.setAttribute('aria-label',on?'Hide InterV games':'Show InterV games');btns.forEach(b=>{b.tabIndex=on?0:-1;b.setAttribute('aria-hidden',on?'false':'true')})};
+ const set=on=>{ivBarOpen=on;bar.classList.toggle('ivgb-open',on);hub.setAttribute('aria-expanded',on?'true':'false');hub.setAttribute('aria-label',on?'Hide Inkventure games':'Show Inkventure games');btns.forEach(b=>{b.tabIndex=on?0:-1;b.setAttribute('aria-hidden',on?'false':'true')})};
  set(ivBarOpen);
  bar.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const k=b.dataset.k;
   if(k==='hub')return set(!ivBarOpen);
@@ -535,12 +535,12 @@ function ivGamesBar(P,back){
   if(k==='bonus')return ivOpenPlaylab(P);
   const it=games.find(x=>x[0]===k);if(!it)return;ivGamesBack=back;it[3]()});
 }
-/* ---------- Station tasks as arcade games (ARAL arcade style, InterV instructional level) ----------
+/* ---------- Station tasks as arcade games (ARAL arcade style, Inkventure instructional level) ----------
    Every one of the 25 tasks uses a different arcade game from the shared READwy game library (ARAL_GAME_RUN),
-   fed only with the task's original InterV content. Difficulty is set for instructional-level readers — above ARAL
+   fed only with the task's original Inkventure content. Difficulty is set for instructional-level readers — above ARAL
    (frustration level), below Reading Lab (independent level) — and rises with the grade:
    Grades 7–8 need 7 correct, 9–10 need 8, 11–12 need 9 (ARAL needs 6); four answer choices instead of three;
-   more words and rounds at higher grades. ARAL's own games are not changed: InterV runs tuned copies of them. */
+   more words and rounds at higher grades. ARAL's own games are not changed: Inkventure runs tuned copies of them. */
 const IV_ARCADE={
  vo:['hangman','memory','wordle','domino','bullseye'],
  fl:['sprint','quiz','crossing','ttt','connect4'],
@@ -664,7 +664,7 @@ function ivExample(kind,X){const d=X.d,r0=X.rounds?.[0]||{},e=ivEsc,q=(d.qs||[])
   case 'typerush':return d.good?.length?`See <b>${e(d.good[0])}</b> falling? Type <b>${e(d.good[0])}</b> and press ENTER.`:'';
   default:return q?`${e(q.q)}${arrow}<b>${e(q.ok)}</b>`:''}}
 const IV_ARC_LEVEL=g=>{const lv=IV_LVL(g);return {lv,need:[7,8,9][lv-1],words:[4,5,5][lv-1],rounds:[3,4,5][lv-1],bad:3}};
-/* Canvas games in InterV: light backdrop, and everything drawn larger so the game fills the frame.
+/* Canvas games in Inkventure: light backdrop, and everything drawn larger so the game fills the frame.
    The drawing is scaled by s; the game sees a world of W/s x H/s, and pointer positions are mapped into it. */
 // Games whose answers are whole sentences (Track Runner lanes) keep the original scale so the sentences fit.
 // 'layout': games that move page elements (Sequence Sprint cards) use the stage's full layout size as their world.
@@ -679,7 +679,7 @@ function ivCanvas(stage){
  const fit=()=>{const r=stage.getBoundingClientRect(),d=devicePixelRatio||1;s=ivArcScale(stage);const cw=Math.max(1,Math.round(r.width*d)),ch=Math.max(1,Math.round(r.height*d));if(c.width!==cw)c.width=cw;if(c.height!==ch)c.height=ch;ctx.setTransform(d*s,0,0,d*s,0,0);return {W:r.width/s,H:r.height/s}};
  return {c,ctx,fit}}
 function ivSky(ctx,W,H,t){const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#eaf4ff');g.addColorStop(1,'#cfe2fb');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.fillStyle='#ffffffaa';for(let k=0;k<26;k++){const x=(k*137.5)%W,y=((k*71)%H+t*0.008*(k%3+1))%H;ctx.beginPath();ctx.arc(x,y,1.6+(k%3),0,7);ctx.fill()}}
-// Tuned copies of the shared games: targets, word counts and option counts come from the InterV spec.
+// Tuned copies of the shared games: targets, word counts and option counts come from the Inkventure spec.
 const IV_ARC_RUN={};
 function ivArcRunner(kind){
  if(IV_ARC_RUN[kind])return IV_ARC_RUN[kind];
@@ -692,7 +692,7 @@ function ivArcRunner(kind){
   .replace(/q\.bad\.slice\(0,2\)/g,'q.bad.slice(0,run.spec.ivBad||2)').replace('aralArcadeShuffle(d.pairs).slice(0,7)','aralArcadeShuffle(d.pairs).slice(0,run.spec.ivPairs||7)')
   .replace(/aralCanvas\(stage\)/g,'ivCanvas(stage)').replace(/aralSky\(/g,'ivSky(')
   .replace("fillStyle='#3b2410';ctx.fillRect(0,0,W,H)","fillStyle='#f7e7c8';ctx.fillRect(0,0,W,H)").replace("fillStyle='#173a2a';ctx.fillRect(0,0,W,H)","fillStyle='#dcf1e3';ctx.fillRect(0,0,W,H)").replace(/fillStyle='#1d4632'/g,"fillStyle='#c4e6d1'");
- try{IV_ARC_RUN[kind]=(0,eval)('('+src+')')}catch(e){console.warn('InterV: using the original game',kind,e);IV_ARC_RUN[kind]=fn}
+ try{IV_ARC_RUN[kind]=(0,eval)('('+src+')')}catch(e){console.warn('Inkventure: using the original game',kind,e);IV_ARC_RUN[kind]=fn}
  return IV_ARC_RUN[kind]}
 // Multiple-choice items -> game questions {q, ok, bad}.
 const ivQ=(it,label)=>({q:[label,it.emoji,it.hide?'':it.ctx,it.q].filter(Boolean).join(' — '),ok:it.opts[0],bad:it.opts.slice(1)});
@@ -792,7 +792,7 @@ function renderTask(key,t,start){
   const pm=txt.match(/📜 Passage (\d)/);if(pm&&GD.passages){const p=GD.passages[Number(pm[1])-1];return ivSay(p.text,.95)}
   const q=el.querySelector('.ag-q')?.textContent||stage.querySelector('.gx-qcard')?.textContent||'';ivSay(q.replace(/[🔊📜¶🎯❓🔎🁣]/g,''))};
  frame.querySelector('[data-listen]').onclick=listen;
- // 💡 Hint: a clue for the item on screen, paid with reward points from the InterV Games (or a Bonus Game credit).
+ // 💡 Hint: a clue for the item on screen, paid with reward points from the Inkventure Games (or a Bonus Game credit).
  const hintFor=()=>{const qt=(el.querySelector('.ag-q')?.textContent||'')+' '+(stage.querySelector('.gx-qcard')?.textContent||''),d=run.spec.d,r0=rounds?rounds[round]:null,start=s=>ivWords(s).slice(0,Math.min(3,Math.ceil(ivWords(s).length/2))).join(' ');
   const q=(d.qs||[]).find(x=>qt.includes(x.q.slice(-38)));if(q)return `The answer begins with “${start(q.ok)}…”`;
   const sg=[...(d.singles||[]),...(d.wordle||[])].find(x=>qt.includes(String(x.clue).slice(-30)));if(sg)return `The word starts with “${sg.w.slice(0,2)}” and ends with “${sg.w.slice(-1)}” (${sg.w.length} letters).`;
@@ -806,7 +806,7 @@ function renderTask(key,t,start){
  frame.querySelector('[data-hint]').onclick=()=>{el.querySelector('.ivarc-help')?.remove();if(!playing){P.bubble('Press Play first, then use a hint.');return}
   const text=hintFor(),buy=ivBuyHint(['ivh',g,key,t,round,correct,hintN++].join(':'));const box=document.createElement('div');box.className='ivarc-help';
   box.innerHTML=buy.ok?`<b>💡 Hint</b><p class="ivarc-hinttext">${ivEsc(text)}</p><small>Paid with ${ivEsc(buy.how)} · ${ivRewardBalance()} reward points left</small><button type="button" class="ag-btn">Got it</button>`
-   :`<b>💡 Not enough reward points</b><p class="ivarc-hinttext">A hint costs ${IV_HINT_COST} reward points. You have ${ivRewardBalance()}. Play the InterV Games below to earn more!</p><button type="button" class="ag-btn">OK</button>`;
+   :`<b>💡 Not enough reward points</b><p class="ivarc-hinttext">A hint costs ${IV_HINT_COST} reward points. You have ${ivRewardBalance()}. Play the Inkventure Games below to earn more!</p><button type="button" class="ag-btn">OK</button>`;
   box.querySelector('button').onclick=()=>box.remove();el.appendChild(box)};
  const helpBtn=frame.querySelector('[data-help]');
  helpBtn.onclick=()=>{const open=el.querySelector('.ivarc-help');if(open){open.remove();helpBtn.setAttribute('aria-expanded','false');return}
@@ -879,9 +879,9 @@ function ivWriting(P,key,t,task){
  if(rec.w)showResult(rec.w,0);else{showForm(draft);P.bubble('Writing task! Read the prompt, plan, then write. Watch the checklist.')}
 }
 
-/* ---------- Original InterV games, themed (legacy engine) ---------- */
+/* ---------- Original Inkventure games, themed (legacy engine) ---------- */
 function ivLegacyEnsure(){
- // The original InterV app defines its content when it mounts; mount it once off-screen, then dispose of it.
+ // The original Inkventure app defines its content when it mounts; mount it once off-screen, then dispose of it.
  if(globalThis.InterVLegacyData||typeof renderInterActivities!=='function')return;
  const saved=app.innerHTML;try{renderInterActivities({grade:7});globalThis.readwyInterV?.destroy?.()}catch(e){}app.innerHTML=saved}
 function ivLegacyMerge(){ivLegacyEnsure();const L=globalThis.InterVLegacyData,X=globalThis.IV_LEGACY_EXTRA;if(!L||!X)return;for(const k of ['G','F','I','R','W'])for(const g of [11,12])if(L[k]&&!L[k][g])L[k][g]=X[k][g]}
@@ -930,7 +930,7 @@ function renderLegacyGame(key,gi,round){
  interactive.render();paintRounds();P.bubble(meta[2]);
 }
 
-/* ---------- InterV Games hub and arcade games ----------
+/* ---------- Inkventure Games hub and arcade games ----------
    Drawn full screen on the crisp station artwork (task page) inside the same activity frame as the tasks.
    The Attempts plaque shows the game score; the games bar (with the Bonus Game) stays at the bottom. */
 let ivGamesBack=()=>renderStation(ivLast.st);
@@ -971,13 +971,13 @@ const IV_GAME_INFO={
 function ivPlayed(name){const s=intervStationStore();s.games={...(s.games||{}),[name]:((s.games||{})[name]||0)+1};intervStationSave(s)}
 function ivGamePage(key,label){const info=IV_GAME_INFO[key];ivCurGame=key==='hub'?'':info.name;
  const P=ivPage({img:'resources/interv/pages/task-generic.png',w:1672,h:941,fit:'fill',label,...IV_TASK_HEAD,stations:()=>renderStation(ivLast.st),bubble:{x:295,y:186,size:25,chars:23,rows:3,maxW:236}});
- P.draw('title',ivTitle('InterV Games',info.name,false));
+ P.draw('title',ivTitle('Inkventure Games',info.name,false));
  P.draw('goal',ivTaskGoal(info.goal));P.draw('tips',ivTips(info.tips));
  // Relabel the painted "Attempts" plaque as the game's score board.
  P.draw('plaque',`<defs><linearGradient id="ivgPlq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8dfae"/><stop offset="1" stop-color="#f1d09a"/></linearGradient></defs><rect x="1398" y="374" width="186" height="38" rx="10" fill="url(#ivgPlq)"/><text class="ivp-serif" x="1491" y="404" font-size="33" text-anchor="middle" style="fill:#13205a">Score</text>`);
  const frame=P.layer('ivx ivg ivg-page-'+key,IV_FRAME);
  ivGamesBar(P,ivGamesBack);
- P.hit(key==='hub'?'Back to the station':'Back to InterV Games',[1310,825,338,92],()=>key==='hub'?ivGamesBack():renderIntervGames(),'99px').classList.add('ivh-idle');
+ P.hit(key==='hub'?'Back to the station':'Back to Inkventure Games',[1310,825,338,92],()=>key==='hub'?ivGamesBack():renderIntervGames(),'99px').classList.add('ivh-idle');
  const g={P,frame,
   score(pts,stars){P.draw('attempts',ivAttemptStars(stars,`${pts} pts`))},
   shell(meta,body,foot,hud=''){frame.innerHTML=`<div class="ivx-in"><header class="ivx-head"><div class="ivx-meta"><b>${meta[0]}</b><span>${meta[1]||''}</span></div><div class="ivg-hud">${hud}</div></header><div class="ivx-body"><section class="ivx-q"><div class="ivx-qin">${body}</div></section></div><footer class="ivx-foot">${foot||''}</footer></div>`;g.fit()},
@@ -990,10 +990,10 @@ function ivGamePage(key,label){const info=IV_GAME_INFO[key];ivCurGame=key==='hub
 const ivOptBtn=(o,k,state)=>`<button type="button" class="ivx-opt${state?' '+state:''}" data-k="${k}"${state?' disabled':''}><b>${'ABCD'[k]}</b><span>${ivEsc(o)}</span></button>`;
 function renderIntervGames(back){
  if(typeof back==='function')ivGamesBack=back;
- const G=ivGamePage('hub','InterV Games: choose a game'),plays=intervStationStore().games||{};
+ const G=ivGamePage('hub','Inkventure Games: choose a game'),plays=intervStationStore().games||{};
  const list=[['puzzle',renderIvWordPuzzle],['memory',renderIvMemory],['race',renderIvReadingRace],['spinner',renderIvSpinner],['challenge',renderIvChallenge]];
  const w=ivWallet();G.score(intervDashStats().points,0);
- G.shell(['InterV Games','Choose a game to play'],`<div class="ivg-hub">${list.map(([k],i)=>{const f=IV_GAME_INFO[k];return `<button type="button" class="ivg-card" data-g="${i}"><span class="ivg-ic">${f.icon}</span><b>${f.name}</b><small>${f.desc}</small><em>Played ${plays[f.name]||0}×</em></button>`}).join('')}<button type="button" class="ivg-card bonus" data-bonus><span class="ivg-ic">🎁</span><b>Bonus Game</b><small>Win Playlab rounds to earn hint credits.</small><em>🪙 ${w?w.balance():0} credits</em></button></div>`,
+ G.shell(['Inkventure Games','Choose a game to play'],`<div class="ivg-hub">${list.map(([k],i)=>{const f=IV_GAME_INFO[k];return `<button type="button" class="ivg-card" data-g="${i}"><span class="ivg-ic">${f.icon}</span><b>${f.name}</b><small>${f.desc}</small><em>Played ${plays[f.name]||0}×</em></button>`}).join('')}<button type="button" class="ivg-card bonus" data-bonus><span class="ivg-ic">🎁</span><b>Bonus Game</b><small>Win Playlab rounds to earn hint credits.</small><em>🪙 ${w?w.balance():0} credits</em></button></div>`,
   `<button type="button" class="ivx-b ivx-listen" data-back>◀ Back</button><span class="ivx-msg"></span><button type="button" class="ivx-b ivx-next" data-pick>🎲 Choose for me</button>`);
  G.on(d=>{if('g' in d)return list[Number(d.g)][1]();if('bonus' in d)return ivOpenPlaylab(G.P,()=>renderIntervGames());if('back' in d)return ivGamesBack();
   if('pick' in d){const p=list.slice().sort((a,b)=>(plays[IV_GAME_INFO[a[0]].name]||0)-(plays[IV_GAME_INFO[b[0]].name]||0))[0];return p[1]()}});
@@ -1269,7 +1269,7 @@ function renderIvChallenge(){
   if('go' in d)return roundGo();if('next' in d){if(ri+1<ROUNDS){ri++;return roundIntro()}return gameOver()}if('again' in d)return start()});
  start();
 }
-/* ---------- Reports: InterV writing review for teachers ---------- */
+/* ---------- Reports: Inkventure writing review for teachers ---------- */
 function ivReportsSection(){
  const log=ivWritingLog().sort((a,b)=>String(b.submittedAt).localeCompare(String(a.submittedAt)));
  const isTeacher=typeof user!=='undefined'&&user?.role==='teacher';
@@ -1280,7 +1280,7 @@ function ivReportsSection(){
   <p class="ivr-meta">${x.auto.words} words · ${x.auto.sentences} sentences · attempt ${x.attempts} · submitted ${ivEsc(new Date(x.submittedAt).toLocaleString())}${x.auto.flags.length?' · ⚠️ '+x.auto.flags.map(ivEsc).join(' '):''}</p>
   <form class="ivr-form" data-id="${ivEsc(x.id)}"><table class="ivr-table"><thead><tr><th>Criterion</th><th>Auto</th><th>Evidence from scoring</th><th>Teacher score</th></tr></thead><tbody>${IV_RUBRIC.criteria.map(c=>`<tr><td>${ivEsc(c.name)}</td><td>${x.auto.scores[c.key]}/4</td><td>${x.auto.notes[c.key].map(ivEsc).join('<br>')}</td><td><select name="${c.key}"${isTeacher?'':' disabled'}>${[1,2,3,4].map(v=>`<option value="${v}"${f.scores[c.key]===v?' selected':''}>${v} – ${IV_RUBRIC.levels[v]}</option>`).join('')}</select></td></tr>`).join('')}</tbody></table>
   <label>Teacher comment<textarea name="comment" rows="2"${isTeacher?'':' disabled'}>${ivEsc(x.review?.comment||'')}</textarea></label>${isTeacher?'<button class="btn" type="submit">Save review</button>':'<p class="muted">Only a signed-in teacher can change the final score.</p>'}${x.review?`<p class="muted">Reviewed by ${ivEsc(x.review.by)} on ${ivEsc(new Date(x.review.at).toLocaleString())}. Final: ${f.total}/20 (${tg}).</p>`:''}<span role="status"></span></form></details>`}).join('');
- return `<section class="ivr"><h2>InterV Writing Tasks</h2><p class="muted">Each writing task is auto-scored with a 5-criterion analytic rubric (1 Beginning – 4 Advanced): ${IV_RUBRIC.criteria.map(c=>ivEsc(c.name)).join(', ')}. Raw scores (out of 20) are converted with the DepEd transmutation table (DO 8, s. 2015). Teachers may review and adjust each criterion.</p>${log.length?rows:'<p>No writing tasks have been submitted yet.</p>'}${log.length?'<button class="btn secondary" type="button" data-ivr-csv>Export InterV writing as CSV</button>':''}</section>`;
+ return `<section class="ivr"><h2>Inkventure Writing Tasks</h2><p class="muted">Each writing task is auto-scored with a 5-criterion analytic rubric (1 Beginning – 4 Advanced): ${IV_RUBRIC.criteria.map(c=>ivEsc(c.name)).join(', ')}. Raw scores (out of 20) are converted with the DepEd transmutation table (DO 8, s. 2015). Teachers may review and adjust each criterion.</p>${log.length?rows:'<p>No writing tasks have been submitted yet.</p>'}${log.length?'<button class="btn secondary" type="button" data-ivr-csv>Export Inkventure writing as CSV</button>':''}</section>`;
 }
 function ivReportsWire(root){
  root.querySelectorAll('.ivr-form').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();const log=ivWritingLog(),x=log.find(y=>y.id===f.dataset.id);if(!x)return;

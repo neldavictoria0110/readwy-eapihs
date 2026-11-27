@@ -12,7 +12,7 @@
   await turn.finished;group.style.transform='rotate(-90deg)';turn.cancel();
  }
  async function morphIntoGST(landscapeReady){
-  const frame=document.createElement('iframe');frame.title='Reading Check-In';frame.inert=true;
+  const frame=document.createElement('iframe');frame.title='Keypass';frame.inert=true;
   Object.assign(frame.style,{position:'fixed',inset:'0',width:'100%',height:'100%',border:'0',zIndex:'10',background:'#061526',visibility:'hidden',clipPath:'circle(0px at 50% 50%)'});
   frame.src='index.html?journeyModule=gst&morphHold=1';document.body.appendChild(frame);
   const deadline=performance.now()+20000;

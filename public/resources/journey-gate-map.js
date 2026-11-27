@@ -7,11 +7,11 @@
   const dev = !!u.dev || (() => { try { return sessionStorage.getItem('readwy-dev-view') === '1'; } catch { return false; } })();
   const key = String(u.id || u.lrn || u.email || 'local').trim().toLowerCase();
   const saved = read('journey_gate_' + key);
-  // Worked out here from the learner's saved Reading Check-In, so the ticket is right as soon as the learner enters
+  // Worked out here from the learner's saved Keypass, so the ticket is right as soon as the learner enters
   // (same rules as journey-gate.js). Only "program finished" needs the app's saved check.
   const NAMES = {aral: 'Catch-Up Express', interv: 'Inkventure', sra: 'Reading Lab'};
   // Exploration period (SY 2026–2027): same date as journey-gate.js — change both together.
-  // Exploration period ended early on 2026-11-27 (school request): the Reading Check-In score rules apply now.
+  // Exploration period ended early on 2026-11-27 (school request): the Keypass score rules apply now.
   // To reopen free exploration, set a future date here AND in the other gate file.
   const EXPLORE_UNTIL = Date.parse('2026-11-27T00:00:00+08:00');
   const STAMPED = ['gst', 'orst', 'wst', 'reports'];
@@ -19,13 +19,13 @@
     if (u.role === 'teacher') return null;
     const grade = Number(u.grade) || 7;
     if (Date.now() < EXPLORE_UNTIL) {
-      const msg = 'The Reading Check-In, Voice Station and Story Depot open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
+      const msg = 'The Keypass, Voice Station and Spellscript open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, Inkventure and Reading Lab programs.';
       return {exploring: true,
         open: {gst: false, orst: false, wst: false, aral: true, interv: true, sra: true, reports: false},
-        messages: {gst: msg, orst: msg, wst: msg, reports: 'The Post-Test opens with the Reading Check-In at the start of School Year 2027–2028 (June 1, 2027).'}};
+        messages: {gst: msg, orst: msg, wst: msg, reports: 'The Post-Test opens with the Keypass at the start of School Year 2027–2028 (June 1, 2027).'}};
     }
     if (grade >= 11) {
-      const msg = `For Grade ${grade}, the open journeys are InterV and Reading Lab.`;
+      const msg = `For Grade ${grade}, the open journeys are Inkventure and Reading Lab.`;
       return {open: {gst: false, orst: false, wst: false, aral: false, interv: true, sra: true, reports: false},
         messages: {gst: msg, orst: msg, wst: msg, aral: msg, reports: msg}};
     }
@@ -33,17 +33,17 @@
     const report = read(scoped + 'assessment_' + grade) || read('assessment_' + grade) || {};
     const taken = report.status === 'submitted' && Number.isFinite(Number(report.score));
     if (!taken) {
-      const msg = 'Take the Reading Check-In first. This stop opens after you submit the Reading Check-In.';
+      const msg = 'Complete Keypass first. This stop opens after you submit Keypass.';
       return {open: {gst: true, orst: false, wst: false, aral: false, interv: false, sra: false, reports: false},
         messages: {orst: msg, wst: msg, aral: msg, interv: msg, sra: msg, reports: msg}};
     }
     const score = Number(report.score);
     const program = score <= 16 ? 'aral' : score <= 27 ? 'interv' : 'sra';
     const finished = !!(saved && saved.program === program && saved.programDone);
-    const placed = `Your Reading Check-In score is ${score} of 40, so your journey is the ${NAMES[program]}. Only that program is open for you.`;
+    const placed = `Your Keypass score is ${score} of 40, so your journey is ${NAMES[program]}. Only that program is open for you.`;
     return {
       program, score,
-      // Reading Check-In stays open after submission to see results and edit the profile (it cannot be retaken).
+      // Keypass stays open after submission to see results and edit the profile (it cannot be retaken).
       open: {gst: true, orst: true, wst: true, aral: program === 'aral', interv: program === 'interv', sra: program === 'sra', reports: finished},
       messages: {aral: placed, interv: placed, sra: placed,
         reports: `The Post-Test opens after you finish every task in the ${NAMES[program]}.`}
@@ -61,7 +61,7 @@ a.stage.rw-yours::after{content:'★ Your program';position:absolute;right:4%;bo
 .pf-dest.rw-locked .hole::after{content:'🔒';display:grid;place-items:center;width:100%;height:100%;font-size:.75em;line-height:1}
 .pf-dest.rw-yours{box-shadow:0 0 0 3px #e2b33c,0 0 14px #f3cf6a99!important}
 .pf-dest.rw-yours::after{content:'★ Yours';display:block;margin-top:2px;color:#8a5a00;font:800 10px/1 system-ui,sans-serif}
-/* Exploration period: a red rubber "LOCKED" ticket stamp pressed over Reading Check-In, Voice Station, Story Depot and the Post-Test (no padlock badge). */
+/* Exploration period: a red rubber "LOCKED" ticket stamp pressed over Keypass, Voice Station, Spellscript and the Post-Test (no padlock badge). */
 a.stage.rw-stamped::after,.pf-dest.rw-stamped .hole::after{content:none}
 a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) brightness(.9);-webkit-backdrop-filter:grayscale(.6) brightness(.9)}
 .pf-dest.rw-stamped{opacity:.8;filter:grayscale(.5)}
@@ -151,4 +151,26 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
  box-shadow:inset 0 0 0 2px #e9c46a,inset 0 0 0 4px #0f3a27,inset 0 0 0 5px rgba(255,220,130,.85),0 0 16px rgba(255,214,120,.45),0 8px 18px rgba(0,0,0,.5)!important}
 .journey>.back:active{transform:translateY(0) scale(.97)}`;
   document.head.append(style);
+})();
+
+
+/* Journey ticket: the seven destination stops are always the same width, whatever the stop name
+   (Keypass, Spellscript, Inkventure …). A long one-word name gets a slightly smaller size so it
+   stays inside its stop instead of widening it. */
+(() => {
+  const style = document.createElement('style');
+  style.textContent = `
+.pf-dests{grid-template-columns:repeat(7,minmax(0,1fr))!important}
+.pf-dest{min-width:0!important}
+.pf-dest span{display:block;max-width:100%;overflow-wrap:normal;word-break:normal}`;
+  document.head.append(style);
+  const fit = () => document.querySelectorAll('.pf-dest span').forEach(s => {
+    s.style.fontSize = '';
+    let size = parseFloat(getComputedStyle(s).fontSize), guard = 0;
+    while (s.scrollWidth > s.clientWidth + 1 && size > 8 && guard++ < 40) { size -= .5; s.style.fontSize = size + 'px'; }
+  });
+  let t = 0; const later = () => { clearTimeout(t); t = setTimeout(fit, 80); };
+  addEventListener('load', later); addEventListener('resize', later);
+  addEventListener('DOMContentLoaded', () => { later(); new MutationObserver(later).observe(document.body, {childList: true, subtree: true}); });
+  document.fonts?.ready.then(later);
 })();

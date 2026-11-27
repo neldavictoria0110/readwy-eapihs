@@ -1,4 +1,4 @@
-/* Grade 11–12 content for the 25 original InterV game mechanics (same shapes as the Grade 7–10 data). */
+/* Grade 11–12 content for the 25 original Inkventure game mechanics (same shapes as the Grade 7–10 data). */
 globalThis.IV_LEGACY_EXTRA={
 G:{
 11:{focus:'Disciplinary texts, academic register, claims of fact/value/policy and research-based writing',

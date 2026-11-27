@@ -1,4 +1,4 @@
-/* InterV Grade 11 curriculum (Senior High; aligned with SHS Reading and Writing Skills). Format: see g7.js. */
+/* Inkventure Grade 11 curriculum (Senior High; aligned with SHS Reading and Writing Skills). Format: see g7.js. */
 (globalThis.IV_CUR=globalThis.IV_CUR||{})[11]={
 fl:[
 {n:'Disciplinary Vocabulary Reading',s:'Read discipline-specific terms accurately and smoothly.',t:['Chunk by morphemes.','Keep academic terms crisp and clear.'],

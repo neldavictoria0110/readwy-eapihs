@@ -83,8 +83,8 @@ function screenTheme(){
  if(has('.teacher-portal'))return [[31,75,45],[224,184,77]];               // teacher portal: green rail, gold
  if(has('.hd-sum'))return [[13,31,69],[227,189,113]];                      // assessment summary: navy, gold
  if(has('.xc,.xo'))return [[122,28,30],[242,201,76]];                      // Voice Station TV carriage: train red, brass
- if(has('.xg,.gst-book-screen'))return [[18,69,48],[243,220,152]];         // Reading Check-In book: forest green, gold leaf
- if(has('.wst-express-frame'))return [[11,35,71],[217,174,85]];            // Story Depot: navy toolbar, gold
+ if(has('.xg,.gst-book-screen'))return [[18,69,48],[243,220,152]];         // Keypass book: forest green, gold leaf
+ if(has('.wst-express-frame'))return [[11,35,71],[217,174,85]];            // Spellscript: navy toolbar, gold
  if(has('.journey,.pf-dest,.stage'))return [[15,58,39],[201,161,74]];      // journey ticket / map: ticket green, gold
  const mod=moduleNow();
  if(mod==='map')return [[15,58,39],[201,161,74]];
@@ -157,14 +157,14 @@ document.addEventListener('keydown',event=>{
  if(!input)return;
  event.preventDefault();event.stopImmediatePropagation();enterDeveloperAuth();
 },true);
-/* what each grade level has: Grades 7-10 take every assessment; Grades 11-12 start with InterV and SRA only */
+/* what each grade level has: Grades 7-10 take every assessment; Grades 11-12 start with Inkventure and SRA only */
 const PROG=[['Journey map','index.html?view=map'],['Keypass','index.html?journeyModule=gst'],['Voice Station','index.html?journeyModule=orst'],['Spellscript','index.html?journeyModule=wst'],['Catch-Up Express','index.html?journeyModule=aral'],['Inkventure','index.html?journeyModule=interv'],['READwy Lab','index.html?journeyModule=sra'],['Post-Test','index.html?journeyModule=reports']];
-const BY_GRADE=g=>g>=11?PROG.filter(p=>['Journey map','InterV','Reading Lab'].includes(p[0])):PROG;
+const BY_GRADE=g=>g>=11?PROG.filter(p=>['Journey map','Inkventure','Reading Lab'].includes(p[0])):PROG;
 /* screens of the program that is open now (each program lists its own), so any screen can be inspected directly */
 let SCR=[];
 function devFrames(on){document.querySelectorAll('iframe').forEach(f=>{try{f.contentWindow.DEV=on}catch(e){}})}
 function screensHTML(){SCR=[];let title='';devFrames(true);
- for(const [sel,name] of [['.sra-express-frame','Reading Lab'],['.wst-express-frame','Story Depot'],['.post-express-frame','Post-Test']]){const f=document.querySelector(sel);try{if(f&&f.contentWindow.readwyDevScreens){SCR=f.contentWindow.readwyDevScreens();title=name}}catch(e){}}
+ for(const [sel,name] of [['.sra-express-frame','Reading Lab'],['.wst-express-frame','Spellscript'],['.post-express-frame','Post-Test']]){const f=document.querySelector(sel);try{if(f&&f.contentWindow.readwyDevScreens){SCR=f.contentWindow.readwyDevScreens();title=name}}catch(e){}}
  if(!SCR.length){try{const m=typeof activeModule!=='undefined'?activeModule:'';
   if(m==='orst'&&typeof ORST_NEW_STAGES!=='undefined'){title='Voice Station';SCR=ORST_NEW_STAGES.map((s,i)=>[`Stage ${i+1} · ${s[1]}`,()=>{orstNew.stage=i+1;renderORSTNew()}])}
   else if(m==='gst'&&typeof gstBook!=='undefined'){title='GST';const n=GST_BOOK_DATA[String(selectedGrade)].questions.length;SCR=[['Cover',-1],['Question 1',0],['Question 10',9],['Question 20',19],['Question 30',29],[`Question ${n}`,n-1],['End of test',n]].map(([t,i])=>[t,()=>{gstBook.index=i;renderGSTBookSpread()}])}}catch(e){}}
@@ -172,7 +172,7 @@ function screensHTML(){SCR=[];let title='';devFrames(true);
  const d=dialog('Developer view',`<div class="warn">⚠️ <b>Not signed in.</b> No locks: every page opens, and nothing has to be answered or submitted.</div>
  ${screensHTML()}
  <h4>STARTUP AND SIGN-IN</h4><div class="go"><button type="button" data-v="startup">Startup</button><button type="button" data-v="login">Login</button><button type="button" data-v="signup">Sign up</button><button type="button" data-v="teacher">Teacher view</button></div>
- ${[7,8,9,10,11,12].map(g=>`<h4>GRADE ${g}${g>=11?' · InterV and Reading Lab only':''}</h4><div class="go">${BY_GRADE(g).map(([t])=>`<button type="button" data-g="${g}" data-p="${t}">${t}</button>`).join('')}</div>`).join('')}
+ ${[7,8,9,10,11,12].map(g=>`<h4>GRADE ${g}${g>=11?' · Inkventure and Reading Lab only':''}</h4><div class="go">${BY_GRADE(g).map(([t])=>`<button type="button" data-g="${g}" data-p="${t}">${t}</button>`).join('')}</div>`).join('')}
  <div class="act"><button type="button" class="red" data-erase>🗑️ Erase all test progress</button><button type="button" data-exit>Exit developer view</button></div><div class="msg"></div>`);
  const learner=g=>developerIdentity('student',g);
  d.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const g=+b.dataset.g;learner(g);location.href=PROG.find(p=>p[0]===b.dataset.p)[1]});

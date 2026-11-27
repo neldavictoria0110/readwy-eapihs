@@ -1,26 +1,26 @@
 /* Learning-journey order (Grades 7–10):
-   Before the Reading Check-In: only the Reading Check-In is open.
-   After the Reading Check-In is submitted: the Reading Check-In stays open to view results and edit the profile, but its answers
-   are final (it cannot be retaken). Voice Station, Story Depot and the one program that matches the Reading Check-In score open together:
-     0–16 → Catch-Up Express, 17–27 → InterV (Intervention Program), 28–40 → SRA Program.
+   Before the Keypass: only the Keypass is open.
+   After the Keypass is submitted: the Keypass stays open to view results and edit the profile, but its answers
+   are final (it cannot be retaken). Voice Station, Spellscript and the one program that matches the Keypass score open together:
+     0–16 → Catch-Up Express, 17–27 → Inkventure (Inkventure), 28–40 → SRA Program.
    The Post-Test opens only after every task in that program is finished.
    "Finished" uses each program's own completion rule:
      Catch-Up Express   – all 8 weeks done (aralWeekDone)
-     InterV – all 25 station tasks complete (intervDashStats)
+     Inkventure – all 25 station tasks complete (intervDashStats)
      SRA    – every text from the learner's starting level to the last level passed (quiz + writing).
-   Grades 11–12 keep their existing rule (InterV and SRA only). The developer view is never locked.
+   Grades 11–12 keep their existing rule (Inkventure and SRA only). The developer view is never locked.
    The result is also saved for the portrait journey map, which shows locks from it.
 
    Exploration period (School Year 2026–2027): until EXPLORE_UNTIL every learner, in any grade, may explore
-   Catch-Up Express, InterV and SRA freely. Reading Check-In, Voice Station and Story Depot stay visible but locked (they are taken at the opening of a
-   school year). From EXPLORE_UNTIL (opening of SY 2027–2028) the Reading Check-In-score rules above apply again by themselves.
+   Catch-Up Express, Inkventure and SRA freely. Keypass, Voice Station and Spellscript stay visible but locked (they are taken at the opening of a
+   school year). From EXPLORE_UNTIL (opening of SY 2027–2028) the Keypass-score rules above apply again by themselves.
    Change EXPLORE_UNTIL here AND in journey-gate-map.js when DepEd announces the official opening date. */
 (() => {
-  // Exploration period ended early on 2026-11-27 (school request): the Reading Check-In score rules apply now.
+  // Exploration period ended early on 2026-11-27 (school request): the Keypass score rules apply now.
   // To reopen free exploration, set a future date here AND in the other gate file.
   const EXPLORE_UNTIL = Date.parse('2026-11-27T00:00:00+08:00');
   const exploring = () => Date.now() < EXPLORE_UNTIL;
-  const EXPLORE_MESSAGE = 'The Reading Check-In, Voice Station and Story Depot open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
+  const EXPLORE_MESSAGE = 'The Keypass, Voice Station and Spellscript open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, Inkventure and Reading Lab programs.';
   const PREFIX = typeof STORE !== 'undefined' ? STORE : 'READwy_new_2026_local_';
   const NAMES = {gst: 'Keypass', orst: 'Voice Station', wst: 'Spellscript', aral: 'Catch-Up Express', interv: 'Inkventure', sra: 'Reading Lab', reports: 'Post-Test'};
   const PROGRAMS = ['aral', 'interv', 'sra'];
@@ -77,7 +77,7 @@
       : program === 'interv' ? safe(() => intervDashStats().pct >= 100)
       : sraFinished();
     const open = {
-      // The Reading Check-In stays open after submission (results, profile and photo), but it cannot be retaken.
+      // The Keypass stays open after submission (results, profile and photo), but it cannot be retaken.
       gst: true,
       orst: gst,
       wst: gst,
@@ -90,14 +90,14 @@
   }
   function message(mod, s = status()) {
     if (s.exploring) return mod === 'reports'
-      ? 'The Post-Test opens with the Reading Check-In at the start of School Year 2027–2028 (June 1, 2027).'
+      ? 'The Post-Test opens with the Keypass at the start of School Year 2027–2028 (June 1, 2027).'
       : EXPLORE_MESSAGE;
-    if (s.senior) return `For Grade ${s.grade}, the open journeys are InterV and Reading Lab.`;
-    if (mod === 'gst') return `You have already taken the Reading Check-In (score ${s.score} of 40).`;
-    if (!s.gst) return `Take the Reading Check-In first. Your ${NAMES[mod]} opens after you submit the Reading Check-In.`;
+    if (s.senior) return `For Grade ${s.grade}, the open journeys are Inkventure and Reading Lab.`;
+    if (mod === 'gst') return `You have already taken Keypass (score ${s.score} of 40).`;
+    if (!s.gst) return `Complete Keypass first. ${NAMES[mod]} opens after you submit Keypass.`;
     if (PROGRAMS.includes(mod) || mod === 'reports') {
       if (mod === 'reports') return `The Post-Test opens after you finish every task in the ${NAMES[s.program]}.`;
-      return `Your Reading Check-In score is ${s.score} of 40, so your journey is the ${NAMES[s.program]}. Only that program is open for you.`;
+      return `Your Keypass score is ${s.score} of 40, so your journey is ${NAMES[s.program]}. Only that program is open for you.`;
     }
     return 'This stage is not open yet.';
   }
@@ -142,7 +142,7 @@
   window.addEventListener('load', () => { installGuards(); publish(); }, {once: true});
 
   // Keep the map's copy up to date whenever progress is saved.
-  // A submitted Reading Check-In is final: its answers and score cannot be changed or submitted again.
+  // A submitted Keypass is final: its answers and score cannot be changed or submitted again.
   function gstLocked(key, value) {
     const m = /^(answer|assessment)_(\d+)$/.exec(String(key));
     if (!m || developerView()) return false;

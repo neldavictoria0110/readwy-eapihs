@@ -1,4 +1,4 @@
-/* InterV Grade 8 curriculum (format: see g7.js). */
+/* Inkventure Grade 8 curriculum (format: see g7.js). */
 (globalThis.IV_CUR=globalThis.IV_CUR||{})[8]={
 fl:[
 {n:'Complex Word Clinic',s:'Find the vowel team or tricky pattern, then read the whole word.',t:['Spot the vowel team.','Read the word in parts, then smoothly.'],

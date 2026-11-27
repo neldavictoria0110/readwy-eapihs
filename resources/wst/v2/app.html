@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Story Depot</title>
+<title>Spellscript</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600;7..72,700&family=Source+Sans+3:wght@500;600;700;800&display=swap">
 <style>
 *{box-sizing:border-box}
@@ -23,7 +23,7 @@ button{cursor:pointer}
   linear-gradient(90deg,transparent,#c99a3e 18%,#c99a3e 45%,transparent 46%,transparent 54%,#c99a3e 55%,#c99a3e 82%,transparent) center/100% calc(1.6*var(--kk)) no-repeat}
 .wst-base::before{top:calc(var(--band)/2 + 4*var(--kk))}.wst-base::after{bottom:calc(var(--band)/2 - 4*var(--kk) - 9*var(--kk))}
 .scene .plate{z-index:1}
-/* One fixed Story Depot toolbar above the ticket on every page (the painted per-page toolbars are hidden). */
+/* One fixed Spellscript toolbar above the ticket on every page (the painted per-page toolbars are hidden). */
 .scene .plate::before,.scene .tb-part{display:none!important}
 #wstbar{--k:1px;position:fixed;z-index:20;display:flex;align-items:center;gap:.5em;padding:0 .45em 0 .95em;border-radius:999px;background:linear-gradient(#173a6e,#0b2347 50%,#061833);border:2px solid #d9ae55;box-shadow:0 8px 20px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 3px rgba(6,24,51,.9),inset 0 0 0 4px rgba(217,174,85,.45);color:#f6efdc;box-sizing:border-box}
 #wstbar .brand{display:flex;align-items:center;gap:.45em;border:0;background:none;color:inherit;cursor:pointer;padding:0;font:inherit;white-space:nowrap}
@@ -35,7 +35,7 @@ button{cursor:pointer}
 #wstbar nav{margin-left:auto;display:flex;align-items:center;height:100%;gap:.15em}
 #wstbar .tbbtn{height:78%;box-shadow:none}#wstbar .tbbtn:hover,#wstbar .tbbtn:focus-visible{box-shadow:0 0 14px #ffd447aa}
 #wstbar .tbdiv{width:2px;height:50%}
-/* Story Depot: on every page only the ticket and the toolbar are cut from the painting, over the station scenery. */
+/* Spellscript: on every page only the ticket and the toolbar are cut from the painting, over the station scenery. */
 .scene::before{inset:0!important;background:linear-gradient(rgba(10,20,14,.18),rgba(10,20,14,.42)),url("resources/station-journey.webp") center/cover no-repeat!important;filter:none!important}
 .scene>.ext-fill{display:none!important}
 .scene .plate{overflow:visible} @media (hover:hover) and (pointer:fine){.scene .plate{filter:drop-shadow(0 calc(12*var(--k)) calc(22*var(--k)) rgba(0,0,0,.6))}}
@@ -263,7 +263,7 @@ function wstLayout(){const W=innerWidth,H=innerHeight,m=Math.max(8,Math.min(W,H)
  let tw=W-2*m,th=tw/WST_A;const avail=H-2*m-bh-g;if(th>avail){th=avail;tw=th*WST_A}
  const y0=(H-(bh+g+th))/2,x0=(W-tw)/2;return {tx:x0,ty:y0+bh+g,tw,th,bar:[x0,y0,tw,bh]}}
 function wstBar(L){let b=document.getElementById('wstbar');
- if(!b){b=document.createElement('div');b.id='wstbar';b.innerHTML=`<button type="button" class="brand" aria-label="WST start page"><span class="bk">${ICON.book}</span><b>Story Depot</b><i></i><em>Writing screening</em></button><nav aria-label="WST toolbar"></nav>`;
+ if(!b){b=document.createElement('div');b.id='wstbar';b.innerHTML=`<button type="button" class="brand" aria-label="WST start page"><span class="bk">${ICON.book}</span><b>Spellscript</b><i></i><em>Writing screening</em></button><nav aria-label="WST toolbar"></nav>`;
   b.querySelector('.brand').onclick=e=>{e.stopPropagation();ac();SFX.pop();start()};
   const nav=b.querySelector('nav'),item=(lab,aria,ic,fn,cls)=>{const t=document.createElement('button');t.type='button';t.className='tbbtn '+(cls||'');t.setAttribute('aria-label',aria);t.innerHTML=`<span class="ic">${ic}</span><span>${lab}</span>`;t.onclick=e=>{e.stopPropagation();ac();SFX.pop();fn()};nav.appendChild(t);return t},
    div=()=>{const d=document.createElement('i');d.className='tbdiv';nav.appendChild(d)};
@@ -282,7 +282,7 @@ function wstBase(sc,pl,o){let base=sc.querySelector(':scope>.wst-base');
  const f=30,e=20,t0=(o.b+e)/AH*100,t1=(o.b+e+f)/AH*100,b1=(o.d-e-f)/AH*100,b0=(o.d-e)/AH*100,m=`linear-gradient(180deg,transparent ${t0}%,#000 ${t1}%,#000 ${b1}%,transparent ${b0}%)`;
  pl.style.webkitMaskImage=pl.style.maskImage=m}
 function fit(sc){const W=innerWidth,H=innerHeight,pl=sc.querySelector('.plate');let k=Math.min(W/AW,H/AH),left=(W-AW*k)/2,top=(H-AH*k)/2;
-/* Story Depot welcome: size the cut-out toolbar + ticket to the screen, with an even margin on every side. */
+/* Spellscript welcome: size the cut-out toolbar + ticket to the screen, with an even margin on every side. */
 let sy=1;const TK=WST_TICKET[sc.dataset.key];if(TK){const L=wstLayout(),[a,b,c,d]=TK,w=c-a,h=d-b,r=(w/h)/WST_A;
  /* same ticket box on every page: a ticket within 10% of the box's shape is fitted exactly; a wider one fills the width; a taller one the height */
  if(r>=.88&&r<=1.1){k=L.tw/w;sy=r}else if(r>1.1){k=L.tw/w;sy=Math.min(r,1.1)}else{k=L.th/h}
@@ -291,7 +291,7 @@ let sy=1;const TK=WST_TICKET[sc.dataset.key];if(TK){const L=wstLayout(),[a,b,c,d
  wstBase(sc,pl,r>1.1?{L,k,a,b,d,sy}:null)}
 Object.assign(pl.style,{left:Math.round(left)+'px',top:Math.round(top)+'px',width:AW*k+'px',height:AH*k+'px',fontSize:k+'px',transformOrigin:'0 0',transform:sy===1?'none':'scaleY('+sy+')'});sc.style.setProperty('--k',k+'px');
 const art=pl.querySelector('.art');if(art){sc.style.setProperty('--art',`url("${art.getAttribute('src')}")`);extendArt(sc,art.getAttribute('src'),W,H,AW*k,AH*k)}}
-/* The spare strips continue the scene with READwy's painted train station (each Story Depot painting has its ticket and toolbar too close to the edges to mirror). */
+/* The spare strips continue the scene with READwy's painted train station (each Spellscript painting has its ticket and toolbar too close to the edges to mirror). */
 function extendArt(sc,src,W,H,pw,ph){const ox=(W-pw)/2,oy=(H-ph)/2,url='url("resources/station-journey.webp")';
  const strip=(cls,box,pos)=>{let e=sc.querySelector(':scope>.ext-'+cls);if(!e){e=document.createElement('div');e.className='ext-fill ext-'+cls;sc.prepend(e)}
   const show=box[2]>.5&&box[3]>.5;e.style.display=show?'block':'none';if(!show)return;
@@ -321,7 +321,7 @@ const ICON={map:`<svg viewBox="0 0 32 32" width="1.2em" height="1.2em"><path fil
  layers:`<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3 2 8l10 5 10-5z M2 12l10 5 10-5 M2 16l10 5 10-5"/></svg>`,
  pen:`<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M3 21l3.5-1 12-12-2.5-2.5-12 12z M14.5 5.5l2.5 2.5"/></svg>`};
 const CHECK=`<svg viewBox="0 0 32 32"><path d="M5 17l7 7L28 7" fill="none" stroke="#2f8f10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-// the navy bar painted at the top of every page: Story Depot logo (start page), Journey Map, Sound and Help
+// the navy bar painted at the top of every page: Spellscript logo (start page), Journey Map, Sound and Help
 // Journey Map, Sound and Help are drawn as one matching set on a navy strip laid over the painted bar:
 // same font and size, and the same strong yellow when pointed at, focused or clicked.
 const TBI={map:`<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2z"/></svg>`,
@@ -368,14 +368,14 @@ function tickTimer(){const t=document.getElementById('timer');if(t){const r=rema
  if(ST.deadline&&!ST.submitted&&remaining()<=0){saveAll();finishSubmission(true);notice('⏰ Time is up — your writing was submitted as it is.');complete()}}
 setInterval(tickTimer,500);
 
-/* Developer view: every screen of the Story Depot, for inspecting the UI */
+/* Developer view: every screen of the Spellscript, for inspecting the UI */
 window.readwyDevScreens=()=>[['Start',()=>start()],['01 Check in',()=>checkin()],['02 Get ready',()=>ready()],['03 Explore — prompt',()=>explore(0)],['03 Explore — source 1',()=>explore(1)],
  ['04 Plan',()=>planPage()],['05 Write',()=>writePage()],['06 Review',()=>review()],['Journey complete',()=>complete()],
- ['Writing level result',()=>{if(!pLoad('wst_submission_'+G,null)){ST.html=ST.html||'<p>Sample essay for the developer view.</p>';finishSubmission(false)}showResult()}],['Writing rubric',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Close','gold',closeSheet]],true)],['Settings',()=>settingsSheet()],['Help',()=>helpSheet()]];/* ---------- 0 · start (Designer 4) ---------- */
+ ['Writing level result',()=>{if(!pLoad('wst_submission_'+G,null)){ST.html=ST.html||'<p>Sample essay for the developer view.</p>';finishSubmission(false)}showResult()}],['Writing rubric',()=>sheet('📏 Spellscript Writing Rubric',rubricHTML(),[['Close','gold',closeSheet]],true)],['Settings',()=>settingsSheet()],['Help',()=>helpSheet()]];/* ---------- 0 · start (Designer 4) ---------- */
 function start(){show('start','wst01',pl=>{
  topbar(pl,{logo:[65,22,215,58],map:[960,28,190,48],sound:[1185,28,150,50],help:[1360,26,132,54],lft:300,fs:31});
-/* Title: "Story Depot" (the painting says "Assessment Test" on the second line). */
-{for(const [txt,box] of [['Writing Screening',[586,449.5,610,78.5]],['Story Depot',[586,358,610,92]]]){const t=el(pl,'<span>'+txt+'</span>',box,'abs wst-title');requestAnimationFrame(()=>{const s=t.firstChild;let f=88;while(s.offsetWidth>t.clientWidth*.955&&f>50){f-=2;t.style.fontSize=px(f)}})}}
+/* Title: "Spellscript" (the painting says "Assessment Test" on the second line). */
+{for(const [txt,box] of [['Writing Screening',[586,449.5,610,78.5]],['Spellscript',[586,358,610,92]]]){const t=el(pl,'<span>'+txt+'</span>',box,'abs wst-title');requestAnimationFrame(()=>{const s=t.firstChild;let f=88;while(s.offsetWidth>t.clientWidth*.955&&f>50){f-=2;t.style.fontSize=px(f)}})}}
  /* Welcome: the ticket is cut out of the painting, so no moving train or lamp glow is drawn over it. */lids(pl,[[411,460,35],[513,451,30]]);
  const sub=submittedRec();
  if(sub||ST.startedAt){patch(pl,[660,768,500,46],'','background:#f9f1de;border-radius:12px');
@@ -593,7 +593,7 @@ function checkEssay(){const f=essayFacts(),issues=[];
  /* copying is checked by the originality check (integrityGate), which shows the % and the sources */
  return issues}
 
-/* ---------- 2) READwy Story Depot analytic rubric (5 criteria × 4 points = 20) ----------
+/* ---------- 2) READwy Spellscript analytic rubric (5 criteria × 4 points = 20) ----------
    Aligned with the K to 12 English Writing and Composition strand. The rating is transmuted with the
    DepEd Order No. 8, s. 2015 transmutation table and labelled with the DO 8 descriptor, the DO 73, s. 2012
    level of proficiency, and a writer level adapted from the Phil-IRI independent / instructional / frustration levels.
@@ -650,13 +650,13 @@ function resultHTML(r){const col={Independent:'#2f8f10',Instructional:'#c98a00',
  return `<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px"><span class="fact"><small>SCORE</small>${r.score} / ${r.total}</span><span class="fact"><small>GRADE</small>${r.grade}</span><span class="fact"><small>DESCRIPTOR</small>${r.descriptor}</span><span class="fact"><small>PROFICIENCY</small>${r.proficiency}</span><span class="fact" style="border-color:${col}"><small>WRITER LEVEL</small><b style="color:${col}">${r.writer}</b></span></div>
  <p style="margin:.2em 0 .6em">${LEVEL_NOTE[r.writer]}</p>
  <table style="border-collapse:collapse;width:100%;font-size:.85em">${r.criteria.map((c,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:6px;font-weight:800;white-space:nowrap;vertical-align:top">${c.name}</td><td style="padding:6px;text-align:center;font-weight:900;vertical-align:top">${c.score}/4</td><td style="padding:6px;vertical-align:top">${c.desc}<br><small style="color:#5b5f6e">${esc(c.why)}</small></td></tr>`).join('')}</table>
- <p style="font-size:.8em;color:#5b5f6e">Estimated automatically by READwy with the Story Depot rubric. Your teacher confirms the final rating.</p>`}
+ <p style="font-size:.8em;color:#5b5f6e">Estimated automatically by READwy with the Spellscript rubric. Your teacher confirms the final rating.</p>`}
 
 /* ---------- originality check ----------
    Two kinds of evidence READwy can measure honestly on this device:
    1. how the text got into the editor (typed key by key, or dropped in as a large block: paste,
       dictation or a browser extension). Pasting is turned off; attempts are counted.
-   2. word-for-word overlap with the Story Depot sources and the prompt (runs of 6+ identical words).
+   2. word-for-word overlap with the Spellscript sources and the prompt (runs of 6+ identical words).
       Quoted text ("...") is counted separately: quoting a source is allowed.
    Original writing = 100% − copied − inserted in blocks. 90% or more passes; below that the
    learner sees the evidence and can rewrite, or submit it to be held for teacher review. */
@@ -691,10 +691,10 @@ function originality(text){integInit();
  const original=Math.max(0,100-Math.min(100,copiedPct+bulkPct));
  per.forEach(p=>{p.copiedPct=n?Math.round(p.copied/n*100):0;p.quotedPct=n?Math.round(p.quoted/n*100):0;p.passages.sort((a,b)=>b.len-a.len);p.passages=p.passages.slice(0,3)});
  return {original,copiedPct,quotedPct,bulkPct,pastes:ST.integ.pastes,drops:ST.integ.drops,words:n,pass:original>=ORIG_MIN,
-  sources:per.filter(p=>p.copied||p.quoted),checkedAt:new Date().toISOString(),limits:'Compared with the Story Depot prompt and sources, and with how the text was entered on this device. READwy does not search the internet and cannot prove that a tool such as ChatGPT was used.'}}
+  sources:per.filter(p=>p.copied||p.quoted),checkedAt:new Date().toISOString(),limits:'Compared with the Spellscript prompt and sources, and with how the text was entered on this device. READwy does not search the internet and cannot prove that a tool such as ChatGPT was used.'}}
 function integrityHTML(r){const col=r.pass?'#2f8f10':r.original>=75?'#c98a00':'#c92f42';
  const bar=(v,c)=>`<div style="height:12px;border-radius:99px;background:#eadfc6;overflow:hidden"><i style="display:block;height:100%;width:${Math.max(0,Math.min(100,v))}%;background:${c}"></i></div>`;
- const src=r.sources.map(s=>`<li style="margin:.5em 0"><b>${esc(s.title)}</b> — ${s.copiedPct}% copied word for word${s.quotedPct?`, ${s.quotedPct}% quoted (allowed)`:''}${s.link?` · <a href="${esc(s.link)}" target="_blank" rel="noopener">open source ↗</a>`:' · (text given in the Story Depot)'}
+ const src=r.sources.map(s=>`<li style="margin:.5em 0"><b>${esc(s.title)}</b> — ${s.copiedPct}% copied word for word${s.quotedPct?`, ${s.quotedPct}% quoted (allowed)`:''}${s.link?` · <a href="${esc(s.link)}" target="_blank" rel="noopener">open source ↗</a>`:' · (text given in the Spellscript)'}
    ${s.passages.map(p=>`<div style="margin:.3em 0 0;padding:.35em .6em;border-left:3px solid ${p.q?'#2f8f10':'#c92f42'};background:${p.q?'#eef7e8':'#fdecec'};font-size:.85em">“${esc(p.words)}”${p.q?' <small>(in quotation marks)</small>':''}</div>`).join('')}</li>`).join('');
  return `<div style="display:flex;align-items:center;gap:16px;margin-bottom:10px"><div style="font:800 2.4em/1 Literata,Georgia,serif;color:${col}">${r.original}%</div>
   <div style="flex:1"><b>Original writing</b> <span style="color:#5b5f6e">(at least ${ORIG_MIN}% needed)</span>${bar(r.original,col)}</div></div>
@@ -716,7 +716,7 @@ function trySubmit(){if(ST.submitted)return complete();
  if(missing.length){SFX.buzz();return sheet('Finish your checklist',`<p>Tick each box on the Review Checklist after you check your essay:</p><ul>${missing.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`,[['OK','gold',closeSheet]])}
  const issues=DEV?[]:checkEssay();
  if(issues.length){SFX.buzz();return sheet('✏️ Not ready to submit yet',`<p style="margin-top:0">Ollie cannot assess this writing yet. Fix these first:</p><ol>${issues.map(i=>`<li>${esc(i)}</li>`).join('')}</ol><p class="muted" style="color:#5b5f6e">Your work is saved. Time left: <b>${fmt(remaining())}</b></p>`,[['Back to writing','gold',()=>{closeSheet();writePage()}]],true)}
- integrityGate(r=>sheet('Submit your assessment?',`<p>⚠️ <b>You cannot edit after submitting.</b></p><p>Your ${words(essayText())}-word essay will be scored with the Story Depot rubric and sent to your teacher.</p>`,[['Keep reviewing','ghost',closeSheet],['Submit now','gold',()=>{finishSubmission(false,r);complete()}]]))}
+ integrityGate(r=>sheet('Submit your assessment?',`<p>⚠️ <b>You cannot edit after submitting.</b></p><p>Your ${words(essayText())}-word essay will be scored with the Spellscript rubric and sent to your teacher.</p>`,[['Keep reviewing','ghost',closeSheet],['Submit now','gold',()=>{finishSubmission(false,r);complete()}]]))}
 function finishSubmission(timedOut,integ){const text=essayText(),prev=pLoad('wst_submission_'+G,null);
  const rec={grade:G,text,plan:planText(),notes:ST.notes,html:ST.html,words:words(text),date:new Date().toISOString(),timedOut,name:ST.name,lrn:ST.sid,studentId:ST.sid,email:String(pUser().email||''),section:String(pUser().section||''),type:T().type,v:2};
  const result=scoreEssay();rec.result=result;integ=integ||originality(text);rec.integrity=integ;
@@ -740,15 +740,15 @@ function complete(){show('complete','wst08',pl=>{
  const r=pLoad('wst_submission_'+G,null);if(r&&r.result&&!ST.resultSeen){ST.resultSeen=true;persist();setTimeout(()=>{if(S.scene==='complete')showResult()},3200)}}
 function showResult(){const r=pLoad('wst_submission_'+G,null);if(!r||!r.result)return notice('No score yet.');
  if(r.status==='needs-review'&&r.integrity)return sheet('🔎 Held for teacher review',heldHTML(r),[['View my essay','navy',viewSubmission]],true);
- sheet('🏅 My Writing Level',resultHTML(r.result),[['How it is scored','ghost',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Back','gold',showResult]],true)],['View my essay','navy',viewSubmission]],true)}
+ sheet('🏅 My Writing Level',resultHTML(r.result),[['How it is scored','ghost',()=>sheet('📏 Spellscript Writing Rubric',rubricHTML(),[['Back','gold',showResult]],true)],['View my essay','navy',viewSubmission]],true)}
 function viewSubmission(){const r=pLoad('wst_submission_'+G,null);if(!r)return notice('No submission yet.');try{if(PP&&typeof PP.readwyOpenSubmission==='function'){closeSheet();PP.readwyOpenSubmission(T().prompt);return}}catch(e){}
  const d=new Date(r.date),paras=String(r.text).split(/\n+/).filter(Boolean);
  sheet('📄 My Submission',`<div><span class="fact"><small>STUDENT</small>${esc(r.name||'—')}</span><span class="fact"><small>GRADE</small>${r.grade} · ${esc(r.type||T().type)}</span><span class="fact"><small>WORDS</small>${r.words}</span><span class="fact"><small>SUBMITTED</small>${d.toLocaleDateString()} ${d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}${r.timedOut?' (time up)':''}</span></div>
   <h3>Prompt</h3><p>${esc(T().prompt)}</p><h3>My Essay</h3><div class="essay">${paras.map(p=>`<p>${esc(p)}</p>`).join('')}</div>${r.plan?`<h3>My Plan</h3><p style="white-space:pre-wrap;font-size:.9em">${esc(r.plan)}</p>`:''}${r.result?`<h3>My Writing Level</h3>${resultHTML(r.result)}`:''}`,
-  [['How it is scored','ghost',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Back','gold',viewSubmission]],true)],['Assessment summary','navy',openSummary]],true)}
+  [['How it is scored','ghost',()=>sheet('📏 Spellscript Writing Rubric',rubricHTML(),[['Back','gold',viewSubmission]],true)],['Assessment summary','navy',openSummary]],true)}
 
 /* ---------- help and pop-up sheets ---------- */
-const HELP={start:['Press <b>Begin Journey</b> to check in for the Story Depot.','Sound turns Ollie’s voice on or off. Journey Map takes you back to READwy.'],
+const HELP={start:['Press <b>Begin Journey</b> to check in for the Spellscript.','Sound turns Ollie’s voice on or off. Journey Map takes you back to READwy.'],
  checkin:['Your <b>name</b>, <b>email</b>, <b>grade</b> and <b>section</b> come from your sign-up, so you do not need to type them. Your profile photo appears on your boarding pass.','If your name or grade is wrong, ask your teacher to update your profile.','Press <b>Continue</b> when your boarding pass is correct.'],
  ready:['Read the three steps.','Tick <b>I am ready to begin</b>, then press <b>Start Assessment</b>.','You have <b>45 minutes</b>. The timer starts when you press Start Assessment. Your work saves automatically.'],
  explore:['Read the <b>Prompt</b> tab first, then every <b>Source</b> tab.','Highlight useful words in a source and press <b>Add Note</b> to copy them into My Notes with the source name.','Press <b>⤢ Read full page</b> for bigger text. When you are ready, press <b>Plan My Response</b>.'],
@@ -769,7 +769,7 @@ function eraseWriting(){const keep={name:ST.name,sid:ST.sid,checkedIn:ST.checked
  try{sessionStorage.removeItem('wst-v2-here')}catch(e){}
  closeSheet();notice('🗑️ Your writing answer was erased. You can start again.');start()}
 function helpSheet(){const steps=['Check in','Get ready','Explore the prompt and sources','Plan','Write','Review and submit'];
- sheet('❓ Help',`<h3>On this page</h3><ul>${(HELP[S.scene]||HELP.start).map(x=>`<li>${x}</li>`).join('')}</ul><h3>Your writing journey</h3><ol>${steps.map(s=>`<li>${s}</li>`).join('')}</ol><h3>Your task (Grade ${G})</h3><p>${esc(T().prompt)}</p><h3>How your writing is scored</h3><p>Five criteria (Ideas and Focus, Organization, Evidence and Development, Language and Style, Conventions), 1–4 points each. Your result shows a DepEd grade, descriptor, level of proficiency and writer level (Independent, Instructional or Frustration).</p><p style="font-size:.8em;color:#5b5f6e">Tasks and source texts were written for READwy from Philippine government and news sources; each source shows its link.</p><p style="font-size:.82em;line-height:1.45"><b>Photo credits</b> (Wikimedia Commons, used under the licences shown): Grade 7 (source 1): MODIS Land Rapid Response Team, NASA GSFC, Public domain; Grade 7 (source 2): Red Cross, Public domain; Grade 7 (source 3): Official U.S. Navy Page from United States of America, Public domain; Grade 7 (task): NASA/NOAA, Public domain; Grade 8 (source 1): Ralff Nestor Nacor, CC BY-SA 4.0; Grade 8 (source 3): Ocean Blue Project, Inc., CC BY-SA 4.0; Grade 8 (task): andre oortgijs, CC BY-SA 3.0; Grade 9 (source 1): Judgefloro, Public domain; Grade 9 (source 2): AP22088 NgSaiKeaung Hooo, CC0; Grade 9 (source 3): Official U.S. Navy Page from United States of America, Public domain; Grade 10 (source 1): Gunnery Sgt. J. L. Wright Jr., Public domain; Grade 10 (source 2): Couch-scratching-cats, CC BY-SA 2.0; Grade 10 (source 3): MODIS Land Rapid Response Team, NASA GSFC, Public domain; Grade 10 (task): Judgefloro, Public domain. Original READwy illustrations: Grade 8 source 2, Grade 9 task.</p>`,[['Scoring rubric','ghost',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Close','gold',closeSheet]],true)],['Close','gold',closeSheet]])}
+ sheet('❓ Help',`<h3>On this page</h3><ul>${(HELP[S.scene]||HELP.start).map(x=>`<li>${x}</li>`).join('')}</ul><h3>Your writing journey</h3><ol>${steps.map(s=>`<li>${s}</li>`).join('')}</ol><h3>Your task (Grade ${G})</h3><p>${esc(T().prompt)}</p><h3>How your writing is scored</h3><p>Five criteria (Ideas and Focus, Organization, Evidence and Development, Language and Style, Conventions), 1–4 points each. Your result shows a DepEd grade, descriptor, level of proficiency and writer level (Independent, Instructional or Frustration).</p><p style="font-size:.8em;color:#5b5f6e">Tasks and source texts were written for READwy from Philippine government and news sources; each source shows its link.</p><p style="font-size:.82em;line-height:1.45"><b>Photo credits</b> (Wikimedia Commons, used under the licences shown): Grade 7 (source 1): MODIS Land Rapid Response Team, NASA GSFC, Public domain; Grade 7 (source 2): Red Cross, Public domain; Grade 7 (source 3): Official U.S. Navy Page from United States of America, Public domain; Grade 7 (task): NASA/NOAA, Public domain; Grade 8 (source 1): Ralff Nestor Nacor, CC BY-SA 4.0; Grade 8 (source 3): Ocean Blue Project, Inc., CC BY-SA 4.0; Grade 8 (task): andre oortgijs, CC BY-SA 3.0; Grade 9 (source 1): Judgefloro, Public domain; Grade 9 (source 2): AP22088 NgSaiKeaung Hooo, CC0; Grade 9 (source 3): Official U.S. Navy Page from United States of America, Public domain; Grade 10 (source 1): Gunnery Sgt. J. L. Wright Jr., Public domain; Grade 10 (source 2): Couch-scratching-cats, CC BY-SA 2.0; Grade 10 (source 3): MODIS Land Rapid Response Team, NASA GSFC, Public domain; Grade 10 (task): Judgefloro, Public domain. Original READwy illustrations: Grade 8 source 2, Grade 9 task.</p>`,[['Scoring rubric','ghost',()=>sheet('📏 Spellscript Writing Rubric',rubricHTML(),[['Close','gold',closeSheet]],true)],['Close','gold',closeSheet]])}
 function sheet(title,body,btns,big){const s=document.getElementById('sheet');document.getElementById('sheetTitle').textContent=title;document.getElementById('sheetBody').innerHTML=body;
  const f=document.getElementById('sheetFoot');f.innerHTML='';f.style.display=btns.length?'':'none';btns.forEach(([t,cls,fn])=>{const b=document.createElement('button');b.type='button';b.className='sb '+cls;b.textContent=t;b.onclick=()=>{SFX.pop();fn()};f.appendChild(b)});
  s.classList.toggle('big',!!big);s.classList.add('on');setTimeout(()=>f.lastChild&&f.lastChild.focus(),50)}

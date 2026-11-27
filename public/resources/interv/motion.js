@@ -1,4 +1,4 @@
-/* InterV motion layer:
+/* Inkventure motion layer:
    1. Train-themed page transitions between the dashboard, stations, tasks and games.
    2. Living backdrops: the owl breathes, tilts its head, blinks, winks, talks and waves; lamps flicker, stars twinkle,
       light sweeps the glass roof, dust floats, banners sway, the clock ticks and the train rocks gently.
@@ -61,18 +61,18 @@ function ivPreloadAll(){if(ivPreloaded)return;ivPreloaded=true;const list=['page
 
 /* ---------- Train transition: one short pass of a small train over a crossfade ----------
    The new page is drawn at once underneath; the previous page stays on top (already decoded, so no blank frame)
-   and fades out as soon as the new artwork is ready while a small InterV train runs along the platform.
+   and fades out as soon as the new artwork is ready while a small Inkventure train runs along the platform.
    Forward moves run left -> right; going back (to stations or home) runs right -> left with the engine facing left.
    Only transform and opacity are animated, so it stays smooth on slower computers. */
 const IV_ENGINE=`<svg class="ivt-engine" viewBox="0 0 150 86" aria-hidden="true"><defs><linearGradient id="ivtB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1e4d"/><stop offset=".2" stop-color="#4b74d1"/><stop offset=".42" stop-color="#2148a3"/><stop offset=".85" stop-color="#0f2560"/><stop offset="1" stop-color="#071433"/></linearGradient><linearGradient id="ivtG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".4" stop-color="#d9a441"/><stop offset=".65" stop-color="#ffe08a"/><stop offset="1" stop-color="#9a6b1c"/></linearGradient><radialGradient id="ivtL"><stop offset="0" stop-color="#fffbe6"/><stop offset=".45" stop-color="#ffd67a"/><stop offset="1" stop-color="#ffb84a" stop-opacity="0"/></radialGradient></defs>
 <rect x="4" y="14" width="44" height="50" rx="6" fill="url(#ivtB)" stroke="url(#ivtG)" stroke-width="2.5"/><rect x="0" y="9" width="52" height="8" rx="4" fill="#0a173d" stroke="url(#ivtG)" stroke-width="1.5"/><rect x="12" y="22" width="28" height="17" rx="3" fill="#ffe3a0" stroke="url(#ivtG)" stroke-width="2"/>
 <rect x="44" y="34" width="86" height="32" rx="15" fill="url(#ivtB)"/><rect x="66" y="34" width="4" height="32" fill="url(#ivtG)"/><rect x="92" y="34" width="4" height="32" fill="url(#ivtG)"/><rect x="116" y="34" width="3" height="32" fill="url(#ivtG)"/>
 <path d="M104 12h16l-3 23h-10Z" fill="url(#ivtB)" stroke="url(#ivtG)" stroke-width="1.5"/><rect x="101" y="8" width="22" height="6" rx="2" fill="url(#ivtG)"/><ellipse cx="82" cy="34" rx="8" ry="4.5" fill="url(#ivtG)"/>
-<circle cx="140" cy="46" r="13" fill="url(#ivtL)"/><circle cx="136" cy="46" r="5" fill="url(#ivtG)"/><path d="M128 62 L148 74 H122Z" fill="url(#ivtG)"/><text x="88" y="56" font-family="Georgia,serif" font-weight="700" font-size="9" fill="#ffe08a" text-anchor="middle">InterV</text>
+<circle cx="140" cy="46" r="13" fill="url(#ivtL)"/><circle cx="136" cy="46" r="5" fill="url(#ivtG)"/><path d="M128 62 L148 74 H122Z" fill="url(#ivtG)"/><text x="88" y="56" font-family="Georgia,serif" font-weight="700" font-size="9" fill="#ffe08a" text-anchor="middle">Inkventure</text>
 <g class="ivt-w"><circle cx="26" cy="72" r="11" fill="#0c0f1e" stroke="url(#ivtG)" stroke-width="2.5"/><path d="M26 61v22M15 72h22M18 64l16 16M34 64 18 80" stroke="#c99a3a" stroke-width="1.6"/></g><g class="ivt-w"><circle cx="70" cy="72" r="11" fill="#0c0f1e" stroke="url(#ivtG)" stroke-width="2.5"/><path d="M70 61v22M59 72h22M62 64l16 16M78 64 62 80" stroke="#c99a3a" stroke-width="1.6"/></g><g class="ivt-w"><circle cx="100" cy="74" r="9" fill="#0c0f1e" stroke="url(#ivtG)" stroke-width="2.5"/><path d="M100 65v18M91 74h18" stroke="#c99a3a" stroke-width="1.6"/></g><g class="ivt-w"><circle cx="122" cy="74" r="9" fill="#0c0f1e" stroke="url(#ivtG)" stroke-width="2.5"/><path d="M122 65v18M113 74h18" stroke="#c99a3a" stroke-width="1.6"/></g><rect x="22" y="70" width="52" height="4" rx="2" fill="url(#ivtG)"/></svg>`;
 const ivEscT=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let ivLevelNow=0,ivTransitTok=0;
-/* Departure-board flip. Every InterV page shares one painted hall, so only the changing parts move:
+/* Departure-board flip. Every Inkventure page shares one painted hall, so only the changing parts move:
    the old board flips away the moment a button is tapped, the new board flips in like a railway departure
    board, and the title, plaques and owl's words fade to their new text. Forward flips down; going back flips up.
    Only transform and opacity are animated. (The big train is kept for opening each learning program.) */
@@ -111,15 +111,15 @@ function ivTransit(render,label,level){
   if(t<1)requestAnimationFrame(step);else{turn.cancel();roll.remove();old.remove()}};
  requestAnimationFrame(step);
 }
-/* Route every InterV page change through the train. Level decides the direction (lower level = going back). */
+/* Route every Inkventure page change through the train. Level decides the direction (lower level = going back). */
 (function(){
  const wrap=(name,label,level)=>{const raw=globalThis[name];if(typeof raw!=='function'||raw._ivt)return;const f=function(...a){return ivTransit(()=>raw.apply(this,a),label(...a),level)};f._ivt=true;globalThis[name]=f};
  const stName=k=>(typeof IV_ST!=='undefined'&&IV_ST[k]?.name)||'Reading Station';
- wrap('renderInterDashboard',()=>'InterV Station',0);
+ wrap('renderInterDashboard',()=>'Inkventure Station',0);
  wrap('renderStation',(k,m)=>stName(k)+(m==='games'?' Games':''),1);
  wrap('renderTask',(k,t)=>`${stName(k)} · Task ${t}`,2);
  wrap('renderLegacyGame',(k)=>stName(k)+' Games',2);
- wrap('renderIntervGames',()=>'InterV Games',1.5);
+ wrap('renderIntervGames',()=>'Inkventure Games',1.5);
  wrap('ivRenderProgress',()=>'My Progress',0.5);
  wrap('ivRenderRewards',()=>'My Rewards',0.5);
  wrap('ivRenderProfile',()=>'My Profile',0.5);

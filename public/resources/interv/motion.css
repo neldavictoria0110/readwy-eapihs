@@ -1,4 +1,4 @@
-/* InterV motion: living backdrops, train transitions and hover lift. */
+/* Inkventure motion: living backdrops, train transitions and hover lift. */
 .ivd-screen{background:#0d2a55 url("resources/interv/anim/transit-bg.webp") center/cover no-repeat!important}
 .ivd-board>img,.ivp-board>img{image-rendering:auto}
 /* layer order: artwork < living layer < hotspots < live text < boards/panels */

@@ -43,7 +43,7 @@ window.readwyHydrateTrainProfile = async user => {
     const sameCurrent = current && (current.role !== 'student' ||
       key(current.accountEmail || current.email) === email);
     const merged = { ...cloud };
-    // Details already on this device, including Reading Check-In edits, stay under the learner's control.
+    // Details already on this device, including Keypass edits, stay under the learner's control.
     for (const source of [sameCurrent ? current : {}, local]) {
       for (const [name, value] of Object.entries(source)) {
         if (value !== undefined && value !== null && String(value).trim() !== '') merged[name] = value;
