@@ -251,6 +251,18 @@ if (typeof pages.map === 'string') {
     pages.map = pages.map.slice(0, mapHeadClose) + gateMapTag + pages.map.slice(mapHeadClose);
   }
 }
+// Journey ticket page: the Badge Shop (coins from practice work buy badges and ticket finishes).
+if (typeof pages.map === 'string') {
+  const shopSource = fs.readFileSync(path.join(root, 'resources/badge-shop.js'), 'utf8');
+  const shopScript = /<script data-source="resources\/badge-shop\.js">[\s\S]*?<\/script>/;
+  const shopTag = `<script data-source="resources/badge-shop.js">${shopSource}</script>`;
+  if (shopScript.test(pages.map)) pages.map = pages.map.replace(shopScript, () => shopTag);
+  else {
+    const shopHeadClose = findHtmlClosingTag(pages.map, 'head');
+    if (shopHeadClose < 0) throw new Error('The journey map has no closing head tag.');
+    pages.map = pages.map.slice(0, shopHeadClose) + shopTag + pages.map.slice(shopHeadClose);
+  }
+}
 // Older builds inserted these tags by searching for the last textual
 // "</head>"/"</body>". That also matched srcdoc strings inside Playlab and
 // left full login documents embedded inside JavaScript. Remove those generated
