@@ -71,8 +71,9 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
  box-shadow:0 0 0 .06em rgba(179,38,30,.35),0 2px 6px #0005;text-shadow:0 0 1px rgba(179,38,30,.6);pointer-events:none}
 .rw-stamp small{font-size:.42em;letter-spacing:.12em;font-weight:800}
 .pf-dest .rw-stamp{font-size:clamp(8px,.75vw,11px);border-width:.2em;padding:.25em .4em;rotate:-12deg;filter:none}
-.rw-gate-note{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));z-index:99999;translate:-50% 0;width:min(92vw,520px);padding:12px 16px;border-radius:14px;
- background:#1d1408f2;border:2px solid #d9b45a;color:#fff4d6;font:600 15px/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 10px 24px #000a}`;
+.rw-gate-note{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));z-index:99999;translate:-50% 0;width:min(92vw,520px);box-sizing:border-box;padding:12px 16px;border-radius:14px;
+ background:#1d1408f2;border:2px solid #d9b45a;color:#fff4d6;font:600 15px/1.4 system-ui,sans-serif;text-align:center;overflow-wrap:anywhere;box-shadow:0 10px 24px #000a}
+@media(max-width:600px){.rw-gate-note{max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto;padding:10px 12px;font-size:14px;line-height:1.35}}`;
   document.head.append(style);
 
   let noteTimer = 0;
@@ -165,7 +166,8 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
 .pf-dests{grid-template-columns:repeat(7,minmax(0,1fr))!important}
 .pf-dest{min-width:0!important;grid-template-columns:minmax(0,1fr)!important}
 .pf-dest>*{min-width:0}
-.pf-dest span{display:block;min-width:0;max-width:100%;overflow-wrap:normal;word-break:normal;hyphens:manual;-webkit-hyphens:manual;text-align:center}`;
+.pf-dest span{display:block;min-width:0;max-width:100%;overflow-wrap:anywhere;word-break:normal;hyphens:manual;-webkit-hyphens:manual;text-align:center;text-wrap:balance}
+@media(max-width:600px){.pf-dests{grid-template-columns:repeat(4,minmax(0,1fr))!important}}`;
   document.head.append(style);
   const SHAPES = [[/^spellscript$/i, 'Spell­script'], [/^inkventure$/i, 'Ink­venture'], [/^catch-up express$/i, 'Catch‑Up Express']];
   const lines = s => { const r = document.createRange(); r.selectNodeContents(s); return new Set([...r.getClientRects()].map(x => Math.round(x.top))).size; };

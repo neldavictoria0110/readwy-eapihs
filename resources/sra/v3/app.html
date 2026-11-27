@@ -1221,6 +1221,22 @@ body:has(.rl-screen) #caption .rl-cap-av{width:52px;height:52px}
  .rl-quiz:not(.rl-ptest) .rl-q-card:not(.rl-q-result){height:clamp(660px,78vh,760px)}
  .rl-quiz:not(.rl-ptest) .rl-q-actions .rl-pl-btn{flex-basis:calc(50% - 6px);width:auto;font-size:16px}
 }
+@media(max-width:1023px){
+ .rl-s-ribbon,.rl-st-head .rl-s-ribbon{display:block;width:100%;max-width:100%;overflow:visible;text-overflow:clip;white-space:normal;line-height:1.2;text-align:center}
+ .rl-s-ribbon>span{display:inline;min-width:0;overflow:visible;text-overflow:clip;white-space:normal}
+ .rl-st-platform{width:min(100%,560px);max-width:100%;min-width:0;flex-wrap:wrap;justify-content:center;white-space:normal;overflow-wrap:anywhere;margin-top:8px;padding:8px clamp(8px,2vw,18px);border-radius:18px;line-height:1.2}
+ .rl-st-platform b{font-size:1em}
+}
+/* Short phone landscape: keep every Reading Lab screen in the scrollable scene instead of clipping it. */
+@media(max-width:1023px) and (orientation:landscape) and (max-height:600px){
+ .scene.rl-native:has(.rl-screen){overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+ .rl-screen{height:auto;min-height:100dvh;overflow:visible;align-items:stretch;padding-top:max(8px,env(safe-area-inset-top));padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+ .rl-s-head,.rl-st-head{flex-direction:column;align-items:center;gap:8px}
+ .rl-s-head .rl-s-banner{transform:none}
+ .rl-st-platform{margin-top:4px;padding:6px 12px;border-radius:16px;font-size:clamp(12px,2.1vh,16px)}
+ .rl-st-platform b{font-size:1em}
+ .rl-station{height:auto;min-height:100dvh;overflow:visible}
+}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
