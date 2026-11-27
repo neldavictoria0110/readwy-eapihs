@@ -108,11 +108,13 @@
   const css = document.createElement('style');
   css.id = 'rw-badge-shop-style';
   css.textContent = `
-.rw-shop-open{position:fixed;left:10px;top:52px;z-index:41;display:inline-flex;align-items:center;gap:.45em;padding:4px 14px 4px 5px;border:0;border-radius:999px;cursor:pointer;
- background:radial-gradient(ellipse at 50% 0%,rgba(255,230,150,.25),transparent 60%),linear-gradient(180deg,#1f5c40,#0f3a27);color:#ffe9a8;font:700 13px/1 Georgia,"Times New Roman",serif;letter-spacing:.1em;text-transform:uppercase;
- box-shadow:inset 0 0 0 2px #c9a14a,inset 0 0 0 4px #0f3a27,inset 0 0 0 5px rgba(233,196,106,.55),0 6px 14px rgba(0,0,0,.45);transition:transform .2s}
-.rw-shop-open:hover,.rw-shop-open:focus-visible{transform:translateY(-2px);outline:none}
-.rw-shop-open .rw-coin{width:24px;height:24px}
+.rw-shop-open{position:fixed;left:10px;top:52px;z-index:41;display:grid;place-items:center;width:58px;height:50px;padding:0;border:0;border-radius:14px;cursor:pointer;
+ background:radial-gradient(ellipse at 50% 0%,rgba(255,230,150,.28),transparent 60%),linear-gradient(180deg,#1f5c40,#0f3a27);
+ box-shadow:inset 0 0 0 2px #c9a14a,inset 0 0 0 4px #0f3a27,inset 0 0 0 5px rgba(233,196,106,.55),0 6px 14px rgba(0,0,0,.45);transition:transform .2s,box-shadow .2s}
+.rw-shop-open svg{width:44px;height:40px;display:block;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+.rw-shop-open:hover,.rw-shop-open:focus-visible{transform:translateY(-2px);outline:none;box-shadow:inset 0 0 0 2px #e9c46a,inset 0 0 0 4px #0f3a27,inset 0 0 0 5px rgba(255,220,130,.85),0 0 16px rgba(255,214,120,.45),0 8px 18px rgba(0,0,0,.5)}
+.rw-shop-open:hover .rw-awning{animation:rwAwning .6s ease}
+@keyframes rwAwning{40%{transform:translateY(-1.5px)}}
 .rw-coin{display:inline-block;flex:none;width:1.2em;height:1.2em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6c8,#f2c94c 40%,#b8860b 78%,#6b4600);box-shadow:inset 0 0 0 2px rgba(110,70,0,.55),0 1px 2px rgba(0,0,0,.45)}
 .rw-coin::after{content:'R';display:grid;place-items:center;height:100%;color:#6b4600;font:900 .62em/1 Georgia,serif}
 .rw-pin{position:fixed;z-index:42;width:58px;pointer-events:auto;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));animation:rwPinIn .6s cubic-bezier(.2,1.6,.4,1)}
@@ -191,7 +193,7 @@ body:has(.rw-shop) #rwBadge{display:none!important}
 .rw-chip:disabled{cursor:not-allowed;opacity:.5}
 .rw-shop-msg{position:absolute;left:50%;top:clamp(64px,14vh,130px);translate:-50% 0;margin:0;padding:10px 18px;border-radius:14px;background:#1d1408f2;color:#fff4d6;border:2px solid #d9b45a;font:600 14px/1.4 system-ui;text-align:center;max-width:min(92vw,520px);opacity:0;transition:opacity .25s;pointer-events:none;z-index:2}
 .rw-shop-msg.show{opacity:1}
-@media (max-height:500px){.rw-case ul li:nth-child(n+3){display:none}.rw-shop-how{display:none}.rw-pin{width:40px}.rw-pin b{display:none}.rw-shop-open{top:50px;font-size:11px;padding:3px 10px 3px 4px}.rw-shop-open .rw-coin{width:20px;height:20px}}
+@media (max-height:500px){.rw-case ul li:nth-child(n+3){display:none}.rw-shop-how{display:none}.rw-pin{width:40px}.rw-pin b{display:none}.rw-shop-open{width:48px;height:42px}.rw-shop-open svg{width:36px;height:33px}}
 @media (max-width:700px) and (orientation:portrait){.rw-shop{overflow-y:auto}.rw-cases{flex:none;grid-template-columns:repeat(2,minmax(0,1fr))}.rw-case-glass{flex:none;height:150px}.rw-shop-head{flex-wrap:wrap;justify-content:center}}
 @media (prefers-reduced-motion:reduce){.rw-shop,.rw-case,.rw-pin,.rw-ticket-fx,.rw-case.bought .rw-medal-svg{animation:none!important}}`;
   document.head.append(css);
@@ -288,7 +290,7 @@ body:has(.rw-shop) #rwBadge{display:none!important}
   function addButton() {
     if (!document.querySelector('.pf') || document.querySelector('.rw-shop-open')) return;
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'rw-shop-open'; b.innerHTML = '<i class="rw-coin" aria-hidden="true"></i><span>Badge Shop</span>';
+    b.type = 'button'; b.className = 'rw-shop-open'; b.innerHTML = "<svg viewBox=\"0 0 48 44\" aria-hidden=\"true\"><defs><linearGradient id=\"rwShopGold\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fff3c8\"/><stop offset=\".55\" stop-color=\"#e9c46a\"/><stop offset=\"1\" stop-color=\"#a8761e\"/></linearGradient></defs><rect x=\"7\" y=\"17\" width=\"34\" height=\"23\" rx=\"1.5\" fill=\"#fff4dc\" stroke=\"#7a5214\" stroke-width=\"1.4\"/><rect x=\"10\" y=\"22\" width=\"12\" height=\"9\" rx=\"1\" fill=\"#9fd3e8\" stroke=\"#7a5214\" stroke-width=\"1\"/><path d=\"M11 24.5l4-2M11 28l7-4\" stroke=\"#fff\" stroke-width=\".9\" opacity=\".8\"/><rect x=\"27\" y=\"22\" width=\"10\" height=\"18\" rx=\"1\" fill=\"#1f5c40\" stroke=\"#7a5214\" stroke-width=\"1\"/><circle cx=\"34.5\" cy=\"31.5\" r=\".9\" fill=\"#e9c46a\"/><g class=\"rw-awning\"><path d=\"M5 9h38l3 8H2z\" fill=\"url(#rwShopGold)\" stroke=\"#7a5214\" stroke-width=\"1.2\"/><path d=\"M8.4 9 6.5 17M15.3 9 14 17M22.1 9 21.5 17M28.9 9 29 17M35.7 9 36.5 17M41.6 9 44 17\" stroke=\"#b8303f\" stroke-width=\"3.4\"/><path d=\"M2 17q2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0\" fill=\"#e9c46a\" stroke=\"#7a5214\" stroke-width=\"1.1\"/><rect x=\"17\" y=\"3\" width=\"14\" height=\"6\" rx=\"1.5\" fill=\"#0f3a27\" stroke=\"#e9c46a\" stroke-width=\"1\"/><circle cx=\"24\" cy=\"6\" r=\"1.8\" fill=\"url(#rwShopGold)\"/></g><circle cx=\"17\" cy=\"35.5\" r=\"4.6\" fill=\"url(#rwShopGold)\" stroke=\"#7a5214\" stroke-width=\"1\"/><text x=\"17\" y=\"37.6\" text-anchor=\"middle\" font-family=\"Georgia,serif\" font-weight=\"900\" font-size=\"6\" fill=\"#6b4600\">R</text></svg>"; b.title = 'Badge Shop';
     b.setAttribute('aria-label', 'Open the Badge Shop'); b.addEventListener('click', open);
     document.body.append(b);
   }
