@@ -292,9 +292,42 @@ body:has(.rw-shop) #rwBadge{display:none!important}
     b.setAttribute('aria-label', 'Open the Badge Shop'); b.addEventListener('click', open);
     document.body.append(b);
   }
-  const tick = () => { addButton(); decorate() };
+  /* Ticket page layout. Landscape: BACK and BADGE SHOP stand in a column on the left and the three top frames
+     (platform, departure board, announcement) shrink to fit the space to their right, so nothing overlaps.
+     Portrait: the frames keep their grid and BADGE SHOP sits beside BACK (or under it on a very narrow screen). */
+  function fitTop() {
+    const back = document.querySelector('.journey>.back'), btn = document.querySelector('.rw-shop-open'), top = document.querySelector('.pf-top');
+    if (!back || !btn || !top) return;
+    const W = innerWidth, H = innerHeight, gap = 8;
+    const parts = [...top.children].filter(k => k.getBoundingClientRect().width > 0 || k.style.zoom);
+    parts.forEach(k => { k.style.zoom = '' }); top.style.removeProperty('padding-left'); top.style.removeProperty('padding-right'); ['left', 'right', 'width', 'transform', 'translate', 'margin-left', 'margin-right'].forEach(p => top.style.removeProperty(p));
+    if (H > W) {
+      // Portrait: BACK and BADGE SHOP sit in one row a small gap below the frames (never touching them).
+      const framesBottom = Math.max(0, ...[...top.querySelectorAll(':scope>*,:scope>*>*')].map(k => k.getBoundingClientRect()).filter(r => r.width > 40 && r.height > 20).map(r => r.bottom));
+      if (framesBottom > 0) { back.style.setProperty('top', Math.round(framesBottom + 10) + 'px', 'important'); back.style.setProperty('bottom', 'auto', 'important') }
+    } else { back.style.removeProperty('top'); back.style.removeProperty('bottom') }
+    const b = back.getBoundingClientRect();
+    if (H > W) {
+      const w = btn.offsetWidth || 150;
+      if (b.right + gap + w <= W - 8) { btn.style.left = Math.round(b.right + gap) + 'px'; btn.style.top = Math.round(b.top + (b.height - btn.offsetHeight) / 2) + 'px' }
+      else { btn.style.left = Math.round(b.left) + 'px'; btn.style.top = Math.round(b.bottom + gap) + 'px' }
+      return;
+    }
+    btn.style.left = Math.round(b.left) + 'px'; btn.style.top = Math.round(b.bottom + gap) + 'px';
+    const reserve = Math.ceil(Math.max(b.right, b.left + btn.offsetWidth)) + 14;
+    const shown = [...top.children].filter(k => k.getBoundingClientRect().width > 0);
+    if (!shown.length) return;
+    for (const [p, v] of [['left', '0px'], ['right', 'auto'], ['width', '100%'], ['transform', 'none'], ['translate', 'none'], ['margin-left', '0px'], ['margin-right', '0px']]) top.style.setProperty(p, v, 'important');
+    top.style.setProperty('padding-left', reserve + 'px', 'important'); top.style.setProperty('padding-right', '12px', 'important');
+    const first = shown[0].getBoundingClientRect(), last = shown[shown.length - 1].getBoundingClientRect();
+    const tcs = getComputedStyle(top), between = (parseFloat(tcs.columnGap) || 0) * (shown.length - 1);
+    const natural = last.right - first.left - between, room = W - reserve - 12 - between;
+    if (natural > room) { const z = Math.max(.5, room / natural); shown.forEach(k => { k.style.zoom = z.toFixed(3) }) }
+  }
+  const tick = () => { addButton(); fitTop(); decorate() };
   addEventListener('DOMContentLoaded', () => { tick(); new MutationObserver(() => { clearTimeout(tick.t); tick.t = setTimeout(tick, 120) }).observe(document.body, { childList: true, subtree: true }) });
-  addEventListener('load', () => { tick(); setTimeout(decorate, 1200); setTimeout(decorate, 2600) });
-  addEventListener('resize', () => { clearTimeout(tick.r); tick.r = setTimeout(decorate, 80) });
+  addEventListener('load', () => { tick(); setTimeout(tick, 1200); setTimeout(tick, 2600) });
+  addEventListener('resize', () => { clearTimeout(tick.r); tick.r = setTimeout(tick, 80) });
+  addEventListener('orientationchange', () => setTimeout(tick, 300));
   window.readwyBadgeShop = { open, close, earned, balance: () => balance(record()), record };
 })();

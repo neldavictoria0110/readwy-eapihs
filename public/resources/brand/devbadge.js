@@ -58,22 +58,39 @@ const mount=()=>{if(!document.body)return setTimeout(mount,50);if(!btn.isConnect
 /* The badge sits in whichever corner is free: no buttons, fields or text under it. It stays put while its corner
    stays free, so it does not jump around; if every corner is busy it waits just above the controls in the lower right. */
 let corner='br';
-function busyIn(B,H){let lift=0,hit=false;
- const scan=(doc,ox,oy,depth,k=1)=>{let list;try{list=doc.querySelectorAll('button,a[href],input,select,textarea,[role=button],[onclick],.hit,.opt,.tab,h1,h2,h3,p,label,li,td,th,.chip,.clock,.lbl,iframe')}catch(e){return}
-  for(const el of list){if(el.id==='rwBadge'||el.closest('#rwBadge,#rwDev'))continue;const r=el.getBoundingClientRect();if(!r.width||!r.height)continue;
-   const L=r.left*k+ox,T=r.top*k+oy,R=r.right*k+ox,Bm=r.bottom*k+oy;if(!(L<B.r&&R>B.l&&T<B.b&&Bm>B.t))continue;
-   if(el.tagName==='IFRAME'){if(depth<2&&!matchMedia('(pointer:coarse)').matches){try{const kk=k*(r.width/(el.clientWidth||r.width));scan(el.contentDocument,L+el.clientLeft*kk,T+el.clientTop*kk,depth+1,kk)}catch(e){}}continue}
-   if((R-L)*(Bm-T)>innerWidth*innerHeight*.35)continue; // large containers do not count
-   const cs=(doc.defaultView||window).getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity===0)continue;
-   hit=true;if(T>H*.4)lift=Math.max(lift,H-T+8)}};
- scan(document,0,0,0);return {hit,lift}}
-function place(){const W=innerWidth,H=innerHeight,m=6,s=58;
+/* Free-corner finder: anything a learner can see (text, pictures, icons, buttons, fields), including inside the
+   embedded Reading Lab / Spellscript / Post-Test frames, makes a corner busy. Large backgrounds do not count.
+   The badge keeps its corner while it stays free; if all four corners are busy it hides until one frees up. */
+const MEDIA=/^(IMG|svg|SVG|CANVAS|VIDEO|PICTURE|BUTTON|A|INPUT|SELECT|TEXTAREA|LABEL|H1|H2|H3|H4|H5|H6|P|LI|TD|TH)$/;
+function ownText(el){for(const n of el.childNodes)if(n.nodeType===3&&n.textContent.trim())return true;return false}
+function busyCorners(boxes){const busy={};const W=innerWidth,H=innerHeight,VA=W*H;
+ const keys=Object.keys(boxes);
+ const scan=(doc,ox,oy,k,depth)=>{let list;try{list=doc.body?doc.body.getElementsByTagName('*'):[]}catch(e){return}
+  for(const el of list){if(el.id==='rwBadge'||el.id==='rwDev')continue;let r;try{r=el.getBoundingClientRect()}catch(e){continue}if(!r.width||!r.height)continue;
+   const L=r.left*k+ox,T=r.top*k+oy,R=r.right*k+ox,B=r.bottom*k+oy;
+   const hits=keys.filter(c=>!busy[c]&&L<boxes[c].r&&R>boxes[c].l&&T<boxes[c].b&&B>boxes[c].t);if(!hits.length)continue;
+   if(el.closest&&el.closest('#rwBadge,#rwDev'))continue;
+   if(el.tagName==='IFRAME'){if(depth<2){try{const kk=k*(r.width/(el.clientWidth||r.width));scan(el.contentDocument,L+el.clientLeft*kk,T+el.clientTop*kk,kk,depth+1)}catch(e){}}continue}
+   if((R-L)>=W*.85&&(B-T)>=H*.6)continue; // full-screen backgrounds and page containers
+   const media=MEDIA.test(el.tagName)||el.getAttribute('role')==='button';
+   if(!media&&!ownText(el)){const cz=(el.ownerDocument.defaultView||window).getComputedStyle(el),bg=cz.backgroundImage||'',col=cz.backgroundColor.match(/[\d.]+/g),alpha=col?(col.length>3?+col[3]:1):0,border=parseFloat(cz.borderTopWidth)>0&&!/rgba\([^)]*,\s*0\)|transparent/.test(cz.borderTopColor);
+    if(!(bg.indexOf('url(')>=0||bg.indexOf('gradient')>=0||alpha>=.5||border))continue}
+   const cs=(el.ownerDocument.defaultView||window).getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity<.05)continue;
+   hits.forEach(c=>busy[c]=true);if(keys.every(c=>busy[c]))return}};
+ scan(document,0,0,1,0);
+ /* Logos painted into a background picture cannot be seen in the page: reserve those corners. */
+ const deep=sel=>{try{if(document.querySelector(sel))return true;for(const f of document.querySelectorAll('iframe')){try{if(f.contentDocument?.querySelector(sel))return true}catch(e){}}}catch(e){}return false};
+ if(deep('.ivd-live,.ivdm-st'))busy.tl=true; // Inkventure dashboard: the painted InterV logo
+ return busy}
+function place(){const W=innerWidth,H=innerHeight,m=6,s=56;
  const box={br:{l:W-s-m,r:W-m,t:H-s-m,b:H-m},bl:{l:m,r:s+m,t:H-s-m,b:H-m},tr:{l:W-s-m,r:W-m,t:m,b:s+m},tl:{l:m,r:s+m,t:m,b:s+m}};
- let pick=null,lift=0;for(const c of [corner,'br','bl','tr','tl']){const b=busyIn(box[c],H);if(!b.hit){pick=c;break}if(c==='br')lift=b.lift}
- if(!pick){pick='br'}else lift=0;corner=pick;
+ const hidden=btn.style.display==='none';btn.style.display='none'; // never count the badge itself
+ const busy=busyCorners(box);let pick=null;for(const c of [corner,'br','tr','bl','tl'])if(!busy[c]){pick=c;break}
+ if(!pick){btn.style.display='none';return}
+ btn.style.display='';corner=pick;void hidden;
  const S=btn.style;S.left=S.right=S.top=S.bottom='';const g='max(10px,env(safe-area-inset-%s))';
  if(pick[1]==='r')S.right=g.replace('%s','right');else S.left=g.replace('%s','left');
- if(pick[0]==='b')S.bottom=lift?lift+'px':g.replace('%s','bottom');else S.top=g.replace('%s','top')}
+ if(pick[0]==='b')S.bottom=g.replace('%s','bottom');else S.top=g.replace('%s','top')}
 /* Exact colours for each learning-journey screen: [badge fill, rim + logo], taken from that screen's own
    palette, so the badge looks like part of the UI instead of guessing from the pixels around it. */
 const has=(sel,doc=document)=>{try{return !!doc.querySelector(sel)}catch(e){return false}};
@@ -187,5 +204,5 @@ function screensHTML(){SCR=[];let title='';devFrames(true);
  d.querySelector('[data-exit]').onclick=()=>{sessionStorage.removeItem(DEVKEY);const u2=read('user');if(u2&&u2.dev){try{localStorage.removeItem(STORE+'user')}catch(e){}}close();paint();location.href='index.html?view=startup'}}
 /* on the login page, open the Login or Sign-up card the developer asked for */
 (()=>{let v='';try{v=sessionStorage.getItem('readwy-dev-goto')||'';sessionStorage.removeItem('readwy-dev-goto')}catch(e){}if(!v)return;
- const tryOpen=(n=0)=>{try{if(typeof chooseReadwyRole==='function'&&typeof mode!=='undefined'){if(mode==='role')chooseReadwyRole('student');if(v==='signup')setTimeout(()=>{try{if(mode!=='signup')toggle()}catch(e){}},1300);return}}catch(e){}if(n<60)setTimeout(()=>tryOpen(n+1),250)};tryOpen()})();mount();setInterval(()=>{if(document.hidden)return;if(!btn.isConnected&&document.body)document.body.appendChild(btn);paint()},5000);
+ const tryOpen=(n=0)=>{try{if(typeof chooseReadwyRole==='function'&&typeof mode!=='undefined'){if(mode==='role')chooseReadwyRole('student');if(v==='signup')setTimeout(()=>{try{if(mode!=='signup')toggle()}catch(e){}},1300);return}}catch(e){}if(n<60)setTimeout(()=>tryOpen(n+1),250)};tryOpen()})();mount();setInterval(()=>{if(document.hidden)return;if(!btn.isConnected&&document.body)document.body.appendChild(btn);paint()},5000);setInterval(()=>{if(!document.hidden&&btn.isConnected&&!document.getElementById("rwDev"))place()},1000);addEventListener("resize",()=>setTimeout(place,120));addEventListener("orientationchange",()=>setTimeout(place,300));
 })();
