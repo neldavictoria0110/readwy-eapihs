@@ -895,6 +895,7 @@
  function openJourney(area){
   if(!STATIONS[area])return;
   try{sessionStorage.setItem(AREA_KEY,area)}catch{}
+  try{const story=globalThis.getStoryViewState?.();if(story&&story.selectedLearningArea!==area)globalThis.restoreStoryViewState?.({...story,selectedLearningArea:area})}catch{}
   runtime.certificate=false;runtime.feedback='';activeTask=null;saveActiveTask();
   go('journey')
  }

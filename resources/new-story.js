@@ -14,6 +14,9 @@
  const openPendingSubject=()=>{
   if(!user||user.role!=='student'||!window.READwySubjectLabs){console.error('READwy subject assessment could not start because the student session or module is unavailable.');return}
   try{sessionStorage.removeItem(pendingAssessmentKey)}catch(error){console.error('READwy selected subject could not be cleared.',error)}
+  // A screen saved earlier in this tab (often the English journey) is restored at start-up and resets the
+  // subject to English; the subject just chosen on the train must win.
+  selectedLearningArea=pendingAssessment;
   window.READwySubjectLabs.openJourney(pendingAssessment)
  };
  if(pendingAssessment){
