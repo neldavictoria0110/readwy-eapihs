@@ -149,9 +149,10 @@
     // and the train moves in unscaled pixels, so a scaled length left the "off-screen" train half inside the frame.
     const trainW = loop.offsetWidth || loop.getBoundingClientRect().width, viewW = view.clientWidth;
     if (!trainW || !viewW) return;
-    const cruise = Math.max(45, viewW / 14);     // steady speed: about 14 seconds to cross the frame
+    const TRAIN_SPEED = 1.75;                    // 1.75x the original pace (user request, 2026-11-28)
+    const cruise = Math.max(45, viewW / 14) * TRAIN_SPEED; // steady speed: about 8 seconds to cross the frame
     const stopX = viewW * 0.62 - trainW;         // engine front pauses a little past the middle
-    const BRAKE = 2, PAUSE = 1.2, SPEEDUP = 2, GAP = .8; // seconds
+    const BRAKE = 2 / TRAIN_SPEED, PAUSE = 1.2, SPEEDUP = 2 / TRAIN_SPEED, GAP = .8; // seconds (the stop at the station keeps its length)
     const rampDist = cruise * BRAKE / 2;         // distance used to ease to a stop / back up to speed
     const inTime = Math.max(0, (stopX + trainW - rampDist) / cruise); // slow roll in from the left edge
     const outTime = Math.max(0, (viewW - stopX - rampDist) / cruise); // slow roll out to the right
@@ -306,11 +307,11 @@
 .at-go{position:relative;margin-top:auto;margin-bottom:2.6cqh;padding:.35em 1.1em;border-radius:999px;background:#fffaf0;color:#2b1a0b;font:900 clamp(12px,1.1cqw,17px)/1.2 system-ui,sans-serif;box-shadow:0 .3cqh .6cqh #0006}
 .at-wheels{flex:0 0 auto;display:flex;justify-content:space-between;padding:0 12%;margin-top:-1.6cqh;height:3.6cqh;position:relative;z-index:1}
 .at-wheels i{height:100%;aspect-ratio:1;border-radius:50%;border:.28cqh solid #c9973f;background:radial-gradient(circle,#e8c879 0 18%,transparent 20%),repeating-conic-gradient(#d9b25a 0 8deg,#151518 8deg 45deg)}
-.at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation:atSpin 1.6s linear infinite}
+.at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation:atSpin .91s linear infinite}
 @keyframes atSpin{to{rotate:360deg}}
 .at-wheel{transform-box:fill-box;transform-origin:center}
 .at-loop.at-moving .at-engine .at-wheel{animation-direction:reverse} /* the engine drawing is mirrored */
-.at-steam circle{animation:atPuff 1.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.at-steam circle{animation:atPuff .91s ease-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes atPuff{0%{transform:translate(0,0) scale(.4);opacity:0}25%{opacity:1}100%{transform:translate(16px,-26px) scale(2.2);opacity:0}}
 .at-car.next>button{animation:atGlow 1.8s ease-in-out infinite}
 .at-car.next .at-go{background:linear-gradient(#ffd76a,#f5a623)}
