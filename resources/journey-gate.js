@@ -22,7 +22,7 @@
   const exploring = () => Date.now() < EXPLORE_UNTIL;
   const EXPLORE_MESSAGE = 'The Reading Check-In, Voice Station and Story Depot open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
   const PREFIX = typeof STORE !== 'undefined' ? STORE : 'READwy_new_2026_local_';
-  const NAMES = {gst: 'Reading Check-In', orst: 'Voice Station', wst: 'Story Depot', aral: 'Catch-Up Express', interv: 'InterV Program', sra: 'Reading Lab', reports: 'Post-Test'};
+  const NAMES = {gst: 'Keypass', orst: 'Voice Station', wst: 'Spellscript', aral: 'Catch-Up Express', interv: 'Inkventure', sra: 'Reading Lab', reports: 'Post-Test'};
   const PROGRAMS = ['aral', 'interv', 'sra'];
   const currentUser = () => (typeof user !== 'undefined' && user) || null;
   const safe = (fn, fallback = false) => { try { return fn(); } catch { return fallback; } };

@@ -1,5 +1,5 @@
 (()=>{
- const names={gst:'Reading Check-In',orst:'Voice Station',wst:'Story Depot',aral:'Catch-Up Express',interv:'Intervention Program',sra:'Reading Lab',reports:'Post-Test — Assessment Reports'};
+ const names={gst:'Keypass',orst:'Voice Station',wst:'Spellscript',aral:'Catch-Up Express',interv:'Inkventure',sra:'Reading Lab',reports:'Post-Test — Assessment Reports'};
  const program=new URLSearchParams(location.search).get('program');
  if(!Object.prototype.hasOwnProperty.call(names,program)){location.replace('index.html?view=map');return}
  let opening=false,timer;

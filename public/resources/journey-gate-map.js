@@ -9,7 +9,7 @@
   const saved = read('journey_gate_' + key);
   // Worked out here from the learner's saved Reading Check-In, so the ticket is right as soon as the learner enters
   // (same rules as journey-gate.js). Only "program finished" needs the app's saved check.
-  const NAMES = {aral: 'Catch-Up Express', interv: 'InterV Program', sra: 'Reading Lab'};
+  const NAMES = {aral: 'Catch-Up Express', interv: 'Inkventure', sra: 'Reading Lab'};
   // Exploration period (SY 2026–2027): same date as journey-gate.js — change both together.
   // Exploration period ended early on 2026-11-27 (school request): the Reading Check-In score rules apply now.
   // To reopen free exploration, set a future date here AND in the other gate file.

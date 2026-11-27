@@ -1,30 +1,11 @@
 /* Front-of-book views retain the application's existing authentication and modules. */
 (()=>{
  const originalRender=render;
- const pendingAssessmentKey='readwy-subject-assessment-v1';
- let pendingAssessment='';
- try{
-  const savedAssessment=sessionStorage.getItem(pendingAssessmentKey);
-  if(['Filipino','Mathematics'].includes(savedAssessment))pendingAssessment=savedAssessment
- }catch(error){console.error('READwy selected subject could not be restored.',error)}
- let joiningRole='',signupEmail='',selectedLearningArea=pendingAssessment||'English';
- // Show the chosen subject's journey (its six stations); the learner starts the check-in from there.
- // Runs as soon as the page's scripts have run (DOMContentLoaded), not after every image has loaded,
- // so a slow connection does not leave the learner looking at the start screen.
- const openPendingSubject=()=>{
-  if(!user||user.role!=='student'||!window.READwySubjectLabs){console.error('READwy subject assessment could not start because the student session or module is unavailable.');return}
-  try{sessionStorage.removeItem(pendingAssessmentKey)}catch(error){console.error('READwy selected subject could not be cleared.',error)}
-  // A screen saved earlier in this tab (often the English journey) is restored at start-up and resets the
-  // subject to English; the subject just chosen on the train must win.
-  selectedLearningArea=pendingAssessment;
-  window.READwySubjectLabs.openJourney(pendingAssessment)
- };
- if(pendingAssessment){
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',openPendingSubject,{once:true});
-  else setTimeout(openPendingSubject,0);
- }
+ // English is the only learning area: there is no subject choice.
+ try{sessionStorage.removeItem('readwy-subject-assessment-v1');sessionStorage.removeItem('readwy-subject-task-v1');sessionStorage.removeItem('readwy-subject-area-v1')}catch{}
+ let joiningRole='',signupEmail='',selectedLearningArea='English';
  window.getStoryViewState=()=>({joiningRole,selectedLearningArea});
- window.restoreStoryViewState=function(state){joiningRole=['student','teacher'].includes(state?.joiningRole)?state.joiningRole:'';selectedLearningArea=['English','Filipino','Mathematics'].includes(state?.selectedLearningArea)?state.selectedLearningArea:'English'};
+ window.restoreStoryViewState=function(state){joiningRole=['student','teacher'].includes(state?.joiningRole)?state.joiningRole:'';selectedLearningArea='English'};
  // Outlines measured in the original 1672 x 940 map coordinates.
  const mapStageOutlines=[
  [[58,448],[64,355],[91,326],[134,307],[179,330],[197,371],[207,445],[211,484],[201,507],[78,513],[58,495]],
@@ -41,11 +22,10 @@
   const path='M'+points.map(p=>p.join(' ')).join('L')+'Z';
   return '<button class="map-stage-hit" type="button" style="left:'+x/1672*100+'%;top:'+y/940*100+'%;width:'+w/1672*100+'%;height:'+hg/940*100+'%;--stage-shape:polygon('+polygon+')" aria-label="Open '+title+'" onclick="openModule(\''+module+'\')"><svg viewBox="'+[x,y,w,hg].join(' ')+'" preserveAspectRatio="none" aria-hidden="true"><path d="'+path+'"/></svg></button>';
  }
- const learningAreas=['English','Filipino','Mathematics'];
+ const learningAreas=['English'];
  window.chooseLearningArea=function(name){if(navigationBusy||!learningAreas.includes(name))return;selectedLearningArea=name;
   // Remove unselected subjects before the outgoing transition is captured.
   app.querySelectorAll('.flashlight-subject,.learning-subject-card').forEach(node=>{if(!node.textContent.includes(name))node.remove()});
-  if(name!=='English'&&window.READwySubjectLabs){window.READwySubjectLabs.startPlacement();return}
   go('journey')};
  const artwork='UI%20and%20owl/background/new-story/';
  const bookObserver=new ResizeObserver(positionBookForm);let observedBoard;
@@ -114,7 +94,7 @@
   return lines.map(line=>line.split(' ').map(word=>`<span class="discovery-spell-word" style="--ink-step:${step}ms;--ink-word:${index++}">${h(word)}</span>`).join(' ')).join('<br>');
  }
  function renderDiscovery(){
-  app.innerHTML=frame('login',`<div class="learning-area-heading discovery-welcome"><p>${discoverySpellText(['The enchanted academy of reading'])}</p><h1>${discoverySpellText(['Welcome,',user?.role==='teacher'?'Teacher':'Student'],350)}</h1><h2>${discoverySpellText(['Discover your','learning areas'],800)}</h2><button class="discovery-all" type="button" onclick="go('subjects-spread')">${discoverySpellText(['View all learning areas →'],1450)}</button></div><div class="story-auth flashlight-page"><div class="flashlight-subjects">${['English','Filipino','Mathematics'].map((name,i)=>`<button type="button" class="flashlight-subject" onclick="chooseLearningArea('${name}')"><strong>${discoverySpellText([name],i*180)}</strong><small>${discoverySpellText(['Begin your adventure →'],i*180+150)}</small></button>`).join('')}</div><div class="flashlight-sensor" aria-hidden="true"></div><p class="flashlight-hint">${discoverySpellText(['Move your cursor to reveal','and click your assigned subject.'],900)}</p></div>`);
+  app.innerHTML=frame('login',`<div class="learning-area-heading discovery-welcome"><p>${discoverySpellText(['The enchanted academy of reading'])}</p><h1>${discoverySpellText(['Welcome,',user?.role==='teacher'?'Teacher':'Student'],350)}</h1><h2>${discoverySpellText(['Discover your','learning areas'],800)}</h2><button class="discovery-all" type="button" onclick="go('subjects-spread')">${discoverySpellText(['View all learning areas →'],1450)}</button></div><div class="story-auth flashlight-page"><div class="flashlight-subjects">${['English'].map((name,i)=>`<button type="button" class="flashlight-subject" onclick="chooseLearningArea('${name}')"><strong>${discoverySpellText([name],i*180)}</strong><small>${discoverySpellText(['Begin your adventure →'],i*180+150)}</small></button>`).join('')}</div><div class="flashlight-sensor" aria-hidden="true"></div><p class="flashlight-hint">${discoverySpellText(['Move your cursor to reveal','and click your assigned subject.'],900)}</p></div>`);
   app.querySelector('.story-backdrop').src=artwork+'discovery-blank.png';
   app.querySelector('.story-screen').classList.add('discovery-screen');
   app.querySelector('.story-screen').style.setProperty('--discovery-start',(navigationBusy?1850:120)+'ms');
@@ -128,12 +108,11 @@
   sensor.addEventListener('pointerleave',()=>{surface.classList.remove('beam-visible');surface.querySelectorAll('.is-magnified').forEach(subject=>subject.classList.remove('is-magnified'))});
   sensor.addEventListener('click',event=>{
    const index=Math.min(2,Math.max(0,Math.floor(event.offsetY/sensor.clientHeight*3)));
-   chooseLearningArea(learningAreas[index]);
+   chooseLearningArea(learningAreas[Math.min(index,learningAreas.length-1)]);
   });
  }
  function renderChosenWorld(){
-  if(typeof selectedLearningArea!=='undefined'&&selectedLearningArea!=='English'&&window.READwySubjectLabs){window.READwySubjectLabs.renderWelcome();return}
-  app.innerHTML=frame('login',`<div class="chosen-world-page"><h1>Your Chosen World</h1><button class="chosen-subject-reveal" type="button" aria-label="Explore your English world with the magnifying glass"><span class="chosen-subject-ink"><svg class="original-english-subject" viewBox="165 210 480 630" role="img" aria-label="English"><defs><clipPath id="englishSubjectArch"><path d="M445 222 C376 246 272 300 236 407 L205 683 L177 736 L170 790 Q177 820 211 828 L563 832 Q597 826 609 797 L627 414 Q589 293 445 222Z"/></clipPath></defs><image href="${artwork}areas-reference.png" width="1672" height="941" clip-path="url(#englishSubjectArch)"/></svg></span></button><p class="chosen-ink-hint">Move your cursor or tap to discover your world.</p></div><div class="story-auth chosen-journey-page"><div class="book-journey-map"><div class="book-journey-reveal"><img src="${artwork}map-portrait.png" alt="Your learning journey: Reading Check-In, Voice Station, Story Depot, Catch-Up Express, InterV, Reading Lab and Post-Test"><span class="book-map-start-label">Start →</span></div><button class="book-map-sensor" type="button" aria-label="Start your learning journey" aria-describedby="journeyStartHint"></button><p class="journey-start-instruction" id="journeyStartHint">Move your cursor or tap to find Start, then click it.</p></div></div>`);
+  app.innerHTML=frame('login',`<div class="chosen-world-page"><h1>Your Chosen World</h1><button class="chosen-subject-reveal" type="button" aria-label="Explore your English world with the magnifying glass"><span class="chosen-subject-ink"><svg class="original-english-subject" viewBox="165 210 480 630" role="img" aria-label="English"><defs><clipPath id="englishSubjectArch"><path d="M445 222 C376 246 272 300 236 407 L205 683 L177 736 L170 790 Q177 820 211 828 L563 832 Q597 826 609 797 L627 414 Q589 293 445 222Z"/></clipPath></defs><image href="${artwork}areas-reference.png" width="1672" height="941" clip-path="url(#englishSubjectArch)"/></svg></span></button><p class="chosen-ink-hint">Move your cursor or tap to discover your world.</p></div><div class="story-auth chosen-journey-page"><div class="book-journey-map"><div class="book-journey-reveal">  <img src="${artwork}map-portrait.png" alt="Your learning journey: Keypass, Voice Station, Spellscript, Catch-Up Express, Inkventure, Reading Lab and Post-Test"><span class="book-map-start-label">Start →</span></div><button class="book-map-sensor" type="button" aria-label="Start your learning journey" aria-describedby="journeyStartHint"></button><p class="journey-start-instruction" id="journeyStartHint">Move your cursor or tap to find Start, then click it.</p></div></div>`);
   app.querySelector('.story-screen').classList.add('chosen-subject-screen');
   app.querySelector('.story-backdrop').src=artwork+'discovery-blank.png';
   const subject=app.querySelector('.chosen-subject-reveal');
@@ -165,14 +144,14 @@
   const select=(id,label,values)=>`<div class="story-select-field"><span id="${id}Label">${label}</span><div class="story-select"><select class="story-native-select" id="${id}" name="${id}" required tabindex="-1" aria-hidden="true"><option value="">Choose…</option>${values.map(v=>`<option>${v}</option>`).join('')}</select><button class="story-select-trigger" type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-required="true" aria-controls="${id}Options" aria-labelledby="${id}Label ${id}Value"><span id="${id}Value">Choose…</span><span aria-hidden="true">⌄</span></button><div class="story-select-options" id="${id}Options" role="listbox" aria-labelledby="${id}Label" hidden>${values.map((v,i)=>`<div id="${id}Option${i}" role="option" aria-selected="false" data-value="${v}">${v}</div>`).join('')}</div></div></div>`;
   const lrnField=`<div class="story-lrn-field">${input('signupLrn','Official LRN','text','inputmode="numeric" pattern="[0-9]{12}" minlength="12" maxlength="12" autocomplete="off" aria-describedby="signupLrnHelp"')}<small id="signupLrnHelp">Use the assigned LRN; do not invent one. <a href="https://lis.deped.gov.ph" target="_blank" rel="noopener noreferrer">Open DepEd LIS</a>.</small></div>`;
   const fields=role==='student'
-   ?`${input('signupLastName','Last name','text','autocomplete="family-name"')}${input('signupFirstName','First name','text','autocomplete="given-name"')}<label>M.I.<input name="signupMiddleInitial" maxlength="1" autocomplete="additional-name"></label>${lrnField}${input('signupEmail','Email','email','autocomplete="email"')}${select('signupGrade','Grade',['7','8','9','10'])}${input('signupSection','Section')}${select('signupGender','Gender',['Female','Male','Prefer not to say'])}${select('signupLearningArea','Learning area',['English','Filipino','Mathematics'])}${input('signupTeacherName','Teacher name')}`
-   :`${input('signupTeacherName','Name','text','autocomplete="name"')}${select('signupLearningArea','Learning area',['English','Filipino','Mathematics'])}${input('signupCode','Code')}`;
+   ?`${input('signupLastName','Last name','text','autocomplete="family-name"')}${input('signupFirstName','First name','text','autocomplete="given-name"')}<label>M.I.<input name="signupMiddleInitial" maxlength="1" autocomplete="additional-name"></label>${lrnField}${input('signupEmail','Email','email','autocomplete="email"')}${select('signupGrade','Grade',['7','8','9','10'])}${input('signupSection','Section')}${select('signupGender','Gender',['Female','Male','Prefer not to say'])}${input('signupTeacherName','Teacher name')}`
+   :`${input('signupTeacherName','Name','text','autocomplete="name"')}${input('signupCode','Code')}`;
   app.innerHTML=frame('login',`<div class="story-auth story-register" data-registration="${role}"><p class="story-kicker">Your academy enrolment</p><h1>${role==='student'?'Student':'Teacher'} registration</h1><form class="story-signup-form" novalidate onsubmit="submitSignupForm(event,'${role}')"><div class="story-fields">${fields}<label>Password<span class="story-password"><input id="signupPassword" name="signupPassword" type="password" placeholder="Password" minlength="8" autocomplete="new-password" required><button type="button" aria-label="Show password" onclick="toggleSignupPassword(this)">Show</button></span></label></div><p class="signup-form-status" role="status" aria-live="polite"></p><button class="story-enter" type="submit">Create My Account ✦</button></form></div><button class="story-back" type="button" onclick="changeJoiningRole()">← Change account type</button>`);const email=app.querySelector('[name=signupEmail]');if(email&&signupEmail)email.value=signupEmail
  };
  render=function(){
   renderStartupSlide.cleanup?.();
   releaseOwl();
-  if(!['startup','dial-preview','login','signup','subject','areas-preview','subjects-spread','journey','map','subject-task'].includes(page))return originalRender();
+  if(!['startup','dial-preview','login','signup','subject','areas-preview','subjects-spread','journey','map'].includes(page))return originalRender();
   quiet();
   if(page==='startup'){joiningRole='';signupEmail='';renderStartupSlide();}
   else if(page==='dial-preview')renderDialPreview();
@@ -180,22 +159,20 @@
   else if(page==='signup')renderSignup();
   else if(page==='subject'||page==='areas-preview')renderDiscovery();
   else if(page==='subjects-spread'){
-   app.innerHTML=frame('login',`<div class="learning-area-heading"><p>The enchanted academy of reading</p><h1>Choose Your<br>Learning Area</h1><span aria-hidden="true">✦</span></div><div class="story-auth learning-subjects"><div class="learning-subject-list">${['English','Filipino','Mathematics'].map((name,i)=>`<button class="learning-subject-card" type="button" onclick="chooseLearningArea('${name}')"><span class="learning-subject-image" style="--subject-position:${i*50}%" aria-hidden="true"></span><span class="learning-subject-label"><strong>${name}</strong><small>Begin your adventure →</small></span></button>`).join('')}</div></div><button class="story-back" onclick="go('areas-preview')">← Back</button>`);
+   app.innerHTML=frame('login',`<div class="learning-area-heading"><p>The enchanted academy of reading</p><h1>Choose Your<br>Learning Area</h1><span aria-hidden="true">✦</span></div><div class="story-auth learning-subjects"><div class="learning-subject-list">${['English'].map((name,i)=>`<button class="learning-subject-card" type="button" onclick="chooseLearningArea('${name}')"><span class="learning-subject-image" style="--subject-position:${i*50}%" aria-hidden="true"></span><span class="learning-subject-label"><strong>${name}</strong><small>Begin your adventure →</small></span></button>`).join('')}</div></div><button class="story-back" onclick="go('areas-preview')">← Back</button>`);
    app.querySelector('.story-screen').classList.add('subject-selection-screen');
    app.querySelector('.story-backdrop').src=artwork+'learning-blank.png';
   }
-  else if(page==='subject-task'&&window.READwySubjectLabs)window.READwySubjectLabs.renderTask();
-  else if(page==='map'&&selectedLearningArea!=='English'&&window.READwySubjectLabs)window.READwySubjectLabs.renderMap();
   else if(page==='journey'){
    renderChosenWorld();
   }
-  else app.innerHTML=`<section class="story-screen journey-panorama"><div class="journey-scroll" tabindex="0" aria-label="Learning journey. Scroll left or right to explore."><div class="journey-wide-art"><img class="journey-landscape-hd" src="${artwork}map-reference.png" width="1672" height="940" alt="Your Learning Journey: Reading Check-In, Voice Station, Story Depot, Catch-Up Express, InterV, Reading Lab and Post-Test" decoding="async" fetchpriority="high"><div class="story-destinations">${MAP_DESTINATIONS.map(mapStageButton).join('')}</div></div></div></section>`;
+  else app.innerHTML=`<section class="story-screen journey-panorama"><div class="journey-scroll" tabindex="0" aria-label="Learning journey. Scroll left or right to explore."><div class="journey-wide-art">  <img class="journey-landscape-hd" src="${artwork}map-reference.png" width="1672" height="940" alt="Your Learning Journey: Keypass, Voice Station, Spellscript, Catch-Up Express, Inkventure, Reading Lab and Post-Test" decoding="async" fetchpriority="high"><div class="story-destinations">${MAP_DESTINATIONS.map(mapStageButton).join('')}</div></div></div></section>`;
   if(['journey','map'].includes(page)&&app.querySelector('.story-screen')){
    const destination=page==='map'?'journey':'subject';
    const label=page==='map'?'Back to book':'Learning areas';
    app.querySelector('.story-screen').insertAdjacentHTML('beforeend',`<button class="journey-back" type="button" onclick="go('${destination}')"><span class="journey-back-arrow" aria-hidden="true">&#8592;</span><span>${label}</span><span class="journey-back-star" aria-hidden="true">&#10022;</span></button>`);
   }
-  if(selectedLearningArea==='English'||!['journey','map','subject-task'].includes(page))setOwl(page);
+  setOwl(page);
  };
  let openSelect=null,typeBuffer='',typeTime=0;
  function closeSelect(){if(!openSelect)return;openSelect.querySelector('.story-select-options').hidden=true;const trigger=openSelect.querySelector('.story-select-trigger');trigger.setAttribute('aria-expanded','false');trigger.removeAttribute('aria-activedescendant');openSelect.closest('.story-select-field').style.zIndex='';openSelect=null}
