@@ -300,6 +300,8 @@ body:has(.rw-shop) #rwBadge{display:none!important}
   function fitTop() {
     const back = document.querySelector('.journey>.back'), btn = document.querySelector('.rw-shop-open'), top = document.querySelector('.pf-top');
     if (!back || !btn || !top) return;
+    // BACK appears a moment after the page: until it has a size, keep the default spot and check again soon.
+    if (!back.getBoundingClientRect().width) { btn.style.removeProperty('left'); btn.style.removeProperty('top'); clearTimeout(fitTop.wait); fitTop.wait = setTimeout(fitTop, 250); return }
     const W = innerWidth, H = innerHeight, gap = 8;
     const parts = [...top.children].filter(k => k.getBoundingClientRect().width > 0 || k.style.zoom);
     parts.forEach(k => { k.style.zoom = '' }); top.style.removeProperty('padding-left'); top.style.removeProperty('padding-right'); ['left', 'right', 'width', 'transform', 'translate', 'margin-left', 'margin-right'].forEach(p => top.style.removeProperty(p));
