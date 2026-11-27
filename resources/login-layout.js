@@ -4,25 +4,18 @@
    - put the READwy title and its "Enchanted Academy" banner at the top-left, lined up with the
      Platform frame's left edge and sitting just above it. */
 (() => {
-  /* "Choose Your Subject": no glow (no white halo or glowing text), and the subjects and the
-     "Back to sign in" button sit together as one group with even spacing. */
-  const style = document.createElement('style');
-  style.id = 'readwy-subject-picker-style';
-  style.textContent = `
-#subjectPicker{justify-content:center!important}
-#subjectPicker .subject-choices{flex:0 0 auto!important;margin-top:clamp(14px,2.4dvh,22px)!important;padding:0!important;gap:clamp(10px,1.6dvh,16px)!important}
-#subjectPicker .subject-choice{min-height:clamp(60px,10.5dvh,92px);background:#f4efe3!important;border:1px solid #d9c38a!important;
- box-shadow:0 3px 8px rgba(8,30,20,.35)!important;filter:none!important}
-#subjectPicker .subject-choice:hover{background:#faf6ec!important}
-#subjectPicker .subject-choice[aria-pressed=true]{border-color:#b8862e!important;box-shadow:0 0 0 2px #b8862e,0 3px 8px rgba(8,30,20,.35)!important}
-#subjectPicker .subject-choice span{text-shadow:none!important}
-#subjectPicker .subject-symbol{box-shadow:none!important}
-#subjectPicker h2{text-shadow:0 1px 2px rgba(0,0,0,.45)!important}
-#subjectPicker .subject-back{margin:clamp(16px,2.6dvh,24px) auto 0;padding:8px 18px;border:1px solid #c9a14a;border-radius:999px;
- background:rgba(8,30,20,.35);color:#f3e2b0;font:600 13px system-ui,sans-serif}
-#subjectPicker .subject-back:hover{background:rgba(8,30,20,.55)}
-@media (max-height:700px){#subjectPicker .subject-choice{min-height:clamp(48px,9dvh,66px)}#subjectPicker .subject-back{margin-top:14px;margin-bottom:0;padding:6px 16px}}`;
-  document.head.append(style);
+  /* Teacher sign-up (no subject field): the rows no longer stretch to fill the card. Every row,
+     and the Create Account button, sits the same distance apart, and the whole form is centred
+     in the frame so the space above the title equals the space below the last line. */
+  const signupStyle = document.createElement('style');
+  signupStyle.id = 'readwy-teacher-signup-spacing';
+  signupStyle.textContent = `
+#signup.is-teacher{justify-content:center!important;gap:var(--rw-su-gap)!important}
+#signup.is-teacher{--rw-su-gap:clamp(12px,2.2dvh,20px)}
+#signup.is-teacher .signup-fields{flex:0 0 auto!important;align-content:start!important;row-gap:var(--rw-su-gap)!important}
+#signup.is-teacher .primary{margin-top:0!important}
+#signup.is-teacher>h2,#signup.is-teacher>header{margin-top:0!important;margin-bottom:0!important}`;
+  document.head.append(signupStyle);
 
   const GAP =() => Math.round(Math.min(56, Math.max(18, innerWidth * .03)));
   const MIN_CARD = 300;

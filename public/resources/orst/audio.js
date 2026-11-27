@@ -4,7 +4,7 @@ function orstFormatDuration(milliseconds){
  return String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
 }
 function orstElapsedMilliseconds(){return orstInterface.elapsed+(orstInterface.started===null?0:Math.max(0,Date.now()-orstInterface.started))}
-function orstAudioMeterState(){return orstInterface.audioMeter??={context:null,analyser:null,source:null,samples:null,peaks:[],lastPeak:0,frame:null}}
+function orstAudioMeterState(){return orstInterface.audioMeter??={context:null,analyser:null,source:null,samples:null,peaks:[],lastPeak:0,frame:null,lastFrame:0}}
 function orstStopAudioMeter(){
  const meter=orstAudioMeterState();if(meter.frame!==null&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(meter.frame);meter.frame=null;
  try{meter.source?.disconnect()}catch{}
@@ -12,7 +12,7 @@ function orstStopAudioMeter(){
  meter.context=null;meter.analyser=null;meter.source=null;meter.samples=null;
 }
 function orstStartAudioMeter(stream){
- orstStopAudioMeter();const meter=orstAudioMeterState();meter.peaks=[];meter.lastPeak=0;
+ orstStopAudioMeter();const meter=orstAudioMeterState();meter.peaks=[];meter.lastPeak=0;meter.lastFrame=0;meter.lastFrame=0;
  const AudioContext=window.AudioContext||window.webkitAudioContext;
  if(stream&&AudioContext){
   try{
@@ -60,7 +60,10 @@ function orstPaintAudioMeter(){
 function orstRunAudioMeter(){
  const meter=orstAudioMeterState();if(meter.frame!==null&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(meter.frame);
  const frame=()=>{
-  meter.frame=null;if(!app.querySelector('.orst-reading-meter'))return;orstPaintAudioMeter();
+  meter.frame=null;if(!app.querySelector('.orst-reading-meter'))return;
+   const now=performance.now();
+   if(document.hidden||now-meter.lastFrame<66){meter.frame=requestAnimationFrame(frame);return}
+   meter.lastFrame=now;orstPaintAudioMeter();
   const audio=orstInterface.playback;
   if((orstInterface.started!==null||(audio&&!audio.paused&&!audio.ended))&&typeof requestAnimationFrame==='function')meter.frame=requestAnimationFrame(frame);
  };

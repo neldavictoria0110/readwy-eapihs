@@ -59,12 +59,12 @@ function orstRefreshOwlMotion(canvas){
  state.canvas=canvas;state.stage=orstPaint.stage;
  if(!state.base)state.base=document.createElement('canvas');state.base.width=canvas.width;state.base.height=canvas.height;state.base.getContext('2d').drawImage(canvas,0,0);
  if(changed)state.mesh=orstOwlMesh(orstOwlPoses[state.stage]);
- if(!state.frame&&!document.hidden&&!orstReducedMotion())state.frame=requestAnimationFrame(orstAnimateOwl);
+ if(!state.frame&&!document.hidden&&!orstReducedMotion())state.frame=setTimeout(orstAnimateOwl,0);
 }
-function orstAnimateOwl(now){
+function orstAnimateOwl(){
  const state=orstOwlMotion;state.frame=0;
  if(!state.canvas?.isConnected||document.hidden||orstReducedMotion())return;
- if(now-state.last>=1000/30){state.last=now;orstDrawOwlFrame(now/1000)}
- state.frame=requestAnimationFrame(orstAnimateOwl);
+ orstDrawOwlFrame(performance.now()/1000);
+ state.frame=setTimeout(orstAnimateOwl,1000/30);
 }
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&orstOwlMotion.canvas?.isConnected&&!orstOwlMotion.frame)orstOwlMotion.frame=requestAnimationFrame(orstAnimateOwl)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&orstOwlMotion.canvas?.isConnected&&!orstOwlMotion.frame)orstOwlMotion.frame=setTimeout(orstAnimateOwl,0)});

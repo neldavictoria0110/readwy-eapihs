@@ -275,37 +275,6 @@ async function syncIntervention(store) {
   await writeStudentRecord(record);
 }
 
-// Mathematics and Filipino journeys (resources/subject-labs.js): the check-in score and one record per station
-// the learner has worked on. Written responses are sent for teacher review; they are never auto-scored.
-async function syncSubjectJourney(area, summary) {
-  if (currentProfile?.role !== 'student' || !currentProfile.teacherUid) return;
-  if (!['Mathematics', 'Filipino'].includes(area) || !summary || typeof summary !== 'object') return;
-  const grade = Number(summary.grade) || Number(currentProfile.grade);
-  const rows = [];
-  const placement = summary.placement;
-  if (placement && finite(placement.score) && finite(placement.total) && Number(placement.total) > 0) {
-    rows.push(reportEvent(
-      area, `g${grade}-check-in`, `${area} check-in · Grade ${grade}`, 'submitted',
-      `Check-in: ${placement.score}/${placement.total} correct. A starting point only, not a grade.`,
-      { grade, part: 'check-in' }, placement.completedAt, placement.score, placement.total, undefined
-    ));
-  }
-  for (const station of Array.isArray(summary.stations) ? summary.stations : []) {
-    if (!station || !Number(station.done)) continue;
-    const responses = Array.isArray(station.responses) ? station.responses.slice(0, 10) : [];
-    const choiceItems = Number(station.choiceItems) || 0;
-    const note = responses.length ? ` ${responses.length} written response${responses.length === 1 ? '' : 's'} saved for teacher review.` : '';
-    rows.push(reportEvent(
-      area, `g${grade}-station-${normalize(station.id).slice(0, 40)}`, `${area} · ${normalize(station.name).slice(0, 60)} · Grade ${grade}`,
-      responses.length ? 'awaiting-review' : 'submitted',
-      `${Number(station.done)}/10 activities done; ${Number(station.correct) || 0}/${choiceItems} multiple-choice items correct${station.complete ? '; station mastered' : ''}.${note}`,
-      { grade, station: station.id, activitiesDone: Number(station.done), complete: !!station.complete, responses },
-      summary.updatedAt, choiceItems ? Number(station.correct) || 0 : undefined, choiceItems || undefined, undefined
-    ));
-  }
-  for (const row of rows) await writeStudentRecord(row);
-}
-
 function randomClassCode() {
   const bytes = crypto.getRandomValues(new Uint8Array(12));
   return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
@@ -321,7 +290,7 @@ async function signUpStudent(values) {
     const classroom = classSnapshot.data();
     if (!classroom.active || classroom.grade !== Number(values.grade) ||
       classroom.section.trim().toLowerCase() !== normalize(values.section).toLowerCase() ||
-      classroom.learningArea !== values.learningArea) {
+      (values.learningArea && classroom.learningArea !== values.learningArea)) {
       throw new Error('Grade, section, or learning area does not match the class code. Check with your teacher.');
     }
     const profile = {
@@ -543,7 +512,6 @@ const api = {
   saveInterventionReport,
   syncLegacyRecord,
   syncIntervention,
-  syncSubjectJourney,
   sendPasswordResetEmail: email => sendPasswordResetEmail(auth, normalize(email).toLowerCase())
 };
 window.readwyFirebase = api;

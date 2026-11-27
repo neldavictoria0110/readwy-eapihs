@@ -5,9 +5,7 @@ const READWY_TEACHER_JOURNEYS = [
   ['WST', 'Story Depot'],
   ['ARAL', 'Catch-Up Express learning journey'],
   ['Intervention', 'InterV intervention journey'],
-  ['SRA', 'READwy Reading Lab'],
-  ['Mathematics', 'Mathematics journey'],
-  ['Filipino', 'Filipino journey']
+  ['SRA', 'READwy Reading Lab']
 ];
 const READWY_TEACHER_GRADES = [7, 8, 9, 10, 11, 12];
 // School section names per grade, from the "Section Names" enrolment files (SY 2026–2027).
@@ -478,7 +476,7 @@ function readwyTPSectionsView(classes) {
           <form id="tpClassForm" class="tp-class-form">
             <label class="tp-field">Grade<select class="tp-select" name="grade" required>${READWY_TEACHER_GRADES.map(grade => `<option>${grade}</option>`).join('')}</select></label>
             <label class="tp-field">Section<select class="tp-select" name="section" required>${readwyTPSectionOptions(READWY_TEACHER_GRADES[0])}</select></label>
-            <label class="tp-field">Learning area<select class="tp-select" name="learningArea" required>${['English','Filipino','Mathematics'].map(area => `<option ${user?.learningArea === area ? 'selected' : ''}>${area}</option>`).join('')}</select></label>
+            <input type="hidden" name="learningArea" value="${readwyTPEscape(user?.learningArea || 'English')}">
             <label class="tp-field">Learners enrolled (class list)<input class="tp-input" name="enrolled" type="number" min="1" max="200" inputmode="numeric" placeholder="e.g. 50"></label>
             <button class="tp-btn primary" type="submit">Create class code</button>
           </form>
