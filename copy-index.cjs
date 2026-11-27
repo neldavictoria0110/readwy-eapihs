@@ -271,6 +271,10 @@ let application = pages.application
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/summary-(?:back|hd)\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/aral-train\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/firebase-client\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '');
+const storyStyleTag = /<style\b(?=[^>]*\bdata-source=["']resources\/new-story\.css["'])[^>]*>[\s\S]*?<\/style>/i;
+if (!storyStyleTag.test(application)) throw new Error('The new-story stylesheet source tag is missing.');
+const storyStyles = fs.readFileSync(path.join(root, 'resources/new-story.css'), 'utf8');
+application = application.replace(storyStyleTag, tag => `${tag.slice(0, tag.indexOf('>') + 1)}${storyStyles}</style>`);
 // GST's embedded book script is older than its source file; patch just the two
 // profile-spread lines so Gender appears and the form can be kept in sync/locked.
 for (const [oldText, newText, label] of [
@@ -294,6 +298,7 @@ const assetUrl = relativePath => {
 
 const embeddedSources = new Set([
   'resources/new-story.js',
+  'resources/subject-labs.js',
   'resources/navigation.js',
   'resources/startup-slide.js',
   'resources/single-entry.js',
@@ -304,6 +309,12 @@ const embeddedSources = new Set([
   'resources/orst/teacher-accounts.js',
   'resources/gst-book/book.js'
 ]);
+const subjectLabsTag = '<script data-source="resources/subject-labs.js"></script>';
+if (!application.includes('data-source="resources/subject-labs.js"')) {
+  const newStoryTag = /<script\b(?=[^>]*\bdata-source=["']resources\/new-story\.js["'])[^>]*>[\s\S]*?<\/script>/i;
+  if (!newStoryTag.test(application)) throw new Error('The new-story source tag is missing.');
+  application = application.replace(newStoryTag, tag => tag + subjectLabsTag);
+}
 application = application.replace(
   /<script\b([^>]*\bdata-source=["']([^"']+)["'][^>]*)>([\s\S]*?)<\/script>/gi,
   (tag, attributes, source) => {
@@ -476,6 +487,7 @@ const publicRoot = path.join(root, 'public');
 fs.mkdirSync(path.join(publicRoot, 'resources'), { recursive: true });
 for (const relativePath of [
   'resources/new-story.js',
+  'resources/subject-labs.js',
   'resources/station-scene.js',
   'resources/interv/welcome.js',
   'resources/teacher-portal.js',
