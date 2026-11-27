@@ -1124,6 +1124,18 @@ body:has(.rl-screen) #caption .rl-cap-av{width:52px;height:52px}
  .rl-db-grid{flex:none;overflow:visible;grid-template-rows:auto auto auto}
  .rl-db-map{align-self:start}
 }
+/* Keep quiz answers and actions in normal flow; scroll the scene when they exceed the viewport. */
+.scene.rl-native:has(.rl-quiz){overflow-y:auto;overflow-x:hidden}
+.rl-quiz.rl-screen{height:auto;min-height:100dvh;overflow:visible}
+.rl-quiz .rl-s-main{flex:0 0 auto;min-height:0}
+.rl-quiz .rl-q-opts{flex:0 0 auto;min-height:auto}
+.rl-quiz .rl-q-opt{flex:none}
+.rl-quiz .rl-q-actions{position:static}
+@media(min-width:1024px) and (max-height:760px){
+ .rl-quiz .rl-q-card{padding:12px 18px;gap:6px}
+ .rl-quiz .rl-q-text{margin:0}
+ .rl-quiz .rl-q-opts{gap:6px}
+}
 </style></head>
 <body>
 <div id="world"></div><div id="sheet" role="dialog" aria-modal="true"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
