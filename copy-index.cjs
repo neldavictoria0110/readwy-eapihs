@@ -299,6 +299,7 @@ const assetUrl = relativePath => {
 
 const embeddedSources = new Set([
   'resources/new-story.js',
+  'resources/sra/express.js',
   'resources/navigation.js',
   'resources/startup-slide.js',
   'resources/single-entry.js',
