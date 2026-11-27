@@ -185,7 +185,7 @@ function recordsFromLocalKey(key, value) {
       if (!task?.complete) continue;
       const responses = Array.isArray(task.rounds) ? task.rounds.reduce((sum, round) => sum + (round?.answers?.length || 0), 0) : 0;
       rows.push(reportEvent(
-        'ARAL', `week-${week}-association`, `ARAL · Week ${week} · Word association`, 'completed',
+        'ARAL', `week-${week}-association`, `Catch-Up Express · Week ${week} · Word association`, 'completed',
         `The four word-association rounds were submitted. ${responses} responses were saved; this is a completion record, not an automatic mastery score.`,
         { week: Number(week), objective: 'Generate associated words from given prompts', roundsCompleted: 4, responses },
         task.submittedAt, undefined, undefined, undefined
@@ -199,7 +199,7 @@ function recordsFromLocalKey(key, value) {
       const submitted = Object.values(activities).filter(activity => activity?.submitted);
       if (!submitted.length) continue;
       rows.push(reportEvent(
-        'ARAL', `week-1-session-${session}`, `ARAL · Week 1 · Session ${session}`, 'submitted',
+        'ARAL', `week-1-session-${session}`, `Catch-Up Express · Week 1 · Session ${session}`, 'submitted',
         `${submitted.length} submitted activity record${submitted.length === 1 ? '' : 's'}; teacher review is still needed to determine mastery.`,
         { week: 1, session: Number(session), activitiesSubmitted: submitted.length, completion: true },
         submitted.map(item => item.submittedAt).filter(Boolean).sort().pop(), undefined, undefined, undefined
@@ -211,7 +211,7 @@ function recordsFromLocalKey(key, value) {
     for (const [week, record] of Object.entries(value)) {
       if (!record?.status) continue;
       rows.push(reportEvent(
-        'ARAL', `weekly-review-${week}`, `ARAL · Week ${week} · Teacher review`, 'completed',
+        'ARAL', `weekly-review-${week}`, `Catch-Up Express · Week ${week} · Teacher review`, 'completed',
         `Recorded mastery status: ${record.status}.`,
         { week: Number(week), teacherStatus: String(record.status).slice(0, 80) },
         record.date, undefined, undefined, undefined

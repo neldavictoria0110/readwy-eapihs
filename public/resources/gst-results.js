@@ -2,13 +2,13 @@
    1. The results page no longer shows which answers are correct (no green numbers, no right/wrong marks
       when reviewing an answer).
    2. While reviewing, a "Results" button returns to the results page from any question.
-   3. "What my score means" opens the placement rules (Reading Check-In 1–15 ARAL, 16–27 InterV, 28–40 SRA), redrawn
+   3. "What my score means" opens the placement rules (Reading Check-In 1–15 Catch-Up Express, 16–27 InterV, 28–40 SRA), redrawn
       sharply from the teacher guide picture, with the learner's own range highlighted. */
 (() => {
   const isGST = () => !document.querySelector('.xc,.xo');
   const PROGRAMS = {
-    aral: {range: 'Check-In 1–15', level: 'Frustration level', pill: 'ARAL Program',
-      text: 'You will start with the ARAL Program. It builds your reading skills step by step, with a teacher guiding you through short lessons and practice.'},
+    aral: {range: 'Check-In 1–15', level: 'Frustration level', pill: 'Catch-Up Express',
+      text: 'You will start with the Catch-Up Express. It builds your reading skills step by step, with a teacher guiding you through short lessons and practice.'},
     interv: {range: 'Check-In 16–27', level: '', pill: 'InterV Program',
       text: 'You will join the InterV Program. Its stations give you focused practice on the reading skills you still need.'},
     sra: {range: 'Check-In 28–40', level: '', pill: 'Reading Lab',

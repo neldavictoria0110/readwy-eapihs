@@ -3,7 +3,7 @@ const READWY_TEACHER_JOURNEYS = [
   ['Post-Test', 'Post-Test Express'],
   ['ORST', 'Oral Reading Screening Test'],
   ['WST', 'Writing Screening Test'],
-  ['ARAL', 'ARAL learning journey'],
+  ['ARAL', 'Catch-Up Express learning journey'],
   ['Intervention', 'InterV intervention journey'],
   ['SRA', 'READwy Reading Lab']
 ];
@@ -327,8 +327,8 @@ function readwyTPInterventionForm(student) {
     </form></section>`;
 }
 // Stations shown on a learner's journey track, in classroom order.
-const READWY_TP_STATIONS = [['GST','Check-In'],['ORST','ORST'],['WST','WST'],['Post-Test','Post-test'],['ARAL','ARAL'],['Intervention','InterV'],['SRA','Reading Lab']];
-const READWY_TP_PROGRAMS = [['ARAL','ARAL','aral'],['Intervention','InterV','interv'],['SRA','Reading Lab','sra']];
+const READWY_TP_STATIONS = [['GST','Check-In'],['ORST','ORST'],['WST','WST'],['Post-Test','Post-test'],['ARAL','Catch-Up Express'],['Intervention','InterV'],['SRA','Reading Lab']];
+const READWY_TP_PROGRAMS = [['ARAL','Catch-Up Express','aral'],['Intervention','InterV','interv'],['SRA','Reading Lab','sra']];
 const READWY_TP_STAT_ART = {
   sections: '<svg viewBox="0 0 64 64"><circle cx="14" cy="24" r="7" fill="#60a5fa"/><path d="M2 52c0-9 5-15 12-15 3 0 6 1 8 3-3 4-5 8-5 12Z" fill="#3b82f6"/><circle cx="50" cy="24" r="7" fill="#60a5fa"/><path d="M62 52c0-9-5-15-12-15-3 0-6 1-8 3 3 4 5 8 5 12Z" fill="#3b82f6"/><circle cx="32" cy="19" r="9" fill="#3b82f6"/><path d="M16 54c0-11 7-18 16-18s16 7 16 18Z" fill="#1d4ed8"/></svg>',
   checks: '<svg viewBox="0 0 64 64"><rect x="12" y="10" width="40" height="49" rx="7" fill="#8b5cf6"/><rect x="18" y="18" width="28" height="35" rx="3" fill="#f5f3ff"/><rect x="23" y="5" width="18" height="10" rx="3" fill="#6d28d9"/><path d="m24 35 6 6 11-12" fill="none" stroke="#7c3aed" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>',

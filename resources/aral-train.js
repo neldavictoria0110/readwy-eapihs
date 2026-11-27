@@ -1,4 +1,4 @@
-/* ARAL Program: a moving train inside the station frame, and one-step-at-a-time locking.
+/* Catch-Up Express: a moving train inside the station frame, and one-step-at-a-time locking.
    - Weeks, platforms (sessions) and stops (activities) are tall train carriages pulled by a steam engine.
      The train faces right and rolls through the centre frame left to right: the engine comes in first,
      then carriage 1, 2, 3 … behind it, and they leave on the right, in a loop.
@@ -8,7 +8,7 @@
    - Weeks, platforms and stops open in order: the next one unlocks only when everything before it is finished.
      Finished items stay open for review. Locked carriages keep their colours under a LOCKED stamp.
      Teachers and the developer view are never locked.
-   Loaded after the app's own scripts (see copy-index.cjs), so it wraps the final versions of the ARAL functions. */
+   Loaded after the app's own scripts (see copy-index.cjs), so it wraps the final versions of the Catch-Up Express functions. */
 (() => {
   if (typeof renderAralTaskMenu !== 'function' || typeof aralStation !== 'function') return;
 
@@ -93,7 +93,7 @@
   }
 
   /* ---------- the train ---------- */
-  // Same locomotive as the Reading Express transition train (train-nav.js), in the ARAL brown and gold.
+  // Same locomotive as the Reading Express transition train (train-nav.js), in the Catch-Up Express brown and gold.
   const ENGINE = `<li class="at-engine" aria-hidden="true"><svg viewBox="0 0 110 78" preserveAspectRatio="xMidYMax meet"><defs><linearGradient id="atBoiler" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e1d4a"/><stop offset=".18" stop-color="#6f93f0"/><stop offset=".35" stop-color="#2f56c8"/><stop offset=".8" stop-color="#17307a"/><stop offset="1" stop-color="#0a1638"/></linearGradient><linearGradient id="atCab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0566e"/><stop offset=".3" stop-color="#b3263f"/><stop offset="1" stop-color="#5c0f1f"/></linearGradient><linearGradient id="atBr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e7ae"/><stop offset=".35" stop-color="#9a7428"/><stop offset=".6" stop-color="#f3dc98"/><stop offset="1" stop-color="#7a5a1f"/></linearGradient><radialGradient id="atLamp"><stop offset="0" stop-color="#fffbe6"/><stop offset=".5" stop-color="#ffd67a"/><stop offset="1" stop-color="#ffb84a" stop-opacity="0"/></radialGradient><radialGradient id="atSteam"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#eef1f6" stop-opacity=".7"/><stop offset="1" stop-color="#dfe4ec" stop-opacity="0"/></radialGradient></defs>
 <g class="at-steam">${[0, 1, 2, 3].map(k => `<circle cx="30" cy="10" r="6" fill="url(#atSteam)" style="animation-delay:${k * .4}s"/>`).join('')}</g>
 <path d="M23 14h14l-2 18H25Z" fill="url(#atBoiler)"/><rect x="21" y="12" width="18" height="4" rx="1.5" fill="url(#atBr)"/><rect x="8" y="30" width="66" height="28" rx="13" fill="url(#atBoiler)"/><rect x="26" y="30" width="3" height="28" fill="url(#atBr)"/><rect x="48" y="30" width="3" height="28" fill="url(#atBr)"/><ellipse cx="44" cy="30" rx="7" ry="4" fill="url(#atBr)"/><rect x="68" y="16" width="38" height="44" rx="5" fill="url(#atCab)"/><rect x="64" y="12" width="46" height="6" rx="3" fill="#2a0a12"/><rect x="75" y="22" width="24" height="15" rx="2" fill="#ffe3a0" stroke="url(#atBr)" stroke-width="2"/><circle class="at-lamp" cx="5" cy="40" r="10" fill="url(#atLamp)"/><circle cx="7" cy="40" r="4" fill="url(#atBr)"/><path d="M8 54 L0 64 H16Z" fill="url(#atBr)"/>
@@ -133,7 +133,7 @@
   const offstage = () => safe(() => {
     if (performance.now() - rwMovingAt < 400) return true;
     if (document.hidden || document.documentElement.classList.contains('program-loading')) return true;
-    // Moving between ARAL pages (weeks, platforms, stops) plays the wand cover: the new page is drawn under it
+    // Moving between Catch-Up Express pages (weeks, platforms, stops) plays the wand cover: the new page is drawn under it
     // and the cover fades for about a second, so wait until that page change has fully finished.
     if (typeof navigationBusy !== 'undefined' && navigationBusy) return true;
     if (document.documentElement.classList.contains('book-traveling')) return true;
@@ -204,9 +204,9 @@
         go: goText(state, counts[k].done > 0), label: `Week ${w}: ${W.title}`};
     });
     const all = counts.reduce((a, c) => a + c.done, 0);
-    app.innerHTML = aralStation({label: 'Reading Express · ARAL Program', title: '8-Week Learning Journey', sub: 'Every week is a new station. Every activity is a stop.',
+    app.innerHTML = aralStation({label: 'READwy · Catch-Up Express', title: '8-Week Learning Journey', sub: 'Every week is a new station. Every activity is a stop.',
       say: all ? `Welcome back, reader! You have cleared ${all} stops so far. Week ${next < 0 ? ws[ws.length - 1] : ws[next]} is waiting for you!` : 'Hello, reader! I’m Tala. Each week is a carriage on our reading train. Let’s board Week 1!',
-      plate: true, back: "go('map')", board: aralRail(done, ws.length, 'weeks completed') + trainBoard(items)});
+      plate: true, back: "go('map')", board: aralRail(done, ws.length, 'weeks completed') + trainBoard(items) + '<p class="cu-credit" style="margin:10px 18px 4px;font:600 15px/1.35 Nunito,sans-serif;color:#f3e4c0;opacity:.9;text-align:center">Activities adapted from DepEd ARAL-Reading Plus Key Stage 3 learning materials (Department of Education). Passages and pictures marked READwy are original.</p>'});
     afterRender();
     setTimeout(() => safe(() => readwyOwlAuto('aral')), 900);
   };
@@ -331,8 +331,8 @@
 .at-loop.at-moving .at-wheels i,.at-loop.at-moving .at-wheel{animation-play-state:running!important}`;
   document.head.append(css);
 
-  // If the learner is already on an ARAL page when this loads, redraw it with the new look and locks.
+  // If the learner is already on an Catch-Up Express page when this loads, redraw it with the new look and locks.
   safe(() => { if (typeof activeModule !== 'undefined' && activeModule === 'aral' && document.querySelector('.st-screen') && typeof renderAral === 'function') renderAral(); });
-  // On slow phones the ARAL page can draw before every helper script has loaded; redraw once the page is fully loaded.
+  // On slow phones the Catch-Up Express page can draw before every helper script has loaded; redraw once the page is fully loaded.
   if (typeof addEventListener === 'function') addEventListener('load', () => safe(() => { if (typeof activeModule !== 'undefined' && activeModule === 'aral' && document.querySelector('.st-screen') && !(typeof aralLessonView !== 'undefined' && aralLessonView.active) && typeof renderAral === 'function') renderAral(); }));
 })();

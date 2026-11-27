@@ -211,7 +211,7 @@ function traitScore(text){const base=scoreEssay(),c=Object.fromEntries(base.crit
   sum,points,total:20,average:avgT,overall:TRAIT_LEVELS[Math.round(avgT)],proficient:avgT>=4,short,words:words(text)}}
 function wstTotal(partB){const a=pLoad('wst_skills_'+G,null);if(!a||!partB)return null;const score=a.score+partB.points,pct=score/40*100;
  return {score,total:40,percent:pct,partA:{score:a.score,total:a.total,writer:a.writer},partB:{score:partB.points,total:20,level:partB.overall},...wskLabels(pct)}}
-function nextStepsHTML(){let prog='';try{const s=PP?.readwyJourneyGate?.status?.();const N={aral:'ARAL Program',interv:'InterV Program',sra:'Reading Lab'};if(s&&s.program)prog=N[s.program]}catch(e){}
+function nextStepsHTML(){let prog='';try{const s=PP?.readwyJourneyGate?.status?.();const N={aral:'Catch-Up Express',interv:'InterV Program',sra:'Reading Lab'};if(s&&s.program)prog=N[s.program]}catch(e){}
  return `<div style="margin:0 0 12px;padding:12px 14px;border-radius:12px;background:#eef7e8;border:1.5px solid #8cc47a"><b style="font:800 1.05em Literata,Georgia,serif;color:#1f5c30">✅ What happens next</b>
   <ol style="margin:.4em 0 0;padding-left:1.2em;line-height:1.5"><li>Your WST is complete. Your answers and essay are saved and sent to your teacher.</li><li>Your teacher reviews your essay and confirms the final rating.</li>
   <li>Press <b>Return Home</b> to go back to your Journey Map.${prog?` Your next stop is the <b>${prog}</b>, chosen from your GST score.`:' Your next stop opens on the map.'}</li><li>Open <b>View Submission</b> any time to see your essay and scores.</li></ol></div>`}

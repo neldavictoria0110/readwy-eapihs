@@ -9,7 +9,7 @@
   const saved = read('journey_gate_' + key);
   // Worked out here from the learner's saved Reading Check-In, so the ticket is right as soon as the learner enters
   // (same rules as journey-gate.js). Only "program finished" needs the app's saved check.
-  const NAMES = {aral: 'ARAL Program', interv: 'InterV Program', sra: 'Reading Lab'};
+  const NAMES = {aral: 'Catch-Up Express', interv: 'InterV Program', sra: 'Reading Lab'};
   // Exploration period (SY 2026–2027): same date as journey-gate.js — change both together.
   const EXPLORE_UNTIL = Date.parse('2027-06-01T00:00:00+08:00');
   const STAMPED = ['gst', 'orst', 'wst', 'reports'];
@@ -17,7 +17,7 @@
     if (u.role === 'teacher') return null;
     const grade = Number(u.grade) || 7;
     if (Date.now() < EXPLORE_UNTIL) {
-      const msg = 'The Reading Check-In, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the ARAL, InterV and Reading Lab programs.';
+      const msg = 'The Reading Check-In, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
       return {exploring: true,
         open: {gst: false, orst: false, wst: false, aral: true, interv: true, sra: true, reports: false},
         messages: {gst: msg, orst: msg, wst: msg, reports: 'The Post-Test opens with the Reading Check-In at the start of School Year 2027–2028 (June 1, 2027).'}};
