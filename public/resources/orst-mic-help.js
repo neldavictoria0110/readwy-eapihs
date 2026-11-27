@@ -1,4 +1,4 @@
-/* ORST: when the microphone is refused, work out WHY and give the matching steps
+/* Voice Station: when the microphone is refused, work out WHY and give the matching steps
    (the original message only said "Microphone denied"). The three usual causes:
    1. an editor's built-in preview window (e.g. VS Code) — it has no microphone access at all;
    2. the browser has blocked the microphone for this site;

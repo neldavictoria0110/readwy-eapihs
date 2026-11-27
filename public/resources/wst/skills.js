@@ -1,7 +1,7 @@
-/* WST Part A: Writing Skills (multiple choice, 20 items per grade).
+/* Story Depot Part A: Writing Skills (multiple choice, 20 items per grade).
    Written for READwy. It covers the same skill areas as standardized writing tests such as the
    Test of Written Language (vocabulary, spelling, punctuation and capitalization, logical sentences,
-   sentence combining) plus paragraph organization, with Philippine contexts and the WST topic of each grade.
+   sentence combining) plus paragraph organization, with Philippine contexts and the Story Depot topic of each grade.
    Scoring uses the same DepEd scales as the essay: percent -> DO 8 s. 2015 transmuted grade -> descriptor,
    DO 73 s. 2012 level of proficiency (Beginning to Advanced) and writer level
    (Independent / Instructional / Frustration, adapted from Phil-IRI).
@@ -94,7 +94,7 @@ const WSK_ITEMS={
 ['Which evidence best supports the claim “Hot classrooms reduce learning”?',['Many learners like cold drinks.','A study found that test scores drop as classroom temperature rises above 30 °C.','Summer is the best time for vacations.','Some classrooms have windows.'],1],
 ['What should a strong concluding paragraph of an argument do?',['Introduce a brand-new topic.','List every source again word for word.','Restate the claim and leave readers with a final reason or call to action.','Apologize for the writer’s opinion.'],2]]
 };
-const WSK_N=20,WSK_WEIGHT=.4; // overall WST = 40% Part A + 60% essay
+const WSK_N=20,WSK_WEIGHT=.4; // overall Story Depot = 40% Part A + 60% essay
 const wskEsc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const wskItems=()=>(WSK_ITEMS[G]||WSK_ITEMS[7]).map((it,i)=>({n:i+1,s:WSK_ORDER[i],q:it[0],o:it[1],a:it[2]}));
 function wskState(){ST.skills=ST.skills||{i:0,ans:{}};return ST.skills}
@@ -164,7 +164,7 @@ function wstSkills(){const saved=pLoad('wst_skills_'+G,null);if(saved)return wsk
  setTimeout(()=>{try{say('Part A. Choose the best answer for each question. Then you will write your essay.')}catch(e){}},400)}
 function wskQuestion(i){const st=wskState(),items=wskItems();i=Math.max(0,Math.min(WSK_N-1,i));st.i=i;persist();
  const it=items[i],done=Object.keys(st.ans).length,all=done===WSK_N;
- const w=wskMount(`<div class="main"><div class="kick"><span>WST Part A · Writing Skills</span><span class="wchip">${WSK_SKILLS[it.s]}</span></div>
+ const w=wskMount(`<div class="main"><div class="kick"><span>Story Depot Part A · Writing Skills</span><span class="wchip">${WSK_SKILLS[it.s]}</span></div>
   <h2>Question ${it.n} of ${WSK_N}</h2><div class="q">${it.q}</div>
   <div class="opts" role="radiogroup" aria-label="Answer choices">${it.o.map((o,k)=>`<button type="button" class="opt${st.ans[it.n]===k?' on':''}" role="radio" aria-checked="${st.ans[it.n]===k}" data-k="${k}"><b>${'ABCD'[k]}</b><span>${wskEsc(o)}</span></button>`).join('')}</div></div>
   <div class="stub"><small>PART A</small><h3>${done} / ${WSK_N}<br><small>ANSWERED</small></h3><div class="prog"><i style="width:${done/WSK_N*100}%"></i></div>
@@ -184,7 +184,7 @@ function wskSubmit(){const st=wskState(),miss=wskItems().filter(x=>st.ans[x.n]==
    Source: Education Northwest, 6+1 Trait® Writing Rubrics, Grades 3–12 (2021).
    Six traits are scored on its 6-point scale (1 Beginning, 2 Emerging, 3 Developing, 4 Capable,
    5 Experienced, 6 Exceptional; 4–6 = proficient). Presentation (+1) is not scored: the essay is typed.
-   Part B points = trait total ÷ 36 × 20. WST total = Part A (20) + Part B (20) = 40 points. */
+   Part B points = trait total ÷ 36 × 20. Story Depot total = Part A (20) + Part B (20) = 40 points. */
 const TRAIT_LEVELS=['','Beginning','Emerging','Developing','Capable','Experienced','Exceptional'];
 const TRAITS=[
  {k:'ideas',name:'Ideas',q:'Does the writer engage the reader with fresh information or perspective on a focused topic?',d:['','No clear main idea; few or no details.','A main idea is hinted at; details are thin or off-topic.','A main idea is present; details are general or uneven.','A clear, focused main idea supported by relevant details from the sources.','A focused main idea well developed with specific, well-chosen evidence.','A sharply focused main idea, richly developed with insightful evidence.']},
@@ -213,16 +213,16 @@ function wstTotal(partB){const a=pLoad('wst_skills_'+G,null);if(!a||!partB)retur
  return {score,total:40,percent:pct,partA:{score:a.score,total:a.total,writer:a.writer},partB:{score:partB.points,total:20,level:partB.overall},...wskLabels(pct)}}
 function nextStepsHTML(){let prog='';try{const s=PP?.readwyJourneyGate?.status?.();const N={aral:'Catch-Up Express',interv:'InterV Program',sra:'Reading Lab'};if(s&&s.program)prog=N[s.program]}catch(e){}
  return `<div style="margin:0 0 12px;padding:12px 14px;border-radius:12px;background:#eef7e8;border:1.5px solid #8cc47a"><b style="font:800 1.05em Literata,Georgia,serif;color:#1f5c30">✅ What happens next</b>
-  <ol style="margin:.4em 0 0;padding-left:1.2em;line-height:1.5"><li>Your WST is complete. Your answers and essay are saved and sent to your teacher.</li><li>Your teacher reviews your essay and confirms the final rating.</li>
+  <ol style="margin:.4em 0 0;padding-left:1.2em;line-height:1.5"><li>Your Story Depot is complete. Your answers and essay are saved and sent to your teacher.</li><li>Your teacher reviews your essay and confirms the final rating.</li>
   <li>Press <b>Return Home</b> to go back to your Journey Map.${prog?` Your next stop is the <b>${prog}</b>, chosen from your GST score.`:' Your next stop opens on the map.'}</li><li>Open <b>View Submission</b> any time to see your essay and scores.</li></ol></div>`}
 
 function wskResult(r){const col=WSK_COL[r.writer];
  const skills=Object.entries(WSK_SKILLS).map(([k,name])=>{const b=r.bySkill[k]||{c:0,t:0},p=b.t?b.c/b.t*100:0;return `<div class="sk"><span>${name}</span><span>${b.c}/${b.t}</span><div class="bar"><i style="width:${p}%;background:${p>=75?'#2f7d1a':p>=50?'#c98a00':'#b8283a'}"></i></div></div>`}).join('');
  const goB=!ST.startedAt;
- wskMount(`<div class="main"><div class="kick"><span>WST Part A · Writing Skills · Done</span><span class="wchip">Grade ${G}</span></div>
+ wskMount(`<div class="main"><div class="kick"><span>Story Depot Part A · Writing Skills · Done</span><span class="wchip">Grade ${G}</span></div>
   <div class="res"><div class="big">${r.score}/${r.total}<small>PART A POINTS</small></div>
    <div><span class="lvl" style="background:${col}">Part A: ${r.writer}</span><div class="facts"><span>Proficiency: ${r.proficiency}</span><span>Descriptor: ${r.descriptor}</span></div>
-   <p class="note">This is only half of your WST. Your final writing level comes from Part A + Part B (40 points).</p></div></div>
+   <p class="note">This is only half of your Story Depot. Your final writing level comes from Part A + Part B (40 points).</p></div></div>
   <div class="skills"><div class="skh">PART A SCORE BY SKILL</div>${skills}</div></div>
   <div class="stub nextb"><small>WHAT HAPPENS NEXT</small><h3>Part B<br><span style="font-size:.75em">Writing Activity</span></h3>
    <ol><li>Read the writing prompt and the 3 sources.</li><li>Plan your ideas.</li><li>Write your essay (at least ${MINW[G]||150} words) in <b>45 minutes</b>.</li><li>Review and submit.</li></ol>
@@ -231,11 +231,11 @@ function wskResult(r){const col=WSK_COL[r.writer];
 function wskToEssay(){wskClose();
  if(!ST.startedAt){ST.startedAt=Date.now();ST.deadline=ST.startedAt+LIMIT;pSave('wst_timer_'+G,{durationMs:LIMIT,startedAt:ST.startedAt,deadline:ST.deadline,finishedAt:null,remainingMs:LIMIT});persist();notice('⏱ Part B: Writing Activity. Your 45 minutes start now.')}
  resume()}
-/* Part B result + WST total (40) */
+/* Part B result + Story Depot total (40) */
 function partBHTML(rec){const tr=rec.traits,tot=rec.total40;if(!tr)return '';
  const lvlCol=l=>l>=4?'#2f7d1a':l===3?'#c98a00':'#b8283a';
  const head=tot?`<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;padding:12px 14px;border-radius:12px;background:#0d1f45;color:#f3ead6">
-   <b style="font:800 1.25em Literata,Georgia,serif;color:#ffe08a">WST total: ${tot.score} / 40</b>
+   <b style="font:800 1.25em Literata,Georgia,serif;color:#ffe08a">Story Depot total: ${tot.score} / 40</b>
    <span class="fact" style="background:${WSK_COL[tot.writer]};color:#fff;border-color:${WSK_COL[tot.writer]}"><small style="color:#fff3c4">WRITER LEVEL</small>${tot.writer}</span>
    <span class="fact" style="background:#fffaf0;color:#0d1f45"><small style="color:#8a6a2e">PROFICIENCY</small>${tot.proficiency}</span><span class="fact" style="background:#fffaf0;color:#0d1f45"><small style="color:#8a6a2e">PART A · SKILLS</small>${tot.partA.score}/20</span><span class="fact" style="background:#fffaf0;color:#0d1f45"><small style="color:#8a6a2e">PART B · WRITING</small>${tot.partB.score}/20</span></div>
    <p style="margin:.2em 0 .6em">${LEVEL_NOTE[tot.writer]}</p>`:'';
@@ -244,12 +244,12 @@ function partBHTML(rec){const tr=rec.traits,tot=rec.total40;if(!tr)return '';
   <p style="font-size:.8em;color:#5b5f6e">Part B is estimated automatically with the 6+1 Trait® Writing rubric (Education Northwest, 2021). Your teacher confirms the final rating.</p>`}
 function rubric61HTML(){const pts=[['Part A · Writing Skills','20 multiple-choice items: vocabulary, spelling, punctuation & capitalization, grammar & logical sentences, sentence combining, paragraph organization','20'],['Part B · Writing Activity','Essay scored with 6+1 Trait® Writing: six traits × 1–6 points; trait total ÷ 36 × 20','20'],['WST total','Part A + Part B','40']];
  const bands=[];let cur=null;for(let s=40;s>=0;s--){const L=wskLabels(s/40*100);if(!cur||cur.k!==L.proficiency){cur={k:L.proficiency,hi:s,lo:s,w:L.writer,d:L.descriptor};bands.push(cur)}else cur.lo=s}
- return `<h3 style="margin-top:0">How the WST is scored (40 points)</h3><table style="border-collapse:collapse;width:100%;font-size:.85em">${pts.map((r,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:6px;font-weight:800">${r[0]}</td><td style="padding:6px">${r[1]}</td><td style="padding:6px;text-align:center;font-weight:900">${r[2]}</td></tr>`).join('')}</table>
+ return `<h3 style="margin-top:0">How the Story Depot is scored (40 points)</h3><table style="border-collapse:collapse;width:100%;font-size:.85em">${pts.map((r,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:6px;font-weight:800">${r[0]}</td><td style="padding:6px">${r[1]}</td><td style="padding:6px;text-align:center;font-weight:900">${r[2]}</td></tr>`).join('')}</table>
  <h3>Part B rubric: 6+1 Trait® Writing</h3><p style="font-size:.85em">Each trait gets a level from 1 to 6: <b>1 Beginning · 2 Emerging · 3 Developing</b> (not yet proficient) · <b>4 Capable · 5 Experienced · 6 Exceptional</b> (proficient).</p>
  <div style="overflow:auto"><table style="border-collapse:collapse;width:100%;font-size:.78em"><tr style="background:#1d3466;color:#fff"><th style="padding:5px;text-align:left">Trait</th><th style="padding:5px">6 Exceptional</th><th style="padding:5px">4 Capable</th><th style="padding:5px">2 Emerging</th></tr>${TRAITS.map((t,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:5px;vertical-align:top"><b>${t.name}</b><br><small style="color:#5b5f6e">${t.q}</small></td><td style="padding:5px;vertical-align:top">${t.d[6]}</td><td style="padding:5px;vertical-align:top">${t.d[4]}</td><td style="padding:5px;vertical-align:top">${t.d[2]}</td></tr>`).join('')}</table></div>
  <h3>What the total means</h3><table style="border-collapse:collapse;width:100%;font-size:.85em"><tr style="background:#1d3466;color:#fff"><th style="padding:5px">Total (of 40)</th><th style="padding:5px">Level of proficiency</th><th style="padding:5px">Descriptor</th><th style="padding:5px">Writer level</th></tr>${bands.map((b,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:5px;text-align:center">${b.lo}–${b.hi}</td><td style="padding:5px">${b.k}</td><td style="padding:5px">${b.d}</td><td style="padding:5px">${b.w}</td></tr>`).join('')}</table>
  <p style="font-size:.8em;color:#5b5f6e">Sources: Education Northwest, 6+1 Trait® Writing Rubrics, Grades 3–12 (2021); DepEd Order No. 8, s. 2015 (transmutation and descriptors); DepEd Order No. 73, s. 2012 (levels of proficiency); writer levels adapted from the Phil-IRI (independent, instructional, frustration). Part A is a READwy screening test, not a nationally normed test.</p>`}
-/* toolbar chip: which part of the WST the learner is in */
+/* toolbar chip: which part of the Story Depot the learner is in */
 setInterval(()=>{try{if(document.hidden)return;const bar=document.getElementById('wstbar');if(!bar)return;let c=bar.querySelector('.wpart');
  if(!c){c=document.createElement('span');c.className='wpart';c.style.cssText='display:none;margin-left:.8em;padding:.15em .8em;border-radius:99px;background:linear-gradient(180deg,#ffd75e,#f0b323);color:#2b1a00;font:800 .82em "Source Sans 3",sans-serif;letter-spacing:.06em;white-space:nowrap';bar.querySelector('.brand')?.after(c)}
  const sc=typeof S!=='undefined'?S.scene:'',txt=document.getElementById('wsk')&&!ST.skillsDone?'PART A · WRITING SKILLS':['explore','plan','write','review'].includes(sc)?'PART B · WRITING ACTIVITY':'';

@@ -1,5 +1,5 @@
 /* The learner's details and photo come from sign-up and can be changed only in the Reading Check-In profile.
-   Every other journey (ORST, WST, Aral, InterV, SRA, post-test and the Student Profile page) shows the
+   Every other journey (Voice Station, Story Depot, Aral, InterV, SRA, post-test and the Student Profile page) shows the
    same details read-only: fields cannot be typed in, there is no Upload photo and no Save button. */
 (() => {
   const NOTE = '🔒 These details come from your sign-up. You can change them, and your photo, only in the Reading Check-In profile.';

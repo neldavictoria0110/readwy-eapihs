@@ -1,5 +1,5 @@
 /* Reading materials follow the grade the learner signed up with.
-   ORST and WST open on that grade, and the other grades' passages/tasks stay locked
+   Voice Station and Story Depot open on that grade, and the other grades' passages/tasks stay locked
    (GST already opens on the sign-up grade). The developer view and teachers are not locked. */
 (() => {
   const currentUser = () => (typeof user !== 'undefined' && user) || null;
@@ -38,11 +38,11 @@
     window[name].readwyGradeLocked = true;
   }
   const install = () => {
-    // ORST painted screen: actions like "grade:8".
+    // Voice Station painted screen: actions like "grade:8".
     wrap('xoAct', action => { const m = /^grade:(\d+)$/.exec(String(action)); return m ? Number(m[1]) : null; });
     wrap('orstChooseGrade', grade => Number(grade));
     wrap('wstChooseGrade', grade => Number(grade));
-    // Opening ORST or WST starts on the learner's own grade.
+    // Opening Voice Station or Story Depot starts on the learner's own grade.
     wrap('startORSTSpell', () => null, g => { selectedGrade = g; });
     wrap('openWST', () => null, g => { selectedGrade = g; });
   };

@@ -1,4 +1,4 @@
-/* Loaded last: replace legacy ORST renderers while leaving other learning modules intact. */
+/* Loaded last: replace legacy Voice Station renderers while leaving other learning modules intact. */
 renderORSTWelcome=function(){orstPaint.stage=1;orstPaint.draft=orstLoadDraft();return renderORSTPainted()};
 renderORST=function(){orstPaint.draft??=orstLoadDraft();return renderORSTPainted()};
 beginORSTTrial=function(){if(navigationBusy)return false;orstGoStage(2);return true};

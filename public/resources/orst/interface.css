@@ -30,7 +30,7 @@
 .orst-welcome-copy h1{font-size:54px;margin:12px 0}
 .orst-welcome-copy h2{font-size:34px}
 .orst-welcome-description{margin:20px 0}
-/* ORST welcome uses the user's original artwork with invisible click targets. */
+/* Voice Station welcome uses the user's original artwork with invisible click targets. */
 .orst-artwork-welcome .orst-welcome-artboard{width:1672px;height:941px;background:none}
 .orst-welcome-original{display:block;width:1672px;height:941px;pointer-events:none;user-select:none}
 .orst-welcome-hit{position:absolute;z-index:2;padding:0;margin:0;border:0;background:transparent;box-shadow:none;color:transparent;cursor:pointer}
@@ -41,7 +41,7 @@
 .orst-welcome-question{left:1354px;top:320px;width:90px;height:90px;border-radius:50%}
 .orst-welcome-stage{top:765px;width:270px;height:126px}
 .orst-welcome-stage-0{left:165px}.orst-welcome-stage-1{left:510px}.orst-welcome-stage-2{left:875px}.orst-welcome-stage-3{left:1245px}
-/* Match the Journey icon included in the updated ORST artwork. */
+/* Match the Journey icon included in the updated Voice Station artwork. */
 .orst-painted-journey{left:130px;top:760px;width:150px;height:135px;border-radius:25px}
 .orst-welcome-stage-0{left:315px;width:245px}
 .orst-welcome-stage-1{left:580px;width:270px}
@@ -124,7 +124,7 @@ html.reduced-motion .orst-hall-morph{display:none}html.reduced-motion .orst-hall
 .orst-painted-grade-label,.orst-painted-reading-stats{z-index:1}
 .orst-themed-screen :is([data-stage=read],[data-stage=record]) .orst-passage-copy h2{margin-bottom:56px}
 
-/* Start ORST moves into the chosen grade before revealing its passages. */
+/* Start Voice Station moves into the chosen grade before revealing its passages. */
 .orst-grade-zoom{position:absolute;inset:0;z-index:1000;overflow:hidden;pointer-events:auto;background:#161c1c}
 .orst-grade-departure,.orst-grade-arrival{position:absolute;inset:0;overflow:hidden}
 .orst-grade-departure{transform-origin:var(--orst-grade-focus-x) var(--orst-grade-focus-y);animation:orstGradeDepart 1100ms cubic-bezier(.25,.65,.3,1) both}

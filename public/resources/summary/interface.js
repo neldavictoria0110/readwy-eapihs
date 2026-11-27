@@ -48,13 +48,13 @@ function renderAssessmentSummary(){
  text('wst-strength',1186,563,335,d.writing?'Writing submitted · '+d.writing.words+' words':'No writing submitted yet',15);
  text('wst-improve',1186,636,335,d.wstScored?'See your teacher’s scored feedback.':'Writing score awaits teacher review.',15);
  text('wst-next',1186,705,335,'Discuss your paragraph and writing feedback with your teacher.',14);
- const overall=`GST: ${d.gstScored?d.gst.score+'/'+d.gst.total:'not scored'}. ORST: ${d.accuracy===null?'not scored':d.accuracy.toFixed(1)+'% word-reading accuracy'}. WST: ${d.wstScored?d.review.score+'/'+d.review.total:d.writing?'submitted, awaiting teacher scoring':'not submitted'}. Your teacher can review the saved attempts for placement.`;
+ const overall=`GST: ${d.gstScored?d.gst.score+'/'+d.gst.total:'not scored'}. Voice Station: ${d.accuracy===null?'not scored':d.accuracy.toFixed(1)+'% word-reading accuracy'}. Story Depot: ${d.wstScored?d.review.score+'/'+d.review.total:d.writing?'submitted, awaiting teacher scoring':'not submitted'}. Your teacher can review the saved attempts for placement.`;
  text('overall',514,830,555,overall,15,'summary-on-navy');
  text('placement',1185,824,155,'Pending review',14,'summary-badge');
  text('placement-note',1135,864,230,'Overall placement requires teacher review.',14,'summary-center');
  const button=(label,x,y,width,height,action)=>`<button class="summary-image-control" type="button" aria-label="${label}" style="left:${x}px;top:${y}px;width:${width}px;height:${height}px" onclick="${action}"></button>`;
- const controls=button('Home',29,133,90,64,"showDashboard()")+button('Learner profile',29,207,90,62,"go('profile')")+button('Assessments',29,276,90,62,"go('map')")+button('Assessment results',29,345,90,66,'renderAssessmentSummary()')+button('Assessment library',29,416,90,66,'openAssessmentLibrary()')+button('Open GST',158,194,474,86,"openModule('gst')")+button('Open ORST',646,194,447,86,"openModule('orst')")+button('Open WST',1106,194,446,86,'openWST()')+button('Open learner profile',1380,27,275,70,"go('profile')")+button('Detailed saved results',328,768,760,145,"openModule('reports')");
- app.innerHTML=`<section class="assessment-summary-screen" aria-label="Assessment summary"><div class="assessment-summary-board"><img src="resources/summary/clean-summary.png" alt="Assessment Summary — GST, ORST, and WST" class="assessment-summary-art" draggable="false">${values.join('')}${controls}</div></section>`;
+ const controls=button('Home',29,133,90,64,"showDashboard()")+button('Learner profile',29,207,90,62,"go('profile')")+button('Assessments',29,276,90,62,"go('map')")+button('Assessment results',29,345,90,66,'renderAssessmentSummary()')+button('Assessment library',29,416,90,66,'openAssessmentLibrary()')+button('Open GST',158,194,474,86,"openModule('gst')")+button('Open Voice Station',646,194,447,86,"openModule('orst')")+button('Open Story Depot',1106,194,446,86,'openWST()')+button('Open learner profile',1380,27,275,70,"go('profile')")+button('Detailed saved results',328,768,760,145,"openModule('reports')");
+ app.innerHTML=`<section class="assessment-summary-screen" aria-label="Assessment summary"><div class="assessment-summary-board"><img src="resources/summary/clean-summary.png" alt="Assessment Summary — GST, Voice Station, and Story Depot" class="assessment-summary-art" draggable="false">${values.join('')}${controls}</div></section>`;
  positionAssessmentSummary();app.scrollTo(0,0);
 }
 function positionAssessmentSummary(){
@@ -65,7 +65,7 @@ function openAssessmentLibrary(){
  if(navigationBusy)return false;activeModule='assessment-library';return transition('work',renderAssessmentLibrary);
 }
 function renderAssessmentLibrary(){
- activeModule='assessment-library';workLayout('Assessment Library',`<div class="resources"><a href="${safeURL(RES+'Assessment File/GROUP SCREENING TEST.docx')}" download>Group Screening Test — original document</a>${[7,8,9,10].map(grade=>`<a href="${safeURL(RES+'Assessment File/ORST Graded Passages/G'+grade+' GRADED PASSAGE.docx')}" download>Grade ${grade} — original oral reading passages</a>`).join('')}</div>`);
+ activeModule='assessment-library';workLayout('Assessment Library',`<div class="resources">${[7,8,9,10].map(grade=>`<a href="${safeURL(RES+'Assessment File/ORST Graded Passages/G'+grade+' GRADED PASSAGE.docx')}" download>Grade ${grade} — original oral reading passages</a>`).join('')}</div>`);
 }
 (()=>{
  const previousRender=render,previousModule=modulePage;

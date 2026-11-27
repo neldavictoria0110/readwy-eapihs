@@ -1,7 +1,7 @@
 
 /* Restore the current tab after edits and refreshes, without replaying navigation. */
 const READWY_VIEW_KEY='READwy_current_view_v1';
-const READWY_PAGES=['startup','dial-preview','login','signup','forgot','subject','areas-preview','subjects-spread','journey','map','orst-welcome','work','wst','assessment-summary','settings','profile'];
+const READWY_PAGES=['startup','dial-preview','login','signup','forgot','subject','areas-preview','subjects-spread','journey','map','subject-task','orst-welcome','work','wst','assessment-summary','settings','profile'];
 const READWY_MODULES=['dashboard','gst','orst','srst','aral','interv','sra','reports','wst','assessment-library'];
 function rememberReadwyView(){
  try{

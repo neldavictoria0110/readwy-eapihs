@@ -1,7 +1,7 @@
 /* Learning-journey order (Grades 7–10):
    Before the Reading Check-In: only the Reading Check-In is open.
    After the Reading Check-In is submitted: the Reading Check-In stays open to view results and edit the profile, but its answers
-   are final (it cannot be retaken). ORST, WST and the one program that matches the Reading Check-In score open together:
+   are final (it cannot be retaken). Voice Station, Story Depot and the one program that matches the Reading Check-In score open together:
      0–16 → Catch-Up Express, 17–27 → InterV (Intervention Program), 28–40 → SRA Program.
    The Post-Test opens only after every task in that program is finished.
    "Finished" uses each program's own completion rule:
@@ -12,15 +12,17 @@
    The result is also saved for the portrait journey map, which shows locks from it.
 
    Exploration period (School Year 2026–2027): until EXPLORE_UNTIL every learner, in any grade, may explore
-   Catch-Up Express, InterV and SRA freely. Reading Check-In, ORST and WST stay visible but locked (they are taken at the opening of a
+   Catch-Up Express, InterV and SRA freely. Reading Check-In, Voice Station and Story Depot stay visible but locked (they are taken at the opening of a
    school year). From EXPLORE_UNTIL (opening of SY 2027–2028) the Reading Check-In-score rules above apply again by themselves.
    Change EXPLORE_UNTIL here AND in journey-gate-map.js when DepEd announces the official opening date. */
 (() => {
-  const EXPLORE_UNTIL = Date.parse('2027-06-01T00:00:00+08:00');
+  // Exploration period ended early on 2026-11-27 (school request): the Reading Check-In score rules apply now.
+  // To reopen free exploration, set a future date here AND in the other gate file.
+  const EXPLORE_UNTIL = Date.parse('2026-11-27T00:00:00+08:00');
   const exploring = () => Date.now() < EXPLORE_UNTIL;
-  const EXPLORE_MESSAGE = 'The Reading Check-In, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
+  const EXPLORE_MESSAGE = 'The Reading Check-In, Voice Station and Story Depot open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
   const PREFIX = typeof STORE !== 'undefined' ? STORE : 'READwy_new_2026_local_';
-  const NAMES = {gst: 'Reading Check-In', orst: 'ORST', wst: 'WST', aral: 'Catch-Up Express', interv: 'InterV Program', sra: 'Reading Lab', reports: 'Post-Test'};
+  const NAMES = {gst: 'Reading Check-In', orst: 'Voice Station', wst: 'Story Depot', aral: 'Catch-Up Express', interv: 'InterV Program', sra: 'Reading Lab', reports: 'Post-Test'};
   const PROGRAMS = ['aral', 'interv', 'sra'];
   const currentUser = () => (typeof user !== 'undefined' && user) || null;
   const safe = (fn, fallback = false) => { try { return fn(); } catch { return fallback; } };

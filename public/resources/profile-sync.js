@@ -1,5 +1,5 @@
 /* One learner profile for every page.
-   Sign-up saves the profile under the account email; every Profile button (GST book, ORST TV,
+   Sign-up saves the profile under the account email; every Profile button (GST book, Voice Station TV,
    InterV card, Student Profile page) reads and saves the same record through persistStudentProfile.
    This file keeps that record complete and consistent:
    - fills any missing detail from the sign-up record (teacher name, gender, section, names, photo);

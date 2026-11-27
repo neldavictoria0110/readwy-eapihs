@@ -1,5 +1,5 @@
 /* Assessment Summary, rebuilt as a sharp HTML page (the old one was a 1672x941 picture stretched to the screen).
-   Two tabs: "Overview" (Reading Check-In, ORST, WST and the overall recommendation) and "My WST Submission"
+   Two tabs: "Overview" (Reading Check-In, Voice Station, Story Depot and the overall recommendation) and "My Story Depot Submission"
    (essay, plan and writing level). WST's "View Submission" opens the second tab instead of a pop-up. */
 (() => {
   const font = document.createElement('link');
@@ -124,7 +124,7 @@
     const minutes = Number.isFinite(d.gst.elapsedMs) ? Math.round(d.gst.elapsedMs / 60000) + ' min' : '—';
     const prog = d.gstScored && d.gst.score > 0 ? (window.readwyJourneyGate?.programFor?.(Number(d.gst.score)) || null) : null;
     const PROG = {aral: ['Catch-Up Express', '#f2b215', '#1b1a14'], interv: ['InterV Program', '#0f7a71', '#fff'], sra: ['Reading Lab', '#1a52c4', '#fff']};
-    const place = prog ? `<div class="hd-place"><small>Your journey (placement)</small><span style="background:${PROG[prog][1]};color:${PROG[prog][2]}">${PROG[prog][0]}</span><em>The Reading Check-In score decides the program; the ORST and WST open too.</em></div>` : `<div class="hd-place"><small>Your journey (placement)</small><span style="background:#7a7466;color:#fff">Pending</span><em>Your program is chosen after the Reading Check-In is scored.</em></div>`;
+    const place = prog ? `<div class="hd-place"><small>Your journey (placement)</small><span style="background:${PROG[prog][1]};color:${PROG[prog][2]}">${PROG[prog][0]}</span><em>The Reading Check-In score decides the program; the Voice Station and Story Depot open too.</em></div>` : `<div class="hd-place"><small>Your journey (placement)</small><span style="background:#7a7466;color:#fff">Pending</span><em>Your program is chosen after the Reading Check-In is scored.</em></div>`;
     const gstBody = gst + `<div class="hd-stats"><div class="hd-stat"><small>Correct</small><b>${d.gstScored ? d.gst.score : '—'}</b></div><div class="hd-stat"><small>Time</small><b>${minutes}</b></div></div>` + place +
       `<div class="hd-notes">${note('s', 'Strengths', d.gstScored ? `${d.gst.score} correct responses` : 'No scored Reading Check-In result yet')}${note('i', 'Needs improvement', d.gstScored ? `${d.gst.total - d.gst.score} incorrect or unanswered responses` : 'Complete the Reading Check-In to record a result.')}${note('n', 'Next step', 'Review the saved Reading Check-In responses with your teacher.')}</div>`;
 
@@ -146,16 +146,16 @@
     const partA = T40 ? `<div class="hd-stats"><div class="hd-stat"><small>Part A · Skills</small><b>${T40.partA.score}/20</b></div><div class="hd-stat"><small>Part B · Writing</small><b>${T40.partB.score}/20</b></div></div>` : '';
     const wstBody = wst + partA + `<span class="hd-cap">${held ? `Held for teacher review · ${d.writing.integrity?.original ?? '—'}% original writing` : T40 ? esc(T40.proficiency) + ' · Part B: 6+1 Trait® Writing' : d.writing ? 'Submitted · ' + d.writing.words + ' words' : 'No writing submitted yet'}</span>` + crit +
       (d.writing ? `<button class="hd-link" type="button" data-tab-go="submission">Read my submission →</button>` : '') +
-      `<div class="hd-notes">${note('n', 'Next step', T40 ? 'Your teacher confirms your WST rating. Your next stop opens on the Journey Map.' : 'Discuss your writing feedback with your teacher.')}</div>`;
+      `<div class="hd-notes">${note('n', 'Next step', T40 ? 'Your teacher confirms your Story Depot rating. Your next stop opens on the Journey Map.' : 'Discuss your writing feedback with your teacher.')}</div>`;
 
-    const overall = `Reading Check-In: ${d.gstScored ? d.gst.score + '/' + d.gst.total : 'not scored'}. ORST: ${d.accuracy === null ? 'not scored' : d.accuracy.toFixed(1) + '% word-reading accuracy'}. WST: ${d.writing?.total40 && d.writing.status !== 'needs-review' ? d.writing.total40.score + '/40 (' + d.writing.total40.writer + ')' : d.wstScored ? d.review.score + '/' + d.review.total : d.writing ? 'submitted, awaiting teacher scoring' : 'not submitted'}. Your teacher reviews the saved attempts for placement.`;
-    return `<div class="hd-over"><div class="hd-cards">${card('gst', 'Check-In', 'Reading Check-In', gstBody)}${card('orst', 'ORST', 'Oral Reading Screening Test', orstBody)}${card('wst', 'WST', 'Writing Screening Test', wstBody)}</div>
+    const overall = `Reading Check-In: ${d.gstScored ? d.gst.score + '/' + d.gst.total : 'not scored'}. Voice Station: ${d.accuracy === null ? 'not scored' : d.accuracy.toFixed(1) + '% word-reading accuracy'}. Story Depot: ${d.writing?.total40 && d.writing.status !== 'needs-review' ? d.writing.total40.score + '/40 (' + d.writing.total40.writer + ')' : d.wstScored ? d.review.score + '/' + d.review.total : d.writing ? 'submitted, awaiting teacher scoring' : 'not submitted'}. Your teacher reviews the saved attempts for placement.`;
+    return `<div class="hd-over"><div class="hd-cards">${card('gst', 'Check-In', 'Reading Check-In', gstBody)}${card('orst', 'Voice Station', 'Oral reading screening', orstBody)}${card('wst', 'Story Depot', 'Writing screening', wstBody)}</div>
       <section class="hd-rec"><span class="shield">✦</span><div><h3>Overall Recommendation</h3><p>${esc(overall)}</p></div><div class="acts"><span class="hd-chip" style="background:#b77b00;text-align:center">Placement: pending teacher review</span><button class="hd-btn ghost" type="button" data-act="reports">Detailed saved results</button></div></section></div>`;
   }
 
   function submission(d) {
     const r = d.writing;
-    if (!r) return `<div class="hd-empty"><div><h2>No writing yet</h2><p>Finish the Writing Screening Test to see your submission here.</p><button class="hd-btn gold" type="button" data-act="wst">Open WST</button></div></div>`;
+    if (!r) return `<div class="hd-empty"><div><h2>No writing yet</h2><p>Finish the Story Depot to see your submission here.</p><button class="hd-btn gold" type="button" data-act="wst">Open Story Depot</button></div></div>`;
     const dt = new Date(r.date), when = isNaN(dt) ? '—' : dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
     const paras = String(r.text || '').split(/\n+/).filter(Boolean);
     const prompt = window.readwyWSTPrompt || '';
@@ -174,12 +174,12 @@
     } else if (r.traits && r.total40) {
       const T = r.total40, tr = r.traits, lc = l => l >= 4 ? '#2f8f55' : l === 3 ? '#c98a00' : '#c0392b';
       level = `<section class="hd-level"><header class="hd-head"><span class="badge">${ICON.wst}</span><div><h2>My Writing Level</h2><p>Part A (20) + Part B (20) = 40 points</p></div></header><div class="hd-body">
-        <div class="hd-writer" style="background:${LEVEL_COLOR[T.writer] || '#1b4fa0'}"><b>${esc(T.writer)}</b><span>WST total ${T.score}/40 · ${esc(T.proficiency)} · ${esc(T.descriptor)}</span></div>
+        <div class="hd-writer" style="background:${LEVEL_COLOR[T.writer] || '#1b4fa0'}"><b>${esc(T.writer)}</b><span>Story Depot total ${T.score}/40 · ${esc(T.proficiency)} · ${esc(T.descriptor)}</span></div>
         <div class="hd-facts"><div class="hd-stat"><small>Part A · Writing skills</small><b>${T.partA.score} / 20</b></div><div class="hd-stat"><small>Part B · Writing activity</small><b>${T.partB.score} / 20 · ${esc(tr.overall)}</b></div></div>
         <div class="hd-rubric">${tr.traits.map(c => `<div class="row"><b>${esc(c.name)}</b><b>${c.level}/6 · ${esc(c.label)}</b>${bar(c.level / 6 * 100, lc(c.level))}<p>${esc(c.desc)}</p></div>`).join('')}</div>
         <span class="hd-cap">Part B scored with the 6+1 Trait® Writing rubric (Education Northwest, 2021); levels 4–6 are proficient. Total interpreted with DepEd DO 8, s. 2015 and DO 73, s. 2012. Your teacher confirms the final rating.</span></div></section>`;
     } else if (res) {
-      level = `<section class="hd-level"><header class="hd-head"><span class="badge">${ICON.wst}</span><div><h2>My Writing Level</h2><p>Scored with the WST rubric</p></div></header><div class="hd-body">
+      level = `<section class="hd-level"><header class="hd-head"><span class="badge">${ICON.wst}</span><div><h2>My Writing Level</h2><p>Scored with the Story Depot rubric</p></div></header><div class="hd-body">
         <div class="hd-writer" style="background:${LEVEL_COLOR[res.writer] || '#1b4fa0'}"><b>${esc(res.writer)}</b><span>Writer level · ${res.score}/${res.total}</span></div>
         <div class="hd-rubric">${(res.criteria || []).map(c => `<div class="row"><b>${esc(c.name)}</b><b>${c.score}/4</b>${bar(c.score * 25, '#4f8fbf')}<p>${esc(c.desc)}</p></div>`).join('')}</div>
         <span class="hd-cap">Estimated automatically by READwy. Your teacher confirms the final rating.</span></div></section>`;
@@ -199,7 +199,7 @@
       <header class="hd-top"><button class="hd-back" type="button" data-act="journey"><span class="ic">↩</span>Back to Journey</button>
         <div class="hd-title"><small>READwy · Results</small><h1>Assessment Summary</h1></div>
         <button class="hd-learner" type="button" data-act="profile" aria-label="Open learner profile"><span class="av">${esc(initials)}</span><span><b>${esc(name)}</b><span>Grade ${esc(selectedGrade)}</span></span></button></header>
-      <div class="hd-tabs" role="tablist"><button role="tab" type="button" data-tab="overview">Overview</button><button role="tab" type="button" data-tab="submission">My WST Submission</button></div>
+      <div class="hd-tabs" role="tablist"><button role="tab" type="button" data-tab="overview">Overview</button><button role="tab" type="button" data-tab="submission">My Story Depot Submission</button></div>
       <div class="hd-pane" data-pane="overview" role="tabpanel">${overview(d)}</div>
       <div class="hd-pane" data-pane="submission" role="tabpanel">${submission(d)}</div></div></section>`;
     const root = app.querySelector('.hd-sum');
@@ -229,7 +229,7 @@
       return render(tab);
     };
     window.renderAssessmentSummary.readwyHD = true;
-    // WST "View Submission": open the summary on the submission tab.
+    // Story Depot "View Submission": open the summary on the submission tab.
     window.readwyOpenSubmission = prompt => {
       window.readwyWSTPrompt = prompt || window.readwyWSTPrompt || '';
       window.readwySummaryTab = 'submission';
@@ -240,7 +240,7 @@
   addEventListener('load', install, {once: true});
 })();
 
-/* My WST Submission: larger, easier-to-read text that fills each panel (no empty lower half). */
+/* My Story Depot Submission: larger, easier-to-read text that fills each panel (no empty lower half). */
 (() => {
   const s = document.createElement('style');
   s.textContent = `

@@ -91,12 +91,12 @@
     const cards = Object.entries(PROGRAMS).map(([key, p]) =>
       `<div class="xgp-card ${key}${mine === key ? ' you' : mine ? ' dim' : ''}">${mine === key ? '<span class="tag">YOUR SCORE</span>' : ''}<h3>${p.range}</h3><p class="lv">${p.level}</p>${TRAIN}<div class="xgp-pill">${p.pill}</div></div>`).join('');
     const you = has
-      ? `<div class="xgp-you"><div class="sc"><b>${score}/${n}</b><small>YOUR Reading Check-In</small></div><p>Your score is in the <strong>${PROGRAMS[mine].range.replace('Check-In ', '')}</strong> range, so your journey is the <strong>${PROGRAMS[mine].pill}</strong>. The ORST and WST open too.</p></div>`
+      ? `<div class="xgp-you"><div class="sc"><b>${score}/${n}</b><small>YOUR Reading Check-In</small></div><p>Your score is in the <strong>${PROGRAMS[mine].range.replace('Check-In ', '')}</strong> range, so your journey is the <strong>${PROGRAMS[mine].pill}</strong>. The Voice Station and Story Depot open too.</p></div>`
       : `<div class="xgp-you"><div class="sc"><b>—</b><small>YOUR Reading Check-In</small></div><p>A missing Reading Check-In or a score of 0 is <strong>pending review</strong>. Your teacher will check your test before your journey is chosen.</p></div>`;
     return `<div class="xgp" role="dialog" aria-label="What your Reading Check-In score means">
       <div class="xgp-head"><span class="ic">${BUS}</span><h2>Placement rules</h2><span class="rail">${RAIL}</span></div>
       <div class="xgp-cards">${cards}</div>
-      <p class="xgp-rule">${CHECK}Reading Check-In determines placement, regardless of ORST and WST results.</p>
+      <p class="xgp-rule">${CHECK}Reading Check-In determines placement, regardless of Voice Station and Story Depot results.</p>
       ${you}
       <div class="xgp-foot"><button class="xg-btn" type="button" onclick="readwyGstPlacement(false)">◀ Back to results</button><button class="xg-btn gold" type="button" onclick="readwyGo('index.html?view=map')">Back to journey ▶</button></div></div>`;
   }

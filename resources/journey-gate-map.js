@@ -11,13 +11,15 @@
   // (same rules as journey-gate.js). Only "program finished" needs the app's saved check.
   const NAMES = {aral: 'Catch-Up Express', interv: 'InterV Program', sra: 'Reading Lab'};
   // Exploration period (SY 2026–2027): same date as journey-gate.js — change both together.
-  const EXPLORE_UNTIL = Date.parse('2027-06-01T00:00:00+08:00');
+  // Exploration period ended early on 2026-11-27 (school request): the Reading Check-In score rules apply now.
+  // To reopen free exploration, set a future date here AND in the other gate file.
+  const EXPLORE_UNTIL = Date.parse('2026-11-27T00:00:00+08:00');
   const STAMPED = ['gst', 'orst', 'wst', 'reports'];
   const gate = (() => {
     if (u.role === 'teacher') return null;
     const grade = Number(u.grade) || 7;
     if (Date.now() < EXPLORE_UNTIL) {
-      const msg = 'The Reading Check-In, ORST and WST open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
+      const msg = 'The Reading Check-In, Voice Station and Story Depot open at the start of School Year 2027–2028 (June 1, 2027). This school year, explore the Catch-Up Express, InterV and Reading Lab programs.';
       return {exploring: true,
         open: {gst: false, orst: false, wst: false, aral: true, interv: true, sra: true, reports: false},
         messages: {gst: msg, orst: msg, wst: msg, reports: 'The Post-Test opens with the Reading Check-In at the start of School Year 2027–2028 (June 1, 2027).'}};
@@ -59,7 +61,7 @@ a.stage.rw-yours::after{content:'★ Your program';position:absolute;right:4%;bo
 .pf-dest.rw-locked .hole::after{content:'🔒';display:grid;place-items:center;width:100%;height:100%;font-size:.75em;line-height:1}
 .pf-dest.rw-yours{box-shadow:0 0 0 3px #e2b33c,0 0 14px #f3cf6a99!important}
 .pf-dest.rw-yours::after{content:'★ Yours';display:block;margin-top:2px;color:#8a5a00;font:800 10px/1 system-ui,sans-serif}
-/* Exploration period: a red rubber "LOCKED" ticket stamp pressed over Reading Check-In, ORST, WST and the Post-Test (no padlock badge). */
+/* Exploration period: a red rubber "LOCKED" ticket stamp pressed over Reading Check-In, Voice Station, Story Depot and the Post-Test (no padlock badge). */
 a.stage.rw-stamped::after,.pf-dest.rw-stamped .hole::after{content:none}
 a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) brightness(.9);-webkit-backdrop-filter:grayscale(.6) brightness(.9)}
 .pf-dest.rw-stamped{opacity:.8;filter:grayscale(.5)}

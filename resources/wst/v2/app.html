@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Story Depot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600;7..72,700&family=Source+Sans+3:wght@500;600;700;800&display=swap">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#2a1d14;font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;color:#13203f;-webkit-user-select:none;user-select:none}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+#world{position:fixed;inset:0;overflow:hidden;outline:none}
+.scene{position:absolute;inset:0;overflow:hidden;background:#3a2a1e}
+.scene::before{content:'';position:absolute;inset:-60px;background:var(--art,none) center/cover no-repeat;filter:blur(28px) brightness(.55) saturate(1.1);pointer-events:none}
+.ext-fill{position:absolute;background-repeat:no-repeat;pointer-events:none;filter:brightness(.78) saturate(.9)}
+.ext-fill::after{content:'';position:absolute;inset:0;pointer-events:none}
+.ext-l::after{background:linear-gradient(90deg,transparent 55%,rgba(0,0,0,.45))}
+.ext-r::after{background:linear-gradient(270deg,transparent 55%,rgba(0,0,0,.45))}
+.wst-base{position:absolute;z-index:0;pointer-events:none;
+ background:radial-gradient(ellipse at 50% 50%,rgba(255,252,240,.5),transparent 70%),rgb(var(--p));
+ box-shadow:inset 0 0 0 calc(1.75*var(--kk)) #5c3d14,inset 0 0 0 calc(3.6*var(--kk)) #c99a3e,inset 0 0 0 calc(6.2*var(--kk)) #f6dc8e,inset 0 0 0 calc(8.5*var(--kk)) #d4a64a,
+  inset 0 0 0 calc(9.75*var(--kk)) #805a1e,inset 0 0 0 calc(12*var(--kk)) rgb(var(--p)),inset 0 0 0 calc(13.25*var(--kk)) rgba(196,154,70,.75),0 calc(12*var(--kk)) calc(22*var(--kk)) rgba(0,0,0,.6)}
+.wst-base::before,.wst-base::after{content:'';position:absolute;left:22%;right:22%;height:calc(9*var(--kk));translate:0 -50%;
+ background:radial-gradient(circle,#b8862e 0 calc(2.6*var(--kk)),transparent calc(2.9*var(--kk))) center/calc(9*var(--kk)) 100% no-repeat,
+  linear-gradient(90deg,transparent,#c99a3e 18%,#c99a3e 45%,transparent 46%,transparent 54%,#c99a3e 55%,#c99a3e 82%,transparent) center/100% calc(1.6*var(--kk)) no-repeat}
+.wst-base::before{top:calc(var(--band)/2 + 4*var(--kk))}.wst-base::after{bottom:calc(var(--band)/2 - 4*var(--kk) - 9*var(--kk))}
+.scene .plate{z-index:1}
+/* One fixed Story Depot toolbar above the ticket on every page (the painted per-page toolbars are hidden). */
+.scene .plate::before,.scene .tb-part{display:none!important}
+#wstbar{--k:1px;position:fixed;z-index:20;display:flex;align-items:center;gap:.5em;padding:0 .45em 0 .95em;border-radius:999px;background:linear-gradient(#173a6e,#0b2347 50%,#061833);border:2px solid #d9ae55;box-shadow:0 8px 20px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 3px rgba(6,24,51,.9),inset 0 0 0 4px rgba(217,174,85,.45);color:#f6efdc;box-sizing:border-box}
+#wstbar .brand{display:flex;align-items:center;gap:.45em;border:0;background:none;color:inherit;cursor:pointer;padding:0;font:inherit;white-space:nowrap}
+#wstbar .brand .bk{display:inline-flex;width:1.55em;height:1.55em;color:#f2c14e}#wstbar .brand .bk svg{width:100%;height:100%}
+#wstbar .brand b{font:700 1.3em Literata,Georgia,serif;color:#f6d77e;letter-spacing:.02em;text-shadow:0 2px 0 #4a3510}
+#wstbar .brand i{width:2px;height:1.3em;background:linear-gradient(#e7c873,#b8872c);border-radius:2px;margin:0 .25em}
+#wstbar .brand em{font:italic 600 1.2em Literata,Georgia,serif;color:#fff4dc}
+#wstbar .brand:focus-visible{outline:2px solid #ffe066;outline-offset:4px;border-radius:6px}
+#wstbar nav{margin-left:auto;display:flex;align-items:center;height:100%;gap:.15em}
+#wstbar .tbbtn{height:78%;box-shadow:none}#wstbar .tbbtn:hover,#wstbar .tbbtn:focus-visible{box-shadow:0 0 14px #ffd447aa}
+#wstbar .tbdiv{width:2px;height:50%}
+/* Story Depot: on every page only the ticket and the toolbar are cut from the painting, over the station scenery. */
+.scene::before{inset:0!important;background:linear-gradient(rgba(10,20,14,.18),rgba(10,20,14,.42)),url("resources/station-journey.webp") center/cover no-repeat!important;filter:none!important}
+.scene>.ext-fill{display:none!important}
+.scene .plate{overflow:visible} @media (hover:hover) and (pointer:fine){.scene .plate{filter:drop-shadow(0 calc(12*var(--k)) calc(22*var(--k)) rgba(0,0,0,.6))}}
+.scene[data-key="wst01"] .plate>.art{clip-path:inset(22.900% 2.897% 13.135% 2.865% round calc(18*var(--k)))}
+.scene[data-key="wst01"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst01.png") 0 0/100% 100% no-repeat;clip-path:inset(22.900% 2.897% 13.135% 2.865% round calc(18*var(--k)))}
+.scene[data-key="wst01"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(134.5*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(24*var(--k)) calc(35*var(--k)) calc(939*var(--k)) calc(43*var(--k)) round calc(30.5*var(--k)))}
+.scene[data-key="wst01"] .tb-part{translate:0 calc(134.5*var(--k))}
+.scene[data-key="wst02"] .plate>.art{clip-path:inset(17.773% 4.818% 6.689% 8.854% round calc(18*var(--k)))}
+.scene[data-key="wst02"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst02.png") 0 0/100% 100% no-repeat;clip-path:inset(17.773% 4.818% 6.689% 8.854% round calc(18*var(--k)))}
+.scene[data-key="wst02"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(81*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(15*var(--k)) calc(29*var(--k)) calc(938*var(--k)) calc(28*var(--k)) round calc(35.5*var(--k)))}
+.scene[data-key="wst02"] .tb-part{translate:0 calc(81*var(--k))}
+.scene[data-key="wst03"] .plate>.art{clip-path:inset(12.793% 3.743% 6.201% 6.999% round calc(18*var(--k)))}
+.scene[data-key="wst03"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst03.png") 0 0/100% 100% no-repeat;clip-path:inset(12.793% 3.743% 6.201% 6.999% round calc(18*var(--k)))}
+.scene[data-key="wst03"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(31*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(21*var(--k)) calc(30*var(--k)) calc(939*var(--k)) calc(43*var(--k)) round calc(32*var(--k)))}
+.scene[data-key="wst03"] .tb-part{translate:0 calc(31*var(--k))}
+.scene[data-key="wst04"] .plate>.art{clip-path:inset(12.793% 2.832% 6.201% 2.799% round calc(18*var(--k)))}
+.scene[data-key="wst04"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst04.png") 0 0/100% 100% no-repeat;clip-path:inset(12.793% 2.832% 6.201% 2.799% round calc(18*var(--k)))}
+.scene[data-key="wst04"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(35*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(20*var(--k)) calc(150*var(--k)) calc(943*var(--k)) calc(149*var(--k)) round calc(30.5*var(--k)))}
+.scene[data-key="wst04"] .tb-part{translate:0 calc(35*var(--k))}
+.scene[data-key="wst05"] .plate>.art{clip-path:inset(9.570% 4.167% 3.955% 6.510% round calc(18*var(--k)))}
+.scene[data-key="wst05"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst05.png") 0 0/100% 100% no-repeat;clip-path:inset(9.570% 4.167% 3.955% 6.510% round calc(18*var(--k)))}
+.scene[data-key="wst05"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(17*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(11*var(--k)) calc(101*var(--k)) calc(958*var(--k)) calc(196*var(--k)) round calc(27.5*var(--k)))}
+.scene[data-key="wst05"] .tb-part{translate:0 calc(17*var(--k))}
+.scene[data-key="wst06"] .plate>.art{clip-path:inset(10.742% 3.809% 6.006% 3.906% round calc(18*var(--k)))}
+.scene[data-key="wst06"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst06.png") 0 0/100% 100% no-repeat;clip-path:inset(10.742% 3.809% 6.006% 3.906% round calc(18*var(--k)))}
+.scene[data-key="wst06"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(14*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(15*var(--k)) calc(50*var(--k)) calc(943*var(--k)) calc(54*var(--k)) round calc(33*var(--k)))}
+.scene[data-key="wst06"] .tb-part{translate:0 calc(14*var(--k))}
+.scene[data-key="wst07"] .plate>.art{clip-path:inset(7.422% 3.418% 5.420% 7.780% round calc(18*var(--k)))}
+.scene[data-key="wst07"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst07.png") 0 0/100% 100% no-repeat;clip-path:inset(7.422% 3.418% 5.420% 7.780% round calc(18*var(--k)))}
+.scene[data-key="wst07"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(0*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(13*var(--k)) calc(84*var(--k)) calc(950*var(--k)) calc(101*var(--k)) round calc(30.5*var(--k)))}
+.scene[data-key="wst07"] .tb-part{translate:0 calc(0*var(--k))}
+.scene[data-key="wst08"] .plate>.art{clip-path:inset(19.629% 4.492% 14.844% 8.040% round calc(18*var(--k)))}
+.scene[data-key="wst08"] .plate::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:url("resources/wst/v2/edge_wst08.png") 0 0/100% 100% no-repeat;clip-path:inset(19.629% 4.492% 14.844% 8.040% round calc(18*var(--k)))}
+.scene[data-key="wst08"] .plate::before{content:'';position:absolute;inset:0;pointer-events:none;translate:0 calc(102*var(--k));background:var(--art) 0 0/100% 100% no-repeat;clip-path:inset(calc(16*var(--k)) calc(25*var(--k)) calc(940*var(--k)) calc(24*var(--k)) round calc(34*var(--k)))}
+.scene[data-key="wst08"] .tb-part{translate:0 calc(102*var(--k))}
+.lid{background:none!important;box-shadow:none!important;animation:none!important;transform:none!important;overflow:hidden;border-radius:50%}
+.lid::before{content:'';position:absolute;left:-4%;right:-4%;top:-2%;height:93%;border-radius:0 0 50% 50%/0 0 42% 42%;background:repeating-linear-gradient(82deg,rgba(110,62,24,.045) 0 1px,transparent 1px calc(4*var(--k))),linear-gradient(180deg,#a8713f 0%,#c99a68 38%,#e2c39b 72%,#efdcc0 90%);box-shadow:inset 0 calc(-2.6*var(--k)) 0 #2f1c0d,inset 0 calc(-5*var(--k)) calc(3*var(--k)) rgba(60,30,8,.35),0 calc(2*var(--k)) calc(3*var(--k)) rgba(30,15,5,.45);transform:scaleY(0);transform-origin:50% 0;animation:blink2 4.6s infinite;animation-delay:inherit}
+@keyframes blink2{0%,90%,100%{transform:scaleY(0)}93%{transform:scaleY(1)}94.5%{transform:scaleY(1)}97.5%{transform:scaleY(0)}}
+.wst-title{z-index:3;display:flex;align-items:center;justify-content:center;white-space:nowrap;pointer-events:none;isolation:isolate;font:700 calc(90*var(--k))/1 Literata,Georgia,serif;color:#0b1433;letter-spacing:-.012em;text-shadow:calc(1.6*var(--k)) calc(1.8*var(--k)) 0 #d3a03a,calc(-0.8*var(--k)) calc(-0.8*var(--k)) 0 #f4dc94}
+.wst-title::before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 140% at 50% 45%,#fbecd8,#f7e7d0 60%,#f2e1c9);-webkit-mask:linear-gradient(90deg,transparent,#000 1%,#000 99%,transparent),linear-gradient(180deg,#000,#000 88%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 1%,#000 99%,transparent),linear-gradient(180deg,#000,#000 88%,transparent);mask-composite:intersect}
+.plate{position:absolute;overflow:hidden}
+.plate>.art{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.abs{position:absolute}
+.clone{position:absolute;background-repeat:no-repeat;pointer-events:none}
+.hit{position:absolute;border:0;padding:0;background:transparent;border-radius:999px;transition:transform .18s,filter .18s,box-shadow .2s,background .2s;z-index:4}
+.hit:hover{box-shadow:0 0 0 calc(3*var(--k)) #ffe27a99,0 0 calc(24*var(--k)) #ffd34d88}
+.hit:active{transform:scale(.97)}
+.hit.nav:hover,.hit.nav:focus-visible{background:rgba(255,214,71,.45);mix-blend-mode:screen;box-shadow:0 0 calc(14*var(--k)) #ffd447}
+.hit.tool{border-radius:calc(8*var(--k))}.hit.tool:hover{background:rgba(255,214,71,.35);box-shadow:none}
+.hit.row{border-radius:calc(10*var(--k))}.hit.row:hover{background:rgba(255,226,122,.18);box-shadow:none}
+.hit:focus-visible,.tab:focus-visible,.pill:focus-visible{outline:3px solid #ffb700;outline-offset:2px}
+.hit.off{filter:grayscale(.2)}
+.pill{position:absolute;display:flex;align-items:center;justify-content:center;gap:.35em;border-radius:999px;font-weight:700;white-space:nowrap;border:0;padding:0 .8em;z-index:4;transition:transform .15s,filter .15s,background .18s,color .18s}
+.tbbtn{display:inline-flex;align-items:center;gap:.32em;height:84%;padding:0 .55em;border:0;border-radius:999px;color:#f6efdc;background:transparent;font-family:"Source Sans 3","Segoe UI",sans-serif;font-size:1em;font-weight:600;white-space:nowrap;transition:background .15s,color .15s,box-shadow .15s}.tbbtn .ic{display:inline-flex;width:1.15em;height:1.15em}.tbbtn svg{width:100%;height:100%}.tbdiv{flex:none;width:calc(2.5*var(--k));height:58%;border-radius:2px;background:linear-gradient(#e7c873,#b8872c)}
+.tbbtn:hover,.tbbtn:focus-visible,.tbbtn:active{background:linear-gradient(#ffe066,#f5b400);color:#1d1400;box-shadow:0 0 calc(14*var(--k)) #ffd447aa;outline:none}.tbbtn:active{transform:scale(.97)}
+
+.paper{background:#f8f0dd}
+.mute{position:absolute;z-index:5;pointer-events:none;display:none}
+.mute.on{display:block}
+.mute::after{content:"";position:absolute;left:10%;right:10%;top:46%;height:12%;background:#e2483d;border-radius:9px;transform:rotate(-38deg);box-shadow:0 0 0 calc(2*var(--k)) #0b1a3a}
+/* owls: blink, and (when cut out) a squash-and-stretch bounce in place */
+.owlwrap{transform-origin:50% 100%;animation:hop 3s ease-in-out infinite;z-index:2;pointer-events:none}
+@keyframes hop{0%,50%,100%{transform:scale(1,1)}57%{transform:scale(1.04,.985)}66%{transform:scale(.99,1.055)}74%{transform:scale(1,1.025)}82%{transform:scale(1.03,.99)}90%{transform:scale(1,1.01)}}
+.lid{position:absolute;border-radius:50%;background:radial-gradient(ellipse at 50% 30%,#f7ecdc,#e6d2b6 60%,#b98f63);box-shadow:inset 0 -.12em 0 #4a2e15;transform:scaleY(0);transform-origin:50% 0;animation:blink 4.4s infinite;pointer-events:none;z-index:3}
+@keyframes blink{0%,88%,100%{transform:scaleY(0)}91%,93%{transform:scaleY(1)}96%{transform:scaleY(0)}}
+.locorumble{transform-origin:50% 100%;animation:engineRun .34s steps(2) infinite}
+@keyframes engineRun{0%{transform:translate(0,0)}25%{transform:translate(.06%,-.35%)}50%{transform:translate(-.05%,0)}75%{transform:translate(.04%,-.25%) rotate(.12deg)}100%{transform:translate(0,0)}}
+.puff{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(236,236,244,.55) 55%,rgba(230,230,240,0) 72%);animation:puff 3.4s ease-out infinite;opacity:0}
+@keyframes puff{0%{opacity:0;transform:scale(.3)}12%{opacity:.9}100%{opacity:0;transform:translate(-30%,-220%) scale(2.6)}}
+.glow{position:absolute;border-radius:50%;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(circle,rgba(255,236,170,.8),rgba(255,190,90,.3) 42%,rgba(255,180,80,0) 70%);animation:flicker 2.6s ease-in-out infinite}
+@keyframes flicker{0%,100%{opacity:.75;transform:scale(1)}35%{opacity:.5;transform:scale(.92)}50%{opacity:1;transform:scale(1.07)}}
+.stamp{animation:stampIn .7s cubic-bezier(.3,1.7,.5,1) .5s both}
+@keyframes stampIn{from{transform:scale(2.2) rotate(-14deg);opacity:0}}
+.shine{position:absolute;pointer-events:none;overflow:hidden;border-radius:999px;z-index:3}
+.shine::after{content:"";position:absolute;top:-10%;bottom:-10%;width:16%;left:-30%;background:linear-gradient(100deg,transparent,rgba(255,250,220,.55),transparent);animation:shine 4.5s ease-in-out infinite}
+@keyframes shine{0%,45%{left:-30%}85%,100%{left:120%}}
+/* live parts drawn on the ticket */
+.lbl{position:absolute;z-index:3;display:flex;align-items:center;font-family:Literata,Georgia,serif;font-weight:700;color:#14203f;white-space:nowrap}
+.chip{position:absolute;z-index:3;display:flex;align-items:center;padding:0 .55em;font-family:Literata,Georgia,serif;font-weight:700;color:#14203f;white-space:nowrap;background:linear-gradient(#fcefc9,#f3dca3);border:calc(1.5*var(--k)) solid #dfc07a;border-bottom:0;border-radius:calc(10*var(--k)) calc(10*var(--k)) 0 0}
+.field{position:absolute;z-index:3;border:0;outline:none;background:transparent;resize:none;padding:calc(8*var(--k)) calc(12*var(--k));font:600 1em/1.3 "Source Sans 3",sans-serif;color:#14203f;-webkit-user-select:text;user-select:text;border-radius:calc(8*var(--k))}
+.field:focus{box-shadow:0 0 0 calc(3*var(--k)) #f4c542aa}
+.field::placeholder{color:#8d93a6;font-style:italic;font-weight:500}
+.field.boxed{background:#fff;border:calc(1.5*var(--k)) solid #8f96ab}
+select.field{appearance:none;-webkit-appearance:none;cursor:pointer}
+.field.bad{box-shadow:0 0 0 calc(3*var(--k)) #e2483daa}
+.check{position:absolute;z-index:3;display:grid;place-items:center;color:#2f8f10;font-weight:900;pointer-events:none;transition:transform .2s}
+.check svg{width:100%;height:100%}
+.card{position:absolute;z-index:3;background:#fff;border:calc(1.5*var(--k)) solid #e3d3ad;border-radius:calc(12*var(--k));overflow:hidden}
+.scroll{overflow:auto;-webkit-user-select:text;user-select:text;scrollbar-width:thin;scrollbar-color:#c9b27a #f3ead4}
+.src p{margin:0 0 .65em;line-height:1.42}
+.src .pn{display:inline-block;min-width:1.6em;color:#9a7a33;font-weight:700;font-size:.8em}
+.src .note{font-size:.82em;color:#5c6170;border-top:1px solid #e6d9b8;padding-top:.4em;margin-top:.6em}
+.src .credit{font-size:.75em;color:#7a7f8c;font-style:italic}
+.tab{position:absolute;z-index:4;display:flex;align-items:center;justify-content:center;gap:.4em;border:calc(1.5*var(--k)) solid #d9bd7c;border-bottom:0;border-radius:calc(12*var(--k)) calc(12*var(--k)) 0 0;background:linear-gradient(#fdf7e8,#f1e3c2);color:#14203f;font-family:Literata,Georgia,serif;font-weight:700;white-space:nowrap;transition:background .2s,color .2s}
+.tab:hover{background:linear-gradient(#fff3c4,#f6d97c)}
+.tab.on{background:linear-gradient(#1d3466,#0d1f45);color:#fff;border-color:#e2b24c;box-shadow:0 calc(-2*var(--k)) calc(8*var(--k)) #0003}
+.tab svg{width:1.1em;height:1.1em}
+.editor{position:absolute;z-index:3;overflow:auto;background:#fff;border-radius:calc(8*var(--k));padding:calc(14*var(--k)) calc(20*var(--k));font:500 1em/1.6 Literata,Georgia,serif;color:#121a33;outline:none;-webkit-user-select:text;user-select:text;scrollbar-width:thin}
+.editor:empty::before{content:attr(data-ph);color:#8b90a0;font-style:italic}
+.editor p,.editor div{margin:0 0 .6em}.editor h3{margin:.2em 0 .5em;font-size:1.2em}.editor blockquote{margin:0 0 .6em 1.2em;padding-left:.8em;border-left:4px solid #e2c27a;color:#3b4157}
+.ref{position:absolute;z-index:3;display:flex;flex-direction:column;background:#fffdf7;border:calc(1.5*var(--k)) solid #d9bd7c;border-radius:calc(10*var(--k));overflow:hidden;box-shadow:calc(-4*var(--k)) 0 calc(14*var(--k)) #0002;animation:slideIn .35s cubic-bezier(.2,.8,.25,1)}
+@keyframes slideIn{from{transform:translateX(12%);opacity:0}}
+.ref header{display:flex;align-items:center;gap:.5em;padding:.35em .7em;background:linear-gradient(#1d3466,#0d1f45);color:#fff;font:700 1.05em Literata,Georgia,serif}
+.ref header button{margin-left:auto;border:calc(1.5*var(--k)) solid #e2b24c;background:#fff2;color:#fff;border-radius:99px;padding:.05em .7em;font-weight:700;font-size:.85em}
+.ref .sub{display:flex;gap:.3em;padding:.4em .6em 0;flex-wrap:wrap}
+.ref .sub button{border:calc(1.5*var(--k)) solid #d9bd7c;background:#fbf3df;border-radius:99px;padding:.05em .7em;font-weight:700;font-size:.85em}
+.ref .sub button.on{background:#1d3466;color:#fff;border-color:#e2b24c}
+.ref .body{flex:1;padding:.6em .9em;font:500 .92em/1.45 Literata,Georgia,serif}
+.planview dt{font-weight:700;color:#7a5a12;margin-top:.5em;font-family:"Source Sans 3",sans-serif;font-size:.9em;text-transform:uppercase;letter-spacing:.04em}.planview dd{margin:0 0 .2em}
+.prev h4{margin:.1em 0 .2em;text-align:center;font:700 1.3em Literata,Georgia,serif}
+.prev .orn{display:block;text-align:center;color:#c9a14a;margin-bottom:.4em}
+.prev p{margin:0 0 .6em;line-height:1.45}
+.ttl{font-family:Literata,Georgia,serif;font-weight:700;color:#14203f;line-height:1.1}
+/* sheets */
+#sheet{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:rgba(20,12,8,.55)}
+#sheet.on{display:flex;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0}}
+#sheet .panel{width:min(92vw,980px);max-height:90vh;display:flex;flex-direction:column;border-radius:22px;background:linear-gradient(#fffdf7,#fbf3e1);border:3px solid #e2b24c;box-shadow:0 20px 60px #0008;overflow:hidden;animation:popIn .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes popIn{from{transform:scale(.7);opacity:0}}
+#sheet header{display:flex;align-items:center;gap:12px;padding:14px 22px;background:linear-gradient(#1d3466,#0d1f45);color:#fff;font:700 clamp(19px,3.2vh,30px) Literata,Georgia,serif}
+#sheet header button{margin-left:auto;border:2px solid #e2b24c;background:#fff2;color:#fff;border-radius:50%;width:1.45em;height:1.45em;padding:0;display:grid;place-items:center;flex:none;font-weight:700;font-size:.8em;line-height:1;font-family:"Source Sans 3",sans-serif;cursor:pointer}#sheet header button:hover{background:#e2b24c55}
+#sheet .body{padding:18px 26px;overflow:auto;font-size:clamp(16px,2.4vh,22px);line-height:1.5;-webkit-user-select:text;user-select:text}
+#sheet .body h3{font:700 1.1em Literata,Georgia,serif;margin:.6em 0 .25em;color:#0d1f45}
+#sheet .body ul,#sheet .body ol{margin:.3em 0 .6em;padding-left:1.3em}#sheet .body li{margin:.25em 0}
+#sheet .foot{display:flex;gap:14px;justify-content:flex-end;padding:14px 22px;border-top:1px solid #e8d9b5;flex-wrap:wrap}
+#sheet .sb{min-height:52px;padding:8px 26px;border-radius:999px;font-weight:800;font-size:clamp(16px,2.4vh,22px);border:2px solid #d9b46a}
+.gold{background:linear-gradient(#ffe27a,#fbc531 55%,#f2a50c);color:#241600;box-shadow:inset 0 .12em 0 #fff8,0 .14em 0 #b06d00}
+.ghost{background:linear-gradient(#fffaf0,#f6ebd2);color:#14203f}
+.navy{background:linear-gradient(#22396b,#11234a);color:#fff;border-color:#e2b24c!important}
+#sheet.big .panel{width:min(94vw,1100px)}#sheet.big .body{font-size:clamp(19px,3.2vh,30px)}
+.essay p{margin:0 0 .7em;font-family:Literata,Georgia,serif}
+.fact{display:inline-flex;flex-direction:column;margin:0 18px 10px 0;padding:8px 14px;border-radius:12px;background:#fff;border:1px solid #e3d3ad}.fact small{font-size:.7em;font-weight:800;letter-spacing:.06em;color:#8a6a22}
+#caption{position:fixed;left:50%;bottom:2.2vh;transform:translateX(-50%);max-width:min(88vw,60em);padding:.5em 1.2em;border-radius:1.1em;background:#0d1f45e6;border:2px solid #e2b24c;color:#fff7dd;font:700 clamp(14px,2.2vh,22px)/1.35 "Source Sans 3",sans-serif;text-align:center;z-index:45;opacity:0;transition:opacity .3s;pointer-events:none}
+#caption.on{opacity:1}
+#notice{position:fixed;left:50%;top:10vh;transform:translate(-50%,-16px);padding:.6em 1.3em;border-radius:1em;background:#0d1f45f2;border:2px solid #e2b24c;color:#fff4d6;font:800 clamp(15px,2.3vh,23px) "Source Sans 3",sans-serif;z-index:46;opacity:0;transition:all .3s;pointer-events:none;text-align:center;max-width:84vw}
+#notice.on{opacity:1;transform:translate(-50%,0)}
+#trainfx{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
+#trainfx img{position:absolute;bottom:6vh;height:62vh;width:auto;filter:drop-shadow(0 2vh 2vh rgba(0,0,0,.45));will-change:transform}
+#trainfx i{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff,rgba(250,248,255,.92) 45%,rgba(245,245,252,0) 70%);animation:trainPuff 1.4s ease-out forwards}
+@keyframes trainPuff{0%{transform:scale(.35);opacity:.95}100%{transform:scale(2.4) translateY(-30%);opacity:0}}
+.confetti{position:fixed;top:-5%;width:1vw;aspect-ratio:.5;pointer-events:none;z-index:39;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--dx),115vh) rotate(var(--rot))}}
+.swR{animation:swR .42s cubic-bezier(.2,.8,.25,1) both}@keyframes swR{from{transform:translateX(10%);opacity:0}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div id="world" tabindex="-1"></div>
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose" aria-label="Close" title="Close">✕</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
+<div id="caption" role="status" aria-live="polite"></div><div id="notice" role="alert"></div>
+<script>
+'use strict';
+const ART='resources/wst/v2/',TRAINPNG='resources/sra/v3/train.png';
+const TESTS=/*__TESTS__*/;
+const META={
+ 7:{q:'How can Filipino families and schools prepare for typhoons?',code:'WST-7-INF',dir:'Write an informative essay. Explain your central idea using facts from at least two sources.'},
+ 8:{q:'Why do the seas of the Philippines matter, and how can we protect them?',code:'WST-8-EXP',dir:'Write an expository essay. Explain your central idea using details from at least two sources.'},
+ 9:{q:'Filipino and English, or the mother tongue, for K to 3?',code:'WST-9-ARG',dir:'Write an argument. State your claim, use evidence from the sources, and answer a counterclaim.'},
+ 10:{q:'Should the school year open in June, before the hottest months?',code:'WST-10-ARG',dir:'Write an argument. State your claim, use evidence from the sources, and answer a counterclaim.'}};
+const LIMIT=45*60*1000,MINW={7:150,8:180,9:200,10:220};
+const isArg=g=>TESTS[g].type==='Argumentative';
+
+/* ---------- READwy bridge: the learner, storage and navigation live in the main app ---------- */
+const PP=(()=>{try{return parent!==window&&parent.document?parent:null}catch(e){return null}})();
+function pLoad(k,f){try{if(PP&&typeof PP.load==='function')return PP.load(k,f)}catch(e){}try{const v=JSON.parse(localStorage.getItem('readwy-wst:'+k));return v==null?f:v}catch(e){return f}}
+function pSave(k,v){try{if(PP&&typeof PP.save==='function')return PP.save(k,v)}catch(e){}try{localStorage.setItem('readwy-wst:'+k,JSON.stringify(v))}catch(e){}}
+function pUser(){let u=null;try{if(PP)u=PP.eval('typeof user!=="undefined"?user:null')}catch(e){}return u||pLoad('user',null)||{}}
+function toJourney(){try{if(PP&&typeof PP.go==='function'){PP.go('map');return}}catch(e){}notice('The journey map opens from READwy.')}
+function openSummary(){try{if(PP&&typeof PP.renderAssessmentSummary==='function'){closeSheet();PP.transition('assessment-summary',()=>PP.renderAssessmentSummary());return}}catch(e){}notice('The assessment summary opens from READwy.')}
+
+/* the learner's gender: from the account, then from the profile saved at sign-up (matched by email) */
+const PROFILES_KEY='READwy_new_2026_local_studentProfiles';
+function signupProfile(u){try{const p=JSON.parse(localStorage.getItem(PROFILES_KEY)||'{}')||{};return p[String(u.email||'').trim().toLowerCase()]||null}catch(e){return null}}
+const normGender=v=>{v=String(v||'').trim().toLowerCase();return /^(f|female|girl|woman|babae|fem)$/.test(v)?'female':/^(m|male|boy|man|lalaki)$/.test(v)?'male':''};
+// gender from the account, then the sign-up profile, then any saved READwy record for the same email (or name)
+function learnerGender(u){const sp=signupProfile(u)||{};
+ for(const v of [u.gender,u.sex,sp.gender,sp.sex]){const g=normGender(v);if(g)return g}
+ const em=String(u.email||'').trim().toLowerCase(),nm=String(u.name||'').trim().toLowerCase();
+ const look=(o,d=0)=>{if(!o||typeof o!=='object'||d>4)return '';
+  const g=normGender(o.gender||o.sex),oe=String(o.email||'').trim().toLowerCase(),on=String(o.name||'').trim().toLowerCase();
+  if(g&&((em&&oe===em)||(!em&&nm&&on===nm)))return g;
+  for(const [k,v] of Object.entries(o)){if(em&&String(k).toLowerCase()===em&&v&&typeof v==='object'){const g2=normGender(v.gender||v.sex);if(g2)return g2}const r=look(v,d+1);if(r)return r}return ''};
+ try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!/readwy/i.test(k))continue;let v;try{v=JSON.parse(localStorage.getItem(k))}catch(e){continue}const g=look(v);if(g)return g}}catch(e){}
+ return ''}function saveGender(g){try{const u=PP&&PP.eval('typeof user!=="undefined"?user:null');if(u){u.gender=g;PP.save('user',u)}}catch(e){}
+ try{const u=pUser();u.gender=g;pSave('user',u);const p=JSON.parse(localStorage.getItem(PROFILES_KEY)||'{}')||{},k=String(u.email||'').trim().toLowerCase();if(k){p[k]={...(p[k]||{}),gender:g};localStorage.setItem(PROFILES_KEY,JSON.stringify(p))}}catch(e){}}/* ---------- learner state, one record per grade ---------- */
+/* Developer view (opened from the READwy badge): no locks, no required answers, every screen reachable. */
+var DEV=(()=>{try{return sessionStorage.getItem('readwy-dev-view')==='1'}catch(e){return false}})();
+const U=pUser();
+// the test follows the learner's grade level from sign-up (Grades 11-12 take the Grade 10 task)
+const gradeTest=u=>{u=Number(u);return [7,8,9,10].includes(u)?u:u>10?10:0};
+let G=(()=>gradeTest(U.grade)||[7,8,9,10].find(g=>g===Number(pLoad('wst_v2_current',0)))||7)();
+const blankState=g=>({grade:g,name:'',sid:'',checkedIn:false,ready:false,stage:'start',tab:0,notes:'',plan:{},html:'',checks:[],startedAt:null,deadline:null,submitted:false});
+let ST=loadState(G);
+function loadState(g){const s=pLoad('wst_v2_'+g,null);return Object.assign(blankState(g),s||{})}
+function persist(){pSave('wst_v2_'+G,ST);pSave('wst_v2_current',G)}
+const T=()=>TESTS[G];
+
+/* ---------- sound and Ollie's voice ---------- */
+let AC=null,muted=false;try{muted=localStorage.getItem('wst-v2-muted')==='1'}catch(e){}
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,t0,d,type='triangle',v=.05){const a=ac();if(!a||muted)return;const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,a.currentTime+t0);g.gain.linearRampToValueAtTime(v,a.currentTime+t0+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+t0+d);o.connect(g).connect(a.destination);o.start(a.currentTime+t0);o.stop(a.currentTime+t0+d+.05)}
+function noise(t0,d,v=.05,f=900){const a=ac();if(!a||muted)return;const b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length);const s=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();fl.type='bandpass';fl.frequency.value=f;g.gain.value=v;s.buffer=b;s.connect(fl).connect(g).connect(a.destination);s.start(a.currentTime+t0)}
+const SFX={whistle(){[784,988,1175].forEach(f=>tone(f,0,1.2,'sine',.04))},chuff(n=4){for(let i=0;i<n;i++)noise(i*.28,.18,.05,500)},pop(){tone(660,0,.1,'square',.022)},tick(){tone(1200,0,.06,'sine',.04)},buzz(){tone(180,0,.25,'sawtooth',.03)},fanfare(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.13,.5,'triangle',.05));tone(1047,.6,.9,'triangle',.045)},stamp(){noise(0,.12,.12,300)}};
+let voice=null,tok=0;
+function pickVoice(){const vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];for(const r of [/Guy.*Natural/i,/Ryan.*Natural/i,/Andrew.*Natural/i,/Google UK English Male/i,/Daniel/i,/David/i,/en-US/i,/^en/i]){const v=vs.find(v=>r.test(v.name)||r.test(v.lang));if(v)return v}return vs[0]||null}
+try{speechSynthesis.onvoiceschanged=()=>{voice=pickVoice()};voice=pickVoice()}catch(e){}
+function caption(t){const c=document.getElementById('caption');c.textContent=t||'';c.classList.toggle('on',!!t)}
+function say(t){if(muted||!('speechSynthesis' in window))return;const k=++tok;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=.95;u.pitch=1.15;caption(t);u.onend=u.onerror=()=>{if(k===tok)setTimeout(()=>k===tok&&caption(''),900)};speechSynthesis.speak(u)}
+function toggleSound(){muted=!muted;try{localStorage.setItem('wst-v2-muted',muted?'1':'0')}catch(e){}if(muted){try{speechSynthesis.cancel()}catch(e){}caption('')}document.querySelectorAll('.tbbtn.snd').forEach(b=>{b.querySelector('.ic').innerHTML=TBI.sound(!muted);b.setAttribute('aria-pressed',String(!muted))});notice(muted?'🔇 Sound off':'🔊 Sound on');if(!muted)say(LINES[S.scene]||'Sound is on.')}
+let nT=0;function notice(m){const n=document.getElementById('notice');n.textContent=m;n.classList.add('on');clearTimeout(nT);nT=setTimeout(()=>n.classList.remove('on'),3200)}
+function confetti(n=80){const cols=['#ffd447','#2f8f10','#1d3466','#f2a50c','#fff','#e2483d'];for(let i=0;i<n;i++){const c=document.createElement('i');c.className='confetti';c.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%6]};--dx:${(Math.random()-.5)*30}vw;--rot:${Math.random()*1080}deg;animation-duration:${2.6+Math.random()*2.4}s;animation-delay:${Math.random()*.7}s`;document.body.appendChild(c);setTimeout(()=>c.remove(),6200)}}
+
+/* ---------- the painted page fills the screen; live parts are placed in its own pixels (1 art px = var(--k)) ---------- */
+['wst01','wst02','wst03','wst04','wst05','wst06','wst07','wst08'].forEach(k=>{const i=new Image();i.decoding='async';i.src=ART+k+'.jpg';const e=new Image();e.src=ART+'edge_'+k+'.png'});
+const AW=1536,AH=1024,S={scene:'',key:''};
+let cur=null;
+const px=n=>`calc(${n}*var(--k))`;
+function plate(key){const sc=document.createElement('section');sc.className='scene';sc.dataset.key=key;sc.innerHTML=`<div class="plate"><img class="art" src="${ART}${key}.jpg" alt="" draggable="false"></div>`;return sc}
+/* Keep each painting's true shape (no stretching); centre it, and fill the spare strips with a blurred copy. */
+/* Toolbar + ticket box of each painting (painting px), and the toolbar alone. */
+const WST_BOX={"wst01":[43,158.5,1458,733],"wst02":[28,96,1479,861.5],"wst03":[43,52,1463,910.5],"wst04":[42,55,1451.5,907.5],"wst05":[99,28,1374,957.5],"wst06":[54,29,1432,935.5],"wst07":[101,13,1383.5,957.5],"wst08":[24,118,1487,756]},WST_TB={"wst01":[44,25,1500,84],"wst02":[29,16,1506,85],"wst03":[44,22,1505,84],"wst04":[150,21,1385,80],"wst05":[197,12,1434,65],"wst06":[55,16,1485,80],"wst07":[102,14,1451,73],"wst08":[25,17,1510,83]};
+/* Ticket box of each painting (painting px) and the shared ticket shape. */
+const WST_TICKET={"wst01":[44,234.5,1491.5,889.5],"wst02":[136,182,1462,955.5],"wst03":[107.5,131,1478.5,960.5],"wst04":[43,131,1492.5,960.5],"wst05":[100,98,1472,983.5],"wst06":[60,110,1477.5,962.5],"wst07":[119.5,76,1483.5,968.5],"wst08":[123.5,201,1467,872]},WST_A=1.70,WST_STUB={"wst02":[1131,1426,1291,"251,231,196"],"wst03":[1109,1442,1284.5,"249,226,189"],"wst04":[1160,1456,1321,"252,238,215"],"wst05":[1174,1436,1320,"250,237,218"],"wst06":[1183,1441,1325.5,"251,234,203"],"wst07":[1169,1447,1315.5,"251,237,214"]},WST_PAPER={"wst01":"251,237,214","wst08":"251,240,214"};
+/* Fixed layout: toolbar on top, the ticket box under it, centred with an even margin. */
+function wstLayout(){const W=innerWidth,H=innerHeight,m=Math.max(8,Math.min(W,H)*.022),bh=Math.max(36,Math.min(72,H*.08)),g=Math.max(8,bh*.28);
+ let tw=W-2*m,th=tw/WST_A;const avail=H-2*m-bh-g;if(th>avail){th=avail;tw=th*WST_A}
+ const y0=(H-(bh+g+th))/2,x0=(W-tw)/2;return {tx:x0,ty:y0+bh+g,tw,th,bar:[x0,y0,tw,bh]}}
+function wstBar(L){let b=document.getElementById('wstbar');
+ if(!b){b=document.createElement('div');b.id='wstbar';b.innerHTML=`<button type="button" class="brand" aria-label="WST start page"><span class="bk">${ICON.book}</span><b>Story Depot</b><i></i><em>Writing screening</em></button><nav aria-label="WST toolbar"></nav>`;
+  b.querySelector('.brand').onclick=e=>{e.stopPropagation();ac();SFX.pop();start()};
+  const nav=b.querySelector('nav'),item=(lab,aria,ic,fn,cls)=>{const t=document.createElement('button');t.type='button';t.className='tbbtn '+(cls||'');t.setAttribute('aria-label',aria);t.innerHTML=`<span class="ic">${ic}</span><span>${lab}</span>`;t.onclick=e=>{e.stopPropagation();ac();SFX.pop();fn()};nav.appendChild(t);return t},
+   div=()=>{const d=document.createElement('i');d.className='tbdiv';nav.appendChild(d)};
+  item('Journey Map','Journey map (your work is saved)',TBI.map,()=>leaveToJourney());div();
+  item('Sound','Sound on or off',TBI.sound(!muted),()=>toggleSound(),'snd').setAttribute('aria-pressed',String(!muted));div();
+  item('Settings','Settings',TBI.settings,()=>settingsSheet());div();
+  item('Help','Help',TBI.help,()=>helpSheet());document.body.appendChild(b)}
+ const [x,y,w,h]=L.bar;Object.assign(b.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px',fontSize:(h*.39)+'px'})}
+function wstBase(sc,pl,o){let base=sc.querySelector(':scope>.wst-base');
+ if(!o){if(base)base.remove();pl.style.webkitMaskImage=pl.style.maskImage='';return}
+ if(!base){base=document.createElement('div');base.className='wst-base';base.setAttribute('aria-hidden','true');sc.insertBefore(base,sc.firstChild)}
+ const {L,k}=o,p=WST_PAPER[sc.dataset.key]||'251,238,214';
+ Object.assign(base.style,{left:L.tx+'px',top:L.ty+'px',width:L.tw+'px',height:L.th+'px',borderRadius:18*k+'px'});base.style.setProperty('--p',p);base.style.setProperty('--kk',k+'px');
+ /* the painting's own top and bottom edges fade into that paper */
+ const band=(L.th-(o.d-o.b)*k*o.sy)/2;base.style.setProperty('--band',band+'px');
+ const f=30,e=20,t0=(o.b+e)/AH*100,t1=(o.b+e+f)/AH*100,b1=(o.d-e-f)/AH*100,b0=(o.d-e)/AH*100,m=`linear-gradient(180deg,transparent ${t0}%,#000 ${t1}%,#000 ${b1}%,transparent ${b0}%)`;
+ pl.style.webkitMaskImage=pl.style.maskImage=m}
+function fit(sc){const W=innerWidth,H=innerHeight,pl=sc.querySelector('.plate');let k=Math.min(W/AW,H/AH),left=(W-AW*k)/2,top=(H-AH*k)/2;
+/* Story Depot welcome: size the cut-out toolbar + ticket to the screen, with an even margin on every side. */
+let sy=1;const TK=WST_TICKET[sc.dataset.key];if(TK){const L=wstLayout(),[a,b,c,d]=TK,w=c-a,h=d-b,r=(w/h)/WST_A;
+ /* same ticket box on every page: a ticket within 10% of the box's shape is fitted exactly; a wider one fills the width; a taller one the height */
+ if(r>=.88&&r<=1.1){k=L.tw/w;sy=r}else if(r>1.1){k=L.tw/w;sy=Math.min(r,1.1)}else{k=L.th/h}
+ const pw=w*k,ph=h*k*sy;left=L.tx+(L.tw-pw)/2-a*k;top=L.ty+(L.th-ph)/2-b*k*sy;wstBar(L);
+ /* a ticket wider than the box (Welcome, Journey Complete): same outer size as every page, the extra height is matching ticket paper */
+ wstBase(sc,pl,r>1.1?{L,k,a,b,d,sy}:null)}
+Object.assign(pl.style,{left:Math.round(left)+'px',top:Math.round(top)+'px',width:AW*k+'px',height:AH*k+'px',fontSize:k+'px',transformOrigin:'0 0',transform:sy===1?'none':'scaleY('+sy+')'});sc.style.setProperty('--k',k+'px');
+const art=pl.querySelector('.art');if(art){sc.style.setProperty('--art',`url("${art.getAttribute('src')}")`);extendArt(sc,art.getAttribute('src'),W,H,AW*k,AH*k)}}
+/* The spare strips continue the scene with READwy's painted train station (each Story Depot painting has its ticket and toolbar too close to the edges to mirror). */
+function extendArt(sc,src,W,H,pw,ph){const ox=(W-pw)/2,oy=(H-ph)/2,url='url("resources/station-journey.webp")';
+ const strip=(cls,box,pos)=>{let e=sc.querySelector(':scope>.ext-'+cls);if(!e){e=document.createElement('div');e.className='ext-fill ext-'+cls;sc.prepend(e)}
+  const show=box[2]>.5&&box[3]>.5;e.style.display=show?'block':'none';if(!show)return;
+  Object.assign(e.style,{left:box[0]+'px',top:box[1]+'px',width:box[2]+'px',height:box[3]+'px',backgroundImage:url,backgroundSize:'auto '+Math.max(H,box[3])+'px',backgroundPosition:pos,transform:'none'})};
+ strip('l',[0,0,Math.ceil(ox)+1,H],'left center');
+ strip('r',[Math.floor(ox+pw)-1,0,Math.ceil(W-ox-pw)+1,H],'right center');
+ strip('t',[ox,0,pw,Math.ceil(oy)+1],'center top');
+ strip('b',[ox,Math.floor(oy+ph)-1,pw,Math.ceil(H-oy-ph)+1],'center bottom')}
+addEventListener('resize',()=>{if(cur)fit(cur)});
+function el(par,html,[x,y,w,h],cls='abs',css=''){const d=document.createElement('div');d.className=cls;d.style.cssText=`left:${px(x)};top:${px(y)};width:${px(w)};height:${px(h)};${css}`;d.innerHTML=html;par.appendChild(d);return d}
+function clone(par,[x,y,w,h],cls='clone',css=''){return el(par,'',[x,y,w,h],cls,`background-image:url(${ART}${S.key}.jpg);background-size:${px(AW)} ${px(AH)};background-position:calc(${-x}*var(--k)) calc(${-y}*var(--k));${css}`)}
+function hit(pl,label,r,fn,cls=''){const b=document.createElement('button');b.type='button';b.className='hit '+cls;b.setAttribute('aria-label',label);b.style.cssText=`left:${px(r[0])};top:${px(r[1])};width:${px(r[2])};height:${px(r[3])}`;b.onclick=e=>{e.stopPropagation();ac();SFX.pop();fn(e)};pl.appendChild(b);return b}
+function patch(pl,r,html='',css='',cls='abs paper'){return el(pl,html,r,cls,'z-index:3;'+css)}
+function text(pl,r,html,fs,css=''){return el(pl,html,r,'lbl',`font-size:${px(fs)};${css}`)}
+function puffs(pl,x,y,s=40,n=4){for(let i=0;i<n;i++)el(pl,'',[x-s/2,y-s/2,s,s],'puff',`animation-delay:${i*.85}s`)}
+function glow(pl,x,y,r,d=0){return;el(pl,'',[x-r,y-r,r*2,r*2],'glow',`animation-delay:${d}s`)}
+function lids(pl,eyes){eyes.forEach(([x,y,r],i)=>el(pl,'',[x-r,y-r*1.05,r*2,r*2.1],'lid',`animation-delay:${i*.03}s`))}
+// an owl standing on the ticket stub: cut out along its own outline (alpha mask), it blinks and bounces in place
+function owl(pl,key,box,eyes){const w=el(pl,'',box,'abs owlwrap');const m=`url(${ART}m_${key}.png)`;
+ clone(w,box,'clone',`left:0;top:0;-webkit-mask:${m} 0 0/100% 100% no-repeat;mask:${m} 0 0/100% 100% no-repeat`);
+ eyes.forEach(([x,y,r])=>el(w,'',[x-r-box[0],y-r*1.05-box[1],r*2,r*2.1],'lid'));return w}
+function loco(pl,r,steam){return;const [x]=r,m='linear-gradient(90deg,'+(x?'transparent,#000 9%,':'#000,')+'#000 88%,transparent),linear-gradient(transparent,#000 8%,#000 92%,transparent)';
+ clone(pl,r,'clone locorumble',`-webkit-mask:${m};-webkit-mask-composite:source-in;mask:${m};mask-composite:intersect;z-index:1`);if(steam)puffs(pl,steam[0],steam[1],40,4)}
+const ICON={map:`<svg viewBox="0 0 32 32" width="1.2em" height="1.2em"><path fill="#f2c14e" d="M9 2a6 6 0 0 0-6 6c0 4.5 6 11 6 11s6-6.5 6-11a6 6 0 0 0-6-6z"/><circle cx="9" cy="8" r="2.3" fill="#08254f"/><path fill="#f2c14e" d="M23 12a5 5 0 0 0-5 5c0 3.8 5 9 5 9s5-5.2 5-9a5 5 0 0 0-5-5z"/><circle cx="23" cy="17" r="2" fill="#08254f"/></svg>`,
+ book:`<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M2 5c3-1.5 7-1.5 10 1 3-2.5 7-2.5 10-1v14c-3-1.5-7-1.5-10 1-3-2.5-7-2.5-10-1z M12 6v14"/></svg>`,
+ doc:`<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M6 2h9l5 5v15H6z M15 2v5h5 M9 12h8 M9 16h8"/></svg>`,
+ layers:`<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3 2 8l10 5 10-5z M2 12l10 5 10-5 M2 16l10 5 10-5"/></svg>`,
+ pen:`<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M3 21l3.5-1 12-12-2.5-2.5-12 12z M14.5 5.5l2.5 2.5"/></svg>`};
+const CHECK=`<svg viewBox="0 0 32 32"><path d="M5 17l7 7L28 7" fill="none" stroke="#2f8f10" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+// the navy bar painted at the top of every page: Story Depot logo (start page), Journey Map, Sound and Help
+// Journey Map, Sound and Help are drawn as one matching set on a navy strip laid over the painted bar:
+// same font and size, and the same strong yellow when pointed at, focused or clicked.
+const TBI={map:`<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2z"/></svg>`,
+ sound:on=>`<svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z"/>${on?'<path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>':'<path d="M15 9l6 6M21 9l-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'}</svg>`,
+ settings:`<svg viewBox="0 0 24 24"><path fill="currentColor" d="M10.2 2h3.6l.6 2.9a7.6 7.6 0 0 1 2.1 1.2l2.8-1 1.8 3.1-2.2 2a7.7 7.7 0 0 1 0 2.4l2.2 2-1.8 3.1-2.8-1a7.6 7.6 0 0 1-2.1 1.2l-.6 2.9h-3.6l-.6-2.9a7.6 7.6 0 0 1-2.1-1.2l-2.8 1-1.8-3.1 2.2-2a7.7 7.7 0 0 1 0-2.4l-2.2-2 1.8-3.1 2.8 1a7.6 7.6 0 0 1 2.1-1.2zM12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8z"/></svg>`,
+ help:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.2 9.3a2.9 2.9 0 1 1 4.3 2.5c-.9.5-1.5 1.1-1.5 2.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.3" fill="currentColor"/></svg>`};
+function topbar(pl,{logo,map,sound,help,lft=150,fs=25}){const TB=WST_TB[S.key];if(TB){const x0=TB[0]+.48*(TB[2]-TB[0]),x1=help[0]+help[2];lft=map[0]-x0;fs=Math.min(31,31*(TB[3]-TB[1])/59,31*(x1-x0)/840)}
+ hit(pl,'WST start page',logo,()=>start(),'nav tb-part');
+ const x0=map[0]-lft,x1=help[0]+help[2]+2,y=sound[1]-2,h=sound[3]+4,fe='linear-gradient(90deg,transparent,#000 2.5%,#000)';
+ el(pl,'',[x0,y,x1-x0,h],'abs tb-part',`z-index:3;background:linear-gradient(#0c2b52,#071f3d 45%,#031631);border-radius:0 ${px(h/2)} ${px(h/2)} 0;-webkit-mask:${fe};mask:${fe}`);
+ const bar=el(pl,'',[x0,y,x1-x0,h],'abs tb-part',`z-index:4;display:flex;align-items:center;justify-content:space-evenly;font-size:${px(fs)}`);
+ const item=(lab,aria,ic,fn,cls)=>{const b=document.createElement('button');b.type='button';b.className='tbbtn '+(cls||'');b.setAttribute('aria-label',aria);b.innerHTML=`<span class="ic">${ic}</span><span>${lab}</span>`;b.onclick=e=>{e.stopPropagation();ac();SFX.pop();fn()};bar.appendChild(b);return b};
+ const div=()=>{const d=document.createElement('i');d.className='tbdiv';bar.appendChild(d)};
+ item('Journey Map','Journey map (your work is saved)',TBI.map,leaveToJourney);div();
+ item('Sound','Sound on or off',TBI.sound(!muted),toggleSound,'snd').setAttribute('aria-pressed',String(!muted));div();
+ item('Settings','Settings',TBI.settings,()=>settingsSheet());div();
+ item('Help','Help',TBI.help,()=>helpSheet())}function leaveToJourney(){saveAll();if(ST.startedAt&&!ST.submitted){sheet('Leave for now?',`<p>Your work is saved on this device. The timer keeps running while you are away.</p><p class="muted">Time left: <b>${fmt(remaining())}</b></p>`,[['Keep writing','ghost',closeSheet],['Go to the journey map','navy',()=>{closeSheet();toJourney()}]]);return}toJourney()}
+
+/* ---------- page change: the train steams across, the next page appears in its wake ---------- */
+let fx=null;
+function finishFx(){if(fx){cancelAnimationFrame(fx.raf);fx.done()}}
+const LINES={start:'Welcome to Writing Express! I am Ollie. Press Begin Journey when you are ready.',checkin:'This is your boarding pass. Check your name, email, grade and section, then press Continue.',ready:'Read the three steps. Tick I am ready to begin, then press Start Assessment. The timer starts then.',explore:'Read the prompt and every source. Use My Notes to save useful details.',plan:'Plan your response. Write your main idea, your reasons, and your evidence.',write:'Write your essay in your own words. Use evidence from the sources and name each source.',review:'Read your essay one more time and tick each box on the checklist before you submit.',complete:'Journey complete! Your writing is ready for your teacher to review.'};
+function show(name,key,build,{instant=false}={}){finishFx();closeSheet();S.scene=name;S.key=key;if(name!=='start'&&name!=='complete'){ST.stage=name;persist()}
+ try{sessionStorage.setItem('wst-v2-here',JSON.stringify({scene:name,g:G,at:Date.now()}))}catch(e){}
+ try{speechSynthesis.cancel()}catch(e){}tok++;caption('');
+ const w=document.getElementById('world'),old=cur,sc=plate(key);w.appendChild(sc);fit(sc);cur=sc;build(sc.querySelector('.plate'));tickTimer();
+ setTimeout(()=>{if(S.scene===name)say(LINES[name])},instant||!old?300:1300);
+ if(!old||instant||matchMedia('(prefers-reduced-motion: reduce)').matches){if(old)old.remove();return}
+ const W=innerWidth,H=innerHeight,box=document.createElement('div');box.id='trainfx';box.innerHTML=`<img src="${TRAINPNG}" alt="">`;document.body.appendChild(box);
+ const img=box.querySelector('img'),tw=H*.62*(624/664),dur=1250,t0=performance.now();const reveal=x=>{const m=`linear-gradient(90deg,#000 ${x-W*.16}px,transparent ${x}px)`;sc.style.webkitMaskImage=m;sc.style.maskImage=m};reveal(0);
+ SFX.chuff(5);setTimeout(()=>SFX.whistle(),120);let lastPuff=0;
+ const done=()=>{sc.style.webkitMaskImage=sc.style.maskImage='';old.remove();box.remove();fx=null};
+ const step=now=>{const p=Math.min(1,(now-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+  const front=-tw*.2+(W+tw*1.35)*e,rear=front-tw;img.style.transform=`translateX(${front-tw}px) translateY(${Math.sin(now/45)*1.2}px)`;
+  const edge=rear+tw*.5;reveal(edge+W*.16*e);
+  if(now-lastPuff>45&&edge>-tw*.2&&edge<W+tw*.2){lastPuff=now;for(let i=0;i<3;i++){const s=document.createElement('i'),z=H*(.2+Math.random()*.16);s.style.cssText=`left:${edge-z/2-W*.06+(Math.random()-.5)*60}px;top:${H*(Math.random()*1.05)-z/2}px;width:${z}px;height:${z}px`;box.appendChild(s);setTimeout(()=>s.remove(),1500)}}
+  if(p<1)fx.raf=requestAnimationFrame(step);else setTimeout(()=>{if(fx&&fx.box===box)done()},250)};
+ fx={raf:requestAnimationFrame(step),done,box}}
+
+/* ---------- timer: 45 minutes from Start Assessment; at zero the work is submitted as it is ---------- */
+const remaining=()=>ST.deadline?Math.max(0,ST.deadline-Date.now()):LIMIT;
+const fmt=ms=>{const s=Math.ceil(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function tickTimer(){const t=document.getElementById('timer');if(t){const r=remaining();t.textContent=fmt(r);t.style.color=r<5*60000?'#c92f42':'#14203f'}
+ if(ST.deadline&&!ST.submitted&&remaining()<=0){saveAll();finishSubmission(true);notice('⏰ Time is up — your writing was submitted as it is.');complete()}}
+setInterval(tickTimer,500);
+
+/* Developer view: every screen of the Story Depot, for inspecting the UI */
+window.readwyDevScreens=()=>[['Start',()=>start()],['01 Check in',()=>checkin()],['02 Get ready',()=>ready()],['03 Explore — prompt',()=>explore(0)],['03 Explore — source 1',()=>explore(1)],
+ ['04 Plan',()=>planPage()],['05 Write',()=>writePage()],['06 Review',()=>review()],['Journey complete',()=>complete()],
+ ['Writing level result',()=>{if(!pLoad('wst_submission_'+G,null)){ST.html=ST.html||'<p>Sample essay for the developer view.</p>';finishSubmission(false)}showResult()}],['Writing rubric',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Close','gold',closeSheet]],true)],['Settings',()=>settingsSheet()],['Help',()=>helpSheet()]];/* ---------- 0 · start (Designer 4) ---------- */
+function start(){show('start','wst01',pl=>{
+ topbar(pl,{logo:[65,22,215,58],map:[960,28,190,48],sound:[1185,28,150,50],help:[1360,26,132,54],lft:300,fs:31});
+/* Title: "Story Depot" (the painting says "Assessment Test" on the second line). */
+{for(const [txt,box] of [['Writing Screening',[586,449.5,610,78.5]],['Story Depot',[586,358,610,92]]]){const t=el(pl,'<span>'+txt+'</span>',box,'abs wst-title');requestAnimationFrame(()=>{const s=t.firstChild;let f=88;while(s.offsetWidth>t.clientWidth*.955&&f>50){f-=2;t.style.fontSize=px(f)}})}}
+ /* Welcome: the ticket is cut out of the painting, so no moving train or lamp glow is drawn over it. */lids(pl,[[411,460,35],[513,451,30]]);
+ const sub=submittedRec();
+ if(sub||ST.startedAt){patch(pl,[660,768,500,46],'','background:#f9f1de;border-radius:12px');
+  text(pl,[660,768,500,46],sub?'Your writing has been submitted. ✔':'Welcome back — your work is saved.',27,'justify-content:center;font-style:italic;font-weight:600;font-family:"Source Sans 3",sans-serif')}
+ el(pl,'',[640,642,535,98],'shine');
+ hit(pl,sub?'View your submitted journey':ST.startedAt?'Continue your writing journey':'Begin journey',[632,637,550,110],()=>{if(sub)return complete();if(ST.startedAt)return resume();checkin()})})}
+function resume(){({explore,plan:planPage,write:writePage,review}[ST.stage]||explore)()}
+
+/* The passenger portrait that takes the owl's place on every ticket stub (a still image, in a gold frame):
+   the girl cutout for a female learner or the boy cutout for a male learner, as chosen in the Gender field at sign-up. The frame holds only that picture.
+   patches: paper covers laid over the painted owl; fr: the frame; lab: optional "PASSENGER" caption. */
+function passenger(pl,patches,fr,lab){const pu=pUser();
+ const fp='linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent),linear-gradient(transparent,#000 4%,#000 96%,transparent)';
+ const SB=WST_STUB[S.key],SY1={"wst02":795,"wst03":830,"wst04":722,"wst05":806,"wst06":592,"wst07":800}[S.key];
+ if(SB){const [x0,x1,cx,col]=SB,y0=Math.min(...patches.map(r=>r[1])),y1=SY1||Math.max(...patches.map(r=>r[1]+r[3])),sm=`linear-gradient(transparent,#000 ${px(14)},#000 calc(100% - ${px(5)}),transparent),linear-gradient(90deg,transparent,#000 ${px(5)},#000 calc(100% - ${px(5)}),transparent)`;
+  patch(pl,[x0+3,y0,x1-x0-6,y1-y0],'',`background:radial-gradient(ellipse at 50% 45%,rgba(255,250,238,.55),transparent 70%),rgb(${col});-webkit-mask:${sm};-webkit-mask-composite:source-in;mask:${sm};mask-composite:intersect`);
+  /* the owl's wing tips beyond the stub's inner border: small covers in the same paper */
+  patches.slice(1).forEach(r=>patch(pl,r,'',`background:rgb(${col});-webkit-mask:${fp};-webkit-mask-composite:source-in;mask:${fp};mask-composite:intersect`));
+  fr=[cx-fr[2]/2,fr[1],fr[2],fr[3]];if(lab)lab=[cx-lab[2]/2,lab[1],lab[2],lab[3]]}
+ else patches.forEach(r=>patch(pl,r,'',`background:radial-gradient(ellipse at 50% 50%,#fcf2e0,#f9e9d0 60%,#f6e0c2);-webkit-mask:${fp};-webkit-mask-composite:source-in;mask:${fp};mask-composite:intersect`));
+ const k=fr[2]/248,frame=el(pl,'',fr,'abs',`z-index:3;border-radius:${px(16*k)};overflow:hidden;background:linear-gradient(#fffdf6,#f6efdd);border:${px(6*k)} solid #d9b25a;box-shadow:0 0 0 ${px(2)} #fff9,0 ${px(6*k)} ${px(16*k)} #0004`);
+ const paint=g=>{
+  /* the photo uploaded in the GST profile, when there is one */
+  if(pu.photo){frame.innerHTML=`<img src="${esc(pu.photo)}" alt="Passenger photo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">`;return}
+  if(g){frame.innerHTML=`<img src="${ART}p_${g}.png" alt="${g==='female'?'Girl':'Boy'} passenger" style="position:absolute;left:8%;top:7%;width:84%;height:93%;object-fit:contain;object-position:50% 100%;display:block">`;return}
+  frame.innerHTML=''};
+ paint(learnerGender(pu));
+ if(lab)text(pl,lab,'PASSENGER',lab[3]>=34?22:20,'justify-content:center;letter-spacing:.14em;color:#7a5a12');return frame}
+/* ---------- 1 · check in (Designer 5) ---------- */
+function checkin(){const tg=gradeTest(pUser().grade);if(tg&&tg!==G)switchGrade(tg);show('checkin','wst02',pl=>{
+ topbar(pl,{logo:[65,20,225,62],map:[950,25,190,50],sound:[1155,25,150,50],help:[1350,22,140,56]});
+ loco(pl,[0,225,170,370],[125,205]);glow(pl,1325,140,30);
+ passenger(pl,[[1138,404,306,402]],[1172,428,248,296],[1150,738,292,40]);
+
+ // The boarding pass shows the learner exactly as they signed up: name, LRN and grade level are not edited here.
+ // The painted form is redrawn as four evenly spaced rows: Student name, Email, Grade, Section.
+ const u=pUser(),name=String(u.name||'').trim(),lrn=String(u.lrn||'').trim(),ug=Number(u.grade)||G,sec=String(u.section||'').trim(),mail=String(u.email||'').trim();
+ ST.name=name;ST.sid=/^\d{12}$/.test(lrn)?lrn:'';persist();
+ const fe='linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent),linear-gradient(transparent,#000 4%,#000 96%,transparent)';
+ patch(pl,[205,396,915,340],'',`background:radial-gradient(ellipse at 50% 45%,#fdf7e6,#fcf3dd 55%,#faecd2);-webkit-mask:${fe};-webkit-mask-composite:source-in;mask:${fe};mask-composite:intersect`);
+ const ROWS=[418,497,576,655],LX=228,FX=508,FW=567,FH=56;
+ const lock=`<svg viewBox="0 0 24 24" style="width:${px(22)};height:${px(22)};flex:none;margin-left:auto;opacity:.55"><path d="M6 10V8a6 6 0 0 1 12 0v2h1v12H5V10zm2 0h8V8a4 4 0 0 0-8 0z" fill="#14203f"/></svg>`;
+ const show1=(y,html,lab,x=FX,w=FW)=>{const d=el(pl,`<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${html}</span>${lock}`,[x,y,w,FH],'field boxed',`display:flex;align-items:center;gap:${px(10)};font-size:${px(24)};font-weight:700;background:#f6f1e4;border-color:#4b5571;cursor:default`);d.setAttribute('role','textbox');d.setAttribute('aria-readonly','true');d.setAttribute('aria-label',lab);return d};
+ [['Student name:',ROWS[0]],['Email:',ROWS[1]],['Grade:',ROWS[2]],['Section:',ROWS[3]]].forEach(([t,y])=>text(pl,[LX,y,FX-LX-14,FH],t,32));
+ show1(ROWS[0],name?esc(name):'<i style="color:#8d93a6;font-weight:500">Sign up to add your name</i>','Student name (from your sign-up)');
+
+
+
+
+ const none='<i style="color:#8d93a6;font-weight:500">Not on file</i>';
+ show1(ROWS[1],mail?esc(mail):none,'Email (from your sign-up)');
+ show1(ROWS[2],`Grade ${esc(ug)}`,'Grade level (from your sign-up)');
+ show1(ROWS[3],sec?esc(sec):none,'Section (from your sign-up)');
+ hit(pl,'Back',[183,842,180,60],()=>start());
+ hit(pl,'Continue',[387,752,590,112],()=>{
+  ST.checkedIn=true;persist();ready()});
+ })}
+function switchGrade(g){saveAll();G=g;ST=loadState(g);if(!ST.name)ST.name=U.name||'';persist()}
+
+/* ---------- 2 · get ready (Designer 1) ---------- */
+function ready(){if(!DEV&&!ST.checkedIn)return checkin();show('ready','wst03',pl=>{
+ topbar(pl,{logo:[70,22,215,58],map:[955,26,190,50],sound:[1170,26,150,50],help:[1360,25,135,54]});
+ loco(pl,[0,415,165,215],[60,385]);glow(pl,65,165,35);glow(pl,1478,150,35,.6);passenger(pl,[[1112,412,296,432],[1402,640,36,204]],[1150,432,236,282],[1130,722,276,34]);
+ const mark=el(pl,CHECK,[440,700,48,48],'check');mark.style.display=ST.ready?'grid':'none';
+ const box=hit(pl,'I am ready to begin',[428,690,456,70],()=>{ST.ready=!ST.ready;mark.style.display=ST.ready?'grid':'none';box.setAttribute('aria-pressed',ST.ready);persist();SFX.tick()},'row');box.setAttribute('role','checkbox');box.setAttribute('aria-checked',ST.ready);
+ el(pl,'',[285,795,750,110],'shine');
+ hit(pl,'Start assessment',[275,787,770,125],()=>{if(!DEV&&!ST.ready){SFX.buzz();box.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:300});return notice('Tick “I am ready to begin” first.')}
+  /* Part A (multiple-choice writing skills) comes first; the essay timer starts after it */
+  if(!ST.skillsDone&&!ST.startedAt&&!(typeof DEV!=='undefined'&&DEV))return wstSkills();
+  if(!ST.startedAt){ST.startedAt=Date.now();ST.deadline=ST.startedAt+LIMIT;pSave('wst_timer_'+G,{durationMs:LIMIT,startedAt:ST.startedAt,deadline:ST.deadline,finishedAt:null,remainingMs:LIMIT});persist();notice('⏱ Your 45 minutes start now. Good luck!')}
+  explore()})})}
+
+/* ---------- 3 · explore the prompt and sources (Designer 6) ---------- */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const photo=id=>`<img src="${ART}photos/${id}.jpg" alt="" onerror="this.remove()" style="width:100%;height:100%;object-fit:cover;display:block">`;
+function promptHTML(t,big){return `<p style="margin:0 0 .5em;font-weight:700">${esc(t.prompt)}</p><p style="margin:0 0 .3em">Your ${t.type.toLowerCase()} essay must be based on this prompt and topic, and it must use ideas and evidence from the sources. Use your best writing to complete an essay that</p><ul style="margin:0 0 .4em;padding-left:1.2em">${t.bullets.map(b=>`<li>${esc(b)}</li>`).join('')}</ul><p style="margin:0">Write a multiparagraph essay for an academic audience.</p>`}
+function sourceHTML(s,i){return `${s.sub?`<p style="font-style:italic;margin:0 0 .4em">${esc(s.sub)}</p>`:''}<p style="margin:0 0 .5em;color:#6a6f80;font-weight:600">by ${esc(s.author)}</p>${s.paras.map(p=>p.h?`<p style="font:700 1em 'Source Sans 3',sans-serif;color:#0d1f45;margin-top:.8em">${esc(p.t)}</p>`:`<p>${p.n?`<span class="pn">${p.n}</span>`:''}${esc(p.t)}</p>`).join('')}${s.notes.length?`<div class="note">${s.notes.map(esc).join('<br>')}</div>`:''}${s.credit?`<p class="credit">${esc(s.credit)}${s.link?` <a href="${esc(s.link)}" target="_blank" rel="noopener">Read the reference ↗</a>`:''}</p>`:''}`}
+function explore(tab){if(!DEV&&!ST.startedAt)return ready();if(typeof tab==='number')ST.tab=tab;show('explore','wst04',pl=>{const t=T(),n=t.sources.length;
+ topbar(pl,{logo:[175,20,215,60],map:[875,25,180,50],sound:[1085,25,150,50],help:[1255,22,135,56],lft:70,fs:23});
+ glow(pl,55,70,38);glow(pl,1480,70,38,.5);passenger(pl,[[1140,384,300,362],[1398,520,76,222]],[1172,396,208,252],[1136,654,280,32]);
+ patch(pl,[262,254,822,66],'','background:linear-gradient(#fdf0c2,#f8da7c 60%,#f1c95a);border-radius:999px');
+ text(pl,[272,254,802,66],esc(META[G].q),Math.max(20,Math.min(34,Math.floor(1460/META[G].q.length))),'justify-content:center;z-index:4');
+ patch(pl,[104,338,1036,38]);text(pl,[110,338,1030,38],`<span><b>Directions:</b> <span style="font-family:'Source Sans 3',sans-serif;font-weight:500">${esc(META[G].dir)}</span></span>`,17,'white-space:normal;z-index:4');
+ patch(pl,[146,384,994,62]);
+ const tabs=['Prompt',...t.sources.map((s,i)=>'Source '+(i+1))],tw=(988-(tabs.length-1)*6)/tabs.length;
+ const card=el(pl,'',[116,474,698,368],'card');
+ tabs.forEach((lab,i)=>{const b=document.createElement('button');b.type='button';b.className='tab'+(i===ST.tab?' on':'');b.style.cssText=`left:${px(148+i*(tw+6))};top:${px(392)};width:${px(tw)};height:${px(55)};font-size:${px(tabs.length>4?22:25)}`;b.innerHTML=(i?ICON.doc:ICON.book)+`<span>${lab}</span>`;b.onclick=()=>{SFX.pop();ST.tab=i;persist();fill(true);pl.querySelectorAll('.tab').forEach((x,j)=>x.classList.toggle('on',j===i))};pl.appendChild(b)});
+ const fill=sw=>{const i=ST.tab,s=t.sources[i-1];
+  card.innerHTML=`<div class="${sw?'swR':''}" style="position:absolute;inset:0"><div style="position:absolute;left:${px(12)};top:${px(14)};width:${px(200)};height:${px(300)};border-radius:${px(10)};overflow:hidden;box-shadow:0 ${px(3)} ${px(8)} #0003">${photo(G+'-'+(i?i:'p'))}</div>
+   <div class="ttl" style="position:absolute;left:${px(228)};top:${px(10)};width:${px(456)};font-size:${px(i&&s.title.length>40?22:26)}">${esc(i?s.title:'Writing Prompt')}</div>
+   <div class="scroll src" style="position:absolute;left:${px(228)};top:${px(i&&s.title.length>40?72:50)};right:${px(10)};bottom:${px(40)};padding-right:${px(8)};font:500 ${px(19)}/1.42 Literata,Georgia,serif">${i?sourceHTML(s,i):promptHTML(t)}</div>
+   <div style="position:absolute;left:${px(16)};right:${px(12)};bottom:${px(6)};height:${px(28)};display:flex;align-items:center;gap:${px(10)};font:italic 600 ${px(18)} Literata,Georgia,serif;color:#3b4157">${i?`Source ${i} of ${n}`:`Prompt · ${n} sources`}<i style="flex:1;height:${px(2)};background:linear-gradient(90deg,#d8b45c,#d8b45c00)"></i><button type="button" class="tab" style="position:static;height:${px(28)};padding:0 ${px(12)};border-radius:99px;border-bottom:${px(1.5)} solid #d9bd7c;font-size:${px(16)}">⤢ Read full page</button></div></div>`;
+  card.querySelector('button').onclick=()=>{SFX.pop();sheet(i?`Source ${i}: ${s.title}`:'Writing Prompt',`<div class="src" style="font-family:Literata,Georgia,serif">${i?sourceHTML(s,i):promptHTML(t)}</div>`,[],true)}};
+ fill(false);
+ // My Notes: a lined notebook; Add Note copies selected source text (with its source) or starts a new note line
+ const ta=document.createElement('textarea');ta.className='field';ta.setAttribute('aria-label','My notes');ta.placeholder='Record useful details here…';ta.value=ST.notes||'';
+ ta.style.cssText=`left:${px(832)};top:${px(514)};width:${px(286)};height:${px(258)};font-size:${px(18)};line-height:${px(30)};padding:${px(4)} ${px(10)};background:#fff repeating-linear-gradient(transparent 0 ${px(29)},#9fb0d6 ${px(29)} ${px(30)});background-attachment:local;border:${px(1.5)} solid #d6c7a3`;
+ ta.oninput=()=>{ST.notes=ta.value;persist()};pl.appendChild(ta);
+ hit(pl,'Add note',[875,783,205,44],()=>{const sel=String(getSelection()||'').trim().replace(/\s+/g,' ');const i=ST.tab;
+  if(sel&&card.contains(getSelection().anchorNode)){ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+`• “${sel.slice(0,300)}” (${i?'Source '+i:'Prompt'})`;notice('📝 Added to My Notes')}
+  else{ta.value=(ta.value.trim()?ta.value.trim()+'\n':'')+`• (${i?'Source '+i:'Prompt'}) `;notice('Tip: highlight words in the source first to copy them into a note.')}
+  ST.notes=ta.value;persist();ta.focus();ta.selectionStart=ta.selectionEnd=ta.value.length;ta.scrollTop=ta.scrollHeight});
+ hit(pl,'Back',[158,868,195,56],()=>ready());
+ el(pl,'',[452,866,520,64],'shine');
+ hit(pl,'Plan my response',[440,860,545,78],()=>{const seen=new Set(ST.seen||[]);planPage()});
+ ST.seen=[...new Set([...(ST.seen||[]),ST.tab])];persist()})}
+
+/* ---------- 4 · plan (Designer 3) ---------- */
+const PLAN_ARG=[['pos','My Position:','Which side do you take? Write your claim in one sentence.'],['r1','Reason 1:','First reason that supports your claim'],['r2','Reason 2:','Second reason that supports your claim'],['e1','Evidence for Reason 1:','A fact or quote — name the source, e.g. (Source 2)'],['e2','Evidence for Reason 2:','A fact or quote — name the source, e.g. (Source 3)'],['cc','Counterclaim & Rebuttal:','What would the other side say? How will you answer?'],['con','Conclusion:','How will you end? Restate your claim in a new way.']];
+const PLAN_EXP=[['pos','My Central Idea:','What is the one main idea your essay will explain?'],['r1','Key Idea 1:','First point that explains your central idea'],['r2','Key Idea 2:','Second point that explains your central idea'],['e1','Details for Key Idea 1:','A fact or quote — name the source, e.g. (Source 1)'],['e2','Details for Key Idea 2:','A fact or quote — name the source, e.g. (Source 2)'],['con','Conclusion:','How will you end? Sum up why your central idea matters.']];
+const planList=()=>isArg(G)?PLAN_ARG:PLAN_EXP;
+function planText(){return planList().map(([k,l])=>`${l} ${(ST.plan[k]||'').trim()}`).join('\n')}
+function planPage(){if(!DEV&&!ST.startedAt)return ready();show('plan','wst05',pl=>{const arg=isArg(G),L=Object.fromEntries(planList().map(x=>[x[0],x]));
+ topbar(pl,{logo:[235,14,215,52],map:[890,16,180,44],sound:[1110,16,140,44],help:[1290,15,125,48],lft:80,fs:22});
+ glow(pl,1500,150,40);passenger(pl,[[1186,440,246,378],[1424,640,24,176]],[1198,458,222,270],[1168,736,282,34]);
+ // fields sit in the painted white boxes; the argumentative plan splits the last row into Counterclaim + Conclusion
+ const F={pos:[162,306,972,80],r1:[163,451,468,86],r2:[663,451,470,86],e1:[163,598,468,97],e2:[663,598,472,97],con:[163,759,972,86]};
+ const C={pos:[160,259,212,46],r1:[160,405,178,46],r2:[660,405,182,46],e1:[160,554,326,46],e2:[660,554,318,46],con:[160,714,220,46]};
+ if(arg){patch(pl,[156,708,986,146]);F.cc=[162,759,470,86];F.con=[662,759,474,86];C.cc=[160,714,330,46];C.con=[660,714,220,46]}
+ const chip=(k,w)=>{const r=C[k],lab=L[k][1];el(pl,esc(lab),[r[0],r[1],Math.max(r[2],w),r[3]],'chip',`font-size:${px(24)}`)};
+ if(!arg){chip('pos',260);chip('r1',178);chip('r2',182);chip('e1',326);chip('e2',318)}else{chip('pos',252);chip('cc',330);chip('con',220)}
+ for(const k of Object.keys(F)){const r=F[k],ta=document.createElement('textarea');ta.className='field'+(arg&&(k==='cc'||k==='con')?' boxed':'');ta.setAttribute('aria-label',L[k][1].replace(':',''));ta.placeholder=L[k][2];ta.value=ST.plan[k]||'';
+  ta.style.cssText=`left:${px(r[0])};top:${px(r[1])};width:${px(r[2])};height:${px(r[3])};font-size:${px(21)}`;ta.oninput=()=>{ST.plan[k]=ta.value;persist();pSave('wst_plan_'+G,{text:planText(),date:new Date().toISOString()})};pl.appendChild(ta)}
+ hit(pl,'Back to sources',[210,878,347,60],()=>explore());
+ el(pl,'',[695,874,430,66],'shine');
+ hit(pl,'Start writing',[685,868,450,78],()=>{if(!DEV&&!(ST.plan.pos||'').trim()){SFX.buzz();pl.querySelector('textarea').classList.add('bad');pl.querySelector('textarea').focus();return notice(arg?'Write your position (claim) first.':'Write your central idea first.')}writePage()});
+ stepper(pl,[[1232,246],[1232,290],[1232,333],[1232,376]],[190,40])})}
+function stepper(pl,pos,[w,h]){const go=[()=>planPage(),()=>writePage(),()=>review(),()=>review()],lab=['Plan','Write','Review','Submit'];
+ pos.forEach(([x,y],i)=>{if(S.scene===['plan','write','review','review'][i]&&i<3)return;hit(pl,lab[i],[x,y,w,h],go[i],'row')})}
+
+/* ---------- 5 · write (Designer 7) ---------- */
+let refOpen=null,refSrc=1;
+function essayText(ed){const d=document.createElement('div');d.innerHTML=ST.html||'';const parts=[];const walk=n=>{for(const c of n.childNodes){if(c.nodeType===3){if(c.textContent.trim())parts.push(c.textContent)}else if(/^(P|DIV|H3|BLOCKQUOTE|LI|BR)$/.test(c.nodeName)){parts.push('\n');walk(c);parts.push('\n')}else walk(c)}};walk(d);
+ return parts.join('').replace(/[ \t]+/g,' ').replace(/ *\n */g,'\n').replace(/\n{2,}/g,'\n').trim()}
+const words=s=>(s.match(/[A-Za-z0-9'’-]+/g)||[]).length;
+function writePage(){if(!DEV&&!ST.startedAt)return ready();show('write','wst06',pl=>{const t=T();
+ topbar(pl,{logo:[80,18,200,58],map:[965,22,180,50],sound:[1192,24,135,48],help:[1360,22,130,52]});
+ glow(pl,40,180,36);passenger(pl,[[1176,256,252,344]],[1206,266,198,242],[1166,514,278,32]);
+ // tabs: Prompt / Sources / Plan open a reference panel beside the essay
+ patch(pl,[110,218,622,70]);
+ const TB=[['prompt','Prompt',ICON.book,[116,226,220,62]],['sources','Sources',ICON.layers,[344,228,198,60]],['plan','Plan',ICON.pen,[550,228,176,60]]];
+ TB.forEach(([k,lab,ic,r])=>{const b=document.createElement('button');b.type='button';b.className='tab'+(refOpen===k?' on':'');b.dataset.k=k;b.style.cssText=`left:${px(r[0])};top:${px(r[1])};width:${px(r[2])};height:${px(r[3])};font-size:${px(26)}`;b.innerHTML=ic+`<span>${lab}</span>`;b.onclick=()=>{SFX.pop();refOpen=refOpen===k?null:k;layout()};pl.appendChild(b)});
+ const saved=patch(pl,[816,240,84,34],'Saved','background:#eef1de;display:flex;align-items:center;font:600 '+px(22)+' "Source Sans 3",sans-serif;color:#14203f');
+ patch(pl,[1060,240,92,34],`<b id="timer" style="font:700 ${px(28)} Literata,Georgia,serif">${fmt(remaining())}</b>`,'background:#f8f1df;display:flex;align-items:center;justify-content:center');
+ // formatting toolbar
+ const sel=document.createElement('select');sel.className='field boxed';sel.setAttribute('aria-label','Text style');sel.style.cssText=`left:${px(127)};top:${px(302)};width:${px(210)};height:${px(46)};font-size:${px(21)};padding:0 ${px(12)};background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%2314203f'/%3E%3C/svg%3E") no-repeat right ${px(14)} center/${px(14)} ${px(9)}`;
+ sel.innerHTML='<option value="p">Paragraph</option><option value="h3">Title</option><option value="blockquote">Quotation</option>';sel.onchange=()=>{ed.focus();document.execCommand('formatBlock',false,sel.value);save();ed.focus()};pl.appendChild(sel);
+ const tools=[['Bold','bold',384],['Italic','italic',438],['Underline','underline',490],['Bulleted list','insertUnorderedList',576],['Numbered list','insertOrderedList',636],['Align left','justifyLeft',733],['Center','justifyCenter',793],['Align right','justifyRight',853],['Justify','justifyFull',913],['Undo','undo',1012],['Redo','redo',1080]];
+ tools.forEach(([lab,cmd,x])=>{const b=hit(pl,lab,[x,304,42,42],()=>{ed.focus();document.execCommand(cmd,false,null);save()},'tool');b.onmousedown=e=>e.preventDefault()});
+ const ed=document.createElement('div');ed.className='editor';ed.contentEditable='true';ed.spellcheck=true;ed.setAttribute('role','textbox');ed.setAttribute('aria-multiline','true');ed.setAttribute('aria-label','Your essay');ed.dataset.ph='Write your response here… Start with your '+(isArg(G)?'claim':'central idea')+', then use evidence from the sources and name them, for example (Source 2).';
+ ed.innerHTML=ST.html||'';ed.style.fontSize=px(22);pl.appendChild(ed);
+ try{document.execCommand('defaultParagraphSeparator',false,'p')}catch(e){}
+ const ref=el(pl,'',[0,0,0,0],'ref');ref.style.display='none';
+ const wc=patch(pl,[126,855,320,52],'','display:flex;align-items:center;font:700 '+px(26)+' Literata,Georgia,serif;color:#14203f');
+ const count=()=>{const n=words(essayText());wc.innerHTML=`Word count: ${n}<small style="font:600 ${px(16)} 'Source Sans 3',sans-serif;color:${n>=MINW[G]?'#2f8f10':'#8a6a22'};margin-left:${px(10)}">${n>=MINW[G]?'✔':'goal '+MINW[G]+'+'}</small>`};
+ let sT=0;const save=()=>{ST.html=ed.innerHTML;persist();saved.textContent='Saving…';clearTimeout(sT);sT=setTimeout(()=>{pSave('wst_draft_'+G,{text:essayText(),date:new Date().toISOString()});saved.textContent='Saved'},450);count()};
+ ed.oninput=save;trackEditor(ed);count();
+ function layout(){pl.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.k===refOpen));
+  if(!refOpen){Object.assign(ed.style,{left:px(118),top:px(363),width:px(1034),height:px(458)});ref.style.display='none';return}
+  Object.assign(ed.style,{left:px(118),top:px(363),width:px(560),height:px(458)});Object.assign(ref.style,{display:'flex',left:px(688),top:px(363),width:px(464),height:px(458),fontSize:px(20)});
+  const head=refOpen==='prompt'?'Writing Prompt':refOpen==='plan'?'My Plan':'Sources';
+  let body='';if(refOpen==='prompt')body=promptHTML(t);
+  else if(refOpen==='plan')body=`<dl class="planview">${planList().map(([k,l])=>`<dt>${esc(l.replace(':',''))}</dt><dd>${esc(ST.plan[k]||'—')}</dd>`).join('')}</dl>${ST.notes?`<dl class="planview"><dt>My Notes</dt><dd style="white-space:pre-wrap">${esc(ST.notes)}</dd></dl>`:''}`;
+  else{const s=t.sources[refSrc-1];body=`<h4 style="margin:0 0 .2em;font-size:1.05em">${esc(s.title)}</h4>${sourceHTML(s,refSrc)}`}
+  ref.innerHTML=`<header><span>${head}</span><button type="button">✕ Close</button></header>${refOpen==='sources'?`<div class="sub">${t.sources.map((s,i)=>`<button type="button" data-i="${i+1}" class="${i+1===refSrc?'on':''}">Source ${i+1}</button>`).join('')}</div>`:''}<div class="body scroll src">${body}</div>`;
+  ref.querySelector('header button').onclick=()=>{refOpen=null;layout()};ref.querySelectorAll('.sub button').forEach(b=>b.onclick=()=>{refSrc=+b.dataset.i;layout()})}
+ layout();
+ hit(pl,'Back to plan',[450,852,280,62],()=>{save();planPage()});
+ el(pl,'',[767,850,380,64],'shine');
+ hit(pl,'Review writing',[757,845,400,75],()=>{save();if(!DEV&&!essayText().trim()){SFX.buzz();ed.focus();return notice('Write your essay first.')}review()});
+ stepper(pl,[[1228,598],[1228,647],[1228,698],[1228,749]],[205,44]);
+ setTimeout(()=>{ed.focus();const r=document.createRange();r.selectNodeContents(ed);r.collapse(false);const s=getSelection();s.removeAllRanges();s.addRange(r)},refOpen?0:1300)})}
+
+/* ---------- 6 · final review (Designer 2) ---------- */
+function essayParas(){return essayText().split(/\n+/).map(s=>s.trim()).filter(Boolean)}
+function essayTitle(){const p=essayParas();if(p.length>1&&words(p[0])<=12&&!/[.!?]["”']?$/.test(p[0]))return {title:p[0],body:p.slice(1)};return {title:`My ${T().type} Essay`,body:p}}
+const CHECKS=['I answered the prompt.','My ideas are organized.','I included supporting evidence.','I identified my sources.','I checked spelling and punctuation.'];
+function review(){if(!DEV&&!ST.startedAt)return ready();if(!DEV&&!essayText().trim()){notice('Write your essay first.');return writePage()}show('review','wst07',pl=>{
+ topbar(pl,{logo:[130,16,200,56],map:[925,20,180,46],sound:[1150,20,135,46],help:[1318,18,125,50]});
+ loco(pl,[0,335,150,185],[60,295]);glow(pl,1500,95,35);passenger(pl,[[1175,445,268,380],[1438,660,24,166]],[1200,460,226,274],[1170,742,286,34]);
+ const {title,body}=essayTitle();
+ el(pl,`<div class="scroll prev" style="position:absolute;inset:${px(10)} ${px(14)};font:500 ${px(19)}/1.45 Literata,Georgia,serif"><h4>${esc(title)}</h4><span class="orn">❦</span>${body.map(p=>`<p>${esc(p)}</p>`).join('')}<p style="font:italic 600 ${px(15)} 'Source Sans 3',sans-serif;color:#6a6f80;text-align:right">${words(essayText())} words</p></div>`,[180,306,550,463],'card');
+ const boxes=[[777,322],[777,379],[777,439],[779,510],[779,571]],rows=[[770,314,372,50],[770,370,372,50],[770,426,372,66],[770,502,372,50],[770,556,372,66]];
+ CHECKS.forEach((c,i)=>{const m=el(pl,CHECK,[boxes[i][0],boxes[i][1],32,32],'check');m.style.display=ST.checks[i]?'grid':'none';
+  const b=hit(pl,c,rows[i],()=>{ST.checks[i]=!ST.checks[i];m.style.display=ST.checks[i]?'grid':'none';b.setAttribute('aria-checked',!!ST.checks[i]);persist();pSave('wst_checks_'+G,Object.assign({},ST.checks));SFX.tick()},'row');b.setAttribute('role','checkbox');b.setAttribute('aria-checked',!!ST.checks[i])});
+ hit(pl,'Back to writing',[173,835,310,70],()=>writePage());
+ el(pl,'',[730,836,405,72],'shine');
+ hit(pl,'Submit assessment',[720,830,425,85],()=>trySubmit());
+ stepper(pl,[[1235,266],[1235,312],[1235,358],[1235,406]],[195,42])})}
+
+/* ---------- 1) integrity gate: only work that cannot be assessed is sent back ---------- */
+const STOP=new Set('the a an and or but of to in on at for with from by is are was were be been it its this that these those as into than then so such not no yes his her their our your my we you they he she i me him them us who what when where why how which there here have has had do does did can could will would should may might very more most also just about over under after before while because like one two people some many much other others make made being said says'.split(' '));
+const TRANS=/\b(first(ly)?|second(ly)?|third(ly)?|next|then|finally|in addition|additionally|also|furthermore|moreover|for example|for instance|such as|because|therefore|as a result|consequently|however|although|on the other hand|in contrast|similarly|likewise|in conclusion|to conclude|overall|in summary|meanwhile|another|besides|since|thus|lastly)\b/gi;
+const GATE_MIN=60;
+function essayFacts(){const t=T(),text=essayText(),paras=essayParas().filter(p=>words(p)>=10),wl=(text.toLowerCase().match(/[a-z']+/g)||[]),wc=words(text);
+ const sents=text.replace(/\s+/g,' ').split(/(?<=[.!?]["”']?)\s+/).map(s=>s.trim()).filter(Boolean);
+ const srcText=[t.prompt,...t.sources.flatMap(s=>[s.title,...s.paras.map(p=>p.t)])].join(' ').toLowerCase(),srcW=srcText.match(/[a-z']+/g)||[];
+ const keys=new Set(srcW.filter(w=>w.length>=5&&!STOP.has(w))),used=new Set(wl.filter(w=>keys.has(w)));
+ const refs=new Set();(text.match(/source\s*(\d)/gi)||[]).forEach(m=>refs.add(+m.replace(/\D/g,'')));
+ t.sources.forEach((s,i)=>{if(text.toLowerCase().includes(s.title.toLowerCase().slice(0,22)))refs.add(i+1)});
+ const quoted=(text.match(/[“"][^”"]{3,}[”"]/g)||[]).join(' '),own=text.replace(/[“"][^”"]{3,}[”"]/g,' ').toLowerCase().match(/[a-z']+/g)||[];
+ const grams=new Set();for(let i=0;i+7<=srcW.length;i++)grams.add(srcW.slice(i,i+7).join(' '));let cp=0;for(let i=0;i+7<=own.length;i++)if(grams.has(own.slice(i,i+7).join(' ')))cp++;
+ return {t,text,paras,wl,wc,sents,keys,used,refs,quoted,copied:own.length>=7?cp/(own.length-6):0,trans:new Set((text.match(TRANS)||[]).map(s=>s.toLowerCase()))}}
+function checkEssay(){const f=essayFacts(),issues=[];
+ if(f.wc<GATE_MIN)issues.push(`Write at least ${GATE_MIN} words so your writing can be assessed. You have ${f.wc}.`);
+ const junk=f.wl.filter(w=>w.length>2&&(!/[aeiouy]/.test(w)||/([a-z])\1\1/.test(w)||/[bcdfghjklmnpqrstvwxz]{5,}/.test(w)));
+ if(f.wc&&junk.length/f.wc>.08)issues.push(`Some words are not real words (for example “${junk.slice(0,3).join('”, “')}”). Write in clear English.`);
+ const freq={};f.wl.forEach(w=>{if(!STOP.has(w)&&w.length>2)freq[w]=(freq[w]||0)+1});const top=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
+ if(top&&f.wc>=40&&top[1]/f.wc>.1)issues.push(`The word “${top[0]}” is used ${top[1]} times. Do not pad your writing by repeating words.`);
+ const norm=f.sents.map(s=>s.toLowerCase().replace(/[^a-z ]/g,'').trim()),dup=norm.filter((s,i)=>s&&s.split(' ').length>3&&norm.indexOf(s)!==i);
+ if(dup.length)issues.push('Some sentences are repeated. Every sentence should add something new.');
+ if(f.used.size<5)issues.push('Your writing is not about this task. Write about the prompt and use ideas from the sources.');
+ const off=f.sents.filter(s=>{const sw=s.toLowerCase().match(/[a-z']+/g)||[];return sw.length>=8&&!sw.some(w=>f.keys.has(w))});
+ if(f.sents.length>=4&&off.length/f.sents.length>.5)issues.push(`Most sentences are not about the topic. Example: “${off[0].slice(0,90)}${off[0].length>90?'…':''}”`);
+ /* copying is checked by the originality check (integrityGate), which shows the % and the sources */
+ return issues}
+
+/* ---------- 2) READwy Story Depot analytic rubric (5 criteria × 4 points = 20) ----------
+   Aligned with the K to 12 English Writing and Composition strand. The rating is transmuted with the
+   DepEd Order No. 8, s. 2015 transmutation table and labelled with the DO 8 descriptor, the DO 73, s. 2012
+   level of proficiency, and a writer level adapted from the Phil-IRI independent / instructional / frustration levels.
+   The score is an automatic estimate; the teacher confirms the final rating. */
+const RUBRIC=[
+ {k:'ideas',name:'Ideas and Focus',lv:['The writing does not answer the prompt or has no clear main idea.','The main idea or claim is unclear, or the writing drifts away from the prompt.','A clear main idea or claim answers the prompt; most of the writing stays on it.','A clear, thoughtful main idea or claim answers the prompt fully; every part supports it.']},
+ {k:'org',name:'Organization',lv:['Ideas are listed with no clear order or paragraphs.','Some order, but the introduction, body or conclusion is missing; few transitions.','Introduction, body paragraphs and conclusion; transitions connect most ideas.','Clear, logical structure with a strong introduction and conclusion; varied transitions connect all ideas.']},
+ {k:'evid',name:'Evidence and Development',lv:['Little or no evidence from the sources; ideas are not explained.','Some evidence from one source, with little explanation.','Relevant evidence from at least two named sources, explained in the writer’s own words.','Strong evidence from several named sources, fully explained; argumentative essays also answer a counterclaim.']},
+ {k:'lang',name:'Language and Style',lv:['Very limited or informal vocabulary; sentences are hard to follow.','Simple, repetitive word choice and sentence patterns.','Clear, mostly precise words and some sentence variety; an academic tone.','Precise, varied vocabulary and sentences; a consistent academic tone.']},
+ {k:'conv',name:'Conventions',lv:['Frequent errors in grammar, spelling, capitalization or punctuation make the writing hard to read.','Many errors that sometimes interfere with meaning.','Few errors that do not interfere with meaning.','Almost no errors in grammar, spelling, capitalization and punctuation.']}];
+const MISSPELL=/\b(alot|becuase|beacuse|thier|recieve|untill|wich|definately|seperate|occured|dont|cant|wont|im|doesnt|didnt|isnt|wasnt|arent|couldnt|shouldnt|wouldnt|thats|theres|u|ur|gonna|wanna|kinda|lol)\b/g;
+function transmute(pct){return pct>=60?Math.min(100,75+Math.floor((pct-60)/1.6)):60+Math.floor(pct/4)} // DO 8, s. 2015 transmutation table
+function descriptor(g){return g>=90?'Outstanding':g>=85?'Very Satisfactory':g>=80?'Satisfactory':g>=75?'Fairly Satisfactory':'Did Not Meet Expectations'}
+function proficiency(g){return g>=90?'Advanced':g>=85?'Proficient':g>=80?'Approaching Proficiency':g>=75?'Developing':'Beginning'}
+function writerLevel(g){return g>=85?'Independent':g>=75?'Instructional':'Frustration'}
+const LEVEL_NOTE={Independent:'Writes on grade level without help. Ready for more challenging writing tasks.',Instructional:'Writes on grade level with a teacher’s guidance. Benefits from feedback, models and practice.',Frustration:'Finds grade-level writing very difficult. Needs close support and easier, scaffolded writing tasks.'};
+function scoreEssay(){const f=essayFacts(),arg=isArg(G),cl=(v,lo=1,hi=4)=>Math.max(lo,Math.min(hi,v)),why={};
+ const need=Math.max(8,Math.min(20,Math.round(f.wc/15))),cover=f.used.size/need,first=(f.paras[0]||'').toLowerCase();
+ const claim=arg?/\b(should|must|ought|i (strongly )?(believe|think|agree|disagree)|in my (opinion|view)|it is (better|right|wrong)|my position)\b/.test(first):[...new Set(first.match(/[a-z']+/g)||[])].filter(w=>f.keys.has(w)).length>=3;
+ const short=f.wc<MINW[G]*.5;
+ let ideas=1+(cover>=.5)+(cover>=1)+(claim&&f.wc>=MINW[G]*.75);if(short)ideas=Math.min(ideas,2);
+ why.ideas=`${claim?(arg?'States a claim':'States a central idea'):(arg?'No clear claim':'No clear central idea')} in the first paragraph; uses ${f.used.size} key ideas from the prompt and sources.`;
+ const P=f.paras.length,concl=/\b(in conclusion|to conclude|overall|in summary|to sum up|therefore|thus|that is why|for these reasons)\b/i.test(f.paras[P-1]||'');
+ const org=cl(1+(P>=3)+(P>=4||(P>=3&&concl))+(f.trans.size>=3));
+ why.org=`${P} paragraph${P===1?'':'s'}; ${f.trans.size} different transition${f.trans.size===1?'':'s'}${concl?'; a clear conclusion':''}.`;
+ const expl=(f.text.match(/\b(this shows|this means|this proves|which means|because|as a result|for example|for instance|in other words)\b/gi)||[]).length;
+ const counter=/\b(some (people )?(may |might |would |could )?(argue|say|believe|think|claim|feel)|others? (may |might )?(argue|say|believe|think|claim)|opponents|critics|on the other hand|although|even though|while (it is true|some)|counter ?claim|it is true that|admittedly)\b/i.test(f.text);
+ let evid=cl(1+Math.min(2,f.refs.size)+(expl>=2&&f.refs.size>=2));if(arg&&!counter)evid=Math.min(evid,3);if(short)evid=Math.min(evid,2);
+ why.evid=`Names ${f.refs.size} source${f.refs.size===1?'':'s'}; ${expl} explanation${expl===1?'':'s'} of evidence${arg?(counter?'; answers a counterclaim':'; no counterclaim'):''}.`;
+ const content=f.wl.filter(w=>w.length>3),ttr=content.length?new Set(content).size/content.length:0,lens=f.sents.map(words),avg=lens.reduce((a,b)=>a+b,0)/(lens.length||1),sd=Math.sqrt(lens.reduce((a,b)=>a+(b-avg)**2,0)/(lens.length||1));
+ const slang=(f.text.match(/\b(gonna|wanna|kinda|lol|u|ur|super|stuff|things)\b/gi)||[]).length;
+ const lang=cl(1+(ttr>=.5)+(avg>=10&&avg<=28)+(sd>=5&&slang<2));
+ why.lang=`Vocabulary variety ${Math.round(ttr*100)}%; average sentence ${Math.round(avg)} words${slang?`; ${slang} informal word${slang===1?'':'s'}`:''}.`;
+ let errs=(f.text.match(MISSPELL)||[]).length+(f.text.match(/(^|[.!?]\s+)[a-z]/g)||[]).length+(f.text.match(/\s[,.!?;:]/g)||[]).length+(f.text.match(/[,.!?]{2,}/g)||[]).length+(f.text.match(/(^|\s)i(\s|')/g)||[]).length;
+ errs+=essayParas().filter(p=>!/[.!?]["”']?$/.test(p)&&words(p)>12).length;
+ const per100=f.wc?errs/f.wc*100:9,conv=per100<1?4:per100<2.5?3:per100<5?2:1;
+ why.conv=`About ${errs} error${errs===1?'':'s'} found (${per100.toFixed(1)} per 100 words) in spelling, capitalization or punctuation.`;
+ const sc={ideas:cl(ideas),org,evid:cl(evid),lang,conv},total=Object.values(sc).reduce((a,b)=>a+b,0),pct=total/20*100,grade=transmute(pct);
+ return {criteria:RUBRIC.map(r=>({k:r.k,name:r.name,score:sc[r.k],why:why[r.k],desc:r.lv[sc[r.k]-1]})),score:total,total:20,percent:pct,grade,descriptor:descriptor(grade),proficiency:proficiency(grade),writer:writerLevel(grade),words:f.wc,auto:true,date:new Date().toISOString()}}
+const REFS=[
+ ['DepEd Order No. 8, s. 2015 — Policy Guidelines on Classroom Assessment for the K to 12 Basic Education Program (descriptors and transmutation table)','https://www.deped.gov.ph/2015/04/01/do-8-s-2015-policy-guidelines-on-classroom-assessment-for-the-k-to-12-basic-education-program/'],
+ ['DepEd Order No. 73, s. 2012 — Guidelines on the Assessment and Rating of Learning Outcomes (levels of proficiency)','https://www.scribd.com/doc/174931131/DepEd-Order-No-73-Series-of-2012'],
+ ['Phil-IRI Manual 2018 (DepEd Order No. 14, s. 2018) — independent, instructional and frustration levels','https://www.teacherph.com/phil-iri-manual-2018/'],
+ ['K to 12 English Curriculum Guide, Grade 7 — Writing and Composition strand (DepEd LRMDS)','https://lrmds.deped.gov.ph/detail/15950']];
+function rubricHTML(){return `<p>READwy scores every essay with this <b>analytic rubric</b>: five criteria, 1 to 4 points each (20 points).</p>
+ <div style="overflow:auto"><table style="border-collapse:collapse;width:100%;font-size:.8em"><tr style="background:#1d3466;color:#fff"><th style="padding:6px;text-align:left">Criterion</th>${[4,3,2,1].map(n=>`<th style="padding:6px">${n}</th>`).join('')}</tr>${RUBRIC.map((r,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:6px;font-weight:800;vertical-align:top">${r.name}</td>${[3,2,1,0].map(j=>`<td style="padding:6px;vertical-align:top">${r.lv[j]}</td>`).join('')}</tr>`).join('')}</table></div>
+ <h3>From points to a grade and a level</h3><p>The percentage (points ÷ 20) is transmuted with the DepEd Order No. 8, s. 2015 table, then labelled:</p>
+ <table style="border-collapse:collapse;width:100%;font-size:.8em"><tr style="background:#1d3466;color:#fff"><th style="padding:6px">Transmuted grade</th><th style="padding:6px">Descriptor (DO 8, s. 2015)</th><th style="padding:6px">Level of proficiency (DO 73, s. 2012)</th><th style="padding:6px">Writer level</th></tr>
+ ${[['90–100','Outstanding','Advanced','Independent'],['85–89','Very Satisfactory','Proficient','Independent'],['80–84','Satisfactory','Approaching Proficiency','Instructional'],['75–79','Fairly Satisfactory','Developing','Instructional'],['Below 75','Did Not Meet Expectations','Beginning','Frustration']].map((r,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}">${r.map(c=>`<td style="padding:6px;text-align:center">${c}</td>`).join('')}</tr>`).join('')}</table>
+ <p style="font-size:.85em">Writer levels: <b>Independent</b> — ${LEVEL_NOTE.Independent} <b>Instructional</b> — ${LEVEL_NOTE.Instructional} <b>Frustration</b> — ${LEVEL_NOTE.Frustration}</p>
+ <p style="font-size:.85em;color:#5b5f6e">The Philippines has no national standardized writing test. This rubric is READwy’s, built on the DepEd standards below. The writer levels adapt the Phil-IRI reading levels to writing. READwy’s score is an automatic estimate; your teacher confirms the final rating.</p>
+ <h3>References</h3><ul style="font-size:.85em">${REFS.map(([t,u])=>`<li><a href="${u}" target="_blank" rel="noopener">${t}</a></li>`).join('')}</ul>`}
+function resultHTML(r){const col={Independent:'#2f8f10',Instructional:'#c98a00',Frustration:'#c92f42'}[r.writer];
+ return `<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px"><span class="fact"><small>SCORE</small>${r.score} / ${r.total}</span><span class="fact"><small>GRADE</small>${r.grade}</span><span class="fact"><small>DESCRIPTOR</small>${r.descriptor}</span><span class="fact"><small>PROFICIENCY</small>${r.proficiency}</span><span class="fact" style="border-color:${col}"><small>WRITER LEVEL</small><b style="color:${col}">${r.writer}</b></span></div>
+ <p style="margin:.2em 0 .6em">${LEVEL_NOTE[r.writer]}</p>
+ <table style="border-collapse:collapse;width:100%;font-size:.85em">${r.criteria.map((c,i)=>`<tr style="background:${i%2?'#fff':'#fbf3df'}"><td style="padding:6px;font-weight:800;white-space:nowrap;vertical-align:top">${c.name}</td><td style="padding:6px;text-align:center;font-weight:900;vertical-align:top">${c.score}/4</td><td style="padding:6px;vertical-align:top">${c.desc}<br><small style="color:#5b5f6e">${esc(c.why)}</small></td></tr>`).join('')}</table>
+ <p style="font-size:.8em;color:#5b5f6e">Estimated automatically by READwy with the Story Depot rubric. Your teacher confirms the final rating.</p>`}
+
+/* ---------- originality check ----------
+   Two kinds of evidence READwy can measure honestly on this device:
+   1. how the text got into the editor (typed key by key, or dropped in as a large block: paste,
+      dictation or a browser extension). Pasting is turned off; attempts are counted.
+   2. word-for-word overlap with the Story Depot sources and the prompt (runs of 6+ identical words).
+      Quoted text ("...") is counted separately: quoting a source is allowed.
+   Original writing = 100% − copied − inserted in blocks. 90% or more passes; below that the
+   learner sees the evidence and can rewrite, or submit it to be held for teacher review. */
+const ORIG_MIN=90,RUN=6;
+const isDevView=()=>{try{return typeof DEV!=='undefined'?!!DEV:sessionStorage.getItem('readwy-dev-view')==='1'}catch(e){return false}};
+function integInit(){ST.integ=ST.integ||{typed:0,bulk:0,pastes:0,drops:0}}
+function trackEditor(ed){integInit();
+ ed.onpaste=e=>{e.preventDefault();ST.integ.pastes++;persist();SFX.buzz();notice('📋 Pasting is turned off. Type your answer in your own words.')};
+ ed.ondrop=e=>{e.preventDefault();ST.integ.drops++;persist();notice('Dragging text in is turned off. Type your answer in your own words.')};
+ ed.addEventListener('beforeinput',e=>{const d=e.data||'',t=e.inputType||'';
+  if(t==='insertFromPaste'||t==='insertFromDrop'){e.preventDefault();return}
+  if(t==='insertText'||t==='insertCompositionText'){if(d.length>3)ST.integ.bulk+=d.length;else ST.integ.typed+=d.length}
+  else if(t==='insertReplacementText'){ST.integ.typed+=Math.min(d.length,12)}
+  else if(t==='insertParagraph'||t==='insertLineBreak')ST.integ.typed+=1})}
+const tokens=s=>(String(s).toLowerCase().replace(/[’‘]/g,"'").match(/[a-z0-9']+/g)||[]);
+function sourceList(){const t=T(),out=[{title:'Writing Prompt',link:'',text:[t.prompt,...(t.bullets||[])].join(' ')}];
+ (t.sources||[]).forEach((s,i)=>out.push({title:`Source ${i+1}: ${s.title}`,link:s.link||'',text:s.paras.map(p=>p.t).join(' ')}));return out}
+function originality(text){integInit();
+ // essay words, and whether each sits inside quotation marks
+ const raw=String(text),words=[],quoted=[];let inQ=false;
+ for(const m of raw.matchAll(/[“”"]|[A-Za-z0-9'’]+/g)){if(/[“”"]/.test(m[0])){inQ=m[0]==='”'?false:m[0]==='“'?true:!inQ;continue}words.push(m[0].toLowerCase().replace(/’/g,"'"));quoted.push(inQ)}
+ const n=words.length,cover=new Array(n).fill(-1),srcs=sourceList();
+ srcs.forEach((s,si)=>{const sw=tokens(s.text),grams=new Set();for(let i=0;i+RUN<=sw.length;i++)grams.add(sw.slice(i,i+RUN).join(' '));
+  for(let i=0;i+RUN<=n;i++)if(grams.has(words.slice(i,i+RUN).join(' ')))for(let j=i;j<i+RUN;j++)if(cover[j]<0)cover[j]=si});
+ const per=srcs.map(s=>({title:s.title,link:s.link,copied:0,quoted:0,passages:[]}));let copied=0,quotedN=0;
+ for(let i=0;i<n;){if(cover[i]<0){i++;continue}const si=cover[i];let j=i;while(j<n&&cover[j]===si)j++;
+  const q=quoted.slice(i,j).every(Boolean),len=j-i;if(q){per[si].quoted+=len;quotedN+=len}else{per[si].copied+=len;copied+=len}
+  per[si].passages.push({words:words.slice(i,j).join(' '),len,q});i=j}
+ const chars=Math.max(1,raw.replace(/\s+/g,'').length),typedKnown=ST.integ.typed+ST.integ.bulk>0;
+ const copiedPct=n?Math.round(copied/n*100):0,quotedPct=n?Math.round(quotedN/n*100):0;
+ const bulkPct=typedKnown?Math.min(100,Math.round(ST.integ.bulk/chars*100)):0;
+ const original=Math.max(0,100-Math.min(100,copiedPct+bulkPct));
+ per.forEach(p=>{p.copiedPct=n?Math.round(p.copied/n*100):0;p.quotedPct=n?Math.round(p.quoted/n*100):0;p.passages.sort((a,b)=>b.len-a.len);p.passages=p.passages.slice(0,3)});
+ return {original,copiedPct,quotedPct,bulkPct,pastes:ST.integ.pastes,drops:ST.integ.drops,words:n,pass:original>=ORIG_MIN,
+  sources:per.filter(p=>p.copied||p.quoted),checkedAt:new Date().toISOString(),limits:'Compared with the Story Depot prompt and sources, and with how the text was entered on this device. READwy does not search the internet and cannot prove that a tool such as ChatGPT was used.'}}
+function integrityHTML(r){const col=r.pass?'#2f8f10':r.original>=75?'#c98a00':'#c92f42';
+ const bar=(v,c)=>`<div style="height:12px;border-radius:99px;background:#eadfc6;overflow:hidden"><i style="display:block;height:100%;width:${Math.max(0,Math.min(100,v))}%;background:${c}"></i></div>`;
+ const src=r.sources.map(s=>`<li style="margin:.5em 0"><b>${esc(s.title)}</b> — ${s.copiedPct}% copied word for word${s.quotedPct?`, ${s.quotedPct}% quoted (allowed)`:''}${s.link?` · <a href="${esc(s.link)}" target="_blank" rel="noopener">open source ↗</a>`:' · (text given in the Story Depot)'}
+   ${s.passages.map(p=>`<div style="margin:.3em 0 0;padding:.35em .6em;border-left:3px solid ${p.q?'#2f8f10':'#c92f42'};background:${p.q?'#eef7e8':'#fdecec'};font-size:.85em">“${esc(p.words)}”${p.q?' <small>(in quotation marks)</small>':''}</div>`).join('')}</li>`).join('');
+ return `<div style="display:flex;align-items:center;gap:16px;margin-bottom:10px"><div style="font:800 2.4em/1 Literata,Georgia,serif;color:${col}">${r.original}%</div>
+  <div style="flex:1"><b>Original writing</b> <span style="color:#5b5f6e">(at least ${ORIG_MIN}% needed)</span>${bar(r.original,col)}</div></div>
+  <table style="width:100%;border-collapse:collapse;font-size:.9em;margin-bottom:8px">
+   <tr><td style="padding:4px 0">Copied word for word from the sources or prompt</td><td style="text-align:right"><b>${r.copiedPct}%</b></td></tr>
+   <tr><td style="padding:4px 0">Entered in large blocks (pasted, dictated or inserted by a tool)</td><td style="text-align:right"><b>${r.bulkPct}%</b></td></tr>
+   <tr><td style="padding:4px 0">Quoted with quotation marks (allowed)</td><td style="text-align:right"><b>${r.quotedPct}%</b></td></tr>
+   <tr><td style="padding:4px 0">Paste attempts blocked</td><td style="text-align:right"><b>${r.pastes+r.drops}</b></td></tr></table>
+  ${src?`<h3 style="margin:.6em 0 .2em">Where the matching words come from</h3><ul style="padding-left:1.1em;margin:0">${src}</ul>`:'<p>No word-for-word matches with the sources or the prompt.</p>'}
+  <p style="font-size:.8em;color:#5b5f6e;margin-top:.8em">${esc(r.limits)}</p>`}
+function integrityGate(onPass){const r=originality(essayText());ST.integLast=r;persist();
+ if(r.pass||isDevView())return onPass(r);
+ SFX.buzz();sheet('🔎 Originality check',`<p style="margin-top:0">Before your essay is scored, Ollie checked that it is <b>your own writing</b>.</p>${integrityHTML(r)}
+  <p><b>Rewrite the highlighted parts in your own words</b>, then submit again. If you submit now, your essay will <b>not be scored</b>; it is held for your teacher to review.</p>`,
+  [['Submit for teacher review','ghost',()=>{closeSheet();finishSubmission(false,r);complete()}],['Rewrite in my own words','gold',()=>{closeSheet();writePage()}]],true)}
+function heldHTML(r){return `<p style="margin-top:0"><b>Your essay was held for your teacher to review</b>, because less than ${ORIG_MIN}% of it was your own writing. It has not been scored yet.</p>${integrityHTML(r.integrity)}`}
+function trySubmit(){if(ST.submitted)return complete();
+ const missing=DEV?[]:CHECKS.filter((c,i)=>!ST.checks[i]);
+ if(missing.length){SFX.buzz();return sheet('Finish your checklist',`<p>Tick each box on the Review Checklist after you check your essay:</p><ul>${missing.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`,[['OK','gold',closeSheet]])}
+ const issues=DEV?[]:checkEssay();
+ if(issues.length){SFX.buzz();return sheet('✏️ Not ready to submit yet',`<p style="margin-top:0">Ollie cannot assess this writing yet. Fix these first:</p><ol>${issues.map(i=>`<li>${esc(i)}</li>`).join('')}</ol><p class="muted" style="color:#5b5f6e">Your work is saved. Time left: <b>${fmt(remaining())}</b></p>`,[['Back to writing','gold',()=>{closeSheet();writePage()}]],true)}
+ integrityGate(r=>sheet('Submit your assessment?',`<p>⚠️ <b>You cannot edit after submitting.</b></p><p>Your ${words(essayText())}-word essay will be scored with the Story Depot rubric and sent to your teacher.</p>`,[['Keep reviewing','ghost',closeSheet],['Submit now','gold',()=>{finishSubmission(false,r);complete()}]]))}
+function finishSubmission(timedOut,integ){const text=essayText(),prev=pLoad('wst_submission_'+G,null);
+ const rec={grade:G,text,plan:planText(),notes:ST.notes,html:ST.html,words:words(text),date:new Date().toISOString(),timedOut,name:ST.name,lrn:ST.sid,studentId:ST.sid,email:String(pUser().email||''),section:String(pUser().section||''),type:T().type,v:2};
+ const result=scoreEssay();rec.result=result;integ=integ||originality(text);rec.integrity=integ;
+ /* less than 90% original: held for the teacher, not scored */
+ if(integ.pass||isDevView())pSave('wst_score_'+G,result);else{rec.status='needs-review';result.held=true;pSave('wst_score_'+G,null)}
+ pSave('wst_submission_'+G,rec);pSave('wst_draft_'+G,{text,date:rec.date});pSave('wst_plan_'+G,{text:rec.plan,date:rec.date});pSave('wst_checks_'+G,Object.assign({},ST.checks));
+ pSave('wst_timer_'+G,{durationMs:LIMIT,startedAt:ST.startedAt,deadline:ST.deadline,finishedAt:Date.now(),remainingMs:remaining()});
+ ST.submitted=true;ST.submittedAt=rec.date;persist()}
+function submittedRec(){const r=pLoad('wst_submission_'+G,null);return ST.submitted&&r?r:null}
+function saveAll(){const ed=document.querySelector('.editor');if(ed){ST.html=ed.innerHTML}persist()}
+
+/* ---------- 7 · journey complete (Designer 8) ---------- */
+function complete(){show('complete','wst08',pl=>{
+ topbar(pl,{logo:[60,20,200,58],map:[955,25,190,50],sound:[1175,25,150,50],help:[1360,24,130,52]});
+ loco(pl,[0,225,175,340],[95,205]);lids(pl,[[335,445,35],[430,425,30]]);glow(pl,1435,160,30);
+ patch(pl,[1180,495,250,210],'','background:#faf3e3;z-index:2');clone(pl,[1175,490,258,218],'clone stamp','z-index:3');
+ el(pl,'',[582,618,510,82],'shine');
+ hit(pl,'Return home',[572,612,530,95],()=>toJourney());
+ hit(pl,'View submission',[572,732,530,88],()=>viewSubmission())});
+ setTimeout(()=>{SFX.fanfare();setTimeout(()=>SFX.stamp(),900);confetti()},1100);
+ const r=pLoad('wst_submission_'+G,null);if(r&&r.result&&!ST.resultSeen){ST.resultSeen=true;persist();setTimeout(()=>{if(S.scene==='complete')showResult()},3200)}}
+function showResult(){const r=pLoad('wst_submission_'+G,null);if(!r||!r.result)return notice('No score yet.');
+ if(r.status==='needs-review'&&r.integrity)return sheet('🔎 Held for teacher review',heldHTML(r),[['View my essay','navy',viewSubmission]],true);
+ sheet('🏅 My Writing Level',resultHTML(r.result),[['How it is scored','ghost',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Back','gold',showResult]],true)],['View my essay','navy',viewSubmission]],true)}
+function viewSubmission(){const r=pLoad('wst_submission_'+G,null);if(!r)return notice('No submission yet.');try{if(PP&&typeof PP.readwyOpenSubmission==='function'){closeSheet();PP.readwyOpenSubmission(T().prompt);return}}catch(e){}
+ const d=new Date(r.date),paras=String(r.text).split(/\n+/).filter(Boolean);
+ sheet('📄 My Submission',`<div><span class="fact"><small>STUDENT</small>${esc(r.name||'—')}</span><span class="fact"><small>GRADE</small>${r.grade} · ${esc(r.type||T().type)}</span><span class="fact"><small>WORDS</small>${r.words}</span><span class="fact"><small>SUBMITTED</small>${d.toLocaleDateString()} ${d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}${r.timedOut?' (time up)':''}</span></div>
+  <h3>Prompt</h3><p>${esc(T().prompt)}</p><h3>My Essay</h3><div class="essay">${paras.map(p=>`<p>${esc(p)}</p>`).join('')}</div>${r.plan?`<h3>My Plan</h3><p style="white-space:pre-wrap;font-size:.9em">${esc(r.plan)}</p>`:''}${r.result?`<h3>My Writing Level</h3>${resultHTML(r.result)}`:''}`,
+  [['How it is scored','ghost',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Back','gold',viewSubmission]],true)],['Assessment summary','navy',openSummary]],true)}
+
+/* ---------- help and pop-up sheets ---------- */
+const HELP={start:['Press <b>Begin Journey</b> to check in for the Story Depot.','Sound turns Ollie’s voice on or off. Journey Map takes you back to READwy.'],
+ checkin:['Your <b>name</b>, <b>email</b>, <b>grade</b> and <b>section</b> come from your sign-up, so you do not need to type them. Your profile photo appears on your boarding pass.','If your name or grade is wrong, ask your teacher to update your profile.','Press <b>Continue</b> when your boarding pass is correct.'],
+ ready:['Read the three steps.','Tick <b>I am ready to begin</b>, then press <b>Start Assessment</b>.','You have <b>45 minutes</b>. The timer starts when you press Start Assessment. Your work saves automatically.'],
+ explore:['Read the <b>Prompt</b> tab first, then every <b>Source</b> tab.','Highlight useful words in a source and press <b>Add Note</b> to copy them into My Notes with the source name.','Press <b>⤢ Read full page</b> for bigger text. When you are ready, press <b>Plan My Response</b>.'],
+ plan:['Fill in each box with short notes, not full paragraphs.','Name the source for each piece of evidence, for example (Source 2).',' Press <b>Start Writing</b> when your plan is ready.'],
+ write:['Write in paragraphs: an introduction, body paragraphs, and a conclusion. Press Enter for a new paragraph.','Open <b>Prompt</b>, <b>Sources</b> or <b>Plan</b> to see them beside your essay.','Put exact words from a source in “quotation marks” and cite them, e.g. (Source 1). Explain everything else in your own words.','Watch the time left at the top right.'],
+ review:['Read your essay in the preview.','Tick each checklist box after you check it.','<b>Submit Assessment</b> checks your essay first. If something must be fixed, Ollie will tell you what. You cannot edit after you submit.'],
+ complete:['Your essay was submitted for teacher review.','<b>View Submission</b> shows what you sent. <b>Return Home</b> goes back to the journey map.']};
+/* ---------- Settings: sound, and erasing this grade's writing answer ---------- */
+function settingsSheet(){const sub=!!submittedRec(),has=!!(essayText().trim()||ST.notes||Object.values(ST.plan||{}).some(v=>String(v).trim()));
+ sheet('⚙️ Settings',`<h3>Sound</h3><p>Ollie's voice and the train sounds are <b>${muted?'off':'on'}</b>.</p><p><button type="button" class="sb ${muted?'gold':'ghost'}" id="setSound">${muted?'🔊 Turn sound on':'🔇 Turn sound off'}</button></p>
+ <h3>Erase my writing answer</h3><p>Deletes your Grade ${G} essay, plan, notes and review checklist on this device${sub?', and your submitted essay and its score, so you can take the assessment again':''}. <b>This cannot be undone.</b></p>
+ <p><button type="button" class="sb" id="setErase" style="background:linear-gradient(#e85b4f,#c92f42);color:#fff;border-color:#9e1f30" ${has||sub?'':'disabled'}>🗑️ Erase my writing answer</button>${has||sub?'':' <span style="color:#5b5f6e">There is no writing to erase yet.</span>'}</p>`,[['Close','gold',closeSheet]]);
+ document.getElementById('setSound').onclick=()=>{toggleSound();settingsSheet()};
+ const er=document.getElementById('setErase');if(er)er.onclick=()=>sheet('Erase your writing?',`<p>⚠️ Your Grade ${G} essay, plan, notes and checklist${sub?', and your submitted essay and score,':''} will be permanently deleted.</p><p>Are you sure?</p>`,[['Cancel','ghost',settingsSheet],['Yes, erase it','navy',eraseWriting]])}
+function eraseWriting(){const keep={name:ST.name,sid:ST.sid,checkedIn:ST.checkedIn};
+ ST=Object.assign(blankState(G),keep);persist();
+ ['wst_draft_','wst_plan_','wst_checks_','wst_submission_','wst_score_','wst_timer_'].forEach(k=>pSave(k+G,null));
+ try{sessionStorage.removeItem('wst-v2-here')}catch(e){}
+ closeSheet();notice('🗑️ Your writing answer was erased. You can start again.');start()}
+function helpSheet(){const steps=['Check in','Get ready','Explore the prompt and sources','Plan','Write','Review and submit'];
+ sheet('❓ Help',`<h3>On this page</h3><ul>${(HELP[S.scene]||HELP.start).map(x=>`<li>${x}</li>`).join('')}</ul><h3>Your writing journey</h3><ol>${steps.map(s=>`<li>${s}</li>`).join('')}</ol><h3>Your task (Grade ${G})</h3><p>${esc(T().prompt)}</p><h3>How your writing is scored</h3><p>Five criteria (Ideas and Focus, Organization, Evidence and Development, Language and Style, Conventions), 1–4 points each. Your result shows a DepEd grade, descriptor, level of proficiency and writer level (Independent, Instructional or Frustration).</p><p style="font-size:.8em;color:#5b5f6e">Tasks and source texts were written for READwy from Philippine government and news sources; each source shows its link.</p><p style="font-size:.82em;line-height:1.45"><b>Photo credits</b> (Wikimedia Commons, used under the licences shown): Grade 7 (source 1): MODIS Land Rapid Response Team, NASA GSFC, Public domain; Grade 7 (source 2): Red Cross, Public domain; Grade 7 (source 3): Official U.S. Navy Page from United States of America, Public domain; Grade 7 (task): NASA/NOAA, Public domain; Grade 8 (source 1): Ralff Nestor Nacor, CC BY-SA 4.0; Grade 8 (source 3): Ocean Blue Project, Inc., CC BY-SA 4.0; Grade 8 (task): andre oortgijs, CC BY-SA 3.0; Grade 9 (source 1): Judgefloro, Public domain; Grade 9 (source 2): AP22088 NgSaiKeaung Hooo, CC0; Grade 9 (source 3): Official U.S. Navy Page from United States of America, Public domain; Grade 10 (source 1): Gunnery Sgt. J. L. Wright Jr., Public domain; Grade 10 (source 2): Couch-scratching-cats, CC BY-SA 2.0; Grade 10 (source 3): MODIS Land Rapid Response Team, NASA GSFC, Public domain; Grade 10 (task): Judgefloro, Public domain. Original READwy illustrations: Grade 8 source 2, Grade 9 task.</p>`,[['Scoring rubric','ghost',()=>sheet('📏 Story Depot Writing Rubric',rubricHTML(),[['Close','gold',closeSheet]],true)],['Close','gold',closeSheet]])}
+function sheet(title,body,btns,big){const s=document.getElementById('sheet');document.getElementById('sheetTitle').textContent=title;document.getElementById('sheetBody').innerHTML=body;
+ const f=document.getElementById('sheetFoot');f.innerHTML='';f.style.display=btns.length?'':'none';btns.forEach(([t,cls,fn])=>{const b=document.createElement('button');b.type='button';b.className='sb '+cls;b.textContent=t;b.onclick=()=>{SFX.pop();fn()};f.appendChild(b)});
+ s.classList.toggle('big',!!big);s.classList.add('on');setTimeout(()=>f.lastChild&&f.lastChild.focus(),50)}
+function closeSheet(){document.getElementById('sheet').classList.remove('on')}
+document.getElementById('sheetClose').onclick=closeSheet;
+document.getElementById('sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+addEventListener('beforeunload',saveAll);
+
+/* ---------- open: resume the page this learner was on after a reload, otherwise the start page ---------- */
+(()=>{let h=null;try{h=JSON.parse(sessionStorage.getItem('wst-v2-here')||'null')}catch(e){}
+ if(h&&h.g===G&&Date.now()-h.at<6*3600e3&&!ST.submitted){const f={checkin,ready,explore,plan:planPage,write:writePage,review}[h.scene];if(f){f();return}}
+ if(ST.submitted&&h&&h.scene==='complete'){complete();return}
+ start()})();
+</script>
+<script src="resources/wst/skills.js?v=mwp8vj8b"></script>
+</body></html>

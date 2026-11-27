@@ -64,7 +64,7 @@ test('welcome and map render the selected subject without the English journey ma
  context.selectedLearningArea='Mathematics';
  api.renderWelcome();
  assert.match(context.app.innerHTML,/Grade 7 focus/);
- assert.match(context.app.innerHTML,/Number &amp; Ratio/);
+ assert.match(context.app.innerHTML,/Number Sense/);
  assert.doesNotMatch(context.app.innerHTML,/Reading Check-In/);
  api.renderMap();
  assert.match(context.app.innerHTML,/Start check-in/);

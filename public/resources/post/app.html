@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Post-Test Express</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600;7..72,700;7..72,800&family=Source+Sans+3:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+<style>
+:root{--ink:#14203f;--navy:#0d1f45;--navy2:#1d3466;--gold:#e2b24c;--gold2:#f6c445;--cream:#fbf4e3;--paper:#fffaf0;--green:#1e6b3c;--green2:#0f3d27;--brass:#c79a3e;--ind:#2f8f10;--ins:#c98a00;--fru:#c92f42}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1410;font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;color:var(--ink);-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer}
+#stage{position:fixed;inset:0;overflow:hidden;outline:none}
+.scr{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column}
+.fadeIn{animation:fadeIn .5s ease both}@keyframes fadeIn{from{opacity:0}}
+/* ---------- top bar ---------- */
+.bar{position:relative;z-index:20;flex:none;display:flex;align-items:center;gap:clamp(8px,1.4vw,18px);margin:clamp(6px,1.2vh,12px) clamp(8px,1.4vw,18px) 0;padding:0 clamp(10px,1.4vw,18px);height:clamp(46px,7.4vh,62px);border-radius:999px;background:linear-gradient(#0c2b52,#071f3d 45%,#031631);border:2px solid var(--gold);box-shadow:0 6px 18px #0007,inset 0 1px 0 #ffffff22}
+.brand{display:flex;align-items:center;gap:.5em;color:#f6e7bf;font:800 clamp(16px,2.6vh,24px) Literata,Georgia,serif;letter-spacing:.02em;white-space:nowrap;border:0;background:none;padding:0}
+.brand i{font-style:normal;font-weight:600;color:#f6efdc;opacity:.9;font-size:.82em;font-family:"Source Sans 3",sans-serif;border-left:2px solid var(--gold);padding-left:.6em}
+.bar nav{margin-left:auto;display:flex;align-items:center;gap:clamp(2px,.5vw,8px)}
+.tb{display:inline-flex;align-items:center;gap:.35em;height:clamp(34px,5.4vh,44px);padding:0 .75em;border:0;border-radius:999px;background:transparent;color:#f6efdc;font:600 clamp(13px,2.1vh,18px) "Source Sans 3",sans-serif;white-space:nowrap;transition:background .15s,color .15s}
+.tb svg{width:1.1em;height:1.1em}
+.tb:hover,.tb:focus-visible,.tb:active{background:linear-gradient(#ffe066,#f5b400);color:#1d1400;outline:none;box-shadow:0 0 12px #ffd447aa}
+.dv{width:2px;height:55%;background:linear-gradient(#e7c873,#b8872c);border-radius:2px}
+@media (max-width:760px){.tb span{display:none}.brand i{display:none}}
+/* ---------- backdrop + steam ---------- */
+.bg{position:absolute;inset:0;background:#10180f center/cover no-repeat}
+.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0006 0%,#0000 22%,#0000 55%,#000a 100%)}
+.puff{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,#fffffff2,#eceef4aa 55%,#e6e6f000 72%);animation:puff 3.6s ease-out infinite;opacity:0}
+@keyframes puff{0%{opacity:0;transform:scale(.3)}12%{opacity:.9}100%{opacity:0;transform:translate(-30%,-240%) scale(2.6)}}
+.lamp{position:absolute;border-radius:50%;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(circle,#ffe6a8cc,#ffbe5a55 42%,#ffb45000 70%);animation:flick 2.6s ease-in-out infinite}
+@keyframes flick{0%,100%{opacity:.8}40%{opacity:.55}55%{opacity:1}}
+/* ---------- split-flap departure board ---------- */
+.board{position:relative;z-index:5;border-radius:14px;padding:clamp(10px,1.8vh,18px) clamp(12px,1.6vw,22px);background:radial-gradient(120% 90% at 50% 10%,#1d5c3d,#124530 55%,#0a2e1d);box-shadow:inset 0 0 0 3px var(--brass),inset 0 0 0 7px #0f3d27,inset 0 0 0 8px var(--brass),0 18px 36px #000a;color:#f3e2b0}
+.board h1{margin:0;text-align:center;font:800 clamp(20px,3.6vh,34px) Literata,Georgia,serif;color:#ffe6a8;text-shadow:0 0 14px #ffd76a66;letter-spacing:.04em}
+.board .sub{text-align:center;font:700 clamp(10px,1.6vh,14px) "Source Sans 3",sans-serif;letter-spacing:.3em;color:#d9bf7c;margin:.2em 0 .7em}
+.rows{display:grid;gap:clamp(4px,.8vh,8px)}
+.row{display:grid;grid-template-columns:3.6em 4.6em 1fr 8.6em;gap:.6em;align-items:center;font:600 clamp(12px,2vh,18px) "IBM Plex Mono",ui-monospace,monospace}
+.row.h{font-size:clamp(9px,1.4vh,12px);letter-spacing:.2em;color:#d9bf7c}
+.cell{display:flex;gap:2px;min-width:0;overflow:hidden}
+.fl{display:inline-grid;place-items:center;min-width:.95em;height:1.6em;padding:0 .08em;border-radius:3px;background:linear-gradient(#1b1b1b 49%,#0c0c0c 51%);color:#ffc56a;box-shadow:inset 0 -1px 0 #333,0 1px 0 #000;animation:flip .5s cubic-bezier(.3,1.4,.6,1) both}
+.fl.sp{background:transparent;box-shadow:none;min-width:.45em}
+@keyframes flip{0%{transform:rotateX(90deg);filter:brightness(2)}100%{transform:none}}
+.tt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ffe6a8;font-family:Literata,Georgia,serif;font-weight:700}
+.st{justify-self:start;padding:.15em .55em;border-radius:6px;font:800 .78em "Source Sans 3",sans-serif;letter-spacing:.08em;white-space:nowrap}
+.st.board-now{background:#ffc56a;color:#2a1700;animation:blink 1.2s steps(2) infinite}@keyframes blink{50%{opacity:.45}}
+.st.done{background:#2f8f10;color:#fff}.st.wait{background:#ffffff1f;color:#d9bf7c}.st.skip{background:#ffffff14;color:#9fae9f}
+/* ---------- ticket ---------- */
+.ticket{position:relative;z-index:5;display:flex;border-radius:16px;background:linear-gradient(135deg,#fffaf0,#f7ecd3);box-shadow:0 16px 34px #000a,inset 0 0 0 2px #e2c27a;overflow:hidden}
+.ticket .main{flex:1;padding:clamp(10px,1.8vh,18px) clamp(14px,1.6vw,22px);min-width:0}
+.ticket .stub{flex:none;width:clamp(96px,12vw,150px);padding:clamp(8px,1.4vh,14px);border-left:3px dashed #c9a14a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(#fdf3db,#f3e2bc)}
+.ticket::before,.ticket::after{content:"";position:absolute;right:calc(clamp(96px,12vw,150px) - 13px);width:26px;height:26px;border-radius:50%;background:#0b1410}
+.ticket::before{top:-13px}.ticket::after{bottom:-13px}
+.kick{font:800 clamp(10px,1.5vh,13px) "Source Sans 3",sans-serif;letter-spacing:.24em;color:#8a6a22}
+.big{font:800 clamp(18px,3.2vh,30px)/1.1 Literata,Georgia,serif;color:var(--navy)}
+.facts{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:.5em;font:600 clamp(12px,1.9vh,16px) "Source Sans 3",sans-serif}
+.facts b{display:block;font-size:.72em;letter-spacing:.16em;color:#8a6a22}
+.portrait{width:100%;aspect-ratio:5/6;border-radius:10px;border:4px solid #d9b25a;background:linear-gradient(#fffdf6,#f6efdd) center/84% auto no-repeat;background-position:50% 100%;box-shadow:0 4px 10px #0003}
+.stub small{font:800 10px "Source Sans 3",sans-serif;letter-spacing:.2em;color:#7a5a12}
+.barcode{width:100%;height:22px;background:repeating-linear-gradient(90deg,#14203f 0 2px,transparent 2px 4px,#14203f 4px 7px,transparent 7px 9px,#14203f 9px 10px,transparent 10px 13px)}
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45em;min-height:clamp(44px,7vh,62px);padding:0 1.4em;border-radius:999px;border:3px solid #fff0b8;font:800 clamp(16px,2.8vh,24px) Literata,Georgia,serif;color:#241600;background:linear-gradient(#ffe27a,#fbc531 55%,#f2a50c);box-shadow:inset 0 2px 0 #fff8,0 4px 0 #b06d00,0 10px 22px #0006;transition:transform .15s,filter .15s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06)}.btn:active{transform:translateY(2px)}
+.btn.ghost{background:linear-gradient(#fffaf0,#f6ebd2);border-color:#d9b46a;color:var(--ink);box-shadow:0 3px 0 #c49a52,0 8px 18px #0004;font-size:clamp(14px,2.3vh,20px)}
+.btn.navy{background:linear-gradient(#22396b,#11234a);color:#fff;border-color:var(--gold);box-shadow:0 3px 0 #08142c,0 8px 18px #0005;font-size:clamp(14px,2.3vh,20px)}
+.btn:disabled{filter:grayscale(.7) brightness(.85);cursor:not-allowed;transform:none}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid #ffb700;outline-offset:3px}
+.shine{position:relative;overflow:hidden}.shine::after{content:"";position:absolute;top:-20%;bottom:-20%;width:18%;left:-30%;background:linear-gradient(100deg,transparent,#fff9,transparent);animation:shine 4.5s ease-in-out infinite}
+@keyframes shine{0%,45%{left:-30%}85%,100%{left:120%}}
+/* ---------- welcome layout ---------- */
+.welcome{position:relative;z-index:5;flex:1;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(10px,2vw,28px);align-items:center;padding:clamp(8px,2vh,20px) clamp(10px,2.4vw,34px) clamp(10px,2.4vh,26px)}
+.wcol{display:flex;flex-direction:column;gap:clamp(10px,2vh,18px);min-width:0}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rule{background:#0d1f45d9;border:2px solid #e2b24c88;border-radius:12px;padding:8px 10px;color:#f6efdc;font:600 clamp(11px,1.75vh,15px)/1.3 "Source Sans 3",sans-serif;backdrop-filter:blur(3px)}
+.rule b{display:block;color:#ffd66e;font:800 clamp(18px,3vh,26px) Literata,Georgia,serif}
+@media (max-width:860px){.welcome{grid-template-columns:1fr;overflow:auto}.row{grid-template-columns:3em 1fr 7em}.row .cgr{display:none}}
+/* ---------- carriage (reading) ---------- */
+.carriage{position:relative;z-index:5;flex:1;display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.6fr);gap:clamp(10px,1.6vw,22px);padding:clamp(8px,1.6vh,16px) clamp(10px,1.8vw,26px) clamp(10px,2vh,20px);min-height:0}
+.wall{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#5b3517 0 3px,#6e4220 3px 90px),linear-gradient(#6e4220,#4a2a11);}
+.wall::before{content:"";position:absolute;left:0;right:0;top:0;height:16%;background:linear-gradient(#2d1808,#4a2a11);box-shadow:0 4px 0 var(--brass)}
+.wall::after{content:"";position:absolute;left:0;right:0;bottom:0;height:18%;background:repeating-linear-gradient(90deg,#3b2210 0 2px,#4c2c13 2px 60px);box-shadow:0 -4px 0 var(--brass)}
+.window{position:relative;border-radius:28px;overflow:hidden;border:clamp(8px,1.4vw,16px) solid #3a210d;box-shadow:inset 0 0 0 3px var(--brass),0 0 0 3px var(--brass),0 14px 30px #000a;min-height:0}
+.view{position:absolute;inset:0;background:#7fb1e3 0 50%/auto 100% repeat-x;animation:ride var(--rd,60s) linear infinite}
+@keyframes ride{from{background-position:0 var(--vy,50%)}to{background-position:calc(-1*var(--tw,3000px)) var(--vy,50%)}}
+.window::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,#ffffff38,#fff0 30%,#fff0 70%,#ffffff1c),linear-gradient(#0000 60%,#0004)}
+.window .shade{position:absolute;left:0;right:0;top:0;height:clamp(64px,13vh,124px);background:url(resources/post/swag.svg) 0 0/100% 100% no-repeat;filter:drop-shadow(0 5px 5px #0007);z-index:2;pointer-events:none}
+.window .tail{position:absolute;top:0;width:clamp(30px,12%,64px);height:min(78%,300px);background:url(resources/post/swag-tail.svg) 0 0/100% 100% no-repeat;filter:drop-shadow(0 5px 6px #0007);z-index:3;pointer-events:none}
+.window .tail.tl{left:-2px}.window .tail.tr{right:-2px;transform:scaleX(-1)}
+
+.rcol{display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px);min-width:0;min-height:0}
+.topwin{flex:none;height:min(4in,46vh);border-radius:22px;border-width:clamp(7px,1vw,12px)}
+.topwin .shade{height:clamp(70px,14vh,130px);background-size:25% 100%;background-repeat:repeat-x;background-position:0 0}.topwin .tail{width:clamp(44px,6%,80px)}
+.topwin .view{animation-duration:var(--rd2,45s);background-size:auto 130%;--vy:96%}
+.rcol .book{flex:1;min-height:0}
+.wcap{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;display:flex;flex-direction:column;gap:6px}
+.chip{align-self:flex-start;padding:.25em .8em;border-radius:999px;background:#0d1f45e6;border:2px solid var(--gold);color:#ffe6a8;font:800 clamp(11px,1.8vh,15px) "Source Sans 3",sans-serif;letter-spacing:.06em}
+.clock{display:flex;align-items:center;gap:.5em;padding:.4em .8em;border-radius:12px;background:#0d1f45e6;border:2px solid var(--gold);color:#fff;font:700 clamp(13px,2.1vh,18px) "Source Sans 3",sans-serif}
+.clock b{font:700 1.25em "IBM Plex Mono",monospace;color:#ffc56a}
+.book{position:relative;display:flex;flex-direction:column;min-height:0;border-radius:14px;background:linear-gradient(#fffdf7,#fbf2dc);box-shadow:0 14px 30px #000a,inset 0 0 0 2px #e2c27a}
+.book header{flex:none;display:flex;align-items:baseline;gap:.6em;padding:clamp(10px,1.6vh,16px) clamp(14px,1.6vw,24px) .3em;border-bottom:2px solid #ead7a8}
+.book h2{margin:0;font:800 clamp(18px,3.1vh,30px)/1.15 Literata,Georgia,serif;color:var(--navy)}
+.book .lv{margin-left:auto;font:800 clamp(11px,1.7vh,14px) "Source Sans 3",sans-serif;letter-spacing:.14em;color:#8a6a22;white-space:nowrap}
+.text{flex:1;overflow:auto;padding:.6em clamp(14px,1.6vw,26px) .4em;font:500 clamp(15px,2.45vh,22px)/1.6 Literata,Georgia,serif;-webkit-user-select:text;user-select:text;scrollbar-width:thin;scrollbar-color:#c9b27a #f3ead4}
+.text p{margin:0 0 .7em;text-indent:1.4em}.text p .pn{display:inline-block;margin-left:-1.4em;width:1.4em;color:#9a7a33;font:700 .7em "Source Sans 3",sans-serif;text-indent:0}
+.text .ref{font:italic 500 .7em "Source Sans 3",sans-serif;color:#6a6f80;text-indent:0;border-top:1px dashed #d9c38f;padding-top:.5em}
+.book footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:.6em clamp(14px,1.6vw,22px);border-top:2px solid #ead7a8;font:600 clamp(12px,1.9vh,16px) "Source Sans 3",sans-serif;color:#5b5f6e}
+.fsz{display:flex;gap:4px}.fsz button{width:2.2em;height:2.2em;border-radius:50%;border:2px solid #d9b46a;background:#fff;font-weight:800}
+@media (max-width:860px){.carriage{grid-template-columns:1fr;grid-template-rows:28vh 1fr}}
+/* ---------- inspector (questions) ---------- */
+.inspect{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,2vh,20px);padding:clamp(8px,1.6vh,16px) clamp(10px,3vw,60px) clamp(10px,2vh,20px);min-height:0}
+.track{position:relative;flex:none;height:clamp(54px,9vh,76px);border-radius:14px;background:#0d1f45d9;border:2px solid #e2b24c99;padding:0 clamp(16px,2vw,30px)}
+.rail{position:absolute;left:clamp(16px,2vw,30px);right:clamp(16px,2vw,30px);top:62%;height:6px;background:repeating-linear-gradient(90deg,#8a6a3a 0 6px,#5a4020 6px 14px);border-top:2px solid #cfd4dc;border-bottom:2px solid #cfd4dc}
+.stop{position:absolute;top:62%;width:clamp(20px,3vh,28px);height:clamp(20px,3vh,28px);margin:calc(clamp(20px,3vh,28px)/-2 + 3px) 0 0 calc(clamp(20px,3vh,28px)/-2);border-radius:50%;background:#0d1f45;border:3px solid #9fae9f;display:grid;place-items:center;color:#fff;font:800 clamp(9px,1.4vh,12px) "Source Sans 3",sans-serif;z-index:2;transition:all .25s}
+.stop.on{background:#ffc56a;border-color:#fff;color:#2a1700}.stop.now{transform:scale(1.25);box-shadow:0 0 0 4px #ffd76a77}
+.loco{position:absolute;top:2%;height:66%;transition:left .6s cubic-bezier(.4,.1,.2,1);z-index:3;filter:drop-shadow(0 3px 3px #0008);transform:translateX(-50%)}
+.qcard{position:relative;flex:0 1 auto;min-height:min(46vh,420px);max-height:100%;display:flex;border-radius:18px;background:linear-gradient(135deg,#fffaf0,#f6e9cc);box-shadow:0 18px 36px #000a,inset 0 0 0 2px #e2c27a;overflow:hidden}
+.qcard .qm{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:clamp(12px,2.2vh,24px) clamp(14px,2vw,30px);overflow:auto}
+.qcard .qs{flex:none;width:clamp(80px,9vw,120px);border-left:3px dashed #c9a14a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(#fdf3db,#f3e2bc);text-align:center}
+.qs .qn{font:800 clamp(34px,7vh,64px)/1 Literata,Georgia,serif;color:var(--navy)}.qs small{font:800 11px "Source Sans 3",sans-serif;letter-spacing:.2em;color:#7a5a12}
+.qtext{font:700 clamp(17px,3vh,28px)/1.3 Literata,Georgia,serif;color:var(--navy);margin:.2em 0 .7em}
+.qintro{font:italic 600 clamp(13px,2vh,17px)/1.35 "Source Sans 3",sans-serif;color:#5b5f6e;margin:0 0 .3em}
+.opts{display:grid;gap:clamp(6px,1.2vh,12px)}
+.opt{position:relative;display:flex;align-items:center;gap:.8em;text-align:left;padding:.55em 1em .55em .6em;border-radius:12px;border:2px solid #d9b46a;background:#fff;font:600 clamp(15px,2.5vh,22px)/1.3 "Source Sans 3",sans-serif;color:var(--ink);transition:background .15s,transform .15s,border-color .15s}
+.opt:hover{background:#fff4d2;transform:translateX(4px)}
+.opt .k{flex:none;width:2em;height:2em;border-radius:50%;display:grid;place-items:center;font:800 .9em Literata,Georgia,serif;background:#f3e2bc;border:2px solid #c9a14a;color:var(--navy)}
+.opt.sel{background:#fff1c2;border-color:#f2a50c;box-shadow:0 0 0 3px #f2a50c55}
+.opt.sel .k{background:radial-gradient(circle,#0b1410 0 38%,#fff 40%);color:transparent;border-color:#0b1410;animation:punch .3s ease}
+@keyframes punch{0%{transform:scale(1.4)}100%{transform:scale(1)}}
+.qnav{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.swR{animation:swR .4s cubic-bezier(.2,.8,.25,1) both}@keyframes swR{from{transform:translateX(12%);opacity:0}}
+.swL{animation:swL .4s cubic-bezier(.2,.8,.25,1) both}@keyframes swL{from{transform:translateX(-12%);opacity:0}}
+/* ---------- results ---------- */
+.result{position:relative;z-index:5;flex:1;display:flex;align-items:center;justify-content:center;padding:clamp(8px,2vh,20px);min-height:0;overflow:auto}
+.cert{position:relative;width:min(1080px,96vw);border-radius:20px;padding:clamp(14px,2.6vh,30px) clamp(16px,3vw,44px);background:radial-gradient(120% 120% at 50% 0,#fffdf6,#f8ecd0);box-shadow:0 22px 44px #000b,inset 0 0 0 3px #d9b25a,inset 0 0 0 9px #fffaf0,inset 0 0 0 11px #e7c873}
+.cert h1{margin:0;text-align:center;font:800 clamp(22px,4.4vh,42px) Literata,Georgia,serif;color:var(--navy)}
+.cert .tag{text-align:center;font:800 clamp(10px,1.6vh,13px) "Source Sans 3",sans-serif;letter-spacing:.3em;color:#8a6a22;margin:.2em 0 .8em}
+.stamp{position:absolute;right:clamp(14px,3vw,40px);top:clamp(10px,2vh,24px);width:clamp(96px,16vh,150px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;text-align:center;border:5px double currentColor;font:900 clamp(12px,2vh,18px)/1.05 "Source Sans 3",sans-serif;letter-spacing:.06em;transform:rotate(-12deg);animation:stampIn .7s cubic-bezier(.3,1.7,.5,1) .4s both;background:#ffffffaa}
+@keyframes stampIn{from{transform:scale(2.3) rotate(-30deg);opacity:0}}
+.lvl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:.3em 0 .8em}
+.pill{display:inline-flex;flex-direction:column;align-items:center;min-width:7.5em;padding:.4em .9em;border-radius:14px;background:#fff;border:2px solid #e3d3ad;font:800 clamp(15px,2.6vh,22px) Literata,Georgia,serif;color:var(--navy)}
+.pill small{font:800 clamp(9px,1.4vh,12px) "Source Sans 3",sans-serif;letter-spacing:.18em;color:#8a6a22}
+.tbl{width:100%;border-collapse:collapse;font:600 clamp(12px,2vh,16px) "Source Sans 3",sans-serif}
+.tbl th{background:var(--navy2);color:#fff;padding:.45em .6em;text-align:left;font-weight:800}
+.tbl td{padding:.45em .6em;border-bottom:1px solid #ead7a8}.tbl tr:nth-child(even) td{background:#fbf3df}
+.band{display:inline-block;padding:.1em .6em;border-radius:999px;color:#fff;font-weight:800;font-size:.9em}
+.band.Independent{background:var(--ind)}.band.Instructional{background:var(--ins)}.band.Frustration{background:var(--fru)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:clamp(10px,2vh,18px)}
+.muted{color:#5b5f6e}
+/* ---------- sheet / notices ---------- */
+#sheet{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:rgba(10,14,8,.6)}
+#sheet.on{display:flex;animation:fadeIn .25s ease}
+#sheet .panel{width:min(92vw,880px);max-height:90vh;display:flex;flex-direction:column;border-radius:22px;background:linear-gradient(#fffdf7,#fbf3e1);border:3px solid var(--gold);box-shadow:0 20px 60px #0008;overflow:hidden;animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+#sheet header{display:flex;align-items:center;gap:12px;padding:14px 22px;background:linear-gradient(#1d3466,#0d1f45);color:#fff;font:700 clamp(18px,3vh,28px) Literata,Georgia,serif}
+#sheet header button{margin-left:auto;border:2px solid var(--gold);background:#fff2;color:#fff;border-radius:99px;padding:4px 16px;font:700 14px "Source Sans 3",sans-serif}
+#sheet .body{padding:16px 24px;overflow:auto;font-size:clamp(15px,2.3vh,20px);line-height:1.5;-webkit-user-select:text;user-select:text}
+#sheet .body h3{font:700 1.1em Literata,Georgia,serif;margin:.6em 0 .25em;color:var(--navy)}
+#sheet .foot{display:flex;gap:12px;justify-content:flex-end;padding:12px 22px;border-top:1px solid #e8d9b5;flex-wrap:wrap}
+#sheet .foot .btn{min-height:46px;font-size:18px}
+#notice{position:fixed;left:50%;top:11vh;transform:translate(-50%,-16px);padding:.6em 1.3em;border-radius:1em;background:#0d1f45f2;border:2px solid var(--gold);color:#fff4d6;font:800 clamp(14px,2.2vh,20px) "Source Sans 3",sans-serif;z-index:46;opacity:0;transition:all .3s;pointer-events:none;text-align:center;max-width:86vw}
+#notice.on{opacity:1;transform:translate(-50%,0)}
+#caption{position:fixed;left:50%;bottom:2vh;transform:translateX(-50%);max-width:min(88vw,60em);padding:.45em 1.1em;border-radius:1em;background:#0d1f45e6;border:2px solid var(--gold);color:#fff7dd;font:700 clamp(13px,2.1vh,19px)/1.35 "Source Sans 3",sans-serif;text-align:center;z-index:45;opacity:0;transition:opacity .3s;pointer-events:none}
+#caption.on{opacity:1}
+#trainfx{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
+#trainfx img{position:absolute;bottom:6vh;height:62vh;width:auto;filter:drop-shadow(0 2vh 2vh #0007)}
+#trainfx i{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff,#faf8ffeb 45%,#f5f5fc00 70%);animation:tp 1.4s ease-out forwards}
+@keyframes tp{0%{transform:scale(.35);opacity:.95}100%{transform:scale(2.4) translateY(-30%);opacity:0}}
+.confetti{position:fixed;top:-5%;width:1vw;aspect-ratio:.5;pointer-events:none;z-index:39;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--dx),115vh) rotate(var(--rot))}}
+
+
+
+
+
+
+
+
+
+/* ---------- full-screen frames, larger text ---------- */
+/* welcome: board and ticket fill the screen */
+.welcome{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:stretch;padding:clamp(8px,1.4vh,14px) clamp(8px,1.2vw,16px) clamp(8px,1.6vh,16px)}
+.welcome .wcol{justify-content:space-between}
+.board{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(14px,2.6vh,30px) clamp(16px,2vw,30px)}
+.board h1{font-size:clamp(28px,5.6vh,54px)}.board .sub{font-size:clamp(12px,2vh,18px)}
+.rows{gap:clamp(8px,1.6vh,16px)}.row{font-size:clamp(15px,2.8vh,26px)}.row.h{font-size:clamp(11px,1.8vh,15px)}
+.rule{font-size:clamp(13px,2.2vh,19px);padding:12px 14px}.rule b{font-size:clamp(20px,3.6vh,32px)}
+.welcome .wcol:last-child{justify-content:center}.ticket{flex:1}
+.ticket .main{display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,3vh,34px) clamp(16px,2vw,30px)}
+.kick{font-size:clamp(12px,2vh,17px)}.big{font-size:clamp(26px,5vh,48px)}.facts{font-size:clamp(15px,2.6vh,22px);gap:10px 26px;margin-top:.8em}
+.ticket .stub{width:clamp(130px,15vw,210px)}.ticket::before,.ticket::after{right:calc(clamp(130px,15vw,210px) - 13px)}.stub small{font-size:12px}
+.btn{min-height:clamp(52px,8.4vh,78px);font-size:clamp(19px,3.4vh,30px)}.btn.ghost,.btn.navy{font-size:clamp(16px,2.8vh,24px)}
+/* reading carriage: the passage book takes most of the screen */
+.carriage{grid-template-columns:minmax(0,.42fr) minmax(0,2fr);padding:clamp(6px,1vh,10px) clamp(8px,1vw,14px) clamp(8px,1.2vh,12px);gap:clamp(8px,1vw,14px)}
+.book h2{font-size:clamp(22px,4vh,40px)}.book .lv{font-size:clamp(12px,2vh,16px)}
+.text{font-size:clamp(18px,3.2vh,30px)!important;line-height:1.65}
+.book footer{font-size:clamp(14px,2.2vh,18px)}.fsz button{font-size:clamp(14px,2.2vh,18px)}
+.chip{font-size:clamp(13px,2.1vh,18px)}.clock{font-size:clamp(15px,2.5vh,21px)}
+/* ticket inspector: the question ticket fills the screen */
+.inspect{justify-content:stretch;padding:clamp(6px,1.2vh,12px) clamp(8px,1.2vw,16px) clamp(8px,1.4vh,14px)}
+.track{height:clamp(60px,10vh,88px)}
+.qcard{flex:1 1 auto;min-height:0}
+.qcard .qm{padding:clamp(16px,3vh,36px) clamp(18px,2.6vw,44px)}
+.qtext{font-size:clamp(22px,4.2vh,40px)}.qintro{font-size:clamp(16px,2.6vh,22px)}
+.opts{gap:clamp(10px,1.9vh,18px)}.opt{font-size:clamp(18px,3.3vh,30px);padding:.6em 1.1em .6em .7em}
+.qcard .qs{width:clamp(110px,12vw,170px)}.qs .qn{font-size:clamp(48px,10vh,96px)}.qs small{font-size:13px}
+.stop{font-size:clamp(11px,1.7vh,14px)}
+/* station stamp and certificate: full-screen certificate */
+.result{align-items:stretch;justify-content:stretch;padding:clamp(6px,1.2vh,12px) clamp(8px,1.2vw,16px) clamp(8px,1.4vh,14px)}
+.cert{width:100%;display:flex;flex-direction:column;justify-content:center;padding:clamp(18px,3.4vh,40px) clamp(20px,4vw,64px);overflow:auto}
+.cert h1{font-size:clamp(32px,6.4vh,62px)}.cert .tag{font-size:clamp(12px,2vh,17px)}
+.stamp{width:clamp(130px,22vh,210px);font-size:clamp(15px,2.6vh,24px)}
+.pill{font-size:clamp(20px,3.6vh,32px);min-width:8.5em;padding:.5em 1.1em}.pill small{font-size:clamp(11px,1.8vh,15px)}
+.tbl{font-size:clamp(15px,2.6vh,22px)}.tbl th,.tbl td{padding:.55em .8em}
+.cert p{font-size:clamp(16px,2.7vh,24px)!important}.cert h3{font-size:clamp(18px,3vh,26px)!important}.cert p.muted{font-size:clamp(13px,2vh,17px)!important}
+.band{font-size:.95em}
+@media (max-width:860px){.welcome{grid-template-columns:1fr}.carriage{grid-template-columns:1fr;grid-template-rows:22vh 1fr}}
+/* welcome fill */
+.board h1{font-size:clamp(32px,7vh,66px)}.row{font-size:clamp(17px,3.6vh,34px)}.rows{gap:clamp(10px,2.4vh,24px)}.row{grid-template-columns:3.4em 4.6em 1fr 8.8em}.tt{white-space:normal;font-size:.82em;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ticket{background:linear-gradient(135deg,#fffaf0,#f7ecd3)}
+.ticket .stub{width:42%;justify-content:center;gap:12px;padding:clamp(14px,2.6vh,28px)}.ticket::before,.ticket::after{right:calc(42% - 13px)}
+.portrait{width:100%;max-width:300px}.stub small{font-size:clamp(13px,2vh,17px)}.barcode{height:34px}
+.big{font-size:clamp(28px,5.6vh,54px)}.facts{flex-direction:column;gap:12px}.facts span{font-size:clamp(18px,3vh,26px)}.facts b{font-size:.62em}
+@media (max-width:860px){.ticket .stub{width:34%}.ticket::before,.ticket::after{right:calc(34% - 13px)}}
+/* bigger toolbar and text everywhere */
+.bar{height:clamp(58px,10vh,86px);margin:clamp(4px,.8vh,8px) clamp(4px,.6vw,8px) 0;padding:0 clamp(16px,2vw,30px)}
+.brand{font-size:clamp(22px,4vh,36px)}.brand i{font-size:.75em}
+.tb{height:clamp(46px,7.6vh,66px);padding:0 1em;font-size:clamp(17px,3vh,27px)}.tb svg{width:1.15em;height:1.15em}
+.dv{height:60%;width:3px}
+.board .sub{font-size:clamp(14px,2.4vh,21px)}.row.h{font-size:clamp(13px,2.2vh,18px)}.st{font-size:.8em}
+.rule{font-size:clamp(15px,2.6vh,22px)}.rule b{font-size:clamp(22px,4vh,36px)}
+.kick{font-size:clamp(14px,2.4vh,20px)}.big{font-size:clamp(32px,6.4vh,62px)}.facts span{font-size:clamp(20px,3.5vh,30px)}
+.btn{min-height:clamp(58px,9.4vh,86px);font-size:clamp(21px,3.8vh,34px)}.btn.ghost,.btn.navy{font-size:clamp(19px,3.2vh,28px)}
+.text{font-size:clamp(20px,3.6vh,34px)!important}.book h2{font-size:clamp(25px,4.6vh,44px)}.book .lv{font-size:clamp(14px,2.3vh,19px)}
+.book footer{font-size:clamp(16px,2.6vh,21px)}.chip{font-size:clamp(15px,2.5vh,21px)}.clock{font-size:clamp(17px,2.9vh,25px)}
+.qtext{font-size:clamp(25px,4.8vh,46px)}.qintro{font-size:clamp(18px,3vh,26px)}.opt{font-size:clamp(20px,3.8vh,34px)}
+.qs small{font-size:clamp(13px,2vh,17px)}.stop{font-size:clamp(13px,2vh,17px);width:clamp(26px,4.2vh,38px);height:clamp(26px,4.2vh,38px);margin:calc(clamp(26px,4.2vh,38px)/-2 + 3px) 0 0 calc(clamp(26px,4.2vh,38px)/-2)}
+.cert h1{font-size:clamp(36px,7.2vh,70px)}.cert .tag{font-size:clamp(14px,2.4vh,20px)}
+.pill{font-size:clamp(23px,4.2vh,38px)}.pill small{font-size:clamp(13px,2.1vh,18px)}.tbl{font-size:clamp(17px,3vh,26px)}
+.cert p{font-size:clamp(18px,3.1vh,28px)!important}.cert h3{font-size:clamp(20px,3.5vh,30px)!important}.cert p.muted{font-size:clamp(15px,2.3vh,20px)!important}
+#sheet .panel{width:min(94vw,1100px)}#sheet header{font-size:clamp(22px,4vh,36px)}#sheet .body{font-size:clamp(18px,3vh,26px)}#sheet .foot .btn{min-height:56px;font-size:clamp(18px,2.8vh,24px)}
+#caption{font-size:clamp(16px,2.7vh,24px)}#notice{font-size:clamp(17px,2.8vh,25px)}
+/* green theme: solid and translucent green instead of navy blue */
+.bar{background:linear-gradient(rgba(30,107,60,.82),rgba(15,61,39,.86));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 6px 18px #0006,inset 0 1px 0 #ffffff33}
+.rule{background:rgba(15,61,39,.72);border-color:#e2b24c99}
+.chip,.clock{background:rgba(15,61,39,.85)}
+.track{background:rgba(15,61,39,.78)}.stop{background:#0f3d27}
+.btn.navy{background:linear-gradient(#2a8a4e,#1e6b3c 55%,#0f3d27);box-shadow:0 3px 0 #08251a,0 8px 18px #0005}
+.tbl th{background:linear-gradient(#1e6b3c,#0f3d27)}
+#sheet header{background:linear-gradient(#1e6b3c,#0f3d27)}
+#caption,#notice{background:rgba(15,61,39,.9)}
+.big,.book h2,.qtext,.qs .qn,.cert h1,.pill,.opt .k{color:#0f3d27}
+.cert h3,#sheet .body h3{color:#0f3d27!important}
+.opt .k{background:#e6f2e6;border-color:#5c9a6c}
+.opt.sel{background:#e3f4e1;border-color:#2f8f4e;box-shadow:0 0 0 3px #2f8f4e55}
+.opt:hover{background:#eef8ec}
+.tb:hover,.tb:focus-visible,.tb:active{background:linear-gradient(#ffe066,#f5b400);color:#1d1400}
+.cert{justify-content:safe center}.cert .tbl td,.cert .tbl th{padding:.42em .8em}.cert .lvl{margin:.2em 0 .6em}
+/* larger pop-ups */
+#notice{font-size:clamp(22px,3.8vh,34px);padding:.7em 1.5em;border-width:3px;top:13vh}
+#caption{font-size:clamp(19px,3.2vh,28px)}
+#sheet .panel{width:min(94vw,1150px)}#sheet header{font-size:clamp(25px,4.6vh,40px);padding:16px 26px}#sheet header button{font-size:clamp(15px,2.4vh,20px)}
+#sheet .body{font-size:clamp(21px,3.6vh,31px);padding:20px 30px}#sheet .foot .btn{min-height:clamp(56px,8.6vh,74px);font-size:clamp(20px,3.4vh,28px)}
+/* bigger toolbar on every page */
+.bar{height:clamp(66px,11.5vh,100px);border-width:3px}
+.brand{font-size:clamp(25px,4.8vh,44px)}.brand i{font-size:.72em}
+.tb{height:clamp(52px,8.8vh,78px);padding:0 1.1em;font-size:clamp(19px,3.5vh,32px)}.tb svg{width:1.2em;height:1.2em}.dv{height:62%}
+/* Station reached: a big full-screen card */
+.cert.arrive{gap:clamp(10px,2.2vh,24px)}
+.arrive h1{font-size:clamp(46px,10vh,96px)}
+.arrive .tag{font-size:clamp(16px,3vh,28px);letter-spacing:.2em}
+.arrive .stamp{width:clamp(170px,30vh,280px);font-size:clamp(22px,4vh,36px);border-width:8px;right:clamp(18px,3vw,50px);top:clamp(14px,3vh,34px)}
+.arrive .lvl{gap:clamp(12px,2vw,26px)}
+.arrive .pill{font-size:clamp(30px,6vh,58px);min-width:6.2em;padding:.45em 1em;border-width:3px;border-radius:20px}.arrive .pill small{font-size:clamp(14px,2.5vh,22px)}
+.arrive p{font-size:clamp(22px,4vh,38px)!important;line-height:1.35}.arrive p.muted{font-size:clamp(18px,3vh,28px)!important}
+.arrive .band{font-size:.9em;padding:.12em .7em}
+.arrive .acts{gap:clamp(14px,2vw,28px)}
+.arrive .btn{min-height:clamp(66px,11vh,104px);font-size:clamp(24px,4.4vh,42px);padding:0 1.6em}.arrive .btn.ghost{font-size:clamp(22px,3.9vh,36px)}
+.arrive .stamp{font-size:clamp(15px,2.6vh,24px);letter-spacing:.01em}.arrive .stamp small{font-size:.75em!important}
+/* end full-screen */
+@media print{.bar,#caption,#notice,.acts,.bg,.wall,.puff,.lamp{display:none!important}html,body{overflow:visible;background:#fff}#stage,.scr,.result{position:static;overflow:visible}.cert{box-shadow:none;width:100%}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<div id="stage" tabindex="-1"></div>
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="panel"><header><span id="sheetTitle"></span><button type="button" id="sheetClose">✕ Close</button></header><div class="body" id="sheetBody"></div><div class="foot" id="sheetFoot"></div></div></div>
+<div id="caption" role="status" aria-live="polite"></div><div id="notice" role="alert"></div>
+<script>
+'use strict';
+/* Passages and questions: Trial(1)/Post Test/GRADE 7-10.docx (Phil-IRI style graded passages, Grades 4-10). */
+const PASSAGES=/*__POST__*/;
+/* PROPOSED answer key — the supplied files contain no key. Written by READwy from the passages; a teacher must verify it. */
+const KEY={4:'BCACBB',5:'BDBCDDC',6:'ACCBBCBB',7:'CCDCBABCBD',8:'CABCACCCBC',9:'ACDAAAACBD',10:'DBADBCBBAB'};
+const KEY_VERIFIED=false;
+/* Developer view (opened from the READwy badge): no locks, no required answers, every screen reachable. */
+var DEV=(()=>{try{return sessionStorage.getItem('readwy-dev-view')==='1'}catch(e){return false}})();
+const RES='resources/',TRAIN=RES+'sra/v3/train.png',BACK=RES+'station-journey.webp',VIEW=RES+'readwy-desktop-landscape-v2.webp';
+/* Phil-IRI comprehension levels (silent reading): Independent 80-100%, Instructional 59-79%, Frustration 58% and below */
+const band=p=>p>=80?'Independent':p>=59?'Instructional':'Frustration';
+const BAND_NOTE={Independent:'Reads this level easily and understands it without help.',Instructional:'Reads this level with some help — the right level for classroom lessons.',Frustration:'Finds this level too hard for now and needs easier texts and support.'};
+
+/* ---------- READwy bridge ---------- */
+const PP=(()=>{try{return parent!==window&&parent.document?parent:null}catch(e){return null}})();
+function pLoad(k,f){try{if(PP&&typeof PP.load==='function')return PP.load(k,f)}catch(e){}try{const v=JSON.parse(localStorage.getItem('readwy-post:'+k));return v==null?f:v}catch(e){return f}}
+function pSave(k,v){try{if(PP&&typeof PP.save==='function')return PP.save(k,v)}catch(e){}try{localStorage.setItem('readwy-post:'+k,JSON.stringify(v))}catch(e){}}
+function pUser(){let u=null;try{if(PP)u=PP.eval('typeof user!=="undefined"?user:null')}catch(e){}return u||pLoad('user',null)||{}}
+function toJourney(){try{if(PP&&typeof PP.go==='function'){PP.go('map');return}}catch(e){}notice('The journey map opens from READwy.')}
+function toTeacherReports(){try{if(PP&&typeof PP.openModule==='function'){PP.__reportsClassic=true;PP.openModule('reports');return}}catch(e){}notice('Teacher reports open from READwy.')}
+const normGender=v=>{v=String(v||'').trim().toLowerCase();return /^(f|female|girl|woman|babae)$/.test(v)?'female':/^(m|male|boy|man|lalaki)$/.test(v)?'male':''};
+function genderOf(u){for(const v of [u.gender,u.sex]){const g=normGender(v);if(g)return g}
+ try{const p=JSON.parse(localStorage.getItem('READwy_new_2026_local_studentProfiles')||'{}')||{},r=p[String(u.email||'').toLowerCase()]||{};return normGender(r.gender||r.sex)}catch(e){return ''}}
+const U=pUser(),NAME=String(U.name||'Reader').trim();
+const G=(()=>{const g=Number(U.grade);return g>=7&&g<=10?g:g>10?10:7})();
+const LEVELS=[G,G-1,G-2,G-3].filter(l=>PASSAGES[l]);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const words=s=>(String(s).match(/[A-Za-z0-9'’-]+/g)||[]).length;
+
+/* ---------- learner state ---------- */
+const KEYS='post_test_'+G;
+const blank=()=>({grade:G,runs:[],cur:null,done:false,startedAt:null,finishedAt:null});
+let ST=Object.assign(blank(),pLoad(KEYS,null)||{});
+function persist(){pSave(KEYS,ST)}
+const nextLevel=()=>{if(ST.done)return null;const r=ST.runs,last=r[r.length-1];if(!last)return LEVELS[0];if(last.band!=='Frustration')return null;const i=LEVELS.indexOf(last.level);return LEVELS[i+1]||null};
+function profile(){const ok=ST.runs.filter(r=>r.band!=='Frustration').sort((a,b)=>b.level-a.level)[0];
+ if(ok)return {level:ok.level,band:ok.band,text:ok.level>=G?`Reading at grade level (Grade ${ok.level})`:`Reading ${G-ok.level} grade${G-ok.level>1?'s':''} below grade level (Grade ${ok.level})`};
+ const low=ST.runs[ST.runs.length-1];return low?{level:low.level,band:'Frustration',text:`Below Grade ${low.level} — needs a teacher’s reading assessment`}:null}
+
+/* ---------- sound + voice ---------- */
+let AC=null,muted=false;try{muted=localStorage.getItem('post-muted')==='1'}catch(e){}
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,t0,d,type='triangle',v=.05){const a=ac();if(!a||muted)return;const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,a.currentTime+t0);g.gain.linearRampToValueAtTime(v,a.currentTime+t0+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+t0+d);o.connect(g).connect(a.destination);o.start(a.currentTime+t0);o.stop(a.currentTime+t0+d+.05)}
+function noise(t0,d,v=.05,f=900){const a=ac();if(!a||muted)return;const b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length);const s=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();fl.type='bandpass';fl.frequency.value=f;g.gain.value=v;s.buffer=b;s.connect(fl).connect(g).connect(a.destination);s.start(a.currentTime+t0)}
+const SFX={whistle(){[784,988,1175].forEach(f=>tone(f,0,1.1,'sine',.04))},chuff(n=4){for(let i=0;i<n;i++)noise(i*.28,.18,.05,500)},pop(){tone(660,0,.09,'square',.02)},punch(){noise(0,.07,.12,2400);tone(300,0,.06,'square',.02)},fanfare(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.13,.5,'triangle',.05))},stamp(){noise(0,.14,.14,260)},flap(){for(let i=0;i<6;i++)noise(i*.05,.03,.04,3000)}};
+let voice=null,tok=0;
+function pickVoice(){const vs=(window.speechSynthesis&&speechSynthesis.getVoices())||[];for(const r of [/Guy.*Natural/i,/Andrew.*Natural/i,/Google UK English Male/i,/David/i,/en-US/i,/^en/i]){const v=vs.find(v=>r.test(v.name)||r.test(v.lang));if(v)return v}return vs[0]||null}
+try{speechSynthesis.onvoiceschanged=()=>{voice=pickVoice()};voice=pickVoice()}catch(e){}
+function caption(t){const c=document.getElementById('caption');c.textContent=t||'';c.classList.toggle('on',!!t)}
+function say(t){if(muted||!('speechSynthesis' in window)||!t)return;const k=++tok;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.rate=.95;u.pitch=1.1;caption(t);u.onend=u.onerror=()=>{if(k===tok)setTimeout(()=>k===tok&&caption(''),900)};speechSynthesis.speak(u)}
+function toggleSound(){muted=!muted;try{localStorage.setItem('post-muted',muted?'1':'0')}catch(e){}if(muted){try{speechSynthesis.cancel()}catch(e){}caption('')}document.querySelectorAll('.tb.snd').forEach(b=>b.innerHTML=SND()+'<span>Sound</span>');notice(muted?'🔇 Sound off':'🔊 Sound on')}
+let nT=0;function notice(m){const n=document.getElementById('notice');n.textContent=m;n.classList.add('on');clearTimeout(nT);nT=setTimeout(()=>n.classList.remove('on'),3000)}
+function confetti(n=80){const cols=['#ffd447','#2f8f10','#1e6b3c','#f2a50c','#fff','#7ee081'];for(let i=0;i<n;i++){const c=document.createElement('i');c.className='confetti';c.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%6]};--dx:${(Math.random()-.5)*30}vw;--rot:${Math.random()*1080}deg;animation-duration:${2.6+Math.random()*2.4}s;animation-delay:${Math.random()*.7}s`;document.body.appendChild(c);setTimeout(()=>c.remove(),6200)}}
+
+/* ---------- shared top bar ---------- */
+const IC={map:'<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2z"/></svg>',
+ gear:'<svg viewBox="0 0 24 24"><path fill="currentColor" d="M10.2 2h3.6l.6 2.9a7.6 7.6 0 0 1 2.1 1.2l2.8-1 1.8 3.1-2.2 2a7.7 7.7 0 0 1 0 2.4l2.2 2-1.8 3.1-2.8-1a7.6 7.6 0 0 1-2.1 1.2l-.6 2.9h-3.6l-.6-2.9a7.6 7.6 0 0 1-2.1-1.2l-2.8 1-1.8-3.1 2.2-2a7.7 7.7 0 0 1 0-2.4l-2.2-2 1.8-3.1 2.8 1a7.6 7.6 0 0 1 2.1-1.2zM12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8z"/></svg>',
+ help:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.2 9.3a2.9 2.9 0 1 1 4.3 2.5c-.9.5-1.5 1.1-1.5 2.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.3" fill="currentColor"/></svg>'};
+const SND=()=>`<svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z"/>${muted?'<path d="M15 9l6 6M21 9l-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>':'<path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'}</svg>`;
+function bar(){return `<header class="bar"><button class="brand" type="button" data-a="home" aria-label="Post-Test home">🚂 POST-TEST <i>Grand Arrival Station</i></button><nav aria-label="Post-Test tools">
+ <button class="tb" type="button" data-a="map">${IC.map}<span>Journey Map</span></button><i class="dv"></i>
+ <button class="tb snd" type="button" data-a="sound">${SND()}<span>Sound</span></button><i class="dv"></i>
+ <button class="tb" type="button" data-a="settings">${IC.gear}<span>Settings</span></button><i class="dv"></i>
+ <button class="tb" type="button" data-a="help">${IC.help}<span>Help</span></button></nav></header>`}
+function wireBar(root){root.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();ac();SFX.pop();({home:()=>welcome(),map:leave,sound:toggleSound,settings:settingsSheet,help:helpSheet})[b.dataset.a]()})}
+function leave(){if(ST.cur){sheet('Leave the train?',`<p>Your answers are saved. You can come back and continue this passage later.</p>`,[['Stay','ghost',closeSheet],['Go to the journey map','navy',()=>{closeSheet();toJourney()}]]);return}toJourney()}
+
+/* ---------- screen change: the train crosses the screen ---------- */
+let fx=null,cur=null,SCN='';
+function show(name,html,after,{instant=false,line='',noFade=false}={}){if(fx){cancelAnimationFrame(fx.raf);fx.done()}closeSheet();SCN=name;
+ try{sessionStorage.setItem('post-here',JSON.stringify({s:name,at:Date.now()}))}catch(e){}
+ try{speechSynthesis.cancel()}catch(e){}tok++;caption('');
+ const st=document.getElementById('stage'),old=cur,sc=document.createElement('section');sc.className='scr';sc.dataset.s=name;sc.innerHTML=html;st.appendChild(sc);cur=sc;wireBar(sc);if(after)after(sc);
+ if(line)setTimeout(()=>{if(SCN===name)say(line)},instant||!old?300:1300);
+ if(!old||instant||matchMedia('(prefers-reduced-motion: reduce)').matches){if(old)old.remove();if(!noFade)sc.classList.add('fadeIn');return}
+ const W=innerWidth,H=innerHeight,box=document.createElement('div');box.id='trainfx';box.innerHTML=`<img src="${TRAIN}" alt="">`;document.body.appendChild(box);
+ const img=box.querySelector('img'),tw=H*.62*(624/664),dur=1200,t0=performance.now();const reveal=x=>{const m=`linear-gradient(90deg,#000 ${x-W*.16}px,transparent ${x}px)`;sc.style.webkitMaskImage=m;sc.style.maskImage=m};reveal(0);
+ SFX.chuff(5);setTimeout(()=>SFX.whistle(),120);let lp=0;
+ const done=()=>{sc.style.webkitMaskImage=sc.style.maskImage='';old.remove();box.remove();fx=null};
+ const step=now=>{const p=Math.min(1,(now-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2,front=-tw*.2+(W+tw*1.35)*e;img.style.transform=`translateX(${front-tw}px) translateY(${Math.sin(now/45)*1.2}px)`;
+  const edge=front-tw*.5;reveal(edge+W*.16*e);
+  if(now-lp>50&&edge>-tw*.2&&edge<W+tw*.2){lp=now;for(let i=0;i<3;i++){const s=document.createElement('i'),z=H*(.2+Math.random()*.16);s.style.cssText=`left:${edge-z/2-W*.06+(Math.random()-.5)*60}px;top:${H*Math.random()*1.05-z/2}px;width:${z}px;height:${z}px`;box.appendChild(s);setTimeout(()=>s.remove(),1500)}}
+  if(p<1)fx.raf=requestAnimationFrame(step);else setTimeout(()=>{if(fx&&fx.box===box)done()},250)};
+ fx={raf:requestAnimationFrame(step),done,box}}
+const steam=(xs)=>xs.map(([x,y,s],i)=>[0,1,2].map(k=>`<i class="puff" style="left:${x}%;top:${y}%;width:${s}vh;height:${s}vh;animation-delay:${i*.7+k*1.2}s"></i>`).join('')).join('');
+
+/* ---------- 1 · Grand Arrival Station (welcome + departure board) ---------- */
+function flap(text,n){const s=String(text).toUpperCase().padEnd(n).slice(0,n);return [...s].map((c,i)=>`<span class="fl${c===' '?' sp':''}" style="animation-delay:${(i*.03).toFixed(2)}s">${c===' '?'':esc(c)}</span>`).join('')}
+function boardRows(){const nx=nextLevel();return LEVELS.map((lv,i)=>{const r=ST.runs.find(x=>x.level===lv),p=PASSAGES[lv];
+  const status=r?`<span class="st done">✔ ${r.band.toUpperCase()}</span>`:lv===nx||(ST.cur&&ST.cur.level===lv)?'<span class="st board-now">NOW BOARDING</span>':ST.done||(nx!==null&&LEVELS.indexOf(lv)<LEVELS.indexOf(nx))?'<span class="st skip">NOT NEEDED</span>':'<span class="st wait">IF NEEDED</span>';
+  return `<div class="row"><span class="cell">${flap('C'+(i+1),3)}</span><span class="cell cgr">${flap('GR '+lv,5)}</span><span class="tt">${esc(p.title)}</span>${status}</div>`}).join('')}
+function welcome(){const g=genderOf(U),pic=g?`${RES}wst/v2/p_${g}.png`:'';const nx=nextLevel(),started=ST.runs.length||ST.cur;
+ const cta=ST.done?'See my results':ST.cur?'Continue my ride':started?'Board the next carriage':'Board the Train';
+ show('welcome',`<div class="bg" style="background-image:url(${BACK})"></div>${steam([[50,22,12],[62,20,10]])}<i class="lamp" style="left:88%;top:56%;width:12vh;height:12vh"></i><i class="lamp" style="left:4%;top:20%;width:10vh;height:10vh;animation-delay:.8s"></i>${bar()}
+ <main class="welcome"><div class="wcol">
+  <section class="board" aria-label="Post-Test departure board"><h1>POST-TEST EXPRESS</h1><div class="sub">FINAL STATION · GRADE ${G} · SILENT READING</div>
+   <div class="rows"><div class="row h"><span>CAR</span><span class="cgr">LEVEL</span><span>PASSAGE</span><span>STATUS</span></div>${boardRows()}</div></section>
+  <div class="rules"><div class="rule"><b>1 · Read</b>Read the passage silently in the reading carriage.</div><div class="rule"><b>2 · Answer</b>The ticket inspector asks the questions. The passage is closed.</div><div class="rule"><b>3 · Arrive</b>Get your reading level: Independent, Instructional or Frustration.</div></div>
+ </div>
+ <div class="wcol"><section class="ticket" aria-label="Your boarding ticket"><div class="main"><div class="kick">PASSENGER TICKET</div><div class="big">${esc(NAME)}</div>
+   <div class="facts"><span><b>GRADE</b>${G}${U.section?' · '+esc(U.section):''}</span><span><b>CARRIAGES</b>${ST.runs.length} done</span><span><b>TEST</b>Phil-IRI Post-Test</span></div>
+   <div style="margin-top:clamp(10px,2vh,18px)"><button class="btn shine" type="button" id="go">${cta} ›</button></div></div>
+  <div class="stub">${pic?`<div class="portrait" style="background-image:url(${pic})"></div>`:'<div class="portrait" style="display:grid;place-items:center;font-size:42px">🎫</div>'}<small>PASSENGER</small><div class="barcode"></div></div></section></div></main>`,
+ sc=>{SFX.flap();sc.querySelector('#go').onclick=()=>{ac();SFX.pop();if(ST.done)return results();if(ST.cur)return ST.cur.stage==='q'?inspect():carriage();const lv=nx;if(lv==null)return results();ST.cur={level:lv,stage:'read',secs:0,ans:{},q:0};if(!ST.startedAt)ST.startedAt=Date.now();persist();carriage()}},
+ {line:ST.done?'Welcome back! Your post-test is complete.':started?'Welcome back. Your next carriage is ready.':`Welcome to the final station, ${NAME.split(' ')[0]}! Read each passage silently, then answer the questions. Press Board the Train when you are ready.`})}
+
+/* ---------- 2 · reading carriage ---------- */
+let readT=null,fs=1;
+/* the scenery outside both windows scrolls past at a steady speed: one tile = the photo and its mirror, so it loops without a seam */
+/* Both windows look onto ONE scene at the same scale, like two openings in the same carriage wall.
+   The tall window shows the scene from top to bottom; the upper window shows the upper part of that same scene.
+   Painted scenes loop seamlessly and scroll past; a single supplied painting (e.g. "window 1") pans gently. */
+const SCENES={5:'window1.jpg'};
+function rideViews(sc,src){const single=/window\d/.test(src),im=new Image();
+ im.onload=()=>{const views=[...sc.querySelectorAll('.view')],left=sc.querySelector('.window:not(.topwin) .view');if(!left)return;
+  views.forEach(v=>{v.style.animation='none';v.style.backgroundRepeat=single?'no-repeat':'repeat-x'});const t0=performance.now();
+  const step=now=>{if(!sc.isConnected)return;const L=left.getBoundingClientRect(),t=(now-t0)/1000;let s,dw,dh,offX,offY=0;
+   if(single){const right=Math.max(...views.map(v=>v.getBoundingClientRect().right)),wW=right-L.left;s=Math.max(wW/im.naturalWidth,L.height/im.naturalHeight)*1.08;dw=im.naturalWidth*s;dh=im.naturalHeight*s;
+    offX=(dw-wW)*(.5+.5*Math.sin(t*2*Math.PI/48));offY=(dh-L.height)*.55}
+   else{s=L.height/im.naturalHeight;dw=im.naturalWidth*s;dh=L.height;offX=(t*40)%dw}
+   views.forEach(v=>{const r=v.getBoundingClientRect();v.style.backgroundSize=`${dw}px ${dh}px`;v.style.backgroundPosition=`${(L.left-r.left-offX).toFixed(1)}px ${(L.top-r.top-offY).toFixed(1)}px`});
+   requestAnimationFrame(step)};requestAnimationFrame(step)};im.src=src}
+function carriage(){const c=ST.cur,p=PASSAGES[c.level],idx=LEVELS.indexOf(c.level)+1;clearInterval(readT);
+ const ref=p.meta.filter(m=>/^(Reference|Authors?|Prepared by)/.test(m)).join(' · '),vw=RES+'post/views/'+(SCENES[c.level]||'v'+c.level+'.jpg');
+ show('read',`<div class="wall"></div>${bar()}<main class="carriage">
+  <div class="window"><div class="view" style="background-image:url(${vw})"></div><div class="shade"></div><i class="tail tl"></i><i class="tail tr"></i><div class="wcap"><span class="chip">CARRIAGE ${idx} · GRADE ${c.level} PASSAGE</span><div class="clock">⏱ Reading time <b id="rt">0:00</b></div></div></div>
+  <div class="rcol"><div class="window topwin" aria-hidden="true"><div class="view" style="background-image:url(${vw})"></div><div class="shade"></div><i class="tail tl"></i><i class="tail tr"></i></div>
+  <article class="book"><header><h2>${esc(p.title)}</h2><span class="lv">${words(p.paras.join(' '))} WORDS</span></header>
+   <div class="text" id="txt">${p.paras.map((t,i)=>`<p>${p.paras.length>3&&c.level>=7?`<span class="pn">${i+1}</span>`:''}${esc(t)}</p>`).join('')}${ref?`<p class="ref">${esc(ref)}</p>`:''}</div>
+   <footer><span>Read silently and carefully. You cannot look back once the questions start.</span><span class="fsz"><button type="button" data-z="-1" aria-label="Smaller text">A−</button><button type="button" data-z="1" aria-label="Larger text">A+</button></span><button class="btn" type="button" id="doneRead">I’m done reading ›</button></footer></article></div></main>`,
+ sc=>{rideViews(sc,vw);const rt=sc.querySelector('#rt'),txt=sc.querySelector('#txt');txt.style.fontSize=`calc(clamp(15px,2.45vh,22px)*${fs})`;
+  const t0=Date.now()-c.secs*1000;const tick=()=>{c.secs=Math.round((Date.now()-t0)/1000);rt.textContent=Math.floor(c.secs/60)+':'+String(c.secs%60).padStart(2,'0')};tick();readT=setInterval(()=>{tick();if(c.secs%5===0)persist()},1000);
+  sc.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>{fs=Math.max(.8,Math.min(1.5,fs+(+b.dataset.z)*.1));txt.style.fontSize=`calc(clamp(15px,2.45vh,22px)*${fs})`});
+  sc.querySelector('#doneRead').onclick=()=>{ac();SFX.pop();sheet('Ready for the ticket inspector?',`<p>The passage will close and the questions will begin. <b>You cannot go back to the passage.</b></p>`,[['Keep reading','ghost',closeSheet],['Start the questions','navy',()=>{clearInterval(readT);c.stage='q';c.q=0;persist();inspect()}]])}},
+ {line:`Carriage ${idx}. Read “${p.title}” silently. Press I’m done reading when you finish.`})}
+
+/* ---------- 3 · ticket inspector (questions) ---------- */
+function inspect(dir=0){const c=ST.cur,p=PASSAGES[c.level],qs=p.questions,i=c.q,q=qs[i],n=qs.length;clearInterval(readT);
+ // swipe: the current question ticket slides out to the left while the next one slides in from the right (reversed for Previous)
+ const oldCard=dir&&SCN==='q'&&cur?cur.querySelector('.qcard'):null,oldRect=oldCard&&oldCard.getBoundingClientRect(),ghost=oldCard&&oldCard.cloneNode(true);
+ const stops=qs.map((_,k)=>`<span class="stop${c.ans[k]?' on':''}${k===i?' now':''}" style="left:${(k+.5)/n*100}%">${k+1}</span>`).join('');
+ show('q',`<div class="wall"></div>${bar()}<main class="inspect">
+  <div class="track" aria-hidden="true"><div class="rail"></div>${stops}<img class="loco" src="${TRAIN}" alt="" style="left:calc(${(i+.5)/n*100}% )"></div>
+  <section class="qcard" aria-label="Question ${i+1} of ${n}"><div class="qm">
+   ${q.intro?`<p class="qintro">${esc(q.intro)}</p>`:''}<div class="qtext">${esc(q.q)}</div>
+   <div class="opts" role="radiogroup">${q.o.map(o=>`<button type="button" class="opt${c.ans[i]===o.k?' sel':''}" role="radio" aria-checked="${c.ans[i]===o.k}" data-k="${o.k}"><span class="k">${o.k}</span><span>${esc(o.t)}</span></button>`).join('')}</div></div>
+   <div class="qs"><small>QUESTION</small><span class="qn">${i+1}</span><small>OF ${n}</small><div class="barcode" style="width:70%"></div></div></section>
+  <div class="qnav"><button class="btn ghost" type="button" id="prev" ${i?'':'disabled'}>‹ Previous</button><span class="chip">${esc(p.title)} · Grade ${c.level}</span>
+   ${i<n-1?'<button class="btn" type="button" id="next">Next ›</button>':'<button class="btn shine" type="button" id="sub">Submit answers ✔</button>'}</div></main>`,
+ sc=>{const card=sc.querySelector('.qcard');
+  if(ghost){const W=innerWidth,ease='cubic-bezier(.55,.05,.25,1)',d=480;
+   Object.assign(ghost.style,{position:'fixed',left:oldRect.left+'px',top:oldRect.top+'px',width:oldRect.width+'px',height:oldRect.height+'px',margin:'0',zIndex:6,pointerEvents:'none'});sc.appendChild(ghost);
+   ghost.animate([{transform:'translateX(0)',opacity:1},{transform:`translateX(${dir>0?-W:W}px) rotate(${dir>0?-3:3}deg)`,opacity:.6}],{duration:d,easing:ease,fill:'forwards'}).onfinish=()=>ghost.remove();
+   card.animate([{transform:`translateX(${dir>0?W:-W}px) rotate(${dir>0?3:-3}deg)`},{transform:'translateX(0)'}],{duration:d,easing:ease});SFX.flap()}
+  sc.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ac();SFX.punch();c.ans[i]=b.dataset.k;persist();sc.querySelectorAll('.opt').forEach(x=>{const on=x===b;x.classList.toggle('sel',on);x.setAttribute('aria-checked',on)});sc.querySelectorAll('.stop')[i].classList.add('on')});
+  const pv=sc.querySelector('#prev');if(pv)pv.onclick=()=>{c.q=i-1;persist();inspect(-1)};
+  const nx=sc.querySelector('#next');if(nx)nx.onclick=()=>{if(!DEV&&!c.ans[i]){notice('Choose an answer first.');return}c.q=i+1;persist();inspect(1)};
+  const sb=sc.querySelector('#sub');if(sb)sb.onclick=()=>{const miss=DEV?[]:qs.map((_,k)=>k).filter(k=>!c.ans[k]);if(miss.length){notice(`Answer question${miss.length>1?'s':''} ${miss.map(k=>k+1).join(', ')} first.`);return}
+   sheet('Submit your answers?',`<p>You answered all ${n} questions. You cannot change them after you submit.</p>`,[['Check again','ghost',closeSheet],['Submit','navy',()=>finishCarriage()]])}},
+ {instant:true,noFade:!!dir,line:dir===0&&i===0?'Tickets, please! Choose the best answer for each question.':''})}
+function finishCarriage(){const c=ST.cur,p=PASSAGES[c.level],key=KEY[c.level]||'';let score=0;
+ const detail=p.questions.map((q,k)=>{const ok=c.ans[k]===key[k];if(ok)score++;return {n:k+1,a:c.ans[k],ok}});
+ const total=p.questions.length,pct=Math.round(score/total*100),wc=words(p.paras.join(' '));
+ const run={level:c.level,title:p.title,score,total,pct,band:band(pct),secs:c.secs,wpm:c.secs>=15?Math.round(wc/(c.secs/60)):null,answers:c.ans,detail,date:new Date().toISOString()};
+ ST.runs=ST.runs.filter(r=>r.level!==c.level).concat(run);ST.cur=null;
+ if(nextLevel()===null){ST.done=true;ST.finishedAt=Date.now();saveResult()}persist();arrival(run)}
+function saveResult(){const pr=profile();pSave('post_result_'+G,{grade:G,profile:pr,runs:ST.runs.map(({answers,detail,...r})=>r),keyVerified:KEY_VERIFIED,date:new Date().toISOString()})}
+
+/* ---------- 4 · station stamp after each carriage ---------- */
+function arrival(r){const col={Independent:'var(--ind)',Instructional:'var(--ins)',Frustration:'var(--fru)'}[r.band],nx=nextLevel();
+ show('arrive',`<div class="bg" style="background-image:url(${BACK});filter:saturate(.8) brightness(.7)"></div>${bar()}<main class="result"><section class="cert arrive">
+  <div class="stamp" style="color:${col}">${r.band.toUpperCase()}<br><small style="font-size:.6em">GRADE ${r.level}</small></div>
+  <h1>Station reached!</h1><div class="tag">${esc(r.title).toUpperCase()} · GRADE ${r.level} PASSAGE</div>
+  <div class="lvl"><span class="pill"><small>SCORE</small>${r.score} / ${r.total}</span><span class="pill"><small>COMPREHENSION</small>${r.pct}%</span><span class="pill"><small>READING TIME</small>${Math.floor(r.secs/60)}:${String(r.secs%60).padStart(2,'0')}</span>${r.wpm?`<span class="pill"><small>SPEED</small>${r.wpm} wpm</span>`:''}</div>
+  <p style="text-align:center;font:600 clamp(15px,2.5vh,21px)/1.4 'Source Sans 3',sans-serif;margin:.2em auto .4em;max-width:46em"><span class="band ${r.band}">${r.band}</span> ${BAND_NOTE[r.band]}</p>
+  ${nx!==null?`<p class="muted" style="text-align:center">Next: the Grade ${nx} carriage, to find the level that is right for you.</p>`:''}
+  <div class="acts">${nx!==null?'<button class="btn shine" type="button" id="nx">Board the next carriage ›</button>':'<button class="btn shine" type="button" id="res">See my journey certificate ›</button>'}<button class="btn ghost" type="button" id="hm">Station board</button></div></section></main>`,
+ sc=>{setTimeout(()=>SFX.stamp(),500);const a=sc.querySelector('#nx');if(a)a.onclick=()=>{ST.cur={level:nx,stage:'read',secs:0,ans:{},q:0};persist();carriage()};const b=sc.querySelector('#res');if(b)b.onclick=results;sc.querySelector('#hm').onclick=welcome},
+ {line:`${r.band} level. You scored ${r.score} out of ${r.total}.`})}
+
+/* ---------- 5 · journey certificate ---------- */
+function preTest(){const oral=pLoad('oral_'+G,{})||{},gst=pLoad('assessment_'+G,{})||{},wst=pLoad('wst_score_'+G,null);
+ return {oral:oral.readingLevel||oral.level||null,oralComp:Number.isFinite(oral.comprehension)?Math.round(oral.comprehension):null,gst:Number.isFinite(gst.score)&&gst.total?`${gst.score}/${gst.total}`:null,wst:wst&&wst.writer?`${wst.writer} (${wst.score}/${wst.total})`:null}}
+function results(){const pr=profile();if(!pr)return welcome();const pre=preTest(),col={Independent:'var(--ind)',Instructional:'var(--ins)',Frustration:'var(--fru)'}[pr.band];
+ const rows=ST.runs.slice().sort((a,b)=>b.level-a.level).map(r=>`<tr><td>Grade ${r.level}</td><td>${esc(r.title)}</td><td>${r.score}/${r.total} (${r.pct}%)</td><td><span class="band ${r.band}">${r.band}</span></td><td>${Math.floor(r.secs/60)}:${String(r.secs%60).padStart(2,'0')}${r.wpm?` · ${r.wpm} wpm`:''}</td></tr>`).join('');
+ const preRows=[['Voice Station (oral reading)',pre.oral?esc(pre.oral)+(pre.oralComp!=null?` · ${pre.oralComp}% comprehension`:''):'—'],['Group screening (GST)',pre.gst||'—'],['Story Depot (writing)',pre.wst||'—']];
+ show('results',`<div class="bg" style="background-image:url(${BACK});filter:saturate(.85) brightness(.65)"></div>${steam([[50,22,12]])}${bar()}<main class="result"><section class="cert">
+  <div class="stamp" style="color:${col}">ARRIVED<br>${pr.band.toUpperCase()}</div>
+  <h1>Journey Certificate</h1><div class="tag">READWY POST-TEST · PHIL-IRI SILENT READING</div>
+  <p style="text-align:center;font:700 clamp(16px,2.8vh,24px) Literata,Georgia,serif;margin:.2em 0">${esc(NAME)} · Grade ${G}${U.section?' · '+esc(U.section):''}</p>
+  <div class="lvl"><span class="pill"><small>READING LEVEL</small>Grade ${pr.level}</span><span class="pill" style="border-color:${col}"><small>PHIL-IRI LEVEL</small><span style="color:${col}">${pr.band}</span></span><span class="pill"><small>PROFILE</small><span style="font-size:.7em">${esc(pr.text)}</span></span></div>
+  <table class="tbl"><tr><th>Carriage</th><th>Passage</th><th>Score</th><th>Level</th><th>Reading time</th></tr>${rows}</table>
+  <h3 style="font:800 clamp(15px,2.4vh,20px) Literata,Georgia,serif;color:var(--navy);margin:1em 0 .3em">Before and after</h3>
+  <table class="tbl"><tr><th>Pre-test</th><th>Result</th></tr>${preRows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}<tr><td><b>Post-test (this test)</b></td><td><b>Grade ${pr.level} · ${pr.band}</b></td></tr></table>
+  <p class="muted" style="font-size:.85em;margin:.6em 0 0">Levels follow the Phil-IRI comprehension criteria: Independent 80–100%, Instructional 59–79%, Frustration 58% and below.${KEY_VERIFIED?'':' Scores use a proposed answer key that your teacher will confirm.'}</p>
+  <div class="acts"><button class="btn navy" type="button" id="pr">🖨 Print certificate</button><button class="btn ghost" type="button" id="tr">Teacher reports</button><button class="btn" type="button" id="jm">Journey map ›</button></div></section></main>`,
+ sc=>{sc.querySelector('#pr').onclick=()=>window.print();sc.querySelector('#tr').onclick=toTeacherReports;sc.querySelector('#jm').onclick=toJourney;if(!ST.celebrated){ST.celebrated=true;persist();setTimeout(()=>{SFX.fanfare();confetti()},900)}},
+ {line:`Journey complete! Your reading level is Grade ${pr.level}, ${pr.band}.`})}
+
+/* ---------- settings, help, sheets ---------- */
+function settingsSheet(){const has=ST.runs.length||ST.cur;
+ sheet('⚙️ Settings',`<h3>Sound</h3><p>Voice and train sounds are <b>${muted?'off':'on'}</b>.</p><p><button class="btn ghost" type="button" id="ss">${muted?'🔊 Turn sound on':'🔇 Turn sound off'}</button></p>
+ <h3>Erase my post-test answers</h3><p>Deletes your Grade ${G} post-test answers, scores and reading level on this device, so you can take the post-test again. <b>This cannot be undone.</b></p>
+ <p><button class="btn" type="button" id="er" style="background:linear-gradient(#e85b4f,#c92f42);color:#fff;border-color:#9e1f30;box-shadow:0 3px 0 #7a1020" ${has?'':'disabled'}>🗑️ Erase my answers</button>${has?'':' <span class="muted">Nothing to erase yet.</span>'}</p>`,[['Close','',closeSheet]]);
+ document.getElementById('ss').onclick=()=>{toggleSound();settingsSheet()};
+ const er=document.getElementById('er');if(er)er.onclick=()=>sheet('Erase your post-test?',`<p>⚠️ All your Grade ${G} post-test answers and results will be permanently deleted. Are you sure?</p>`,[['Cancel','ghost',settingsSheet],['Yes, erase','navy',()=>{ST=blank();persist();pSave('post_result_'+G,null);try{sessionStorage.removeItem('post-here')}catch(e){}closeSheet();notice('🗑️ Your post-test answers were erased.');welcome()}]])}
+function helpSheet(){sheet('❓ Help',`<h3>How the Post-Test works</h3><ol><li><b>Board the Train</b> on the station board.</li><li>In the <b>reading carriage</b>, read the passage silently. The clock records your reading time.</li><li>Press <b>I’m done reading</b>. The passage closes, and the <b>ticket inspector</b> asks the questions one at a time.</li><li>After you submit, the station stamps your level for that passage.</li></ol>
+ <h3>Which passages will I read?</h3><p>You start with the <b>Grade ${G}</b> passage. If it is too hard (Frustration level), the next carriage has an easier passage, until we find the level that is right for you.</p>
+ <h3>Reading levels (Phil-IRI)</h3><ul><li><b style="color:var(--ind)">Independent</b> (80–100%): ${BAND_NOTE.Independent}</li><li><b style="color:var(--ins)">Instructional</b> (59–79%): ${BAND_NOTE.Instructional}</li><li><b style="color:var(--fru)">Frustration</b> (58% and below): ${BAND_NOTE.Frustration}</li></ul>
+ <p class="muted" style="font-size:.85em">Passages: READwy Post-Test graded passages (Phil-IRI style). Sources are shown under each passage.</p>`,[['Close','',closeSheet]])}
+function sheet(title,body,btns){const s=document.getElementById('sheet');document.getElementById('sheetTitle').textContent=title;document.getElementById('sheetBody').innerHTML=body;
+ const f=document.getElementById('sheetFoot');f.innerHTML='';btns.forEach(([t,cls,fn])=>{const b=document.createElement('button');b.type='button';b.className='btn '+cls;b.textContent=t;b.onclick=()=>{SFX.pop();fn()};f.appendChild(b)});s.classList.add('on');setTimeout(()=>f.lastChild&&f.lastChild.focus(),50)}
+function closeSheet(){document.getElementById('sheet').classList.remove('on')}
+document.getElementById('sheetClose').onclick=closeSheet;document.getElementById('sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+
+/* Developer view: every screen of the Post-Test, for inspecting the UI */
+window.readwyDevScreens=()=>{const cur=lv=>{ST.cur={level:lv,stage:'read',secs:0,ans:{},q:0}};
+ const sample=()=>{if(!ST.runs.length)ST.runs=[{level:G,title:PASSAGES[G].title,score:5,total:PASSAGES[G].questions.length,pct:50,band:'Frustration',secs:200,wpm:90,detail:[],answers:{}},{level:G-1,title:PASSAGES[G-1].title,score:8,total:PASSAGES[G-1].questions.length,pct:80,band:'Independent',secs:150,wpm:110,detail:[],answers:{}}]};
+ return [['Station board',()=>{ST.cur=null;welcome()}],...LEVELS.concat([4,5,6,7,8,9,10].filter(l=>!LEVELS.includes(l)&&PASSAGES[l])).map(l=>['Reading — Grade '+l+' passage',()=>{cur(l);carriage()}]),
+  ['Questions (ticket inspector)',()=>{cur(G);ST.cur.stage='q';inspect()}],['Last question + Submit',()=>{cur(G);ST.cur.stage='q';ST.cur.q=PASSAGES[G].questions.length-1;inspect()}],
+  ['Station stamp — Frustration',()=>arrival({level:G,title:PASSAGES[G].title,score:3,total:10,pct:30,band:'Frustration',secs:180,wpm:95})],['Station stamp — Independent',()=>arrival({level:G,title:PASSAGES[G].title,score:9,total:10,pct:90,band:'Independent',secs:150,wpm:120})],
+  ['Journey certificate',()=>{sample();ST.cur=null;results()}],['Settings',()=>settingsSheet()],['Help',()=>helpSheet()]]};/* ---------- open where the learner left off ---------- */
+(()=>{if(ST.cur){if(ST.cur.stage==='q')return inspect();return carriage()}if(ST.done)return results();welcome()})();
+</script>
+</body></html>

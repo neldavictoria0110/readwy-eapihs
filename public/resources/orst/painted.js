@@ -9,7 +9,7 @@ function orstArt(stage){
 function orstRegion(label,coords,action){const outline=typeof orstButtonShape==='function'?orstButtonShape(orstPaint.stage,action,coords):null;const polygon=outline?orstButtonPolygon(outline):null;if(outline)coords=outline.box;return `<area role="button" shape="${polygon?'poly':'rect'}" data-art-polygon="${polygon?polygon.join(','):''}" data-action="${action}" data-art-coords="${coords.join(',')}" coords="${coords.join(',')}" href="#" alt="${h(label)}" aria-label="${h(label)}" onpointerenter="orstHoverControl(this)" onpointerleave="orstUnhoverControl(this)" onfocus="orstFocusControl()" onblur="orstFocusControl()" onkeydown="if(event.key===' '){event.preventDefault();this.click()}" onclick="event.preventDefault();orstActivateControl('${action}',event)">`}
 function orstStageRegions(){
  const s=orstPaint.stage,r=(label,coords,action)=>orstRegion(label,coords,action),regions=[];
- if(s===1)regions.push(r('Start ORST',[1110,705,1595,840],'stage:2'));
+ if(s===1)regions.push(r('Start Voice Station',[1110,705,1595,840],'stage:2'));
  if(s===2){regions.push(r('Back to Home',[1340,35,1630,125],'home'));[[465,310,925,550],[955,310,1420,550],[465,575,925,815],[955,575,1420,815]].forEach((box,i)=>regions.push(r('Grade '+(7+i),box,'grade:'+(7+i))))}
  if(s===3)regions.push(r("I'm ready",[790,745,1290,865],'stage:4'));
  if(s===4){[[460,255,915,505],[940,255,1395,505],[460,525,915,775],[940,525,1395,775]].forEach((box,i)=>regions.push(r('Passage '+(i+1),box,'passage:'+i)));regions.push(r('Back',[800,802,1015,885],'stage:3'))}
@@ -83,7 +83,7 @@ async function orstPaintCanvas(){
   if(typeof orstPaintAudioControls==='function')orstPaintAudioControls(c,text);
   if(typeof orstRefreshOwlMotion==='function')orstRefreshOwlMotion(canvas);
   if(typeof orstPaintSelections==='function')orstPaintSelections(c);
-  if(token!==orstPaint.generation)return;const image=document.getElementById('orstLiveArtwork');if(image){image.dataset.ready='true';image.alt=`ORST screen ${stage}. Grade ${selectedGrade}. ${stage>=8?'Saved records: '+orstReadAttempts().filter(a=>a.grade===selectedGrade).length:''}`}
+  if(token!==orstPaint.generation)return;const image=document.getElementById('orstLiveArtwork');if(image){image.dataset.ready='true';image.alt=`Voice Station screen ${stage}. Grade ${selectedGrade}. ${stage>=8?'Saved records: '+orstReadAttempts().filter(a=>a.grade===selectedGrade).length:''}`}
   const status=document.getElementById('orstLiveStatus');if(status)status.textContent=orstPaint.message;
  }catch(error){const image=document.getElementById('orstLiveArtwork');if(image)image.alt=error.message;console.error(error)}
 }

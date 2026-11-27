@@ -3,7 +3,7 @@
       (No goal rings or game balls: the scene must not resemble any book or film's sport.)
    2. Gus's two wands swirl with light that then spreads outward as sparkles.
    Both are added whenever the GST scene is drawn, and both sit still for anyone who prefers reduced motion.
-   ORST shares some GST class names, so everything here is limited to the GST book (.xg without .xc). */
+   Voice Station shares some GST class names, so everything here is limited to the GST book (.xg without .xc). */
 (() => {
   const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches ||
     document.documentElement.classList.contains('reduced-motion');

@@ -1124,17 +1124,102 @@ body:has(.rl-screen) #caption .rl-cap-av{width:52px;height:52px}
  .rl-db-grid{flex:none;overflow:visible;grid-template-rows:auto auto auto}
  .rl-db-map{align-self:start}
 }
-/* Keep quiz answers and actions in normal flow; scroll the scene when they exceed the viewport. */
-.scene.rl-native:has(.rl-quiz){overflow-y:auto;overflow-x:hidden}
-.rl-quiz.rl-screen{height:auto;min-height:100dvh;overflow:visible}
-.rl-quiz .rl-s-main{flex:0 0 auto;min-height:0}
-.rl-quiz .rl-q-opts{flex:0 0 auto;min-height:auto}
-.rl-quiz .rl-q-opt{flex:none}
-.rl-quiz .rl-q-actions{position:static}
+/* Keep placement scrolling separate from the fixed reading-comprehension frames. */
+.scene.rl-native:has(.rl-ptest){overflow-y:auto;overflow-x:hidden}
+.rl-ptest.rl-screen{height:auto;min-height:100dvh;overflow:visible}
+.rl-ptest .rl-s-main{flex:0 0 auto;min-height:0}
+.rl-ptest .rl-q-opts{flex:0 0 auto;min-height:auto}
+.rl-ptest .rl-q-opt{flex:none}
+.rl-ptest .rl-q-actions{position:static}
 @media(min-width:1024px) and (max-height:760px){
- .rl-quiz .rl-q-card{padding:12px 18px;gap:6px}
- .rl-quiz .rl-q-text{margin:0}
- .rl-quiz .rl-q-opts{gap:6px}
+ .rl-ptest .rl-q-card{padding:12px 18px;gap:6px}
+ .rl-ptest .rl-q-text{margin:0}
+ .rl-ptest .rl-q-opts{gap:6px}
+}
+.scene.rl-native:has(.rl-quiz:not(.rl-ptest)){overflow:hidden}
+.rl-quiz:not(.rl-ptest).rl-screen{height:100dvh;min-height:0;overflow:hidden}
+.rl-quiz:not(.rl-ptest) .rl-s-main{flex:1 1 0;min-height:0;align-items:stretch}
+.rl-quiz:not(.rl-ptest) .rl-s-qgrid{grid-template-rows:minmax(0,1fr)}
+.rl-quiz:not(.rl-ptest) .rl-q-pic,
+.rl-quiz:not(.rl-ptest) .rl-q-card:not(.rl-q-result){height:100%;min-height:0}
+.rl-quiz:not(.rl-ptest) .rl-q-pic{overflow:hidden}
+.rl-quiz:not(.rl-ptest) .rl-q-card:not(.rl-q-result){
+ display:grid;
+ grid-template-rows:auto auto minmax(0,1fr) auto;
+ gap:clamp(4px,.6vh,6px);
+ padding:clamp(8px,.65vw,12px);
+ overflow:hidden;
+}
+.rl-quiz:not(.rl-ptest) .rl-q-text{
+ height:clamp(48px,7vh,64px);
+ min-height:0;
+ margin:0;
+ display:flex;
+ align-items:center;
+ overflow:hidden;
+}
+.rl-quiz:not(.rl-ptest) .rl-q-text>span{
+ display:block;
+ width:100%;
+ max-height:100%;
+ overflow:auto;
+ scrollbar-width:thin;
+}
+.rl-quiz:not(.rl-ptest) .rl-q-opts{
+ display:grid;
+ grid-template-rows:repeat(4,minmax(0,1fr));
+ gap:clamp(3px,.5vh,5px);
+ flex:none;
+ min-height:0;
+}
+.rl-quiz:not(.rl-ptest) .rl-q-opt{
+ display:flex!important;
+ align-items:center!important;
+ flex:none!important;
+ width:100%!important;
+ height:100%!important;
+ min-height:0!important;
+ box-sizing:border-box;
+ overflow:hidden;
+ padding:2px 8px!important;
+}
+.rl-quiz:not(.rl-ptest) .rl-q-opt>i{flex:none}
+.rl-quiz:not(.rl-ptest) .rl-q-opt>span{
+ display:block;
+ flex:1 1 auto;
+ min-width:0;
+ height:100%;
+ overflow:auto;
+ overflow-wrap:anywhere;
+ align-content:center;
+ scrollbar-width:thin;
+}
+.rl-quiz:not(.rl-ptest) .rl-q-actions{position:static;min-height:48px}
+.rl-quiz:not(.rl-ptest) .rl-q-actions .rl-pl-btn{
+ flex:0 0 clamp(126px,15vw,220px);
+ width:clamp(126px,15vw,220px);
+ min-width:0;
+ min-height:44px;
+ font-size:clamp(14px,1.1vw,18px);
+}
+.rl-quiz:not(.rl-ptest) .rl-q-prev:disabled{opacity:.55;cursor:not-allowed;filter:grayscale(.3)}
+@media(min-width:1024px) and (max-height:760px){
+ .rl-quiz:not(.rl-ptest) .rl-q-card:not(.rl-q-result){gap:3px;padding:6px 10px}
+ .rl-quiz:not(.rl-ptest) .rl-q-text{height:clamp(40px,6vh,48px)}
+ .rl-quiz:not(.rl-ptest) .rl-q-opts{gap:3px}
+ .rl-quiz:not(.rl-ptest) .rl-q-actions{min-height:44px}
+}
+@media(max-width:1023px){
+ .scene.rl-native:has(.rl-quiz:not(.rl-ptest)){overflow-y:auto;overflow-x:hidden}
+ .rl-quiz:not(.rl-ptest).rl-screen{height:auto;min-height:100dvh;overflow:visible}
+ .rl-quiz:not(.rl-ptest) .rl-s-main{flex:0 0 auto;min-height:0}
+ .rl-quiz:not(.rl-ptest) .rl-q-pic{height:clamp(270px,36vh,380px)}
+ .rl-quiz:not(.rl-ptest) .rl-q-card:not(.rl-q-result){height:clamp(560px,72vh,720px)}
+}
+@media(max-width:599px){
+ .rl-quiz:not(.rl-ptest) .rl-q-pic{height:clamp(230px,30vh,300px)}
+ .rl-quiz:not(.rl-ptest) .rl-q-card:not(.rl-q-result){height:clamp(660px,78vh,760px)}
+ .rl-quiz:not(.rl-ptest) .rl-q-actions .rl-pl-btn{flex-basis:calc(50% - 6px);width:auto;font-size:16px}
 }
 </style></head>
 <body>
@@ -1740,7 +1825,24 @@ function before(){const c=S.c,n=S.n,b=book(c,n),tsk=taskOf(b),mins=Math.max(1,Ma
 });setTimeout(()=>S.scene==='before'&&say(`${b.title}. Read at your own pace!`),250)}
 /* ===== 8 · Reading comprehension (native) ===== */
 let qfs=26;
-function rlChoice(i,txt,sel){return `<button type="button" class="rl-q-opt opt${sel?' sel':''}" data-i="${i}" aria-pressed="${sel?'true':'false'}"><i></i><span><b>${'ABCD'[i]}.</b> ${esc(txt)}</span></button>`}
+function rlChoice(i,txt,sel,swipe=false){return `<button type="button" class="rl-q-opt opt${sel?' sel':''}" data-i="${i}" aria-pressed="${sel?'true':'false'}"><i></i><span${swipe?' class="rl-swipe"':''}><b>${'ABCD'[i]}.</b> ${esc(txt)}</span></button>`}
+function fitQuizTypography(page){
+ const fit=(el,minSize)=>{
+  el.style.removeProperty('font-size');
+  let size=parseFloat(getComputedStyle(el).fontSize);
+  if(!Number.isFinite(size))return;
+  const floor=Math.min(minSize,size);
+  el.style.setProperty('font-size',`${size}px`,'important');
+  while(size>floor&&el.scrollHeight>el.clientHeight+1){size=Math.max(floor,size-1);el.style.setProperty('font-size',`${size}px`,'important')}
+ };
+ const question=page.querySelector('.rl-q-text>span');if(question)fit(question,18);
+ page.querySelectorAll('.rl-q-opt>span').forEach(text=>fit(text,12));
+}
+let rlQuizFitFrame=0;
+window.addEventListener('resize',()=>{
+ cancelAnimationFrame(rlQuizFitFrame);
+ rlQuizFitFrame=requestAnimationFrame(()=>{const page=cur&&cur.querySelector('.rl-quiz:not(.rl-ptest)');if(page)fitQuizTypography(page)});
+},{passive:true});
 function quiz(fresh){const c=S.c,n=S.n,b=book(c,n);if(fresh){S.q=0;S.picked={};S.checked={};S.first={}}S.finished=fresh?false:S.finished;show('quiz','native-station',pl=>{
  const page=document.createElement('div');page.className='rl-page rl-screen rl-quiz';
  let body;
@@ -1749,14 +1851,15 @@ function quiz(fresh){const c=S.c,n=S.n,b=book(c,n);if(fresh){S.q=0;S.picked={};S
    <div class="rl-q-actions">${ok?'<button type="button" class="rl-pl-btn gold pulse rl-q-mission">✏️ Go to writing mission ›</button>':'<button type="button" class="rl-pl-btn ghost rl-q-reread">📖 Read again</button><button type="button" class="rl-pl-btn gold rl-q-retry">🔁 Try the questions again</button>'}</div></section>`}
  else{const q=b.questions[S.q],pk=S.picked[S.q];
   body=`<section class="rl-s-card rl-q-card" aria-label="Question ${S.q+1} of 10"><div class="rl-q-top"><span class="rl-s-chip">Question ${S.q+1} of 10</span><span class="rl-q-dots" aria-hidden="true">${Array.from({length:10},(_,i)=>`<i class="${i===S.q?'now':S.picked[i]!=null?'done':''}"></i>`).join('')}</span></div>
-   <h2 class="rl-q-text rl-swipe">${esc(q.question)}</h2><div class="rl-q-opts rl-swipe">${q.choices.map((ch,i)=>rlChoice(i,ch,pk===i)).join('')}</div>
-   <div class="rl-q-actions">${S.q?'<button type="button" class="rl-pl-btn ghost rl-q-prev">‹ Previous question</button>':'<span></span>'}<button type="button" class="rl-pl-btn gold rl-q-next" aria-label="Next question or submit">${S.q<9?'Next question ›':'Submit answers ›'}</button></div></section>`}
+   <h2 class="rl-q-text"><span class="rl-swipe">${esc(q.question)}</span></h2><div class="rl-q-opts">${q.choices.map((ch,i)=>rlChoice(i,ch,pk===i,true)).join('')}</div>
+   <div class="rl-q-actions"><button type="button" class="rl-pl-btn ghost rl-q-prev"${S.q?'':' disabled'} aria-label="Previous question">‹ Previous question</button><button type="button" class="rl-pl-btn gold rl-q-next" aria-label="Next question or submit">${S.q<9?'Next question ›':'Submit answers ›'}</button></div></section>`}
  page.innerHTML=`${rlToolbar('main')}${rlHeader('Reading comprehension',`${LV[c].name} • Text ${n} of 10 • ${b.title}`,c,2)}
  <div class="rl-s-main rl-s-qgrid"><div class="rl-s-owlcol">${rlOllie(S.finished?'Every try helps you learn.':'Answer from memory. Think back to what you read.')}</div>
   <aside class="rl-s-card rl-q-pic"><div class="rl-q-img" style="background:linear-gradient(135deg,${gBg(b)},#fff)">${gPic(b)}</div><h3>${esc(b.title)}</h3><span class="rl-s-chip">${esc(b.genre)} • ${LV[c].name} ${n}</span><p class="rl-s-small">🧠 Answer from memory. The passage is closed.</p></aside>
   ${body}</div>`;
  rlTheme(page,c);pl.replaceChildren(page);rlScreenNav(page);
  if(SWIPE)page.querySelectorAll('.rl-swipe').forEach(e=>e.classList.add(SWIPE>0?'swR':'swL'));
+ if(!S.finished)requestAnimationFrame(()=>fitQuizTypography(page));
  rlOn(page,'.rl-q-opt',o=>{S.picked[S.q]=+o.dataset.i;quiz()});
  rlOn(page,'.rl-q-prev',()=>{S.q--;SFX.page();SWIPE=-1;quiz()});
  page.querySelector('.rl-q-next')?.addEventListener('click',e=>{e.stopPropagation();ac();if(!DEV&&S.picked[S.q]==null){SFX.buzz();return notice('Choose an answer first.')}SFX.pop();if(S.q<9){S.q++;SFX.page();SWIPE=1;return quiz()}finishQuiz()});

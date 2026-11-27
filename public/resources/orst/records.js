@@ -1,4 +1,4 @@
-/* Real ORST attempts only. Opening an interface never creates a score or record. */
+/* Real Voice Station attempts only. Opening an interface never creates a score or record. */
 function orstRecordKey(){
  const learner=typeof user!=='undefined'&&user?(user.id||user.lrn||user.email||user.name||'local'):'local';
  return 'orst_attempts_v1_'+encodeURIComponent(String(learner));

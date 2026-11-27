@@ -128,7 +128,7 @@ function recordsFromLocalKey(key, value) {
     if (comprehension !== null) parts.push(`Comprehension: ${comprehension.toFixed(1)}%`);
     if (value.readingLevel || value.level) parts.push(`Reading profile: ${value.readingLevel || value.level}`);
     rows.push(reportEvent(
-      'ORST', 'oral-reading-summary', `ORST · Grade ${grade}`, 'completed',
+      'ORST', 'oral-reading-summary', `Voice Station · Grade ${grade}`, 'completed',
       parts.join('. ') || 'Oral reading record saved; no score is available.',
       { words: finite(words) ? words : null, miscues: finite(miscues) ? miscues : null, accuracy, comprehension, readingLevel: value.readingLevel || value.level || null, passage: value.title || null, teacherObserved: !!value.teacherValidated },
       value.completedAt || value.date, accuracy === null ? undefined : accuracy, accuracy === null ? undefined : 100, accuracy
@@ -148,7 +148,7 @@ function recordsFromLocalKey(key, value) {
       if (attempt.level) measures.push(`Reading profile: ${attempt.level}`);
       rows.push(reportEvent(
         'ORST', `passage-${passage}-${attempt.completedAt || index}`,
-        `ORST · Passage ${passage} · ${attempt.title || 'Reading passage'}`, 'completed',
+        `Voice Station · Passage ${passage} · ${attempt.title || 'Reading passage'}`, 'completed',
         `${measures.join('. ')}. Review automatic counts and answer scoring with the teacher.`,
         { passage, words: attempt.words, miscues: attempt.miscues, accuracy, correct: attempt.correct, questions: attempt.total, comprehension, profile: attempt.level || null, teacherObserved: !!attempt.teacherValidated },
         attempt.completedAt, attempt.correct, attempt.total, comprehension
@@ -160,7 +160,7 @@ function recordsFromLocalKey(key, value) {
     const reviewed = value.reviewed === true && finite(value.score) && finite(value.total);
     const percent = reviewed ? 100 * value.score / value.total : null;
     rows.push(reportEvent(
-      'WST', 'writing-submission', `WST writing · Grade ${grade}`, reviewed ? 'completed' : 'awaiting-review',
+      'WST', 'writing-submission', `Story Depot writing · Grade ${grade}`, reviewed ? 'completed' : 'awaiting-review',
       reviewed
         ? `Writing score: ${value.score}/${value.total} (${percent.toFixed(1)}%).`
         : `Writing submitted (${Number(value.words) || value.text.trim().split(/\s+/).length} words); waiting for teacher scoring. No score was generated.`,
@@ -172,7 +172,7 @@ function recordsFromLocalKey(key, value) {
   if (/^wst_score_(7|8|9|10)$/.test(key) && finite(value.score) && finite(value.total) && Number(value.total) > 0) {
     const percent = 100 * Number(value.score) / Number(value.total);
     rows.push(reportEvent(
-      'WST', 'writing-score', `WST score · Grade ${grade}`, 'completed',
+      'WST', 'writing-score', `Story Depot score · Grade ${grade}`, 'completed',
       `Teacher-recorded writing score: ${value.score}/${value.total} (${percent.toFixed(1)}%).`,
       { score: value.score, total: value.total, percent, components: value.components || null },
       value.date || value.completedAt, value.score, value.total, percent
@@ -273,6 +273,37 @@ async function syncIntervention(store) {
     details, new Date().toISOString(), undefined, undefined, undefined
   );
   await writeStudentRecord(record);
+}
+
+// Mathematics and Filipino journeys (resources/subject-labs.js): the check-in score and one record per station
+// the learner has worked on. Written responses are sent for teacher review; they are never auto-scored.
+async function syncSubjectJourney(area, summary) {
+  if (currentProfile?.role !== 'student' || !currentProfile.teacherUid) return;
+  if (!['Mathematics', 'Filipino'].includes(area) || !summary || typeof summary !== 'object') return;
+  const grade = Number(summary.grade) || Number(currentProfile.grade);
+  const rows = [];
+  const placement = summary.placement;
+  if (placement && finite(placement.score) && finite(placement.total) && Number(placement.total) > 0) {
+    rows.push(reportEvent(
+      area, `g${grade}-check-in`, `${area} check-in · Grade ${grade}`, 'submitted',
+      `Check-in: ${placement.score}/${placement.total} correct. A starting point only, not a grade.`,
+      { grade, part: 'check-in' }, placement.completedAt, placement.score, placement.total, undefined
+    ));
+  }
+  for (const station of Array.isArray(summary.stations) ? summary.stations : []) {
+    if (!station || !Number(station.done)) continue;
+    const responses = Array.isArray(station.responses) ? station.responses.slice(0, 10) : [];
+    const choiceItems = Number(station.choiceItems) || 0;
+    const note = responses.length ? ` ${responses.length} written response${responses.length === 1 ? '' : 's'} saved for teacher review.` : '';
+    rows.push(reportEvent(
+      area, `g${grade}-station-${normalize(station.id).slice(0, 40)}`, `${area} · ${normalize(station.name).slice(0, 60)} · Grade ${grade}`,
+      responses.length ? 'awaiting-review' : 'submitted',
+      `${Number(station.done)}/10 activities done; ${Number(station.correct) || 0}/${choiceItems} multiple-choice items correct${station.complete ? '; station mastered' : ''}.${note}`,
+      { grade, station: station.id, activitiesDone: Number(station.done), complete: !!station.complete, responses },
+      summary.updatedAt, choiceItems ? Number(station.correct) || 0 : undefined, choiceItems || undefined, undefined
+    ));
+  }
+  for (const row of rows) await writeStudentRecord(row);
 }
 
 function randomClassCode() {
@@ -512,6 +543,7 @@ const api = {
   saveInterventionReport,
   syncLegacyRecord,
   syncIntervention,
+  syncSubjectJourney,
   sendPasswordResetEmail: email => sendPasswordResetEmail(auth, normalize(email).toLowerCase())
 };
 window.readwyFirebase = api;
