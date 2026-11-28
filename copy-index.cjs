@@ -283,6 +283,7 @@ let application = pages.application
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/orst-mic-help\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/summary-(?:back|hd)\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/aral-train\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
+  .replace(/<script\b(?=[^>]*\bsrc=["']resources\/welcome-voice\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/firebase-client\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '');
 const storyStyleTag = /<style\b(?=[^>]*\bdata-source=["']resources\/new-story\.css["'])[^>]*>[\s\S]*?<\/style>/i;
 if (!storyStyleTag.test(application)) throw new Error('The new-story stylesheet source tag is missing.');

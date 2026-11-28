@@ -4,6 +4,7 @@
    Catch-Up Express (Tala), Spellscript and the Post-Test already greet by themselves; the Reading Lab greets
    from its own page. Nothing speaks when the learner has turned sound off. */
 (() => {
+  if (window.__rwWelcomeVoice) return; window.__rwWelcomeVoice = true;
   const seen = new WeakSet();
   const soundOn = () => typeof readwyCanPlaySound !== 'function' || readwyCanPlaySound();
   const say = text => window.readwySpeakOrWait && window.readwySpeakOrWait(() => { const u = new SpeechSynthesisUtterance(text); u.rate = .95; u.lang = 'en-US'; return u });
