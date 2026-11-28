@@ -149,65 +149,88 @@
 @keyframes rwShine{0%,40%{background-position-x:-150%}100%{background-position-x:250%}}
 @keyframes rwSparkle{from{opacity:.55}to{opacity:1}}
 .pf-stub.rw-glow{box-shadow:0 0 0 3px #b59cff,0 0 26px 6px rgba(181,156,255,.6)!important}
-.rw-shop{position:fixed;inset:0;z-index:100000;display:flex;flex-direction:column;gap:clamp(6px,1.6vh,16px);padding:clamp(8px,2.2vh,22px) clamp(10px,2vw,28px) max(clamp(8px,2vh,20px),env(safe-area-inset-bottom));
- background:radial-gradient(ellipse at 50% 30%,rgba(20,14,6,.25),rgba(8,6,2,.72));backdrop-filter:blur(7px) saturate(1.15) brightness(.75);-webkit-backdrop-filter:blur(7px) saturate(1.15) brightness(.75);
- font-family:system-ui,"Segoe UI",sans-serif;color:#2b1d07;animation:rwShopIn .45s cubic-bezier(.22,.9,.28,1);overflow:hidden}
+/* ---------- the game-style shop screen ---------- */
+.rw-shop{position:fixed;inset:0;z-index:100000;display:flex;flex-direction:column;gap:clamp(6px,1.4vh,12px);box-sizing:border-box;overflow:hidden;color:#fff;font-family:"Nunito","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+ padding:max(clamp(6px,1.6vh,16px),env(safe-area-inset-top)) max(clamp(8px,1.6vw,22px),env(safe-area-inset-right)) max(clamp(6px,1.6vh,16px),env(safe-area-inset-bottom)) max(clamp(8px,1.6vw,22px),env(safe-area-inset-left));
+ background:radial-gradient(90% 70% at 0% 0%,rgba(255,95,162,.75),transparent 60%),radial-gradient(90% 80% at 100% 0%,rgba(62,198,255,.7),transparent 60%),radial-gradient(100% 80% at 50% 120%,rgba(124,77,255,.9),transparent 60%),linear-gradient(160deg,#1b1450,#2a0f4f 50%,#0d1b4a);
+ animation:rwShopIn .4s cubic-bezier(.22,.9,.28,1)}
+.rwg-stars{position:absolute;inset:0;pointer-events:none;opacity:.7;background-image:radial-gradient(2px 2px at 12% 22%,#fff,transparent),radial-gradient(1.5px 1.5px at 38% 70%,#fff,transparent),radial-gradient(2px 2px at 66% 18%,#fff,transparent),radial-gradient(1.5px 1.5px at 82% 62%,#fff,transparent),radial-gradient(2.5px 2.5px at 52% 42%,#ffe36e,transparent),radial-gradient(1.5px 1.5px at 92% 88%,#fff,transparent);background-size:340px 340px;animation:rwgTwinkle 3.5s ease-in-out infinite alternate}
+@keyframes rwgTwinkle{to{opacity:.3;background-position:12px -8px}}
 body:has(.rw-shop) #rwBadge{display:none!important}
 .rw-shop.closing{animation:rwShopOut .3s ease-in forwards}
-@keyframes rwShopIn{from{opacity:0;transform:scale(1.03)}}
-@keyframes rwShopOut{to{opacity:0;transform:scale(1.02)}}
-.rw-shop-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.rw-shop-plaque{position:relative;padding:clamp(6px,1.2vh,12px) clamp(18px,3vw,40px);border-radius:14px;text-align:center;color:#ffe9a8;
- background:radial-gradient(ellipse at 50% 0%,rgba(255,230,150,.28),transparent 60%),linear-gradient(180deg,#1f5c40,#0b2f1f);
- box-shadow:inset 0 0 0 2px #c9a14a,inset 0 0 0 5px #0b2f1f,inset 0 0 0 6px rgba(233,196,106,.6),0 10px 22px rgba(0,0,0,.55)}
-.rw-shop-plaque small{display:block;font:700 clamp(9px,1.5vh,12px)/1.2 system-ui,sans-serif;letter-spacing:.22em;color:#e9c46a}
-.rw-shop-plaque b{display:block;font:700 clamp(20px,4.6vh,40px)/1.1 Georgia,"Times New Roman",serif;letter-spacing:.04em;text-shadow:0 2px 0 #072014}
-.rw-purse{display:flex;align-items:center;gap:10px;padding:clamp(5px,1vh,10px) clamp(12px,1.6vw,22px);border-radius:999px;color:#fff3c8;
- background:linear-gradient(180deg,#5a3a16,#2e1c08);box-shadow:inset 0 0 0 2px #c9a14a,inset 0 2px 0 rgba(255,255,255,.18),0 8px 18px rgba(0,0,0,.5)}
-.rw-purse .rw-coin{width:clamp(26px,5vh,42px);height:clamp(26px,5vh,42px)}
-.rw-purse b{font:800 clamp(20px,4.4vh,36px)/1 Georgia,serif}.rw-purse small{font:700 clamp(10px,1.7vh,14px) system-ui;letter-spacing:.12em;text-transform:uppercase;color:#e9c46a}
-.rw-shop-close{padding:clamp(7px,1.3vh,12px) clamp(14px,1.6vw,22px);border:0;border-radius:999px;cursor:pointer;background:linear-gradient(180deg,#fff3c8,#e9c46a);color:#3b2604;font:800 clamp(12px,2vh,16px)/1 system-ui;box-shadow:inset 0 0 0 2px #a8761e,0 6px 14px rgba(0,0,0,.45)}
-.rw-shop-how{flex:none;margin:0 auto;max-width:min(1100px,96%);padding:clamp(4px,.8vh,8px) 16px;border-radius:12px;background:rgba(255,246,222,.92);color:#3b2604;text-align:center;font:600 clamp(11px,2vh,15px)/1.35 system-ui;box-shadow:0 4px 12px rgba(0,0,0,.35)}
-.rw-cases{flex:1 1 0;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(8px,1.4vw,22px)}
-.rw-case{position:relative;min-height:0;display:flex;flex-direction:column;align-items:center;gap:clamp(3px,.8vh,8px);padding:clamp(8px,1.6vh,16px) clamp(8px,1vw,14px);border-radius:16px;text-align:center;
- background:repeating-linear-gradient(92deg,rgba(255,255,255,.04) 0 3px,rgba(0,0,0,.05) 3px 7px),linear-gradient(180deg,#7a4a22,#4a2a10 60%,#341c08);
- box-shadow:inset 0 0 0 2px #c9a14a,inset 0 0 0 6px #3a2008,inset 0 0 0 7px rgba(233,196,106,.45),0 14px 26px rgba(0,0,0,.55);color:#fff3c8;animation:rwCaseIn .5s cubic-bezier(.22,.9,.28,1) backwards}
+@keyframes rwShopIn{from{opacity:0;transform:scale(1.04)}}
+@keyframes rwShopOut{to{opacity:0;transform:scale(1.03)}}
+.rwg-top,.rw-tabs,.rwg-stage{position:relative}
+.rwg-top{flex:none;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
+.rwg-x{display:grid;place-items:center;width:clamp(38px,6.4vh,50px);aspect-ratio:1;border:0;border-radius:14px;cursor:pointer;color:#fff;font:900 clamp(18px,3vh,24px)/1 system-ui;background:linear-gradient(180deg,#ff7a8a,#e0335a);box-shadow:inset 0 2px 0 rgba(255,255,255,.4),0 4px 0 #9c1d3c,0 8px 16px rgba(0,0,0,.35);touch-action:manipulation}
+.rwg-x:active{transform:translateY(3px);box-shadow:0 1px 0 #9c1d3c}
+.rwg-title{justify-self:center;display:flex;align-items:center;gap:.35em;min-width:0;font:900 clamp(18px,4.2vh,34px)/1 "Nunito","Trebuchet MS",system-ui,sans-serif;letter-spacing:.01em;text-shadow:0 3px 0 rgba(0,0,0,.3),0 0 18px rgba(255,255,255,.35);white-space:nowrap}
+.rwg-title span{display:inline-block;animation:rwgBob 2.6s ease-in-out infinite}
+@keyframes rwgBob{50%{transform:translateY(-4px) rotate(-6deg)}}
+.rw-purse{display:flex;align-items:center;gap:8px;padding:4px 16px 4px 6px;border-radius:999px;color:#4a2300;background:linear-gradient(180deg,#fff3a6,#ffc21a 55%,#ff9f1c);box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 4px 0 #b86400,0 8px 16px rgba(0,0,0,.35)}
+.rw-purse .rw-coin{width:clamp(24px,4.6vh,36px);height:clamp(24px,4.6vh,36px)}
+.rw-purse b{font:900 clamp(16px,3.6vh,28px)/1 "Nunito","Trebuchet MS",system-ui,sans-serif}
+.rw-purse.bump b{animation:rwgBump .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes rwgBump{40%{transform:scale(1.35)}}
+.rw-tabs{flex:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(4px,1vw,10px);width:min(100%,920px);margin:0 auto}
+.rw-tab{--a:#ffd23f;--b:#ff9f1c;--d:#b86400;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:clamp(44px,8.6vh,68px);padding:4px;border:0;border-radius:18px;cursor:pointer;color:#fff;
+ font:900 clamp(10px,1.8vh,14px)/1.1 "Nunito","Trebuchet MS",system-ui,sans-serif;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 2px rgba(255,255,255,.18),0 4px 0 rgba(0,0,0,.25);transition:transform .15s,background .2s;touch-action:manipulation}
+.rw-tab .i{font-size:clamp(18px,3.8vh,30px);line-height:1}
+.rw-tab .l{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rw-tab:hover{transform:translateY(-2px)}
+.rw-tab[data-tab=badges]{--a:#ff9ad5;--b:#e0458f;--d:#8f1d55}.rw-tab[data-tab=privileges]{--a:#d9a7ff;--b:#7c3aed;--d:#45168f}
+.rw-tab[data-tab=points]{--a:#7cf29c;--b:#13a37f;--d:#0a5e48}.rw-tab[data-tab=vault]{--a:#a7e3ff;--b:#3f7fe0;--d:#1d3f8a}
+.rw-tab[aria-selected=true]{background:linear-gradient(180deg,var(--a),var(--b));box-shadow:inset 0 2px 0 rgba(255,255,255,.45),0 4px 0 var(--d),0 0 20px var(--b);transform:translateY(-2px)}
+.rw-tab[aria-selected=true] .i{animation:rwgBob 2.2s ease-in-out infinite}
+.rwg-stage{flex:1 1 0;min-height:0;min-width:0}
+.rwg-shopview,.rw-panel{position:absolute;inset:0}
+.rwg-shopview{display:flex;flex-direction:column;gap:clamp(6px,1.4vh,12px)}
+.rwg-shopview[hidden],.rw-panel[hidden]{display:none!important}
+.rw-cases{flex:1 1 0;min-height:0;display:grid;justify-content:center;align-content:center;gap:var(--gap,12px)}
+.rw-case{--c1:#ffe36e;--c2:#f5a300;--g:#ffd23f;container-type:size;position:relative;width:var(--w,180px);height:var(--h,260px);box-sizing:border-box;display:grid;grid-template-rows:auto minmax(0,1fr) auto auto auto;justify-items:center;align-items:center;gap:clamp(3px,1.4vh,10px);padding:7% 8% 8%;border-radius:clamp(14px,2.4vh,24px);text-align:center;color:#fff;
+ background:radial-gradient(120% 55% at 50% 0%,rgba(255,255,255,.55),transparent 60%),linear-gradient(170deg,var(--c1),var(--c2));box-shadow:inset 0 0 0 3px rgba(255,255,255,.4),0 6px 0 rgba(0,0,0,.25),0 12px 26px rgba(0,0,0,.35);animation:rwCaseIn .55s cubic-bezier(.2,1.4,.4,1) backwards;transition:transform .2s}
 .rw-case:nth-child(2){animation-delay:.06s}.rw-case:nth-child(3){animation-delay:.12s}.rw-case:nth-child(4){animation-delay:.18s}.rw-case:nth-child(5){animation-delay:.24s}
-@keyframes rwCaseIn{from{opacity:0;transform:translateY(18px)}}
-.rw-case-glass{position:relative;flex:1 1 0;min-height:0;width:100%;display:grid;place-items:center;border-radius:10px;overflow:hidden;
- background:radial-gradient(ellipse at 50% 40%,#1f5c40 0,#0d3322 55%,#061a10 100%);box-shadow:inset 0 0 18px rgba(0,0,0,.75),inset 0 0 0 2px rgba(233,196,106,.5)}
-.rw-case-glass::before{content:'';position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.28) 0,rgba(255,255,255,.06) 30%,transparent 46%,rgba(255,255,255,.08) 70%,transparent 80%);pointer-events:none}
-.rw-case-glass::after{content:'';position:absolute;left:12%;right:12%;bottom:6%;height:10%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%);pointer-events:none}
-.rw-case .rw-medal-svg{height:min(92%,150px);width:auto;position:relative;z-index:1;transition:transform .35s}
-.rw-case:hover .rw-medal-svg{transform:translateY(-4px) rotate(-3deg) scale(1.04)}
-.rw-case.locked .rw-medal-svg{filter:grayscale(.85) brightness(.55)}
-.rw-case h3{margin:0;font:700 clamp(13px,2.5vh,20px)/1.1 Georgia,serif;color:#ffe9a8;text-shadow:0 1px 0 #000}
-.rw-tier{display:inline-block;padding:1px 10px;border-radius:999px;background:rgba(0,0,0,.35);color:#e9c46a;font:800 clamp(9px,1.5vh,11px)/1.5 system-ui;letter-spacing:.14em;text-transform:uppercase}
-.rw-case ul{flex:none;margin:0;padding:0;list-style:none;font:600 clamp(10px,1.75vh,13px)/1.3 system-ui;color:#fbe8c0}
-.rw-case li{margin:1px 0}.rw-case li::before{content:'✦ ';color:#e9c46a}
-.rw-price{display:inline-flex;align-items:center;gap:6px;padding:2px 12px;border-radius:8px;color:#3b2604;font:800 clamp(12px,2.2vh,17px)/1.4 Georgia,serif;
- background:linear-gradient(180deg,#fff6c8,#e9c46a 55%,#b8860b);box-shadow:inset 0 0 0 1px #8a5a0b,0 2px 4px rgba(0,0,0,.4)}
-.rw-buy{width:100%;padding:clamp(6px,1.2vh,10px) 8px;border:0;border-radius:999px;cursor:pointer;font:800 clamp(11px,2vh,15px)/1.1 system-ui;color:#3b2604;
- background:linear-gradient(180deg,#fff3c8,#f2c94c 55%,#c9971d);box-shadow:inset 0 0 0 2px #8a5a0b,0 4px 10px rgba(0,0,0,.45);transition:transform .15s,filter .15s}
-.rw-buy:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.06)}
-.rw-buy:disabled{cursor:default;background:linear-gradient(180deg,#6b6252,#4a4234);color:#e8dcc0;box-shadow:inset 0 0 0 1px #2a2418}
-.rw-buy.equip{background:linear-gradient(180deg,#d9f2df,#5fbf7b 55%,#2f8a4f);color:#052814}
-.rw-buy.on{background:linear-gradient(180deg,#1f5c40,#0f3a27);color:#ffe9a8;box-shadow:inset 0 0 0 2px #c9a14a}
-.rw-case.equipped{box-shadow:inset 0 0 0 2px #fff3c8,inset 0 0 0 6px #3a2008,inset 0 0 0 7px #e9c46a,0 0 0 3px #e9c46a,0 0 28px rgba(233,196,106,.55),0 14px 26px rgba(0,0,0,.55)}
+@keyframes rwCaseIn{from{opacity:0;transform:translateY(24px) scale(.9)}}
+.rw-case:hover{transform:translateY(-5px) rotate(-1deg)}
+.rw-case.t-Bronze{--c1:#ffb070;--c2:#e0612a;--g:#ff8a3d}.rw-case.t-Silver{--c1:#a7e3ff;--c2:#3f7fe0;--g:#6cc4ff}.rw-case.t-Gold{--c1:#ffe36e;--c2:#f5a300;--g:#ffd23f}
+.rw-case.t-Gem{--c1:#d9a7ff;--c2:#7c3aed;--g:#b388ff}.rw-case.t-Crown{--c1:#ff9ad5;--c2:#c2185b;--g:#ff6fd8}
+.rw-case.locked{filter:saturate(.6) brightness(.82)}
+.rw-tier{padding:.35em .9em;border-radius:999px;font:900 min(5.4cqh,8.5cqw)/1 "Nunito",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;background:rgba(0,0,0,.25)}
+.rw-case-glass{position:relative;width:100%;height:100%;min-height:0;display:grid;place-items:center;border-radius:min(8cqw,20px);background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.6),rgba(255,255,255,.1) 55%,transparent 70%)}
+.rw-case .rw-medal-svg{height:100%;max-height:100%;width:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35));transition:transform .35s}
+.rw-case:hover .rw-medal-svg{transform:rotate(-6deg) scale(1.06)}
+.rw-case.locked .rw-medal-svg{filter:grayscale(.75) brightness(.8)}
+.rw-case.locked .rw-case-glass::after{content:'🔒';position:absolute;font-size:min(12cqh,18cqw);opacity:.95;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
+.rw-case h3{margin:0;max-width:100%;font:900 min(8.2cqh,11.5cqw)/1.05 "Nunito","Trebuchet MS",system-ui,sans-serif;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.rw-perks{display:flex;gap:2.5cqw;font-size:min(7.5cqh,11cqw);line-height:1}
+.rw-perks span{display:grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;background:rgba(255,255,255,.32);box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
+.rw-buy{width:100%;min-height:min(14cqh,46px);display:flex;align-items:center;justify-content:center;gap:.35em;border:0;border-radius:999px;cursor:pointer;color:#4a2300;font:900 min(7.6cqh,11cqw)/1 "Nunito","Trebuchet MS",system-ui,sans-serif;
+ background:linear-gradient(180deg,#fff7c2,#ffd23f);box-shadow:inset 0 2px 0 rgba(255,255,255,.7),0 4px 0 #c27c00;transition:transform .1s;touch-action:manipulation}
+.rw-buy .rw-coin{width:1.15em;height:1.15em}
+.rw-buy:not(:disabled):hover{transform:translateY(-1px);filter:brightness(1.05)}
+.rw-buy:not(:disabled):active{transform:translateY(3px);box-shadow:0 1px 0 #c27c00}
+.rw-buy:not(:disabled){animation:rwgGlow 2s ease-in-out infinite}
+@keyframes rwgGlow{50%{box-shadow:inset 0 2px 0 rgba(255,255,255,.7),0 4px 0 #c27c00,0 0 16px #fff6}}
+.rw-buy:disabled{cursor:default;color:rgba(255,255,255,.92);background:rgba(0,0,0,.28);box-shadow:inset 0 0 0 2px rgba(255,255,255,.2);animation:none}
+.rw-buy.equip{color:#053b1c;background:linear-gradient(180deg,#b8ffcf,#2ecc71);box-shadow:inset 0 2px 0 rgba(255,255,255,.6),0 4px 0 #1a8a47}
+.rw-buy.on{color:#2b2b2b;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.45);animation:none}
+.rw-case.equipped{box-shadow:inset 0 0 0 3px #fff,0 0 0 4px var(--g),0 0 34px var(--g),0 12px 26px rgba(0,0,0,.35)}
+.rw-case.equipped::before{content:'✓';position:absolute;top:-10px;right:-10px;z-index:2;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#053b1c;font:900 17px/1 system-ui;background:linear-gradient(180deg,#b8ffcf,#2ecc71);box-shadow:0 3px 0 #1a8a47,0 4px 10px rgba(0,0,0,.35)}
 .rw-case.bought .rw-medal-svg{animation:rwBought .9s cubic-bezier(.2,1.5,.4,1)}
-@keyframes rwBought{0%{transform:scale(.6) rotate(-25deg)}60%{transform:scale(1.12) rotate(6deg)}100%{transform:none}}
-.rw-themes{flex:none;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(6px,.8vw,10px);padding:clamp(5px,1vh,10px) 16px;border-radius:14px;background:rgba(255,246,222,.94);box-shadow:0 6px 16px rgba(0,0,0,.4)}
-.rw-themes>b{font:800 clamp(11px,2vh,15px) system-ui;color:#3b2604;margin-right:4px}
-.rw-chip{display:inline-flex;align-items:center;gap:6px;padding:clamp(4px,.8vh,7px) 12px;border:0;border-radius:999px;cursor:pointer;font:700 clamp(10px,1.8vh,13px) system-ui;color:#2b1d07;background:#efe2c2;box-shadow:inset 0 0 0 1px #c9a14a}
-.rw-chip i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.3)}
-.rw-chip.on{background:#0f3a27;color:#ffe9a8;box-shadow:inset 0 0 0 2px #e9c46a}
-.rw-chip:disabled{cursor:not-allowed;opacity:.5}
-.rw-shop-msg{position:absolute;left:50%;top:clamp(64px,14vh,130px);translate:-50% 0;margin:0;padding:10px 18px;border-radius:14px;background:#1d1408f2;color:#fff4d6;border:2px solid #d9b45a;font:600 14px/1.4 system-ui;text-align:center;max-width:min(92vw,520px);opacity:0;transition:opacity .25s;pointer-events:none;z-index:2}
-.rw-shop-msg.show{opacity:1}
-.rw-cases[hidden],.rw-themes[hidden],.rw-shop-how[hidden],.rw-panel[hidden]{display:none!important}
-@media (max-height:500px){.rw-case ul li:nth-child(n+3){display:none}.rw-shop-how{display:none}.rw-pin{width:40px}.rw-pin b{display:none}.rw-shop-open{width:48px;height:42px}.rw-shop-open svg{width:36px;height:33px}}
-@media (max-width:700px) and (orientation:portrait){.rw-shop{overflow-y:auto}.rw-cases{flex:none;grid-template-columns:repeat(2,minmax(0,1fr))}.rw-case-glass{flex:none;height:150px}.rw-shop-head{flex-wrap:wrap;justify-content:center}}
-@media (prefers-reduced-motion:reduce){.rw-shop,.rw-case,.rw-pin,.rw-ticket-fx,.rw-case.bought .rw-medal-svg{animation:none!important}}`;
+@keyframes rwBought{0%{transform:scale(.4) rotate(-35deg)}60%{transform:scale(1.18) rotate(8deg)}100%{transform:none}}
+.rw-themes{flex:none;align-self:center;display:flex;align-items:center;gap:clamp(6px,1.4vw,12px);max-width:100%;box-sizing:border-box;padding:clamp(4px,1vh,8px) clamp(10px,2vw,18px);border-radius:999px;background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 2px rgba(255,255,255,.22)}
+.rw-tlabel{font-size:clamp(18px,3.6vh,28px);line-height:1}
+.rw-chip{position:relative;flex:none;width:clamp(30px,5.8vh,44px);aspect-ratio:1;padding:0;border:0;border-radius:50%;cursor:pointer;font-size:clamp(11px,2.2vh,16px);background:var(--sw);box-shadow:inset 0 0 0 3px rgba(255,255,255,.6),0 3px 0 rgba(0,0,0,.3);transition:transform .15s;touch-action:manipulation}
+.rw-chip:hover:not(:disabled){transform:scale(1.1)}
+.rw-chip.on{transform:scale(1.14);box-shadow:inset 0 0 0 3px #fff,0 0 0 3px #ffd23f,0 0 16px #ffd23f}
+.rw-chip:disabled{cursor:not-allowed;filter:grayscale(.6) brightness(.6)}
+.rw-shop-msg{position:absolute;left:50%;bottom:max(16px,env(safe-area-inset-bottom));z-index:3;translate:-50% 0;scale:.85;margin:0;padding:10px 20px;border-radius:999px;max-width:min(92vw,520px);text-align:center;pointer-events:none;opacity:0;transition:opacity .25s,scale .3s cubic-bezier(.2,1.4,.4,1);
+ color:#fff;font:900 clamp(13px,2.2vh,16px)/1.3 "Nunito","Trebuchet MS",system-ui,sans-serif;background:linear-gradient(180deg,#36d1dc,#5b86e5);box-shadow:0 4px 0 #2b4f9e,0 10px 22px rgba(0,0,0,.4)}
+.rw-shop-msg.show{opacity:1;scale:1}
+@media (max-height:480px){.rw-tab{flex-direction:row;gap:6px;min-height:36px}.rw-tab .i{font-size:18px}.rwg-x{width:36px}.rwg-title{font-size:20px}.rw-purse{padding:2px 12px 2px 4px}}
+@media (max-width:520px){.rw-tab .l{font-size:10px}.rwg-title b{display:none}.rwg-title span{font-size:1.3em}}
+
+@media (prefers-reduced-motion:reduce){.rw-shop,.rw-case,.rw-pin,.rw-ticket-fx,.rw-case.bought .rw-medal-svg,.rwg-stars,.rwg-title span,.rw-tab .i,.rw-buy{animation:none!important}}`;
   document.head.append(css);
 
   /* ---------- sounds (Web Audio, no files) ---------- */
@@ -245,71 +268,111 @@ body:has(.rw-shop) #rwBadge{display:none!important}
     if (highest(record()) >= RANK.conductor) whistle();
   }, true);
 
-  /* ---------- the shop ---------- */
+  /* ---------- the shop (game-style screen) ---------- */
   let shop = null;
-  function say(text) { const m = shop?.querySelector('.rw-shop-msg'); if (!m) return; m.textContent = text; m.classList.add('show'); clearTimeout(say.t); say.t = setTimeout(() => m.classList.remove('show'), 3200) }
-  function caseHTML(b, r, coins) {
+  function say(text) { const m = shop?.querySelector('.rw-shop-msg'); if (!m) return; m.textContent = text; m.classList.add('show'); clearTimeout(say.t); say.t = setTimeout(() => m.classList.remove('show'), 2600) }
+  // Small icons instead of long privilege lists (the full text is in the tooltip).
+  const PERK_ICONS = {
+    ticket: [['📌', 'Badge pinned on your ticket'], ['🏷️', 'Badge title on your ticket']],
+    conductor: [['🎨', 'Navy and Burgundy ticket colours'], ['🔔', 'Train whistle when you board']],
+    stationmaster: [['✨', 'Gold-foil ticket with a shimmer'], ['🎨', 'All Conductor colours']],
+    captain: [['💎', 'Sparkling gem ticket'], ['🌟', 'Glowing boarding panel']],
+    legend: [['👑', 'Crown badge, earned and never sold'], ['💠', 'Diamond legend ticket']]
+  };
+  function caseHTML(b, r, pts) {
     const own = owns(r, b.id), eq = r.equipped === b.id && own;
     let btn;
-    if (b.price == null) btn = own ? (eq ? '<button class="rw-buy on" disabled>Wearing ✓</button>' : '<button class="rw-buy equip" data-act="equip">Wear badge</button>') : `<button class="rw-buy" disabled>${b.earn}</button>`;
-    else if (eq) btn = '<button class="rw-buy on" disabled>Wearing ✓</button>';
-    else if (own) btn = '<button class="rw-buy equip" data-act="equip">Wear badge</button>';
-    else if (coins >= b.price) btn = `<button class="rw-buy" data-act="buy">Buy for ${b.price} points</button>`;
-    else btn = `<button class="rw-buy" disabled>Need ${b.price - coins} more points</button>`;
-    const locked = !own && (b.price == null || coins < b.price);
-    return `<article class="rw-case${own ? ' owned' : ''}${eq ? ' equipped' : ''}${locked ? ' locked' : ''}" data-id="${b.id}">
-<div class="rw-case-glass">${medal(b.tier, 120)}</div><h3>${b.name}</h3><span class="rw-tier">${b.tier}</span>
-<ul>${b.perks.map(p => `<li>${p}</li>`).join('')}</ul>
-<span class="rw-price">${b.price == null ? 'Earned, not sold' : `<i class="rw-coin"></i>${b.price}`}</span>${btn}</article>`;
+    if (b.price == null) btn = own ? (eq ? '<button class="rw-buy on" disabled>✓ Wearing</button>' : '<button class="rw-buy equip" data-act="equip">Wear</button>') : `<button class="rw-buy" disabled title="${b.earn}" aria-label="${b.earn}">🏆 Earn it</button>`;
+    else if (eq) btn = '<button class="rw-buy on" disabled>✓ Wearing</button>';
+    else if (own) btn = '<button class="rw-buy equip" data-act="equip">Wear</button>';
+    else if (pts >= b.price) btn = `<button class="rw-buy" data-act="buy" aria-label="Buy for ${b.price} points"><i class="rw-coin"></i>${b.price}</button>`;
+    else btn = `<button class="rw-buy" disabled aria-label="Need ${b.price - pts} more points">🔒 ${b.price}</button>`;
+    const locked = !own && (b.price == null || pts < b.price);
+    return `<article class="rw-case t-${b.tier}${own ? ' owned' : ''}${eq ? ' equipped' : ''}${locked ? ' locked' : ''}" data-id="${b.id}" title="${b.perks.join(' · ')}">
+<span class="rw-tier">${b.tier}</span><div class="rw-case-glass">${medal(b.tier, 120)}</div><h3>${b.name}</h3>
+<div class="rw-perks">${(PERK_ICONS[b.id] || []).map(([i, t]) => `<span title="${t}" aria-label="${t}">${i}</span>`).join('')}</div>${btn}</article>`;
   }
   const SWATCH = { forest: '#1d5b3a', navy: '#1b3b6f', burgundy: '#7a1622', gold: 'linear-gradient(135deg,#fff6c8,#d4a017)', gem: 'linear-gradient(135deg,#e6d8ff,#6a3fc0)', legend: 'linear-gradient(135deg,#fff,#a8c8e0)' };
+  /* Size n equal cards (height = aspect × width) so they all fit the grid's box, as large as possible (up to max px). */
+  function fitGrid(grid, n, aspect, gap, max) {
+    const W = grid.clientWidth, H = grid.clientHeight;
+    let best = 0, cols = 1;
+    for (let c = 1; c <= n; c++) {
+      const rows = Math.ceil(n / c), w = Math.min((W - (c - 1) * gap) / c, (H - (rows - 1) * gap) / rows / aspect);
+      if (w > best) { best = w; cols = c }
+    }
+    const w = Math.max(20, Math.floor(Math.min(best, max)));
+    grid.style.setProperty('--gap', gap + 'px');
+    grid.style.gridTemplateColumns = `repeat(${cols},${w}px)`;
+    grid.style.setProperty('--w', w + 'px'); grid.style.setProperty('--h', Math.floor(w * aspect) + 'px');
+    return w;
+  }
+  window.readwyFitGrid = fitGrid;
+  function layout() {
+    if (!shop) return;
+    const tab = shop.dataset.tab || 'shop';
+    if (tab === 'shop') { const g = shop.querySelector('.rw-cases'); if (g.clientHeight) fitGrid(g, BADGES.length, 1.5, innerWidth < 600 ? 10 : 16, 230) }
+    else window.READwyQuestsUI?.layout?.(tab, shop.querySelector('.rw-panel'));
+  }
   function render(bought) {
     if (!shop) return;
-    const r = record(), coins = balance(r);
-    shop.querySelector('.rw-purse b').textContent = coins;
-    shop.querySelector('.rw-cases').innerHTML = BADGES.map(b => caseHTML(b, r, coins)).join('');
+    const r = record(), pts = balance(r), purse = shop.querySelector('.rw-purse b');
+    if (purse.textContent !== String(pts)) { purse.textContent = pts; purse.parentElement.classList.remove('bump'); void purse.offsetWidth; purse.parentElement.classList.add('bump') }
+    shop.querySelector('.rw-cases').innerHTML = BADGES.map(b => caseHTML(b, r, pts)).join('');
     if (bought) shop.querySelector(`.rw-case[data-id="${bought}"]`)?.classList.add('bought');
-    shop.querySelector('.rw-themes').innerHTML = '<b>Ticket colour:</b>' + THEMES.map(t => { const open = themeOpen(r, t); return `<button class="rw-chip${r.theme === t.id && open ? ' on' : ''}" data-theme="${t.id}" ${open ? '' : 'disabled'} title="${open ? t.name : 'Unlock with the ' + BADGES[RANK[t.need]].name + ' badge'}"><i style="background:${SWATCH[t.id]}"></i>${t.name}${open ? '' : ' 🔒'}</button>` }).join('');
+    shop.querySelector('.rw-themes').innerHTML = '<span class="rw-tlabel" title="Ticket colour" aria-hidden="true">🎟️</span>' + THEMES.map(t => {
+      const open = themeOpen(r, t), on = r.theme === t.id && open;
+      return `<button class="rw-chip${on ? ' on' : ''}" data-theme="${t.id}" style="--sw:${SWATCH[t.id]}" ${open ? '' : 'disabled'} title="${open ? t.name : '🔒 ' + BADGES[RANK[t.need]].name + ' badge'}" aria-label="${t.name} ticket${open ? '' : ' (locked)'}" aria-pressed="${on}">${open ? '' : '🔒'}</button>`;
+    }).join('');
+    layout();
   }
+  const TABS = [['shop', '🏪', 'Shop'], ['badges', '🏅', 'Badges'], ['privileges', '✨', 'Perks'], ['points', '⭐', 'Points'], ['vault', '📒', 'Words']];
+  const TITLES = { shop: 'Badge Shop', badges: 'My Badges', privileges: 'Privileges', points: 'Points', vault: 'Word Vault' };
   function open() {
     if (shop) return;
     shop = document.createElement('div');
     shop.className = 'rw-shop'; shop.setAttribute('role', 'dialog'); shop.setAttribute('aria-modal', 'true'); shop.setAttribute('aria-label', 'READwy Badge Shop');
-    shop.innerHTML = `<header class="rw-shop-head"><div class="rw-purse" aria-label="Your points to spend"><i class="rw-coin"></i><b>0</b><small>points</small></div>
-<div class="rw-shop-plaque"><small>READWY · STATION KIOSK</small><b>Badge Shop</b></div>
-<button class="rw-shop-close" type="button">← Back to ticket</button></header>
-<nav class="rw-tabs" role="tablist" aria-label="Badge Shop pages">${TABS.map(([id, label]) => `<button type="button" class="rw-tab" role="tab" data-tab="${id}" aria-selected="${id === 'shop'}">${label}</button>`).join('')}</nav>
-<p class="rw-shop-how">Earn points by finishing tasks, logging in, keeping streaks and finishing your quests. Spending points never lowers your badges or scores.</p>
-<div class="rw-cases"></div><div class="rw-themes"></div><div class="rw-panel" hidden></div><p class="rw-shop-msg" role="status" aria-live="polite"></p>`;
+    shop.innerHTML = `<div class="rwg-stars" aria-hidden="true"></div>
+<header class="rwg-top"><button class="rw-shop-close rwg-x" type="button" aria-label="Back to ticket" title="Back to ticket">✕</button>
+<div class="rwg-title"><span aria-hidden="true">🏪</span><b>Badge Shop</b></div>
+<div class="rw-purse" aria-label="Your points to spend" title="Points to spend"><i class="rw-coin"></i><b>0</b></div></header>
+<nav class="rw-tabs" role="tablist" aria-label="Badge Shop pages">${TABS.map(([id, icon, label]) => `<button type="button" class="rw-tab" role="tab" data-tab="${id}" aria-selected="${id === 'shop'}" aria-label="${TITLES[id]}"><span class="i" aria-hidden="true">${icon}</span><span class="l">${label}</span></button>`).join('')}</nav>
+<main class="rwg-stage"><div class="rwg-shopview"><div class="rw-cases"></div><div class="rw-themes"></div></div><div class="rw-panel" hidden></div></main>
+<p class="rw-shop-msg" role="status" aria-live="polite"></p>`;
     document.body.append(shop);
+    shop.dataset.tab = 'shop';
     render();
+    requestAnimationFrame(layout);
     shop.addEventListener('click', e => {
       if (e.target.closest('.rw-shop-close')) return close();
       const tab = e.target.closest('.rw-tab'); if (tab) return showTab(tab.dataset.tab);
       if (e.target.closest('.rw-panel')) { if (window.READwyQuestsUI?.panelClick(e)) { showTab(shop.dataset.tab); render() } return }
-      const chip = e.target.closest('.rw-chip'); if (chip && !chip.disabled) { const r = record(); r.theme = chip.dataset.theme; saveRecord(r); render(); decorate(); say('Ticket colour changed.'); return }
+      const chip = e.target.closest('.rw-chip'); if (chip && !chip.disabled) { const r = record(); r.theme = chip.dataset.theme; saveRecord(r); render(); decorate(); say('🎟️ New ticket colour!'); return }
       const btn = e.target.closest('.rw-buy[data-act]'); if (!btn) return;
       const id = btn.closest('.rw-case').dataset.id, b = BADGES[RANK[id]], r = record();
       if (btn.dataset.act === 'buy') {
         if (owns(r, id) || b.price == null) return;
-        if (balance(r) < b.price) return say('Not enough points yet. Keep reading to earn more!');
+        if (balance(r) < b.price) return say('Not enough points yet!');
         r.spent += b.price; r.owned.push(id); r.equipped = id; saveRecord(r); coinSound(); render(id); decorate();
-        say(`You bought the ${b.name} badge! It is now pinned on your ticket.`);
-      } else if (btn.dataset.act === 'equip') { r.equipped = id; saveRecord(r); render(); decorate(); say(`You are now wearing the ${b.name} badge.`) }
+        try { window.READwyQuests?.confetti?.(70) } catch {}
+        say(`🎉 ${b.name} unlocked!`);
+      } else if (btn.dataset.act === 'equip') { r.equipped = id; saveRecord(r); render(); decorate(); say(`✨ Wearing ${b.name}`) }
     });
     shop.querySelector('.rw-shop-close').focus({ preventScroll: true });
   }
-  const TABS = [['shop', '🏪 Shop'], ['badges', '🏅 My Badges'], ['privileges', '✨ Privileges'], ['points', '⭐ Points'], ['vault', '📒 Word Vault']];
   function showTab(id) {
     if (!shop) return;
     if (!window.READwyQuestsUI) id = 'shop';
     shop.dataset.tab = id;
     shop.querySelectorAll('.rw-tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === id)));
+    shop.querySelector('.rwg-title').innerHTML = `<span aria-hidden="true">${TABS.find(t => t[0] === id)[1]}</span><b>${TITLES[id]}</b>`;
     const isShop = id === 'shop', p = shop.querySelector('.rw-panel');
-    shop.querySelector('.rw-cases').hidden = !isShop; shop.querySelector('.rw-themes').hidden = !isShop; shop.querySelector('.rw-shop-how').hidden = !isShop;
+    shop.querySelector('.rwg-shopview').hidden = !isShop;
     p.hidden = isShop;
-    if (!isShop) { const top = p.scrollTop; p.innerHTML = window.READwyQuestsUI.panel(id); p.scrollTop = top }
+    if (!isShop) p.innerHTML = window.READwyQuestsUI.panel(id);
+    layout();
   }
+  addEventListener('resize', () => { if (!shop) return; clearTimeout(showTab.r); showTab.r = setTimeout(() => showTab(shop.dataset.tab || 'shop'), 120) });
   function close() { if (!shop) return; const s = shop; shop = null; s.classList.add('closing'); setTimeout(() => s.remove(), 300); document.querySelector('.rw-shop-open')?.focus({ preventScroll: true }) }
   addEventListener('keydown', e => { if (e.key === 'Escape' && shop) close() });
 

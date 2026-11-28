@@ -100,13 +100,15 @@ function readwyTPRunTrain(portal) {
   const workspace = portal.querySelector('.tp-scene-workspace');
   const content = workspace?.querySelector('.tp-scene-content');
   const loco = workspace?.querySelector('.tp-loco');
+  // Every page arrives with a short fade-and-rise; the little train still runs across the top.
+  if (content && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { content.classList.remove('tp-enter'); void content.offsetWidth; content.classList.add('tp-enter') }
   if (!content || !loco || typeof content.animate !== 'function') return;
   if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
   const shift = content.offsetLeft + content.offsetWidth;
   const exit = workspace.clientWidth + loco.offsetWidth + 40;
   const pull = {duration: 1050, easing: 'cubic-bezier(.33,.66,.3,1)'};
   loco.classList.add('is-running');
-  content.animate([{transform: `translateX(${-shift}px)`}, {transform: 'translateX(0)'}], pull);
+  content.classList.add('tp-enter');
   loco.animate([{transform: 'translate(0,-50%)'}, {transform: `translate(${shift}px,-50%)`}], pull).finished
     .then(() => loco.animate([{transform: `translate(${shift}px,-50%)`}, {transform: `translate(${exit}px,-50%)`}], {duration: 380, easing: 'ease-in'}).finished)
     .catch(() => {})
@@ -505,8 +507,7 @@ function readwyTPDashboardView() {
   const stats = classes.map((item, index) => ({item, index, ...readwyTPSectionStats(item)}));
   const ranked = stats.slice().sort((a, b) => (b.average ?? -1) - (a.average ?? -1) || b.records.length - a.records.length);
   const stat = (art, value, label, note) => `<article class="tp-stat"><span class="tp-stat-icon" aria-hidden="true">${art}</span><span><strong>${value}</strong><b>${label}</b><small>${note}</small></span></article>`;
-  return `${readwyTPHead('READwy · Teacher', 'Dashboard', 'Here’s an overview of your handled sections and learner activity.', `${READWY_TP_YEAR}
-      ${readwyTPPostTestControl()}
+  return `${readwyTPHead('READwy · Teacher', 'Dashboard', 'Here’s an overview of your handled sections and learner activity.', `<div class="tp-head-stack">${READWY_TP_YEAR}${readwyTPPostTestControl()}</div>
       <button class="tp-boarding-pass" type="button" data-tp-page="journeys" onclick="readwyTPNavigate(event,'journeys')" aria-label="Open your teacher boarding pass and learner journeys">
         <span class="tp-ticket-copy"><small>READwy RAIL · TEACHER LINE</small><strong>TEACHER BOARDING PASS</strong><span>Route: Reading Journeys</span></span>
         <span class="tp-ticket-status"><b>READY</b> TO BOARD</span>
@@ -654,10 +655,13 @@ function readwyTPMainQuestCell(uid) {
 (() => {
   const style = document.createElement('style');
   style.textContent = `
-.tp-ptd{position:relative;display:inline-grid;gap:4px;justify-items:start;max-width:min(100%,420px);vertical-align:top}
-.tp-ptd-btn{min-height:42px;white-space:nowrap}
-.tp-ptd-status{margin:0;padding:4px 12px;border-radius:12px;background:rgba(255,248,230,.94);box-shadow:inset 0 0 0 1px #c9a14a;font:600 12px/1.35 system-ui,sans-serif;color:#3b2a10;max-width:420px}
-.tp-ptd-pop{position:absolute;top:calc(100% + 6px);left:0;z-index:60;width:min(340px,calc(100vw - 24px));box-sizing:border-box;padding:12px;border-radius:16px;background:#fffdf6;color:#2b1d07;
+/* School Year (white) and Set Post-Test Date (green): one stack in the top-right corner, both the same size. */
+.teacher-portal .tp-head-stack{position:relative;z-index:5;grid-column:1/-1;justify-self:end;display:grid;grid-template-columns:minmax(0,1fr);gap:6px;width:clamp(210px,19vw,250px)}
+.teacher-portal .tp-head-stack .tp-sec-pill.tp-year-top{position:static!important;width:100%;box-sizing:border-box;justify-content:center;height:38px!important;min-height:38px!important}
+.tp-ptd{position:relative;display:grid;gap:4px;width:100%}
+.teacher-portal .tp-ptd-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;box-sizing:border-box;height:38px;min-height:38px!important;margin:0;padding:4px 14px!important;border-radius:999px!important;white-space:nowrap;font-size:13.5px!important;font-weight:800;letter-spacing:.02em;box-shadow:0 4px 12px rgba(6,30,19,.3)!important}
+.tp-ptd-status{margin:0;padding:3px 10px;border-radius:10px;background:rgba(255,248,230,.94);box-shadow:inset 0 0 0 1px #c9a14a;font:600 11px/1.3 system-ui,sans-serif;color:#3b2a10;text-align:center}
+.tp-ptd-pop{position:absolute;top:calc(100% + 6px);right:0;z-index:60;width:min(340px,calc(100vw - 24px));box-sizing:border-box;padding:12px;border-radius:16px;background:#fffdf6;color:#2b1d07;
  box-shadow:0 0 0 2px #c9a14a,0 18px 40px rgba(0,0,0,.35);animation:tpPtdIn .18s ease-out}
 @keyframes tpPtdIn{from{opacity:0;transform:translateY(-6px)}}
 .tp-ptd-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
@@ -677,7 +681,12 @@ function readwyTPMainQuestCell(uid) {
 .tp-ptd-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .tp-ptd-actions .tp-cta{min-height:42px}
 .tp-ptd-clear{margin-left:auto;color:#9a2a1a!important}
+/* Smooth page change: the new page fades and rises in (no loading screen in between). */
+.teacher-portal .tp-scene-content.tp-enter{animation:tpEnter .45s cubic-bezier(.2,.8,.25,1) both}
+@keyframes tpEnter{from{opacity:0;transform:translateY(14px) scale(.992);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+@media (prefers-reduced-motion:reduce){.teacher-portal .tp-scene-content.tp-enter{animation:none}}
 .tp-mq{display:block;margin-top:2px;font:700 11px/1.2 system-ui;color:#2f6b4a;white-space:nowrap}.tp-mq-none{color:#9a8a6a}
+@media (max-width:650px){.teacher-portal .tp-head-stack{width:100%;justify-self:stretch;grid-template-columns:1fr 1fr;align-items:start}.teacher-portal .tp-head-stack .tp-ptd-status{grid-column:1/-1}.teacher-portal .tp-head-stack .tp-sec-pill.tp-year-top,.teacher-portal .tp-head-stack .tp-ptd-btn{font-size:12px!important;padding:4px 8px!important;white-space:nowrap}.tp-ptd{display:contents}}
 @media (max-width:600px){.tp-ptd{max-width:100%}.tp-ptd-pop{position:fixed;left:12px;right:12px;top:auto;bottom:max(12px,env(safe-area-inset-bottom));width:auto;max-height:calc(100dvh - 24px);overflow:auto}}`;
   document.head.append(style);
 })();
@@ -894,7 +903,7 @@ function readwyRenderTeacherPortal(view = 'dashboard') {
     // the account (and create a new DepEd teacher's profile) before deciding.
     if (window.readwyFirebaseReady && !readwyTPWaitedForSession) {
       readwyTPWaitedForSession = true;
-      workLayout('Teacher records & reports', '<div class="teacher-portal"><p class="tp-loading" role="status">Checking your teacher account…</p></div>');
+      // The current screen stays until the account is confirmed (no white "checking" page).
       window.readwyFirebaseReady.then(() => readwyRenderTeacherPortal(view), () => readwyRenderTeacherPortal(view));
       return;
     }
@@ -904,22 +913,67 @@ function readwyRenderTeacherPortal(view = 'dashboard') {
   }
   readwyTeacherView = ['dashboard','sections','assessments','journeys','reports','student'].includes(view) ? view : 'dashboard';
   activeModule = 'dashboard';
-  workLayout('Teacher records & reports', '<div class="teacher-portal"><p class="tp-loading" role="status">Loading assigned student records…</p></div>');
   const requestedUid = user.id;
-  window.readwyFirebaseReady.then(async api => {
+  // Draw the page at once: from the last records (this visit), or an empty portal the first time.
+  const cached = readwyTPCacheGet(requestedUid);
+  readwyTeacherData = cached || readwyTPScopeData({});
+  readwyTPDrawView();
+  // The Firebase client (a module) may still be loading: wait for it instead of failing.
+  const firebaseReady = window.readwyFirebaseReady || new Promise(resolve => { const wait = setInterval(() => { if (window.readwyFirebaseReady) { clearInterval(wait); resolve(window.readwyFirebaseReady) } }, 60) });
+  Promise.resolve(firebaseReady).then(async api => {
     try {
       if (api.profile?.role !== 'teacher' || api.auth.currentUser?.uid !== requestedUid || user?.id !== requestedUid) {
         throw new Error('Sign in with an activated teacher account to view student records.');
       }
-      readwyTeacherData = readwyTPScopeData(await api.loadTeacherData());
-      if (user?.id === requestedUid) readwyTPDrawView();
+      const fresh = readwyTPScopeData(await api.loadTeacherData());
+      const changed = readwyTPCacheKey(fresh) !== readwyTPCacheKey(readwyTeacherData);
+      readwyTPCacheSet(requestedUid, fresh);
+      if (user?.id !== requestedUid) return;
+      readwyTeacherData = fresh;
+      if (changed) readwyTPQuietRedraw();
     } catch (error) {
+      if (cached) return; // keep showing the last records
       if (user?.id === requestedUid) workLayout('Teacher records & reports', `<div class="teacher-portal"><p class="tp-empty" role="alert">${readwyTPEscape(error.message || 'Student records could not be loaded.')}</p><button class="tp-btn" type="button" data-tp-action="refresh">Try again</button></div>`);
     }
   }).catch(error => {
     if (user?.id === requestedUid) workLayout('Teacher records & reports', `<p class="notice" role="alert">${readwyTPEscape(error.message || 'Firebase is unavailable.')}</p>`);
   });
 }
+/* Teacher records kept for this browser tab, so moving between portal pages never shows a loading screen. */
+const READWY_TP_CACHE = {};
+const readwyTPCacheKey = data => { try { return JSON.stringify(data) } catch { return String(Math.random()) } };
+function readwyTPRevive(value) {
+  if (Array.isArray(value)) return value.map(readwyTPRevive);
+  if (value && typeof value === 'object') {
+    if (Number.isFinite(value.seconds) && Number.isFinite(value.nanoseconds) && Object.keys(value).length <= 3) {
+      const ms = value.seconds * 1000 + Math.round(value.nanoseconds / 1e6);
+      return { seconds: value.seconds, nanoseconds: value.nanoseconds, toDate: () => new Date(ms), toMillis: () => ms };
+    }
+    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, readwyTPRevive(v)]));
+  }
+  return value;
+}
+function readwyTPCacheGet(uid) {
+  if (READWY_TP_CACHE[uid]) return READWY_TP_CACHE[uid];
+  try { const raw = sessionStorage.getItem('readwy-tp-cache-' + uid); if (raw) return (READWY_TP_CACHE[uid] = readwyTPRevive(JSON.parse(raw))) } catch {}
+  return null;
+}
+function readwyTPCacheSet(uid, data) {
+  READWY_TP_CACHE[uid] = data;
+  try { sessionStorage.setItem('readwy-tp-cache-' + uid, JSON.stringify(data)) } catch {}
+}
+// New records arrived: redraw in place without the page animation, unless the teacher is typing or picking a date.
+function readwyTPQuietRedraw() {
+  const busy = document.activeElement?.closest?.('.teacher-portal') && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (busy || READWY_TP_PTD.open) { readwyTPRedrawLater = true; return }
+  const pane = document.querySelector('.teacher-portal .tp-scene-content');
+  const top = pane ? pane.scrollTop : 0;
+  readwyTPAnimateNext = false;
+  readwyTPDrawView();
+  const next = document.querySelector('.teacher-portal .tp-scene-content'); if (next) next.scrollTop = top;
+}
+let readwyTPRedrawLater = false;
+document.addEventListener('focusout', () => { if (readwyTPRedrawLater) setTimeout(() => { if (readwyTPRedrawLater && !document.activeElement?.closest?.('.teacher-portal input,.teacher-portal textarea,.teacher-portal select')) { readwyTPRedrawLater = false; readwyTPQuietRedraw() } }, 300) });
 function readwyTeacherSections() {
   return readwyRenderTeacherPortal();
 }
