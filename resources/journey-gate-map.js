@@ -195,3 +195,29 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
   addEventListener('DOMContentLoaded', () => { later(); new MutationObserver(later).observe(document.body, {childList: true, subtree: true}); });
   document.fonts?.ready.then(later);
 })();
+
+
+/* Platform announcement speaks by itself when the journey ticket has opened (and again whenever Listen is
+   pressed). If the browser has not been tapped yet it waits for the first tap, and the Listen button glows. */
+(() => {
+  const style = document.createElement('style');
+  style.textContent = `.pf-listen.rw-listen-wait{animation:rwListenWait 1.2s ease-in-out infinite}
+@keyframes rwListenWait{50%{box-shadow:0 0 0 4px rgba(233,196,106,.55),0 0 18px rgba(233,196,106,.7)}}
+@media (prefers-reduced-motion:reduce){.pf-listen.rw-listen-wait{animation:none;box-shadow:0 0 0 3px rgba(233,196,106,.7)}}`;
+  document.head.append(style);
+  let done = false, last = '';
+  const timer = setInterval(() => {
+    if (done) return;
+    if (document.documentElement.classList.contains('readwy-journey-hold') || document.hidden) return;
+    const line = document.querySelector('.pf-line'), ticket = document.querySelector('.pf-ticket');
+    if (!line || !ticket || !ticket.getBoundingClientRect().width) return;
+    const text = line.textContent.trim();
+    if (text.length < 20 || text !== last) { last = text; return } // wait until the typed line has finished
+    done = true; clearInterval(timer);
+    const listen = document.querySelector('.pf-listen');
+    setTimeout(() => window.readwySpeakOrWait && window.readwySpeakOrWait(() => {
+      const u = new SpeechSynthesisUtterance(text); u.rate = .95; u.lang = 'en-US'; return u;
+    }, on => listen && listen.classList.toggle('rw-listen-wait', on)), 500);
+  }, 350);
+  addEventListener('pagehide', () => { try { speechSynthesis.cancel() } catch (e) {} });
+})();

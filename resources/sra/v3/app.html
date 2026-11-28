@@ -1831,7 +1831,7 @@ function welcome(){show('welcome','native-station',pl=>{
  if(window.ResizeObserver){const ro=new ResizeObserver(()=>{if(!page.isConnected){ro.disconnect();return}layoutWelcome(page)});ro.observe(page)}
 });setTimeout(()=>{if(S.scene==='welcome')autoNarrate()},300)}
 function autoNarrate(){if(narrated||muted)return;const go=()=>{if(narrated)return;narrated=true;document.getElementById('tap')?.remove();ac();startMusic();SFX.chuff(3);narrate()};
- addEventListener('pointerdown',function once(e){if(e.target.closest('.hit[aria-label="Start Journey"],.hit[aria-label^="Sound"],[data-rl="start"],[data-tb="sound"]'))return;removeEventListener('pointerdown',once,true);go()},true)}
+ addEventListener('pointerdown',function once(e){if(e.target.closest('.hit[aria-label="Start Journey"],.hit[aria-label^="Sound"],[data-rl="start"],[data-tb="sound"]'))return;removeEventListener('pointerdown',once,true);go()},true);if(window.readwyCanSpeakNow&&window.readwyCanSpeakNow())setTimeout(go,900)}
 // Start Journey: whistle, the painted train strains and shakes as if about to leave, then it pulls out and carries the learner to the next page.
 function startJourney(){narrated=true;touch();
  // Page 2 opens first (visible and clickable at once); sound and music start right after and never hold the page.

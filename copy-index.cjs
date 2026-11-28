@@ -352,7 +352,8 @@ const teacherTag = `<script data-stylesheet="${assetUrl('resources/teacher-porta
   `<script src="${assetUrl('resources/grade-lock.js')}"></script>` +
   `<script src="${assetUrl('resources/orst-mic-help.js')}"></script>` +
   `<script src="${assetUrl('resources/summary-hd.js')}"></script>` +
-  `<script src="${assetUrl('resources/aral-train.js')}"></script>`;
+  `<script src="${assetUrl('resources/aral-train.js')}"></script>` +
+  `<script src="${assetUrl('resources/welcome-voice.js')}"></script>`;
 if (firebaseScript.test(application)) {
   application = application.replace(firebaseScript, match => `${teacherTag}${match}`);
 } else {
