@@ -153,7 +153,9 @@ function readwyTPScopeData(data) {
     classrooms,
     roster,
     records: (data?.records || []).filter(record => uids.has(record.studentUid)),
-    interventions: (data?.interventions || []).filter(report => uids.has(report.studentUid))
+    interventions: (data?.interventions || []).filter(report => uids.has(report.studentUid)),
+    // Quest progress (Main Quest %, points) of the teacher's own learners only.
+    progress: (data?.progress || []).filter(item => uids.has(item.studentUid || item.id))
   };
 }
 let readwyTeacherData = null;
@@ -504,6 +506,7 @@ function readwyTPDashboardView() {
   const ranked = stats.slice().sort((a, b) => (b.average ?? -1) - (a.average ?? -1) || b.records.length - a.records.length);
   const stat = (art, value, label, note) => `<article class="tp-stat"><span class="tp-stat-icon" aria-hidden="true">${art}</span><span><strong>${value}</strong><b>${label}</b><small>${note}</small></span></article>`;
   return `${readwyTPHead('READwy · Teacher', 'Dashboard', 'Here’s an overview of your handled sections and learner activity.', `${READWY_TP_YEAR}
+      ${readwyTPPostTestControl()}
       <button class="tp-boarding-pass" type="button" data-tp-page="journeys" onclick="readwyTPNavigate(event,'journeys')" aria-label="Open your teacher boarding pass and learner journeys">
         <span class="tp-ticket-copy"><small>READwy RAIL · TEACHER LINE</small><strong>TEACHER BOARDING PASS</strong><span>Route: Reading Journeys</span></span>
         <span class="tp-ticket-status"><b>READY</b> TO BOARD</span>
@@ -539,6 +542,146 @@ function readwyTPDashboardView() {
     </div>`;
 }
 
+/* ---------- Post-test date: one date for all of the teacher's sections ---------- */
+const READWY_TP_PTD = { open: false, month: null, selected: null, busy: false, msg: '' };
+const readwyTPDay = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+function readwyTPFormatDay(day) {
+  if (!day) return '';
+  const [y, m, d] = day.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function readwyTPCurrentPostTestDate() {
+  const dated = readwyTPClasses().filter(item => item.postTestDateUpdatedAt || item.postTestDate !== undefined)
+    .sort((a, b) => readwyTPMillis(b.postTestDateUpdatedAt) - readwyTPMillis(a.postTestDateUpdatedAt));
+  const day = dated[0]?.postTestDate;
+  return typeof day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : null;
+}
+function readwyTPPostTestStatus() {
+  const classes = readwyTPClasses(), day = readwyTPCurrentPostTestDate();
+  if (!day) return 'No post-test date set.';
+  const names = classes.map(item => `${readwyTPEscape(item.grade)}-${readwyTPEscape(item.section)}`).join(', ');
+  return `Post-test opens on <b>${readwyTPFormatDay(day)}</b> for all sections (${names}).`;
+}
+function readwyTPCalendar() {
+  const P = READWY_TP_PTD, today = readwyTPDay();
+  const [y, m] = (P.month || today.slice(0, 7)).split('-').map(Number);
+  const first = new Date(y, m - 1, 1), days = new Date(y, m, 0).getDate(), lead = first.getDay();
+  const minMonth = today.slice(0, 7), thisMonth = `${y}-${String(m).padStart(2, '0')}`;
+  const cells = [];
+  for (let i = 0; i < lead; i++) cells.push('<td></td>');
+  for (let d = 1; d <= days; d++) {
+    const day = `${thisMonth}-${String(d).padStart(2, '0')}`, past = day < today;
+    const cls = [day === today ? 'is-today' : '', day === P.selected ? 'is-picked' : ''].filter(Boolean).join(' ');
+    cells.push(`<td><button type="button" class="${cls}" data-tp-ptd="pick" data-day="${day}" ${past ? 'disabled aria-disabled="true"' : ''} aria-label="${readwyTPFormatDay(day)}${day === today ? ' (today)' : ''}" aria-pressed="${day === P.selected}">${d}</button></td>`);
+  }
+  while (cells.length % 7) cells.push('<td></td>');
+  const rows = []; for (let i = 0; i < cells.length; i += 7) rows.push(`<tr>${cells.slice(i, i + 7).join('')}</tr>`);
+  const label = first.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const current = readwyTPCurrentPostTestDate();
+  return `<div class="tp-ptd-pop" role="dialog" aria-label="Choose the post-test date">
+    <div class="tp-ptd-head"><button type="button" data-tp-ptd="prev" aria-label="Previous month" ${thisMonth <= minMonth ? 'disabled' : ''}>◀</button><strong>${label}</strong><button type="button" data-tp-ptd="next" aria-label="Next month">▶</button></div>
+    <table class="tp-ptd-cal"><thead><tr>${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => `<th scope="col">${d}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table>
+    <p class="tp-ptd-picked">${P.selected ? `Selected: <b>${readwyTPFormatDay(P.selected)}</b>` : 'Tap a date.'}</p>
+    ${P.msg ? `<p class="tp-ptd-msg" role="status">${readwyTPEscape(P.msg)}</p>` : ''}
+    <div class="tp-ptd-actions"><button type="button" class="tp-cta" data-tp-ptd="save" ${P.selected && !P.busy ? '' : 'disabled'}>${P.busy ? 'Saving…' : 'Save'}</button><button type="button" class="tp-cta tp-cta-light" data-tp-ptd="cancel">Cancel</button>${current ? '<button type="button" class="tp-cta tp-cta-light tp-ptd-clear" data-tp-ptd="clear">Clear date</button>' : ''}</div>
+  </div>`;
+}
+function readwyTPPostTestControl() {
+  return `<div class="tp-ptd"><button type="button" class="tp-cta tp-ptd-btn" data-tp-ptd="toggle" aria-expanded="${READWY_TP_PTD.open}">📅 Set Post-Test Date</button>
+    <p class="tp-ptd-status">${readwyTPPostTestStatus()}</p>${READWY_TP_PTD.open ? readwyTPCalendar() : ''}</div>`;
+}
+function readwyTPRedrawPostTest() {
+  const box = document.querySelector('.tp-ptd'); if (!box) return;
+  box.outerHTML = readwyTPPostTestControl();
+  document.querySelector('.tp-ptd-pop [data-tp-ptd="pick"].is-picked, .tp-ptd-pop [data-tp-ptd="pick"].is-today, .tp-ptd-pop [data-tp-ptd="cancel"]')?.focus({ preventScroll: true });
+}
+async function readwyTPSavePostTestDate(day) {
+  const classes = readwyTPClasses();
+  if (readwyTPIsPreview()) {
+    const list = readwyTPPreviewSections().map(item => ({ ...item, postTestDate: day, postTestDateUpdatedAt: Date.now() }));
+    readwyTPSavePreviewSections(list);
+  } else {
+    const api = await window.readwyFirebaseReady;
+    await api.setPostTestDate(day);
+  }
+  classes.forEach(item => { item.postTestDate = day; item.postTestDateUpdatedAt = Date.now(); });
+}
+document.addEventListener('click', async event => {
+  const b = event.target.closest('[data-tp-ptd]');
+  const P = READWY_TP_PTD;
+  if (!b) {
+    if (P.open && !event.target.closest('.tp-ptd')) { P.open = false; P.msg = ''; readwyTPRedrawPostTest(); }
+    return;
+  }
+  if (b.disabled || P.busy) return;
+  const act = b.dataset.tpPtd, classes = readwyTPClasses();
+  if (act === 'toggle') {
+    P.open = !P.open; P.msg = '';
+    P.selected = readwyTPCurrentPostTestDate();
+    P.month = (P.selected && P.selected >= readwyTPDay() ? P.selected : readwyTPDay()).slice(0, 7);
+  } else if (act === 'prev' || act === 'next') {
+    const [y, m] = P.month.split('-').map(Number), d = new Date(y, m - 1 + (act === 'next' ? 1 : -1), 1);
+    P.month = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  } else if (act === 'pick') {
+    P.selected = b.dataset.day; P.msg = '';
+  } else if (act === 'cancel') {
+    P.open = false; P.msg = '';
+  } else if (act === 'save' || act === 'clear') {
+    if (!classes.length) { P.msg = 'Add a section first.'; readwyTPRedrawPostTest(); return; }
+    const n = classes.length, word = n === 1 ? 'section' : 'sections';
+    const ok = act === 'save'
+      ? window.confirm(`This will set the post-test date for all ${n} ${word}. Continue?`)
+      : window.confirm(`This will clear the post-test date for all ${n} ${word}. Learners will then take the Post-Test after finishing their Main Quest. Continue?`);
+    if (!ok) return;
+    P.busy = true; readwyTPRedrawPostTest();
+    try {
+      await readwyTPSavePostTestDate(act === 'save' ? P.selected : null);
+      P.open = false; P.msg = '';
+    } catch (error) {
+      P.msg = error?.message || 'The date could not be saved. Check your connection and try again.';
+    }
+    P.busy = false;
+  }
+  readwyTPRedrawPostTest();
+});
+function readwyTPMainQuestCell(uid) {
+  const item = (readwyTeacherData?.progress || []).find(p => (p.studentUid || p.id) === uid);
+  if (!item || !item.mainQuest) return '<small class="tp-mq tp-mq-none" title="No quest data yet">Main Quest —</small>';
+  const pct = Math.round(Number(item.postTestTaken ? (item.postTestMainQuestPercent ?? item.mainQuestCompletionPercent) : item.mainQuestCompletionPercent) || 0);
+  const early = item.postTestTaken && item.postTestTakenBeforeDate ? ' · taken early' : '';
+  return `<small class="tp-mq" title="Main Quest completion${item.postTestTaken ? ' when the post-test was taken' : ''}">Main Quest ${pct}%${early}</small>`;
+}
+(() => {
+  const style = document.createElement('style');
+  style.textContent = `
+.tp-ptd{position:relative;display:inline-grid;gap:4px;justify-items:start;max-width:min(100%,420px);vertical-align:top}
+.tp-ptd-btn{min-height:42px;white-space:nowrap}
+.tp-ptd-status{margin:0;padding:4px 12px;border-radius:12px;background:rgba(255,248,230,.94);box-shadow:inset 0 0 0 1px #c9a14a;font:600 12px/1.35 system-ui,sans-serif;color:#3b2a10;max-width:420px}
+.tp-ptd-pop{position:absolute;top:calc(100% + 6px);left:0;z-index:60;width:min(340px,calc(100vw - 24px));box-sizing:border-box;padding:12px;border-radius:16px;background:#fffdf6;color:#2b1d07;
+ box-shadow:0 0 0 2px #c9a14a,0 18px 40px rgba(0,0,0,.35);animation:tpPtdIn .18s ease-out}
+@keyframes tpPtdIn{from{opacity:0;transform:translateY(-6px)}}
+.tp-ptd-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.tp-ptd-head strong{font:800 16px/1.2 Georgia,serif}
+.tp-ptd-head button{min-width:44px;min-height:44px;border:0;border-radius:12px;background:#efe2c2;color:#3b2604;font:800 16px/1 system-ui;cursor:pointer;touch-action:manipulation}
+.tp-ptd-head button:disabled{opacity:.4;cursor:not-allowed}
+.tp-ptd-cal{width:100%;border-collapse:collapse;table-layout:fixed}
+.tp-ptd-cal th{padding:4px 0;font:800 11px/1 system-ui;color:#8a5a00;text-transform:uppercase}
+.tp-ptd-cal td{padding:2px;text-align:center}
+.tp-ptd-cal button{width:100%;aspect-ratio:1;min-height:38px;border:0;border-radius:10px;background:#fff;color:#2b1d07;font:700 14px/1 system-ui;cursor:pointer;box-shadow:inset 0 0 0 1px #eadbb4;touch-action:manipulation}
+.tp-ptd-cal button:hover:not(:disabled){background:#f6ead0}
+.tp-ptd-cal button:disabled{background:#f1ede4;color:#b8ad98;box-shadow:none;cursor:not-allowed}
+.tp-ptd-pop .tp-ptd-cal button.is-today{box-shadow:inset 0 0 0 2px #2f8a5a!important;color:#0f3a27!important;font-weight:900}
+.tp-ptd-pop .tp-ptd-cal button.is-picked{background:linear-gradient(180deg,#2f8a5a,#0f3a27)!important;color:#ffe9a8!important;box-shadow:inset 0 0 0 2px #e9c46a!important;opacity:1!important}
+.tp-ptd-picked,.tp-ptd-msg{margin:8px 0 0;font:600 13px/1.35 system-ui}
+.tp-ptd-msg{color:#9a2a1a}
+.tp-ptd-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tp-ptd-actions .tp-cta{min-height:42px}
+.tp-ptd-clear{margin-left:auto;color:#9a2a1a!important}
+.tp-mq{display:block;margin-top:2px;font:700 11px/1.2 system-ui;color:#2f6b4a;white-space:nowrap}.tp-mq-none{color:#9a8a6a}
+@media (max-width:600px){.tp-ptd{max-width:100%}.tp-ptd-pop{position:fixed;left:12px;right:12px;top:auto;bottom:max(12px,env(safe-area-inset-bottom));width:auto;max-height:calc(100dvh - 24px);overflow:auto}}`;
+  document.head.append(style);
+})();
+
 /* ---------- Learning Checks ---------- */
 function readwyTPChecksView() {
   const item = readwyTPSelectedClass();
@@ -548,7 +691,7 @@ function readwyTPChecksView() {
   const tests = READWY_TP_STATIONS.slice(0, 4);
   const matrix = roster.length ? `<div class="tp-table-card tp-fill-card"><div class="tp-table-wrap tp-fill" data-tp-pages="tbody tr"><table class="tp-table tp-matrix"><thead><tr><th>Student</th>${tests.map(([, label]) => `<th>${label}</th>`).join('')}<th>Programs</th></tr></thead><tbody>${roster.map(student => {
       const own = records.filter(record => record.studentUid === student.uid);
-      return `<tr><td><button type="button" class="tp-person" data-tp-action="student" data-uid="${readwyTPEscape(student.uid)}">${readwyTPIcon('person')}<span>${readwyTPEscape(student.name)}${item ? '' : `<small>Grade ${readwyTPEscape(student.grade)} · ${readwyTPEscape(student.section)}</small>`}</span></button></td>${tests.map(([journey]) => `<td class="tp-num">${readwyTPScoreCell(readwyTPLatest(own, journey))}</td>`).join('')}<td>${readwyTPProgramPills(own)}</td></tr>`;
+      return `<tr><td><button type="button" class="tp-person" data-tp-action="student" data-uid="${readwyTPEscape(student.uid)}">${readwyTPIcon('person')}<span>${readwyTPEscape(student.name)}${item ? '' : `<small>Grade ${readwyTPEscape(student.grade)} · ${readwyTPEscape(student.section)}</small>`}</span></button></td>${tests.map(([journey]) => `<td class="tp-num">${readwyTPScoreCell(readwyTPLatest(own, journey))}${journey === 'Post-Test' ? readwyTPMainQuestCell(student.uid) : ''}</td>`).join('')}<td>${readwyTPProgramPills(own)}</td></tr>`;
     }).join('')}</tbody></table></div></div>` : readwyTPEmptyCard('No learners yet', item ? 'Learners appear here after they join this section with its class code.' : 'Learners appear here after they join one of your sections.');
   const summary = roster.length ? `<div class="tp-table-card tp-summary-card"><h3>${readwyTPIcon('bars', 'tp-head-icon tp-blue')}Assessment summary</h3><div class="tp-table-wrap"><table class="tp-table"><thead><tr><th>Assessment</th><th>Completed</th><th>Awaiting review</th></tr></thead><tbody>${tests.map(([journey, label]) => {
       const done = new Set(records.filter(record => record.journey === journey).map(record => record.studentUid)).size;

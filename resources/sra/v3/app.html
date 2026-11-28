@@ -2182,10 +2182,10 @@ function paginate(){const u=S.ui;if(!u||!u.fb.isConnected)return;const f=u.fb.qu
  u.fin.innerHTML=S.page+1<S.pages?'Next page ›':'Finish reading ›';
  if(u.backLbl){const prev=S.page>0;u.backLbl.innerHTML=prev?'‹ Previous page':(u.pm?'‹ Back':'‹ Back to library');u.backHit.setAttribute('aria-label',prev?'Previous page':(u.pm?'Back':'Back to library'))}}
 function pageText(){const f=S.ui?.fb.querySelector('.flow');if(!f)return '';const r=S.ui.fb.getBoundingClientRect();return [...f.querySelectorAll('p')].filter(p=>{const q=p.getBoundingClientRect();return q.right>r.left+5&&q.left<r.right-5}).map(p=>p.textContent).join(' ')}
-function turn(d){setTimeout(remember,0);if(S.ui?.native&&S.ui.fb?.isConnected)paginate();if(S.place&&(d.ask||(d>0&&S.page+1>=S.pages))){return openSheet('🧠 Ready for the comprehension test?',`<p><b>Once you start, the passage closes.</b> You will answer the questions from memory and cannot go back to the passage.</p><p class="muted">Not sure about some details? Keep reading first.</p>`,[['📖 Keep reading',closeSheet,'ghost'],['Start the test ›',()=>{closeSheet();S.place=false;P.bookmarks.place=0;P.placement={...(P.placement||{}),testing:true};save();placeTest()},'gold']],true)}if(d.ask)return;if(d>0&&S.page+1>=S.pages&&!d.go){return openSheet('🧠 Ready for the questions?',`<p><b>Once you start, the passage closes.</b> You will answer 10 questions from memory and cannot go back to the text.</p><p class="muted">Not sure about some details? Keep reading first.</p>`,[['📖 Keep reading',closeSheet,'ghost'],['Start the questions ›',()=>{closeSheet();turn({go:1})},'gold']],true)}const go=!!d.go;if(go)d=1;if(go||(d>0&&S.page+1>=S.pages)){const t=T(S.c,S.n);t.read=true;t.readMs=(t.readMs||0)+performance.now()-S.readStart;P.bookmarks[tid(S.c,S.n)]=0;save();SFX.ding();return quiz(true)}if(d<0&&S.page===0)return;S.page=Math.max(0,S.page+d);P.bookmarks[S.place?'place':tid(S.c,S.n)]=S.page;save();SFX.page();const fb=S.ui.fb;fb.classList.remove('swR','swL');void fb.offsetWidth;fb.classList.add(d>0?'swR':'swL');paginate()}
+function turn(d){setTimeout(remember,0);if(S.ui?.native&&S.ui.fb?.isConnected)paginate();if(S.place&&(d.ask||(d>0&&S.page+1>=S.pages))){return openSheet('🧠 Ready for the comprehension test?',`<p><b>Once you start, the passage closes.</b> You will answer the questions from memory and cannot go back to the passage.</p><p class="muted">Not sure about some details? Keep reading first.</p>`,[['📖 Keep reading',closeSheet,'ghost'],['Start the test ›',()=>{closeSheet();S.place=false;P.bookmarks.place=0;P.placement={...(P.placement||{}),testing:true};save();placeTest()},'gold']],true)}if(d.ask)return;if(d>0&&S.page+1>=S.pages&&!d.go){return openSheet('🧠 Ready for the questions?',`<p><b>Once you start, the passage closes.</b> You will answer 10 questions from memory and cannot go back to the text.</p><p class="muted">Not sure about some details? Keep reading first.</p>`,[['📖 Keep reading',closeSheet,'ghost'],['Start the questions ›',()=>{closeSheet();turn({go:1})},'gold']],true)}const go=!!d.go;if(go)d=1;if(go||(d>0&&S.page+1>=S.pages)){const t=T(S.c,S.n);t.read=true;t.readMs=(t.readMs||0)+performance.now()-S.readStart;try{t.words=(book(S.c,S.n).paragraphs||[]).join(' ').split(/s+/).filter(Boolean).length}catch(e){}P.bookmarks[tid(S.c,S.n)]=0;save();SFX.ding();return quiz(true)}if(d<0&&S.page===0)return;S.page=Math.max(0,S.page+d);P.bookmarks[S.place?'place':tid(S.c,S.n)]=S.page;save();SFX.page();const fb=S.ui.fb;fb.classList.remove('swR','swL');void fb.offsetWidth;fb.classList.add(d>0?'swR':'swL');paginate()}
 
 /* ===== 8 · Reading comprehension ===== */
-function finishQuiz(){const c=S.c,n=S.n,bk=book(c,n),score=bk.answers.reduce((s,a,i)=>s+(S.picked[i]==='ABCD'.indexOf(a)?1:0),0),t=T(c,n);t.read=true;t.quiz={score,at:new Date().toISOString(),tries:(t.quiz?.tries||0)+1};if(score>=8)t.quizPassed=true;save();S.finished=true;S.lastScore=score;quiz();
+function finishQuiz(){const c=S.c,n=S.n,bk=book(c,n),score=bk.answers.reduce((s,a,i)=>s+(S.picked[i]==='ABCD'.indexOf(a)?1:0),0),t=T(c,n);t.read=true;const run=(()=>{let b=0,k=0;bk.answers.forEach((a,i)=>{if(S.picked[i]==='ABCD'.indexOf(a)){k++;b=Math.max(b,k)}else k=0});return b})();t.quiz={score,at:new Date().toISOString(),tries:(t.quiz?.tries||0)+1,run:Math.max(run,t.quiz?.run||0)};if(score>=8)t.quizPassed=true;save();S.finished=true;S.lastScore=score;quiz();
  if(score>=8){SFX.fanfare();confetti(50);setTimeout(()=>say(`${score} out of 10! Excellent! Now, your writing mission.`),400)}else{SFX.buzz();setTimeout(()=>say(`${score} out of 10. Good try! Read the text again, then try the questions once more.`),400)}}
 /* ===== 9 · Writing mission ===== */
 /* ===== 10 · Writing workspace ===== */
@@ -2336,4 +2336,67 @@ function certificate(c,final){const col=LV[c],cc=document.createElement('canvas'
  cc.toBlob(bl=>{const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=(final?'READwy_Reading_Lab_Completion':col.name+'_Level')+'_Certificate.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)},'image/png');notice('Certificate downloaded.')}
 // The READwy page may reload this frame once while it finishes signing in; come back to the same screen.
 (function(){let h=null;try{h=JSON.parse(sessionStorage.getItem('sra-rw-here'))}catch(e){}if(h&&h.scene&&h.scene!=='welcome'&&RESUME[h.scene]&&Date.now()-h.at<36e5&&(P.start!=null||h.place||h.pw||h.scene==='placement'||h.scene==='placetest')){S.c=h.c||0;S.n=h.n||1;S.page=h.page||0;S.place=!!h.place;S.pw=!!h.pw;narrated=true;try{RESUME[h.scene]()}catch(e){welcome()}}else if(rlDemoTrain())journey();else welcome()})();
+</script><script data-rw="word-vault">
+/* Word Vault (READwy Quests): double-tap (or double-click) a word in a passage, then tap "Add to Word Vault".
+   Words are saved for the learner in READwy_new_2026_local_wordvault_<learner>; resources/quests.js gives +2 points
+   for each new word (up to 60). The vault also shows in My Progress and in the Badge Shop's Word Vault tab. */
+(()=>{
+ const rd=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+ const who=()=>{const u=rd('READwy_new_2026_local_user')||{};if(!u||u.role==='teacher')return null;return String(u.id||u.lrn||u.email||'local').trim().toLowerCase()};
+ const key=()=>{const w=who();return w?'READwy_new_2026_local_wordvault_'+w:null};
+ const vault=()=>{const k=key();const v=k&&rd(k);return Array.isArray(v)?v:[]};
+ const clean=t=>String(t||'').trim().replace(/^[^A-Za-z]+|[^A-Za-z]+$/g,'');
+ const st=document.createElement('style');st.textContent='.rw-vault-chip{position:fixed;z-index:9999;padding:8px 14px;border:0;border-radius:999px;background:linear-gradient(180deg,#1f5c40,#0f3a27);color:#ffe9a8;font:800 14px/1.2 Nunito,system-ui,sans-serif;box-shadow:inset 0 0 0 2px #c9a14a,0 6px 16px #0007;cursor:pointer;touch-action:manipulation;min-height:40px}.rw-vault-list{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px}.rw-vault-list span{padding:3px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px #d9a441;font:700 13px/1.4 Georgia,serif}';document.head.append(st);
+ let chip=null,word='';
+ const hide=()=>{chip&&chip.remove();chip=null};
+ // The word under a point (the reading pages do not allow text selection, so it is found from the tap itself).
+ function wordAt(x,y){
+  let node,off;
+  if(document.caretRangeFromPoint){const c=document.caretRangeFromPoint(x,y);if(!c)return null;node=c.startContainer;off=c.startOffset}
+  else if(document.caretPositionFromPoint){const c=document.caretPositionFromPoint(x,y);if(!c)return null;node=c.offsetNode;off=c.offset}
+  if(!node||node.nodeType!==3||!node.parentElement||!node.parentElement.closest('.flow'))return null;
+  const t=node.data,isW=ch=>/[A-Za-z'-]/.test(ch);let a=off,b=off;
+  while(a>0&&isW(t[a-1]))a--;while(b<t.length&&isW(t[b]))b++;
+  if(b<=a)return null;const rg=document.createRange();rg.setStart(node,a);rg.setEnd(node,b);
+  return {w:clean(t.slice(a,b)),r:rg.getBoundingClientRect()};
+ }
+ function offer(x,y){
+  const hit=wordAt(x,y);if(!hit){hide();return}
+  const w=hit.w;if(!/^[A-Za-z][A-Za-z'-]{2,29}$/.test(w)){hide();return}
+  if(!key())return;
+  word=w;const r=hit.r;hide();
+  chip=document.createElement('button');chip.type='button';chip.className='rw-vault-chip';
+  const have=vault().some(v=>String(v.w).toLowerCase()===w.toLowerCase());
+  chip.textContent=have?'📒 “'+w+'” is in your Word Vault':'📒 Add “'+w+'” to Word Vault';chip.disabled=have;
+  document.body.append(chip);
+  const cw=chip.offsetWidth,ch=chip.offsetHeight;
+  chip.style.left=Math.max(8,Math.min(innerWidth-cw-8,r.left+r.width/2-cw/2))+'px';
+  chip.style.top=(r.top>ch+16?r.top-ch-10:r.bottom+10)+'px';
+  chip.addEventListener('pointerdown',e=>e.preventDefault());
+  chip.addEventListener('click',e=>{e.stopPropagation();add(word);hide()});
+ }
+ function add(w){
+  const k=key();if(!k)return;const v=vault();
+  if(v.some(x=>String(x.w).toLowerCase()===w.toLowerCase()))return;
+  let src='';try{const b=book(S.c,S.n);src=b?b.title:''}catch(e){}
+  v.push({w:w.toLowerCase(),src:String(src).slice(0,60),at:new Date().toISOString()});
+  try{localStorage.setItem(k,JSON.stringify(v.slice(-500)))}catch(e){}
+  const msg='📒 “'+w.toLowerCase()+'” added to your Word Vault'+(v.length<=60?' · +2 points':'')+'!';
+  try{typeof notice==='function'?notice(msg):0}catch(e){}
+  try{typeof SFX!=='undefined'&&SFX.ding&&SFX.ding()}catch(e){}
+ }
+ // Double-tap (touch) or double-click (mouse) on a word.
+ let last={t:0,x:0,y:0};
+ document.addEventListener('pointerup',e=>{
+  if(!e.target.closest||!e.target.closest('.flow')){return}
+  const now=Date.now(),near=Math.abs(e.clientX-last.x)<30&&Math.abs(e.clientY-last.y)<30;
+  if(now-last.t<400&&near){last.t=0;offer(e.clientX,e.clientY)}else last={t:now,x:e.clientX,y:e.clientY};
+ },true);
+ document.addEventListener('dblclick',e=>{if(e.target.closest&&e.target.closest('.flow'))offer(e.clientX,e.clientY)});
+ document.addEventListener('pointerdown',e=>{if(chip&&!chip.contains(e.target))hide()},true);
+ addEventListener('scroll',hide,true);
+ // Word Vault in My Progress
+ try{if(typeof progressBodyHTML==='function'){const base=progressBodyHTML;progressBodyHTML=function(){const v=vault();const esc2=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  return base.apply(this,arguments)+'<div class="progress-stat rw-vault-box"><b>📒 Word Vault</b><b>'+v.length+' word'+(v.length===1?'':'s')+'</b><p style="margin:4px 0;font-size:13px">Double-tap a word while you read, then tap “Add to Word Vault” (+2 points each).</p>'+(v.length?'<div class="rw-vault-list">'+v.slice(-40).reverse().map(x=>'<span>'+esc2(x.w)+'</span>').join('')+'</div>':'')+'</div>'}}}catch(e){}
+})();
 </script></body></html>

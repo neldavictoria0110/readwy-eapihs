@@ -12,7 +12,11 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
+  onSnapshot,
+  query,
+  where,
   pipelines,
   runTransaction,
   serverTimestamp,
@@ -405,13 +409,15 @@ async function loadTeacherData() {
     );
     return snapshot.results.map(result => ({ id: result.id, ...result.data() }));
   };
-  const [roster, records, interventions, classrooms] = await Promise.all([
+  const [roster, records, interventions, classrooms, progress] = await Promise.all([
     byTeacher('studentRoster'),
     byTeacher('studentRecords'),
     byTeacher('interventionReports'),
-    byTeacher('classrooms')
+    byTeacher('classrooms'),
+    // Quest progress (Main Quest %, points). Older databases without it simply show no quest data.
+    byTeacher('studentProgress').catch(() => [])
   ]);
-  return { roster, records, interventions, classrooms };
+  return { roster, records, interventions, classrooms, progress };
 }
 
 async function createClassroom(values) {
@@ -425,20 +431,98 @@ async function createClassroom(values) {
     throw new Error('Choose your administrator-assigned learning area.');
   }
   const code = randomClassCode();
-  await setDoc(doc(db, 'classrooms', code), {
+  const classroom = {
     teacherUid: auth.currentUser.uid,
     grade,
     section,
     learningArea,
     active: true,
     createdAt: serverTimestamp()
-  });
+  };
+  // A new section starts with the post-test date the teacher already set for their other sections.
+  const current = await teacherPostTestDate().catch(() => null);
+  if (current) Object.assign(classroom, { postTestDate: current, postTestDateSetBy: auth.currentUser.uid, postTestDateUpdatedAt: serverTimestamp() });
+  await setDoc(doc(db, 'classrooms', code), classroom);
   return code;
 }
 
 async function setClassroomActive(code, active) {
   if (currentProfile?.role !== 'teacher' || !auth.currentUser) throw new Error('Teacher access is required.');
   await updateDoc(doc(db, 'classrooms', code), { active: !!active, updatedAt: serverTimestamp() });
+}
+
+/* ---------- Post-test date (teacher sets one date for all of their sections) ---------- */
+async function teacherClassrooms() {
+  const snapshot = await getDocs(query(collection(db, 'classrooms'), where('teacherUid', '==', auth.currentUser.uid)));
+  return snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+}
+const millisOf = value => (value && typeof value.toMillis === 'function') ? value.toMillis() : 0;
+async function teacherPostTestDate() {
+  if (currentProfile?.role !== 'teacher' || !auth.currentUser) return null;
+  const latest = (await teacherClassrooms()).filter(item => item.postTestDateUpdatedAt)
+    .sort((a, b) => millisOf(b.postTestDateUpdatedAt) - millisOf(a.postTestDateUpdatedAt))[0];
+  return latest?.postTestDate || null;
+}
+// date: "YYYY-MM-DD", or null to clear it. Returns the sections that were updated.
+async function setPostTestDate(date) {
+  if (currentProfile?.role !== 'teacher' || !auth.currentUser) throw new Error('Teacher access is required.');
+  if (date !== null && !/^20\d{2}-[01]\d-[0-3]\d$/.test(String(date))) throw new Error('Choose a valid date.');
+  const classes = await teacherClassrooms();
+  if (!classes.length) throw new Error('Add a section first.');
+  const batch = writeBatch(db);
+  for (const item of classes) {
+    batch.update(doc(db, 'classrooms', item.id), {
+      postTestDate: date, postTestDateSetBy: auth.currentUser.uid,
+      postTestDateUpdatedAt: serverTimestamp(), updatedAt: serverTimestamp()
+    });
+  }
+  await batch.commit();
+  return classes.map(item => ({ id: item.id, grade: item.grade, section: item.section }));
+}
+// Learner: follow their section's post-test date live. cb({postTestDate}) on every change; returns stop().
+function watchSectionPostTestDate(cb) {
+  if (currentProfile?.role !== 'student' || !currentProfile.classCode) return () => {};
+  return onSnapshot(doc(db, 'classrooms', currentProfile.classCode),
+    snapshot => cb({ postTestDate: snapshot.exists() ? (snapshot.data().postTestDate || null) : null }),
+    () => {});
+}
+
+/* ---------- Quests, points and badges (learner) ---------- */
+// summary: totals and status; awards: [{key, amount, reason, localAt}] not yet saved. Returns the keys now saved.
+async function saveQuestProgress(summary, awards = []) {
+  const uid = auth.currentUser?.uid;
+  if (currentProfile?.role !== 'student' || !uid || !currentProfile.teacherUid) return [];
+  const saved = [];
+  for (const award of awards.slice(0, 120)) {
+    const key = String(award.key).replace(/\//g, '|').slice(0, 160);
+    try {
+      await setDoc(doc(db, 'studentProgress', uid, 'points', key), {
+        key, amount: Math.max(0, Math.round(Number(award.amount) || 0)), reason: String(award.reason || 'Points').slice(0, 160),
+        at: serverTimestamp(), localAt: String(award.localAt || '')
+      });
+      saved.push(award.key);
+    } catch (error) {
+      // Already saved from another device (awards can never be changed): count it as saved.
+      if (error?.code === 'permission-denied') {
+        const existing = await getDoc(doc(db, 'studentProgress', uid, 'points', key)).catch(() => null);
+        if (existing?.exists()) saved.push(award.key);
+      }
+    }
+  }
+  await setDoc(doc(db, 'studentProgress', uid), {
+    ...summary,
+    studentUid: uid, teacherUid: currentProfile.teacherUid,
+    grade: Number(currentProfile.grade), section: currentProfile.section,
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+  return saved;
+}
+// Awards saved from any device, so a learner keeps their points on a new phone or computer.
+async function loadQuestAwards() {
+  const uid = auth.currentUser?.uid;
+  if (currentProfile?.role !== 'student' || !uid) return [];
+  const snapshot = await getDocs(collection(db, 'studentProgress', uid, 'points'));
+  return snapshot.docs.map(item => item.data());
 }
 
 async function saveInterventionReport(values, reportId) {
@@ -509,6 +593,11 @@ const api = {
   loadTeacherData,
   createClassroom,
   setClassroomActive,
+  setPostTestDate,
+  teacherPostTestDate,
+  watchSectionPostTestDate,
+  saveQuestProgress,
+  loadQuestAwards,
   saveInterventionReport,
   syncLegacyRecord,
   syncIntervention,

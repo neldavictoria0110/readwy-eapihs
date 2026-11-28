@@ -3,6 +3,9 @@
    After the Keypass is submitted: the Keypass stays open to view results and edit the profile, but its answers
    are final (it cannot be retaken). Voice Station, Spellscript and the one program that matches the Keypass score open together:
      0–16 → Catch-Up Express, 17–27 → Inkventure (Inkventure), 28–40 → SRA Program.
+     (Keypass results from 2026-11-28 use 0–15 / 16–27 / 28–40; see BAND_CHANGE in quests.js.)
+   Quests (resources/quests.js): that program is the learner's Main Quest. Finishing it opens the Post-Test and the
+   other two programs as Side Quests. The Post-Test also opens when the section's post-test date arrives.
    The Post-Test opens only after every task in that program is finished.
    "Finished" uses each program's own completion rule:
      Catch-Up Express   – all 8 weeks done (aralWeekDone)
@@ -70,23 +73,29 @@
     const score = gst ? Number(report.score) : null;
     const orst = withGrade(grade, () => orstSavedPassages().length > 0 && orstSavedPassages().every(p => p.record));
     const wst = !!safe(() => load('wst_submission_' + grade, null), null);
-    const program = programFor(score);
+    // Each destination's own "finished" rule (used for the Main Quest and for Side Quests).
+    const doneBy = !gst ? {aral: false, interv: false, sra: false} : {
+      aral: !!withGrade(grade, () => [1, 2, 3, 4, 5, 6, 7, 8].every(w => aralWeekDone(w))),
+      interv: !!safe(() => intervDashStats().pct >= 100),
+      sra: !!sraFinished()
+    };
+    // Main Quest / Side Quests / post-test date rules (resources/quests.js). Without it: the original rules.
+    const quest = gst && window.READwyQuests ? safe(() => window.READwyQuests.rules({score, report, grade, done: doneBy}), null) : null;
+    const program = quest ? quest.program : programFor(score);
     const screened = gst && orst && wst;
-    const programDone = !program ? false
-      : program === 'aral' ? withGrade(grade, () => [1, 2, 3, 4, 5, 6, 7, 8].every(w => aralWeekDone(w)))
-      : program === 'interv' ? safe(() => intervDashStats().pct >= 100)
-      : sraFinished();
+    const programDone = !!(program && doneBy[program]);
     const open = {
       // The Keypass stays open after submission (results, profile and photo), but it cannot be retaken.
       gst: true,
       orst: gst,
       wst: gst,
-      aral: gst && program === 'aral',
-      interv: gst && program === 'interv',
-      sra: gst && program === 'sra',
-      reports: gst && programDone
+      aral: gst && (quest ? quest.open.aral : program === 'aral'),
+      interv: gst && (quest ? quest.open.interv : program === 'interv'),
+      sra: gst && (quest ? quest.open.sra : program === 'sra'),
+      reports: gst && (quest ? quest.open.reports : programDone)
     };
-    return {grade, gst, orst, wst, score, program, screened, programDone, open};
+    return {grade, gst, orst, wst, score, program, screened, programDone, open, doneBy,
+      kinds: quest?.kinds || null, questMessages: quest?.messages || null, postTestDate: quest?.postTestDate || null};
   }
   function message(mod, s = status()) {
     if (s.exploring) return mod === 'reports'
@@ -95,6 +104,7 @@
     if (s.senior) return `For Grade ${s.grade}, the open journeys are Inkventure and Reading Lab.`;
     if (mod === 'gst') return `You have already taken Keypass (score ${s.score} of 40).`;
     if (!s.gst) return `Complete Keypass first. ${NAMES[mod]} opens after you submit Keypass.`;
+    if (s.questMessages && s.questMessages[mod]) return s.questMessages[mod];
     if (PROGRAMS.includes(mod) || mod === 'reports') {
       if (mod === 'reports') return `The Post-Test opens after you finish every task in the ${NAMES[s.program]}.`;
       return `Your Keypass score is ${s.score} of 40, so your journey is ${NAMES[s.program]}. Only that program is open for you.`;
@@ -167,5 +177,6 @@
     };
   }
   window.addEventListener('pagehide', publish);
+  window.addEventListener('readwy-quests-change', () => { clearTimeout(timer); timer = setTimeout(publish, 400); });
   publish();
 })();

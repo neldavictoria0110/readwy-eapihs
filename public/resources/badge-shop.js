@@ -1,5 +1,8 @@
 /* READwy Badge Shop (journey ticket page).
-   Learners earn coins by finishing PRACTICE work, never tests:
+   Since 2026-11-28 the shop uses READwy POINTS (resources/quests.js) instead of coins, with prices doubled to match.
+   Each learner's old coin balance is kept: on the first visit their coins (×2) become a floor for what they can
+   spend, so nobody loses anything. The shop also shows the My Badges, Privileges, Points and Word Vault tabs
+   (resources/quests-ui.js). Old coin rules, kept for that one-time conversion:
      Reading Lab: 15 coins for each text whose questions are passed, 15 for each passed writing task;
      Inkventure: 10 coins for each station task won, 10 for each writing task saved;
      Catch-Up Express: 10 coins for each submitted activity.
@@ -16,13 +19,13 @@
   const RECORD_KEY = STORE + 'badges_' + learner;
 
   const BADGES = [
-    { id: 'ticket', name: 'Ticket Holder', tier: 'Bronze', price: 50,
+    { id: 'ticket', name: 'Ticket Holder', tier: 'Bronze', price: 100,
       perks: ['Bronze badge pinned on your journey ticket', 'Your badge title shown on the ticket'] },
-    { id: 'conductor', name: 'Conductor', tier: 'Silver', price: 150,
+    { id: 'conductor', name: 'Conductor', tier: 'Silver', price: 300,
       perks: ['Silver badge on your ticket', 'Unlock Navy and Burgundy ticket colours', 'A train whistle when you board'] },
-    { id: 'stationmaster', name: 'Station Master', tier: 'Gold', price: 400,
+    { id: 'stationmaster', name: 'Station Master', tier: 'Gold', price: 800,
       perks: ['Gold badge on your ticket', 'Gold-foil ticket with a shimmer', 'All Conductor privileges'] },
-    { id: 'captain', name: 'Express Captain', tier: 'Gem', price: 900,
+    { id: 'captain', name: 'Express Captain', tier: 'Gem', price: 1800,
       perks: ['Gem badge on your ticket', 'Sparkling gem ticket', 'Glowing boarding panel', 'All earlier privileges'] },
     { id: 'legend', name: 'Grand Central Legend', tier: 'Crown', price: null, earn: 'Finish all six Reading Lab stations',
       perks: ['Crown badge, earned and never sold', 'Diamond legend ticket', 'All privileges'] }
@@ -67,13 +70,21 @@
   }
   function record() {
     const r = read(RECORD_KEY, {}) || {};
-    return { spent: Math.max(0, Number(r.spent) || 0), owned: Array.isArray(r.owned) ? r.owned.filter(id => RANK[id] != null) : [], equipped: r.equipped || '', theme: r.theme || 'forest' };
+    const out = { spent: Math.max(0, Number(r.spent) || 0), owned: Array.isArray(r.owned) ? r.owned.filter(id => RANK[id] != null) : [], equipped: r.equipped || '', theme: r.theme || 'forest',
+      unit: r.unit || 'coins', floor: Math.max(0, Number(r.floor) || 0) };
+    // One-time switch from coins to points: spent coins ×2 (prices doubled) and the old earnings ×2 kept as a floor.
+    if (out.unit !== 'points' && window.READwyQuests) {
+      out.floor = earned() * 2; out.spent = out.spent * 2; out.unit = 'points';
+      saveRecord(out);
+    }
+    return out;
   }
   function saveRecord(r) { try { localStorage.setItem(RECORD_KEY, JSON.stringify(r)) } catch {} }
   function owns(r, id) { return id === 'legend' ? legendEarned() : r.owned.includes(id) }
   function highest(r) { let best = -1; for (const b of BADGES) if (owns(r, b.id)) best = Math.max(best, RANK[b.id]); return best }
   function themeOpen(r, t) { return !t.need || highest(r) >= RANK[t.need] || (t.need === 'legend' && legendEarned()) }
-  const balance = r => Math.max(0, earned() - r.spent);
+  const points = r => window.READwyQuests ? Math.max(window.READwyQuests.total(), r.floor || 0) : earned();
+  const balance = r => Math.max(0, points(r) - r.spent);
 
   /* ---------- medals (metal, ribbon, emblem) ---------- */
   const METAL = {
@@ -193,6 +204,7 @@ body:has(.rw-shop) #rwBadge{display:none!important}
 .rw-chip:disabled{cursor:not-allowed;opacity:.5}
 .rw-shop-msg{position:absolute;left:50%;top:clamp(64px,14vh,130px);translate:-50% 0;margin:0;padding:10px 18px;border-radius:14px;background:#1d1408f2;color:#fff4d6;border:2px solid #d9b45a;font:600 14px/1.4 system-ui;text-align:center;max-width:min(92vw,520px);opacity:0;transition:opacity .25s;pointer-events:none;z-index:2}
 .rw-shop-msg.show{opacity:1}
+.rw-cases[hidden],.rw-themes[hidden],.rw-shop-how[hidden],.rw-panel[hidden]{display:none!important}
 @media (max-height:500px){.rw-case ul li:nth-child(n+3){display:none}.rw-shop-how{display:none}.rw-pin{width:40px}.rw-pin b{display:none}.rw-shop-open{width:48px;height:42px}.rw-shop-open svg{width:36px;height:33px}}
 @media (max-width:700px) and (orientation:portrait){.rw-shop{overflow-y:auto}.rw-cases{flex:none;grid-template-columns:repeat(2,minmax(0,1fr))}.rw-case-glass{flex:none;height:150px}.rw-shop-head{flex-wrap:wrap;justify-content:center}}
 @media (prefers-reduced-motion:reduce){.rw-shop,.rw-case,.rw-pin,.rw-ticket-fx,.rw-case.bought .rw-medal-svg{animation:none!important}}`;
@@ -242,8 +254,8 @@ body:has(.rw-shop) #rwBadge{display:none!important}
     if (b.price == null) btn = own ? (eq ? '<button class="rw-buy on" disabled>Wearing ✓</button>' : '<button class="rw-buy equip" data-act="equip">Wear badge</button>') : `<button class="rw-buy" disabled>${b.earn}</button>`;
     else if (eq) btn = '<button class="rw-buy on" disabled>Wearing ✓</button>';
     else if (own) btn = '<button class="rw-buy equip" data-act="equip">Wear badge</button>';
-    else if (coins >= b.price) btn = `<button class="rw-buy" data-act="buy">Buy for ${b.price} coins</button>`;
-    else btn = `<button class="rw-buy" disabled>Need ${b.price - coins} more coins</button>`;
+    else if (coins >= b.price) btn = `<button class="rw-buy" data-act="buy">Buy for ${b.price} points</button>`;
+    else btn = `<button class="rw-buy" disabled>Need ${b.price - coins} more points</button>`;
     const locked = !own && (b.price == null || coins < b.price);
     return `<article class="rw-case${own ? ' owned' : ''}${eq ? ' equipped' : ''}${locked ? ' locked' : ''}" data-id="${b.id}">
 <div class="rw-case-glass">${medal(b.tier, 120)}</div><h3>${b.name}</h3><span class="rw-tier">${b.tier}</span>
@@ -263,26 +275,40 @@ body:has(.rw-shop) #rwBadge{display:none!important}
     if (shop) return;
     shop = document.createElement('div');
     shop.className = 'rw-shop'; shop.setAttribute('role', 'dialog'); shop.setAttribute('aria-modal', 'true'); shop.setAttribute('aria-label', 'READwy Badge Shop');
-    shop.innerHTML = `<header class="rw-shop-head"><div class="rw-purse" aria-label="Your coins"><i class="rw-coin"></i><b>0</b><small>coins</small></div>
+    shop.innerHTML = `<header class="rw-shop-head"><div class="rw-purse" aria-label="Your points to spend"><i class="rw-coin"></i><b>0</b><small>points</small></div>
 <div class="rw-shop-plaque"><small>READWY · STATION KIOSK</small><b>Badge Shop</b></div>
 <button class="rw-shop-close" type="button">← Back to ticket</button></header>
-<p class="rw-shop-how">Earn coins by finishing Reading Lab texts, Inkventure tasks and Catch-Up Express activities. Check-ins and tests never give coins, and badges never change a score.</p>
-<div class="rw-cases"></div><div class="rw-themes"></div><p class="rw-shop-msg" role="status" aria-live="polite"></p>`;
+<nav class="rw-tabs" role="tablist" aria-label="Badge Shop pages">${TABS.map(([id, label]) => `<button type="button" class="rw-tab" role="tab" data-tab="${id}" aria-selected="${id === 'shop'}">${label}</button>`).join('')}</nav>
+<p class="rw-shop-how">Earn points by finishing tasks, logging in, keeping streaks and finishing your quests. Spending points never lowers your badges or scores.</p>
+<div class="rw-cases"></div><div class="rw-themes"></div><div class="rw-panel" hidden></div><p class="rw-shop-msg" role="status" aria-live="polite"></p>`;
     document.body.append(shop);
     render();
     shop.addEventListener('click', e => {
       if (e.target.closest('.rw-shop-close')) return close();
+      const tab = e.target.closest('.rw-tab'); if (tab) return showTab(tab.dataset.tab);
+      if (e.target.closest('.rw-panel')) { if (window.READwyQuestsUI?.panelClick(e)) { showTab(shop.dataset.tab); render() } return }
       const chip = e.target.closest('.rw-chip'); if (chip && !chip.disabled) { const r = record(); r.theme = chip.dataset.theme; saveRecord(r); render(); decorate(); say('Ticket colour changed.'); return }
       const btn = e.target.closest('.rw-buy[data-act]'); if (!btn) return;
       const id = btn.closest('.rw-case').dataset.id, b = BADGES[RANK[id]], r = record();
       if (btn.dataset.act === 'buy') {
         if (owns(r, id) || b.price == null) return;
-        if (balance(r) < b.price) return say('Not enough coins yet. Keep reading to earn more!');
+        if (balance(r) < b.price) return say('Not enough points yet. Keep reading to earn more!');
         r.spent += b.price; r.owned.push(id); r.equipped = id; saveRecord(r); coinSound(); render(id); decorate();
         say(`You bought the ${b.name} badge! It is now pinned on your ticket.`);
       } else if (btn.dataset.act === 'equip') { r.equipped = id; saveRecord(r); render(); decorate(); say(`You are now wearing the ${b.name} badge.`) }
     });
     shop.querySelector('.rw-shop-close').focus({ preventScroll: true });
+  }
+  const TABS = [['shop', '🏪 Shop'], ['badges', '🏅 My Badges'], ['privileges', '✨ Privileges'], ['points', '⭐ Points'], ['vault', '📒 Word Vault']];
+  function showTab(id) {
+    if (!shop) return;
+    if (!window.READwyQuestsUI) id = 'shop';
+    shop.dataset.tab = id;
+    shop.querySelectorAll('.rw-tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === id)));
+    const isShop = id === 'shop', p = shop.querySelector('.rw-panel');
+    shop.querySelector('.rw-cases').hidden = !isShop; shop.querySelector('.rw-themes').hidden = !isShop; shop.querySelector('.rw-shop-how').hidden = !isShop;
+    p.hidden = isShop;
+    if (!isShop) { const top = p.scrollTop; p.innerHTML = window.READwyQuestsUI.panel(id); p.scrollTop = top }
   }
   function close() { if (!shop) return; const s = shop; shop = null; s.classList.add('closing'); setTimeout(() => s.remove(), 300); document.querySelector('.rw-shop-open')?.focus({ preventScroll: true }) }
   addEventListener('keydown', e => { if (e.key === 'Escape' && shop) close() });
@@ -291,7 +317,7 @@ body:has(.rw-shop) #rwBadge{display:none!important}
     if (!document.querySelector('.pf') || document.querySelector('.rw-shop-open')) return;
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'rw-shop-open'; b.innerHTML = "<svg viewBox=\"0 0 48 44\" aria-hidden=\"true\"><defs><linearGradient id=\"rwShopGold\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#fff3c8\"/><stop offset=\".55\" stop-color=\"#e9c46a\"/><stop offset=\"1\" stop-color=\"#a8761e\"/></linearGradient></defs><rect x=\"7\" y=\"17\" width=\"34\" height=\"23\" rx=\"1.5\" fill=\"#fff4dc\" stroke=\"#7a5214\" stroke-width=\"1.4\"/><rect x=\"10\" y=\"22\" width=\"12\" height=\"9\" rx=\"1\" fill=\"#9fd3e8\" stroke=\"#7a5214\" stroke-width=\"1\"/><path d=\"M11 24.5l4-2M11 28l7-4\" stroke=\"#fff\" stroke-width=\".9\" opacity=\".8\"/><rect x=\"27\" y=\"22\" width=\"10\" height=\"18\" rx=\"1\" fill=\"#1f5c40\" stroke=\"#7a5214\" stroke-width=\"1\"/><circle cx=\"34.5\" cy=\"31.5\" r=\".9\" fill=\"#e9c46a\"/><g class=\"rw-awning\"><path d=\"M5 9h38l3 8H2z\" fill=\"url(#rwShopGold)\" stroke=\"#7a5214\" stroke-width=\"1.2\"/><path d=\"M8.4 9 6.5 17M15.3 9 14 17M22.1 9 21.5 17M28.9 9 29 17M35.7 9 36.5 17M41.6 9 44 17\" stroke=\"#b8303f\" stroke-width=\"3.4\"/><path d=\"M2 17q2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0 2.4 3.4 4.8 0\" fill=\"#e9c46a\" stroke=\"#7a5214\" stroke-width=\"1.1\"/><rect x=\"17\" y=\"3\" width=\"14\" height=\"6\" rx=\"1.5\" fill=\"#0f3a27\" stroke=\"#e9c46a\" stroke-width=\"1\"/><circle cx=\"24\" cy=\"6\" r=\"1.8\" fill=\"url(#rwShopGold)\"/></g><circle cx=\"17\" cy=\"35.5\" r=\"4.6\" fill=\"url(#rwShopGold)\" stroke=\"#7a5214\" stroke-width=\"1\"/><text x=\"17\" y=\"37.6\" text-anchor=\"middle\" font-family=\"Georgia,serif\" font-weight=\"900\" font-size=\"6\" fill=\"#6b4600\">R</text></svg>"; b.title = 'Badge Shop';
-    b.setAttribute('aria-label', 'Open the Badge Shop'); b.addEventListener('click', open);
+    b.setAttribute('aria-label', 'Open the Badge Shop, badges and privileges'); b.addEventListener('click', open);
     document.body.append(b);
   }
   /* Ticket page layout. Landscape: BACK and BADGE SHOP stand in a column on the left and the three top frames

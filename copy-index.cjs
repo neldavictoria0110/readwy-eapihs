@@ -263,6 +263,28 @@ if (typeof pages.map === 'string') {
     pages.map = pages.map.slice(0, shopHeadClose) + shopTag + pages.map.slice(shopHeadClose);
   }
 }
+// Journey ticket page: Quests (Main Quest / Side Quests, post-test date, points, badges). quests.js must run
+// before journey-gate-map.js; the ticket page also loads the Firebase client so the teacher's post-test date
+// and the learner's points sync there too.
+if (typeof pages.map === 'string') {
+  const embed = (file, before) => {
+    const src = fs.readFileSync(path.join(root, file), 'utf8');
+    const esc = file.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+    const re = new RegExp('<script data-source="' + esc + '">[\\s\\S]*?<\\/script>');
+    const tag = '<script data-source="' + file + '">' + src + '</script>';
+    if (re.test(pages.map)) { pages.map = pages.map.replace(re, () => tag); return }
+    const at = before ? pages.map.indexOf(before) : -1;
+    const pos = at >= 0 ? at : findHtmlClosingTag(pages.map, 'head');
+    if (pos < 0) throw new Error('The journey map has no closing head tag.');
+    pages.map = pages.map.slice(0, pos) + tag + pages.map.slice(pos);
+  };
+  embed('resources/quests.js', '<script data-source="resources/journey-gate-map.js">');
+  embed('resources/quests-ui.js');
+  if (!/<script type="module" src="resources\/firebase-client\.js"><\/script>/.test(pages.map)) {
+    const headClose = findHtmlClosingTag(pages.map, 'head');
+    pages.map = pages.map.slice(0, headClose) + '<script type="module" src="resources/firebase-client.js"></script>' + pages.map.slice(headClose);
+  }
+}
 // Older builds inserted these tags by searching for the last textual
 // "</head>"/"</body>". That also matched srcdoc strings inside Playlab and
 // left full login documents embedded inside JavaScript. Remove those generated
@@ -284,6 +306,7 @@ let application = pages.application
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/summary-(?:back|hd)\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/aral-train\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/welcome-voice\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
+  .replace(/<script\b(?=[^>]*\bsrc=["']resources\/quests\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '')
   .replace(/<script\b(?=[^>]*\bsrc=["']resources\/firebase-client\.js(?:\?[^"']*)?["'])[^>]*>\s*<\/script>/gi, '');
 const storyStyleTag = /<style\b(?=[^>]*\bdata-source=["']resources\/new-story\.css["'])[^>]*>[\s\S]*?<\/style>/i;
 if (!storyStyleTag.test(application)) throw new Error('The new-story stylesheet source tag is missing.');
@@ -349,6 +372,7 @@ const teacherTag = `<script data-stylesheet="${assetUrl('resources/teacher-porta
   `<script src="${assetUrl('resources/performance-runtime.js')}"></script>` +
   `<script src="${assetUrl('resources/gst-magic.js')}"></script>` +
   `<script src="${assetUrl('resources/gst-results.js')}"></script>` +
+  `<script src="${assetUrl('resources/quests.js')}"></script>` +
   `<script src="${assetUrl('resources/journey-gate.js')}"></script>` +
   `<script src="${assetUrl('resources/grade-lock.js')}"></script>` +
   `<script src="${assetUrl('resources/orst-mic-help.js')}"></script>` +
@@ -515,6 +539,8 @@ for (const relativePath of [
   'resources/grade-lock.js',
   'resources/orst-mic-help.js',
   'resources/journey-gate-map.js',
+  'resources/quests.js',
+  'resources/quests-ui.js',
   'resources/summary-hd.js',
   'resources/aral-train.js',
   'resources/wst/skills.js',

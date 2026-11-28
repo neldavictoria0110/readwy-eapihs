@@ -6,7 +6,7 @@
   const u = read('user') || {};
   const dev = !!u.dev || (() => { try { return sessionStorage.getItem('readwy-dev-view') === '1'; } catch { return false; } })();
   const key = String(u.id || u.lrn || u.email || 'local').trim().toLowerCase();
-  const saved = read('journey_gate_' + key);
+  let saved = read('journey_gate_' + key);
   // Worked out here from the learner's saved Keypass, so the ticket is right as soon as the learner enters
   // (same rules as journey-gate.js). Only "program finished" needs the app's saved check.
   const NAMES = {aral: 'Catch-Up Express', interv: 'Inkventure', sra: 'Reading Lab'};
@@ -15,7 +15,7 @@
   // To reopen free exploration, set a future date here AND in the other gate file.
   const EXPLORE_UNTIL = Date.parse('2026-11-27T00:00:00+08:00');
   const STAMPED = ['gst', 'orst', 'wst', 'reports'];
-  const gate = (() => {
+  const compute = () => {
     if (u.role === 'teacher') return null;
     const grade = Number(u.grade) || 7;
     if (Date.now() < EXPLORE_UNTIL) {
@@ -38,6 +38,18 @@
         messages: {orst: msg, wst: msg, aral: msg, interv: msg, sra: msg, reports: msg}};
     }
     const score = Number(report.score);
+    // Main Quest / Side Quests / post-test date (resources/quests.js, same rules as the app).
+    const Q = window.READwyQuests;
+    if (Q) {
+      // "Finished" from the app's last check, or from the learner's saved quest record (whichever says so).
+      const fromApp = saved?.doneBy || (saved?.program ? {[saved.program]: !!saved.programDone} : {});
+      const fromQuest = Q.load().snap?.dest || {};
+      const done = Object.fromEntries(['aral', 'interv', 'sra'].map(d => [d, !!(fromApp[d] || fromQuest[d]?.done)]));
+      const R = Q.rules({score, report, grade, done});
+      return {program: R.program, score, kinds: R.kinds, mainDone: R.mainDone,
+        open: {gst: true, orst: true, wst: true, aral: R.open.aral, interv: R.open.interv, sra: R.open.sra, reports: R.open.reports},
+        messages: R.messages};
+    }
     const program = score <= 16 ? 'aral' : score <= 27 ? 'interv' : 'sra';
     const finished = !!(saved && saved.program === program && saved.programDone);
     const placed = `Your Keypass score is ${score} of 40, so your journey is ${NAMES[program]}. Only that program is open for you.`;
@@ -48,7 +60,8 @@
       messages: {aral: placed, interv: placed, sra: placed,
         reports: `The Post-Test opens after you finish every task in the ${NAMES[program]}.`}
     };
-  })();
+  };
+  let gate = compute();
 
   const style = document.createElement('style');
   style.textContent = `
@@ -56,11 +69,17 @@ a.stage.rw-locked{cursor:not-allowed}
 a.stage.rw-locked::after{content:'🔒';position:absolute;right:6%;top:50%;translate:0 -50%;display:grid;place-items:center;width:clamp(26px,9vw,40px);aspect-ratio:1;border-radius:50%;
  background:#1d1408e6;border:2px solid #d9b45a;box-shadow:0 3px 8px #0008;font-size:clamp(13px,4.4vw,20px);line-height:1}
 a.stage.rw-locked::before{content:'';position:absolute;inset:0;border-radius:14px;background:#120c0688;backdrop-filter:grayscale(.85) brightness(.75);-webkit-backdrop-filter:grayscale(.85) brightness(.75)}
-a.stage.rw-yours::after{content:'★ Your program';position:absolute;right:4%;bottom:6%;padding:3px 9px;border-radius:999px;background:#f3cf6a;color:#2b1d05;font:800 clamp(9px,2.6vw,12px)/1.2 system-ui,sans-serif;box-shadow:0 2px 6px #0007}
+a.stage.rw-yours::after{content:'★ Your Main Quest';position:absolute;right:4%;bottom:6%;padding:3px 9px;border-radius:999px;background:#f3cf6a;color:#2b1d05;font:800 clamp(9px,2.6vw,12px)/1.2 system-ui,sans-serif;box-shadow:0 2px 6px #0007}
 .pf-dest.rw-locked{cursor:not-allowed;filter:grayscale(.9);opacity:.55}
 .pf-dest.rw-locked .hole::after{content:'🔒';display:grid;place-items:center;width:100%;height:100%;font-size:.75em;line-height:1}
-.pf-dest.rw-yours{box-shadow:0 0 0 3px #e2b33c,0 0 14px #f3cf6a99!important}
-.pf-dest.rw-yours::after{content:'★ Yours';display:block;margin-top:2px;color:#8a5a00;font:800 10px/1 system-ui,sans-serif}
+.pf-dest.rw-yours{position:relative;box-shadow:0 0 0 3px #e2b33c,0 0 14px #f3cf6a99!important}
+.pf-dest.rw-yours::after{content:'★ Main Quest';position:absolute;left:50%;top:0;translate:-50% -60%;z-index:3;white-space:nowrap;padding:2px 7px;border-radius:999px;background:linear-gradient(180deg,#ffe58a,#e2b33c);color:#4a2c00;font:900 clamp(7px,.62vw,10px)/1.25 system-ui,sans-serif;letter-spacing:.04em;box-shadow:0 0 0 1px #8a5a00,0 2px 5px #0006}
+.pf-dest.rw-side-challenge,.pf-dest.rw-side-review{position:relative}
+.pf-dest.rw-side-challenge::after,.pf-dest.rw-side-review::after{position:absolute;left:50%;top:0;translate:-50% -60%;z-index:3;white-space:nowrap;padding:2px 7px;border-radius:999px;font:900 clamp(7px,.62vw,10px)/1.25 system-ui,sans-serif;letter-spacing:.04em;box-shadow:0 2px 5px #0006}
+.pf-dest.rw-side-challenge::after{content:'⚡ Challenge';background:linear-gradient(180deg,#ffb38a,#e8622c);color:#fff;box-shadow:0 0 0 1px #8a2c00,0 2px 5px #0006}
+.pf-dest.rw-side-review::after{content:'↺ Review';background:linear-gradient(180deg,#a8e6ff,#3a8fd9);color:#062a4a;box-shadow:0 0 0 1px #0d4f8a,0 2px 5px #0006}
+a.stage.rw-side-challenge::after{content:'⚡ Challenge · ×1.5 points';position:absolute;right:4%;bottom:6%;padding:3px 9px;border-radius:999px;background:#e8622c;color:#fff;font:800 clamp(9px,2.6vw,12px)/1.2 system-ui,sans-serif;box-shadow:0 2px 6px #0007}
+a.stage.rw-side-review::after{content:'↺ Review · ×0.5 points';position:absolute;right:4%;bottom:6%;padding:3px 9px;border-radius:999px;background:#3a8fd9;color:#fff;font:800 clamp(9px,2.6vw,12px)/1.2 system-ui,sans-serif;box-shadow:0 2px 6px #0007}
 /* Exploration period: a red rubber "LOCKED" ticket stamp pressed over Keypass, Voice Station, Spellscript and the Post-Test (no padlock badge). */
 a.stage.rw-stamped::after,.pf-dest.rw-stamped .hole::after{content:none}
 a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) brightness(.9);-webkit-backdrop-filter:grayscale(.6) brightness(.9)}
@@ -102,6 +121,11 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
     const locked = !gate.open[program];
     el.classList.toggle('rw-locked', locked);
     el.classList.toggle('rw-yours', !locked && program === gate.program);
+    const kind = gate.kinds && gate.kinds[program];
+    el.classList.toggle('rw-side-challenge', !locked && kind === 'challenge');
+    el.classList.toggle('rw-side-review', !locked && kind === 'review');
+    const tip = locked ? (gate.messages?.[program] || '') : program === gate.program ? 'Your Main Quest' : kind === 'challenge' ? 'Side Quest · Challenge: ×1.5 points' : kind === 'review' ? 'Side Quest · Review: ×0.5 points' : '';
+    if (tip) el.title = tip; else el.removeAttribute('title');
     const stamped = locked && !!gate.exploring && STAMPED.includes(program);
     el.classList.toggle('rw-stamped', stamped);
     const stamp = el.querySelector(':scope>.rw-stamp');
@@ -118,6 +142,8 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
   };
   const mark = () => document.querySelectorAll('a.stage[data-program], .pf-dest[data-i]').forEach(apply);
   mark();
+  // Quest data changed (for example the teacher's post-test date arrived): work the locks out again.
+  addEventListener('readwy-quests-change', () => { saved = read('journey_gate_' + key); const next = compute(); if (next && next.open) { gate = next; mark(); } });
   addEventListener('DOMContentLoaded', () => {
     mark();
     new MutationObserver(mark).observe(document.body, {childList: true, subtree: true});
