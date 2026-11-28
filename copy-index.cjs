@@ -99,6 +99,24 @@ if (typeof pages.train === 'string') {
     pages.train = pages.train.slice(0, trainBodyClose) + signupSectionsTag + pages.train.slice(trainBodyClose);
   }
 }
+// Sign-in page: the falling READwy title waits for its picture, then plays (phones load the picture late).
+if (typeof pages.train === 'string') {
+  const titleSource = fs.readFileSync(path.join(root, 'resources/title-replay.js'), 'utf8');
+  const titleScript = /<script data-source="resources\/title-replay\.js">[\s\S]*?<\/script>/;
+  const titleTag = `<script data-source="resources/title-replay.js">${titleSource}</script>`;
+  if (titleScript.test(pages.train)) pages.train = pages.train.replace(titleScript, () => titleTag);
+  else {
+    const headClose = findHtmlClosingTag(pages.train, 'head');
+    if (headClose < 0) throw new Error('The sign-in page has no closing head tag.');
+    pages.train = pages.train.slice(0, headClose) + titleTag + pages.train.slice(headClose);
+  }
+}
+// The app keeps clear of the phone's notch / Dynamic Island in portrait and landscape: no page asks to draw under
+// the cut-out (viewport-fit=cover), so the browser and the Android app place every button inside the safe area.
+for (const [pageName, pageSource] of Object.entries(pages)) {
+  if (typeof pageSource !== 'string') continue;
+  pages[pageName] = pageSource.replace(/(<meta name=["']viewport["'] content=["'][^"']*?),\s*viewport-fit=cover/gi, '$1');
+}
 // Smoothness pass: the same lightweight stylesheet runs on every embedded page.
 const performanceCssSource = fs.readFileSync(path.join(root, 'resources/performance.css'), 'utf8');
 const performanceStyleTag = `<style data-source="resources/performance.css">${performanceCssSource}</style>`;

@@ -46,9 +46,19 @@
       const fromQuest = Q.load().snap?.dest || {};
       const done = Object.fromEntries(['aral', 'interv', 'sra'].map(d => [d, !!(fromApp[d] || fromQuest[d]?.done)]));
       const R = Q.rules({score, report, grade, done});
+      // Order: Voice Station, then Spellscript, then the Main Quest (same rule as journey-gate.js).
+      const orst = !!saved?.orst, wst = !!saved?.wst;
+      const started = !!R.program && ((fromQuest[R.program]?.pct || 0) > 0 || !!done[R.program]);
+      const destinationsOpen = (orst && wst) || started;
+      const messages = {...R.messages};
+      if (!orst) messages.wst = 'Finish the Voice Station first. Spellscript opens after it.';
+      const next = !orst ? 'the Voice Station and Spellscript' : 'Spellscript';
+      if (!destinationsOpen) for (const d of ['aral', 'interv', 'sra']) messages[d] = d === R.program
+        ? `Finish ${next} first. Your Main Quest (${NAMES[R.program]}) opens after ${!orst ? 'them' : 'it'}.`
+        : (R.messages[d] || `Finish ${next} and your Main Quest first.`);
       return {program: R.program, score, kinds: R.kinds, mainDone: R.mainDone,
-        open: {gst: true, orst: true, wst: true, aral: R.open.aral, interv: R.open.interv, sra: R.open.sra, reports: R.open.reports},
-        messages: R.messages};
+        open: {gst: true, orst: true, wst: orst, aral: destinationsOpen && R.open.aral, interv: destinationsOpen && R.open.interv, sra: destinationsOpen && R.open.sra, reports: R.open.reports},
+        messages};
     }
     const program = score <= 16 ? 'aral' : score <= 27 ? 'interv' : 'sra';
     const finished = !!(saved && saved.program === program && saved.programDone);
@@ -120,7 +130,7 @@ a.stage.rw-stamped::before{background:#120c0655;backdrop-filter:grayscale(.6) br
     if (!program || !(program in gate.open)) return;
     const locked = !gate.open[program];
     el.classList.toggle('rw-locked', locked);
-    el.classList.toggle('rw-yours', !locked && program === gate.program);
+    el.classList.toggle('rw-yours', program === gate.program); // the Main Quest ribbon shows even while it waits for Voice Station and Spellscript
     const kind = gate.kinds && gate.kinds[program];
     el.classList.toggle('rw-side-challenge', !locked && kind === 'challenge');
     el.classList.toggle('rw-side-review', !locked && kind === 'review');

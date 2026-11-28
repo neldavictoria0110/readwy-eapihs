@@ -5,7 +5,7 @@
    - fills any missing detail from the sign-up record (teacher name, gender, section, names, photo);
    - keeps first name / last name / M.I. in step with the edited full name;
    - also stores edits under the sign-in email, so the next sign-in shows them even if the email field changed;
-   - adds the Gender field to Profile forms that lack it, and makes Section a grade-based list;
+   - adds the Gender field to Profile forms that lack it, and keeps Section as a typed box;
    - keeps details when a Firebase session replaces the user, and when another tab saves. */
 (() => {
   const prefix = () => (typeof STORE !== 'undefined' ? STORE : 'READwy_new_2026_local_');
@@ -145,6 +145,7 @@
     (sectionLabel || nameLabel).after(label);
   }
   function sectionList(form) {
+    return; // Sections are typed by the learner now (no school section list); kept for reference.
     const input = form?.querySelector('input[name="section"]');
     const grade = form?.elements.grade;
     if (!input || !grade || !sectionsFor(7).length) return;

@@ -446,23 +446,153 @@ function readwyTPTrack(records) {
 function readwyTPSectionCard(item, index) {
   const preview = readwyTPIsPreview();
   const code = readwyTPEscape(item.id);
+  const join = item.joinCode ? readwyTPEscape(item.joinCode) : '';
+  const editing = READWY_TP_CODE_EDIT.id === item.id;
+  const codeBox = editing
+    ? `<form class="tp-code-edit" data-code="${code}" novalidate><label class="tp-code-label">Class code<span class="tp-code-entry"><input class="tp-input tp-code-input" name="joinCode" type="text" maxlength="10" value="${readwyTPEscape(READWY_TP_CODE_EDIT.value ?? item.joinCode ?? '')}" placeholder="e.g. RIZAL7" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="tpCodeMsg-${code}"><button type="button" class="tp-code-gen" data-tp-gen="edit" title="Make a code for me">🎲</button></span></label>
+      <p class="tp-code-msg" id="tpCodeMsg-${code}" role="status">${readwyTPEscape(READWY_TP_CODE_EDIT.msg || '4–10 letters or numbers. Not case-sensitive.')}</p>
+      <div class="tp-code-actions"><button class="tp-cta tp-cta-small" type="button" data-tp-code-save ${READWY_TP_CODE_EDIT.busy ? 'disabled' : ''}>${READWY_TP_CODE_EDIT.busy ? 'Saving…' : 'Save code'}</button><button class="tp-cta tp-cta-small tp-cta-light" type="button" data-tp-action="code-cancel">Cancel</button></div></form>`
+    : `<div class="tp-code-show"><span class="tp-code-label">Class code</span>${join ? `<strong class="tp-code-value">${join}</strong>` : '<em class="tp-code-none">No code yet</em>'}<span class="tp-code-btns">${join ? `<button type="button" class="tp-code-mini" data-tp-action="copy-code" data-code="${join}" title="Copy the class code">Copy</button>` : ''}<button type="button" class="tp-code-mini" data-tp-action="code-edit" data-code="${code}">${join ? 'Edit' : 'Set code'}</button></span></div>`;
   const size = readwyTPClassSize(item.id);
-  const tools = `<button type="button" data-tp-action="copy-code" data-code="${code}">Copy code</button><button type="button" data-tp-action="class-size" data-code="${code}">${size ? `Enrolled: ${size}` : 'Set enrolled'}</button>${item.active ? `<button type="button" data-tp-action="deactivate-class" data-code="${code}">Deactivate</button>` : ''}${preview ? `<button type="button" data-tp-action="remove-preview-section" data-code="${code}">Remove</button>` : ''}`;
+  const tools = `<button type="button" data-tp-action="class-size" data-code="${code}">${size ? `Enrolled: ${size}` : 'Set enrolled'}</button>${item.active ? `<button type="button" data-tp-action="deactivate-class" data-code="${code}">Deactivate</button>` : ''}${preview ? `<button type="button" data-tp-action="remove-preview-section" data-code="${code}">Remove</button>` : ''}`;
   return `<article class="tp-gem-card${item.active ? '' : ' is-inactive'}">
     <div class="tp-gem-head">${readwyTPGem(item, index)}<h4><span>Grade ${readwyTPEscape(item.grade)} ·</span> <span>${readwyTPEscape(item.section)}</span></h4></div>
-    <div class="tp-gem-meta"><span class="tp-chip">${readwyTPEscape(item.learningArea || 'Class')}</span><span class="tp-chip tp-chip-code" title="Class code">${code}</span>${item.active ? '' : '<span class="tp-chip tp-chip-off">Inactive</span>'}</div>
+    <div class="tp-gem-meta"><span class="tp-chip">${readwyTPEscape(item.learningArea || 'Class')}</span>${item.active ? '' : '<span class="tp-chip tp-chip-off">Inactive</span>'}</div>
+    <div class="tp-code-box">${codeBox}</div>
     <img class="tp-gem-train" src="${READWY_TP_ART}train.png" width="350" height="90" alt="">
     <button class="tp-open-section" type="button" data-tp-action="open-section" data-tp-target="assessments" data-code="${code}">Open section ${readwyTPIcon('arrow')}</button>
     <div class="tp-gem-tools">${tools}</div>
   </article>`;
 }
+/* ---------- Class codes (one per section, unique across READwy) ---------- */
+const READWY_TP_CODE_EDIT = { id: '', value: null, msg: '', busy: false };
+const READWY_TP_CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // no 0/O or 1/I/L
+const readwyTPCleanCode = value => String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+function readwyTPCodeProblem(code, exceptId = '') {
+  if (!code) return 'Give this section a class code (4–10 letters or numbers).';
+  if (!/^[A-Z0-9]{4,10}$/.test(code)) return 'A class code has 4–10 letters or numbers, with no spaces.';
+  if (readwyTPClasses().some(item => item.id !== exceptId && String(item.joinCode || '').toUpperCase() === code)) return `You already use ${code} for another section. Each section needs its own code.`;
+  return '';
+}
+function readwyTPMakeCode() {
+  for (let tries = 0; tries < 50; tries++) {
+    const bytes = crypto.getRandomValues(new Uint8Array(6));
+    const code = Array.from(bytes, b => READWY_TP_CODE_CHARS[b % READWY_TP_CODE_CHARS.length]).join('');
+    if (!readwyTPCodeProblem(code)) return code;
+  }
+  return 'RW' + Date.now().toString(36).toUpperCase().slice(-6);
+}
+function readwyTPRedrawSections() {
+  const pane = document.querySelector('.teacher-portal .tp-scene-content'), top = pane ? pane.scrollTop : 0;
+  // Stay on the same page of section cards (the card being edited stays in view).
+  const pages = [...document.querySelectorAll('.teacher-portal [data-tp-pages]')].map(box => box.dataset.tpPage || '');
+  readwyTPAnimateNext = false; readwyTPDrawView();
+  document.querySelectorAll('.teacher-portal [data-tp-pages]').forEach((box, i) => { if (pages[i]) box.dataset.tpPage = pages[i] });
+  const next = document.querySelector('.teacher-portal .tp-scene-content'); if (next) next.scrollTop = top;
+  // The open code editor makes its card taller: turn the page until that card is in view.
+  const reveal = () => {
+    const card = document.querySelector('.tp-code-edit')?.closest('.tp-gem-card');
+    if (card) {
+      for (let guard = 0; card.hidden && guard < 30; guard++) {
+        const back = document.querySelector('.tp-pager [data-dir="-1"]'), fwd = document.querySelector('.tp-pager [data-dir="1"]');
+        if (guard === 0 && back && !back.disabled) { while (!back.disabled) back.click() }
+        if (!card.hidden || !fwd || fwd.disabled) break;
+        fwd.click();
+      }
+    }
+    document.querySelector('.tp-code-edit .tp-code-input')?.focus({ preventScroll: true });
+  };
+  requestAnimationFrame(() => requestAnimationFrame(reveal));
+}
+document.addEventListener('input', event => {
+  if (!event.target.classList?.contains('tp-code-input')) return;
+  const box = event.target, at = box.selectionStart;
+  box.value = readwyTPCleanCode(box.value); try { box.setSelectionRange(at, at) } catch {}
+  const form = box.closest('.tp-code-edit');
+  const problem = box.value ? readwyTPCodeProblem(box.value, form?.dataset.code || '') : '';
+  box.classList.toggle('is-bad', !!problem && box.value.length >= 4); box.classList.toggle('is-good', !problem && !!box.value);
+  if (form) { READWY_TP_CODE_EDIT.value = box.value; const msg = form.querySelector('.tp-code-msg'); if (msg) msg.textContent = problem && box.value.length >= 4 ? problem : '4–10 letters or numbers. Not case-sensitive.' }
+});
+// Save: the button and the Enter key are handled here first (other page scripts cannot swallow them).
+document.addEventListener('click', event => {
+  const t = event.target.closest?.('[data-tp-code-save],[data-tp-action="code-edit"],[data-tp-action="code-cancel"],[data-tp-gen],.tp-code-show [data-tp-action="copy-code"]');
+  if (!t || t.disabled) return;
+  event.preventDefault(); event.stopPropagation();
+  if (t.matches('[data-tp-code-save]')) return readwyTPSaveCode(t.closest('.tp-code-edit'));
+  if (t.matches('[data-tp-action="copy-code"]')) {
+    navigator.clipboard?.writeText(t.dataset.code).then(() => { t.textContent = 'Copied ✓' }, () => { t.textContent = 'Copy unavailable' });
+    setTimeout(() => { t.textContent = 'Copy' }, 1800);
+    return;
+  }
+  if (t.matches('[data-tp-gen]')) {
+    const box = t.closest('.tp-code-entry')?.querySelector('.tp-code-input'); if (!box) return;
+    box.value = readwyTPMakeCode(); box.dispatchEvent(new Event('input', { bubbles: true })); box.focus();
+    return;
+  }
+  const editing = t.dataset.tpAction === 'code-edit';
+  Object.assign(READWY_TP_CODE_EDIT, { id: editing ? t.dataset.code : '', value: null, msg: '', busy: false });
+  readwyTPRedrawSections();
+}, true);
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Enter' || !event.target.closest?.('.tp-code-edit')) return;
+  event.preventDefault();
+  readwyTPSaveCode(event.target.closest('.tp-code-edit'));
+}, true);
+document.addEventListener('submit', event => {
+  const form = event.target.closest?.('.tp-code-edit'); if (!form) return;
+  event.preventDefault();
+  readwyTPSaveCode(form);
+});
+async function readwyTPSaveCode(form) {
+  if (!form || READWY_TP_CODE_EDIT.busy) return;
+  const id = form.dataset.code, item = readwyTPClasses().find(c => c.id === id); if (!item) return;
+  const code = readwyTPCleanCode(form.elements.joinCode.value);
+  READWY_TP_CODE_EDIT.value = code;
+  const problem = readwyTPCodeProblem(code, id);
+  if (problem) { READWY_TP_CODE_EDIT.msg = problem; readwyTPRedrawSections(); return; }
+  if (item.joinCode && item.joinCode !== code && !confirm(`Changing this code means the old code (${item.joinCode}) will stop working. Students already in this section will stay. Continue?`)) return;
+  if (item.joinCode === code) { Object.assign(READWY_TP_CODE_EDIT, { id: '', value: null, msg: '' }); readwyTPRedrawSections(); return; }
+  READWY_TP_CODE_EDIT.busy = true; READWY_TP_CODE_EDIT.msg = ''; readwyTPRedrawSections();
+  try {
+    if (readwyTPIsPreview()) readwyTPSavePreviewSections(readwyTPPreviewSections().map(c => c.id === id ? { ...c, joinCode: code } : c));
+    else await (await window.readwyFirebaseReady).setJoinCode(id, code);
+    item.joinCode = code;
+    Object.assign(READWY_TP_CODE_EDIT, { id: '', value: null, msg: '', busy: false });
+    readwyTeacherClassNotice = `Class code for Grade ${item.grade} · ${item.section} is now ${code}.`;
+  } catch (error) {
+    READWY_TP_CODE_EDIT.busy = false;
+    READWY_TP_CODE_EDIT.msg = error?.code === 'code-taken' ? `${code} is already used in READwy. Try another, or tap 🎲 for a new one.` : (error?.message || 'The code could not be saved. Try again.');
+  }
+  readwyTPRedrawSections();
+}
+(() => {
+  const style = document.createElement('style');
+  style.textContent = `
+.tp-code-box{margin:6px 0 8px}
+.tp-code-show{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:7px 10px;border-radius:12px;background:linear-gradient(180deg,#fffaf0,#f3e7c9);box-shadow:inset 0 0 0 1.5px #d4b468}
+.tp-code-label{font:800 11px/1.2 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7a5a1a}
+.tp-code-value{padding:3px 12px;border-radius:999px;background:linear-gradient(180deg,#1f5c40,#0f3a27);color:#ffe9a8;font:900 16px/1.3 ui-monospace,Consolas,monospace;letter-spacing:.14em;box-shadow:inset 0 0 0 1.5px #c9a14a}
+.tp-code-none{color:#9a4a1a;font:700 13px/1.3 system-ui,sans-serif}
+.tp-code-btns{display:flex;gap:6px;margin-left:auto}
+.tp-code-mini{min-height:32px;padding:4px 12px;border:0;border-radius:999px;cursor:pointer;font:800 12px/1 system-ui,sans-serif;color:#0f3a27;background:#fff;box-shadow:inset 0 0 0 1.5px #2f8a5a}
+.tp-code-mini:hover{background:#e8f6ea}
+.tp-code-edit{display:grid;gap:6px;padding:8px 10px;border-radius:12px;background:#fffdf6;box-shadow:inset 0 0 0 2px #2f8a5a}
+.tp-code-edit .tp-code-label{display:grid;gap:4px}
+.tp-code-entry{display:flex;gap:6px;align-items:center}
+.tp-code-entry .tp-code-input{flex:1;min-width:0;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
+.tp-code-input.is-bad{outline:2px solid #c0392b;outline-offset:-1px}.tp-code-input.is-good{outline:2px solid #2e8b4a;outline-offset:-1px}
+.tp-code-gen{flex:none;width:38px;height:38px;border:0;border-radius:10px;cursor:pointer;font-size:18px;background:#efe2c2;box-shadow:inset 0 0 0 1.5px #c9a14a}
+.tp-code-msg{margin:0;font:600 12px/1.35 system-ui,sans-serif;color:#5a4a2a}
+.tp-code-actions{display:flex;gap:6px;flex-wrap:wrap}`;
+  document.head.append(style);
+})();
 function readwyTPSectionsView(classes) {
   const grades = [...new Set(classes.map(item => String(item.grade)))].sort((a, b) => Number(a) - Number(b));
   if (readwyTeacherGradeView && !grades.includes(readwyTeacherGradeView)) readwyTeacherGradeView = '';
   const visible = classes.filter(item => !readwyTeacherGradeView || String(item.grade) === readwyTeacherGradeView);
   const firstName = user?.firstName || String(user?.name || 'Teacher').trim().split(/\s+/)[0];
-  const notice = readwyTeacherClassNotice;
-  readwyTeacherClassNotice = '';
+  const notice = readwyTeacherClassNotice || window.readwyJoinCodeNotice || '';
+  readwyTeacherClassNotice = ''; window.readwyJoinCodeNotice = '';
   return `<header class="tp-sec-head">
       <div class="tp-sec-greet"><p class="tp-sec-kicker">My Sections</p><h2>Welcome, ${readwyTPEscape(firstName)}</h2><span class="tp-lock-pill">${readwyTPIcon('lock')}Assigned sections only</span></div>
       <div class="tp-sec-controls">
@@ -479,10 +609,11 @@ function readwyTPSectionsView(classes) {
           <h3>Add a section you handle</h3>
           <form id="tpClassForm" class="tp-class-form">
             <label class="tp-field">Grade<select class="tp-select" name="grade" required>${READWY_TEACHER_GRADES.map(grade => `<option>${grade}</option>`).join('')}</select></label>
-            <label class="tp-field">Section<select class="tp-select" name="section" required>${readwyTPSectionOptions(READWY_TEACHER_GRADES[0])}</select></label>
+            <label class="tp-field">Section<input class="tp-input" name="section" type="text" required maxlength="60" placeholder="e.g. Rizal" autocomplete="off"></label>
+            <label class="tp-field">Class code<span class="tp-code-entry"><input class="tp-input tp-code-input" name="joinCode" type="text" required maxlength="10" placeholder="e.g. RIZAL7" autocomplete="off" autocapitalize="characters" spellcheck="false" title="4–10 letters or numbers"><button type="button" class="tp-code-gen" data-tp-gen="add" title="Make a code for me">🎲</button></span></label>
             <input type="hidden" name="learningArea" value="${readwyTPEscape(user?.learningArea || 'English')}">
             <label class="tp-field">Learners enrolled (class list)<input class="tp-input" name="enrolled" type="number" min="1" max="200" inputmode="numeric" placeholder="e.g. 50"></label>
-            <button class="tp-btn primary" type="submit">Create class code</button>
+            <button class="tp-btn primary" type="submit">Add section</button>
           </form>
           <p class="tp-inline-status" id="tpClassStatus" role="status"></p>
           <p class="tp-note">${readwyTPIsPreview() ? 'Developer preview: sections are saved in this browser only, and their codes cannot be used by learners.' : 'Share a class code only with learners who belong to that grade, section, and learning area.'}</p>
@@ -1144,9 +1275,7 @@ document.addEventListener('input', event => {
 });
 document.addEventListener('change', event => {
   if (event.target.name === 'grade' && event.target.form?.id === 'tpClassForm') {
-    const sectionSelect = event.target.form.elements.section;
-    if (sectionSelect) sectionSelect.innerHTML = readwyTPSectionOptions(event.target.value);
-    return;
+    return; // sections are typed now
   }
   if (event.target.id === 'tpJourneyFilter') readwyTPDrawView();
   if (event.target.id === 'tpSectionPick') {
@@ -1170,17 +1299,20 @@ document.addEventListener('submit', async event => {
       const grade = Number(values.grade);
       const section = String(values.section || '').trim();
       const list = readwyTPPreviewSections();
-      if (!READWY_TEACHER_GRADES.includes(grade) || !readwyTPSectionsFor(grade).includes(section)) {
-        if (status) status.textContent = 'Choose a grade and a section.';
+      const joinCode = readwyTPCleanCode(values.joinCode);
+      if (!READWY_TEACHER_GRADES.includes(grade) || !section) {
+        if (status) status.textContent = 'Choose a grade and type the section name.';
         return;
       }
+      const codeProblem = readwyTPCodeProblem(joinCode);
+      if (codeProblem) { if (status) status.textContent = codeProblem; form.elements.joinCode?.focus(); return; }
       if (list.some(item => readwyTPClassKey(item.grade, item.section) === readwyTPClassKey(grade, section) && item.learningArea === values.learningArea)) {
         if (status) status.textContent = `Grade ${grade} · ${section} (${values.learningArea}) is already one of your sections.`;
         return;
       }
       const slug = section.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
       const id = `preview-${grade}-${slug}-${String(values.learningArea).slice(0, 3).toLowerCase()}`;
-      list.push({id, grade, section, learningArea: values.learningArea, active: true});
+      list.push({id, grade, section, learningArea: values.learningArea, active: true, joinCode});
       if (values.enrolled) readwyTPSetClassSize(id, values.enrolled);
       if (!readwyTPSavePreviewSections(list)) {
         if (status) status.textContent = 'This browser could not save the section.';
@@ -1193,9 +1325,14 @@ document.addEventListener('submit', async event => {
     try {
       const api = await window.readwyFirebaseReady;
       const formValues = Object.fromEntries(new FormData(form));
+      formValues.section = String(formValues.section || '').trim();
+      formValues.joinCode = readwyTPCleanCode(formValues.joinCode);
+      const codeProblem = readwyTPCodeProblem(formValues.joinCode);
+      if (!formValues.section) { if (status) status.textContent = 'Type the section name.'; return; }
+      if (codeProblem) { if (status) status.textContent = codeProblem; form.elements.joinCode?.focus(); return; }
       const code = await api.createClassroom(formValues);
       if (formValues.enrolled) readwyTPSetClassSize(code, formValues.enrolled);
-      readwyTeacherClassNotice = `Class code created: ${code}. Share it only with learners in this grade, section, and learning area.`;
+      readwyTeacherClassNotice = `Section added with class code ${formValues.joinCode}. Share it only with learners in this section.`;
       if (status) status.textContent = readwyTeacherClassNotice;
       await readwyTPReload();
     } catch (error) {
@@ -1297,6 +1434,16 @@ document.addEventListener('click', async event => {
   }
   if (action === 'export-intervention') {
     readwyTPDownload('READwy_Intervention_Report.csv', readwyTPBuildInterventionRows(readwyTeacherSelectedStudent));
+  }
+  if (action === 'code-edit') {
+    Object.assign(READWY_TP_CODE_EDIT, { id: button.dataset.code, value: null, msg: '', busy: false });
+    readwyTPRedrawSections();
+    return;
+  }
+  if (action === 'code-cancel') {
+    Object.assign(READWY_TP_CODE_EDIT, { id: '', value: null, msg: '', busy: false });
+    readwyTPRedrawSections();
+    return;
   }
   if (action === 'copy-code') {
     try { await navigator.clipboard.writeText(button.dataset.code); button.textContent = 'Copied'; }

@@ -288,7 +288,7 @@ async function signUpStudent(values) {
   const credential = await createUserWithEmailAndPassword(auth, normalize(values.email).toLowerCase(), values.password);
   provisioningUid = credential.user.uid;
   try {
-    const classCode = normalize(values.classCode).toLowerCase();
+    const classCode = await resolveClassCode(values.classCode);
     const classSnapshot = await getDoc(doc(db, 'classrooms', classCode));
     if (!classSnapshot.exists()) throw new Error('That class code was not found. Ask your teacher for the current code.');
     const classroom = classSnapshot.data();
@@ -370,10 +370,54 @@ async function provisionTeacher(authUser, chosen = false) {
   const sections = (Array.isArray(local.sections) ? local.sections : []).filter(s => s && s.grade && s.section).slice(0, 30);
   if (profile.learningArea) {
     for (const s of sections) {
-      try { await createClassroom({ grade: s.grade, section: s.section, learningArea: profile.learningArea }); }
-      catch (error) { console.warn('READwy: could not create the class for', s, error); }
+      try { await createClassroom({ grade: s.grade, section: s.section, learningArea: profile.learningArea, joinCode: s.code || '' }); }
+      catch (error) {
+        // The code was taken in the meantime: keep the section; the teacher sets a new code on the dashboard.
+        if (error?.code === 'code-taken') {
+          try { await createClassroom({ grade: s.grade, section: s.section, learningArea: profile.learningArea }); } catch {}
+          window.readwyJoinCodeNotice = `The code ${s.code} was already in use, so Grade ${s.grade} · ${s.section} has no code yet. Set a new one on your Sections page.`;
+        } else console.warn('READwy: could not create the class for', s, error);
+      }
     }
   }
+  return currentProfile;
+}
+
+/* Student sign-up on the start screen keeps the class code in this browser; on the first sign-in the student's
+   profile and roster entry are created from that class (grade, section, teacher), so the teacher sees them. */
+function localStudentSignup(email) {
+  const key = normalize(email).toLowerCase();
+  try {
+    const profiles = JSON.parse(localStorage.getItem('READwy_new_2026_local_studentProfiles') || '{}');
+    const pending = JSON.parse(localStorage.getItem('READwy_new_2026_local_pending_class_codes') || '{}');
+    const saved = profiles[key];
+    if (saved && saved.role && saved.role !== 'student') return null;
+    const classCode = normalize(pending[key] || saved?.classCode || '');
+    return classCode ? { ...(saved || {}), classCode } : null;
+  } catch { return null; }
+}
+async function provisionStudent(authUser) {
+  if (!authUser?.email) return null;
+  const local = localStudentSignup(authUser.email);
+  if (!local) return null;
+  const lrn = normalize(local.lrn).replace(/\D/g, '');
+  if (!/^\d{12}$/.test(lrn)) return null;
+  const classCode = await resolveClassCode(local.classCode);
+  const classSnapshot = await getDoc(doc(db, 'classrooms', classCode));
+  if (!classSnapshot.exists()) throw new Error('That class code was not found. Ask your teacher for the current code.');
+  const classroom = classSnapshot.data();
+  if (!classroom.active) throw new Error('This class is not accepting new students right now. Ask your teacher.');
+  const name = normalize(local.name || [local.firstName, local.middleInitial, local.lastName].filter(Boolean).join(' ') || authUser.displayName || authUser.email.split('@')[0]).slice(0, 100);
+  const profile = { uid: authUser.uid, name, email: authUser.email, role: 'student', lrn, grade: classroom.grade, section: classroom.section,
+    learningArea: classroom.learningArea, teacherUid: classroom.teacherUid, classCode, createdAt: serverTimestamp() };
+  const roster = { uid: authUser.uid, teacherUid: classroom.teacherUid, classCode, name, lrn, grade: classroom.grade, section: classroom.section,
+    learningArea: classroom.learningArea, createdAt: serverTimestamp() };
+  const batch = writeBatch(db);
+  batch.set(doc(db, 'profiles', authUser.uid), profile);
+  batch.set(doc(db, 'studentRoster', authUser.uid), roster);
+  await batch.commit();
+  try { const k = 'READwy_new_2026_local_pending_class_codes', p = JSON.parse(localStorage.getItem(k) || '{}'); delete p[normalize(authUser.email).toLowerCase()]; localStorage.setItem(k, JSON.stringify(p)); } catch {}
+  currentProfile = { ...profile, createdAt: undefined };
   return currentProfile;
 }
 
@@ -384,6 +428,9 @@ async function signIn(email, password, expectedRole) {
     if (!snapshot.exists() && expectedRole === 'teacher') {
       if (!isDepEdEmail(credential.user.email)) throw new Error(teacherSignupMessage);
       await provisionTeacher(credential.user, true);
+      snapshot = await getDoc(doc(db, 'profiles', credential.user.uid));
+    }
+    if (!snapshot.exists() && expectedRole === 'student' && await provisionStudent(credential.user)) {
       snapshot = await getDoc(doc(db, 'profiles', credential.user.uid));
     }
     if (!snapshot.exists()) throw new Error('This account is not activated for READwy yet. Ask the school administrator to provision it.');
@@ -442,13 +489,54 @@ async function createClassroom(values) {
   // A new section starts with the post-test date the teacher already set for their other sections.
   const current = await teacherPostTestDate().catch(() => null);
   if (current) Object.assign(classroom, { postTestDate: current, postTestDateSetBy: auth.currentUser.uid, postTestDateUpdatedAt: serverTimestamp() });
-  await setDoc(doc(db, 'classrooms', code), classroom);
+  const joinCode = values.joinCode ? normalizeJoinCode(values.joinCode) : '';
+  if (values.joinCode && !JOIN_CODE.test(joinCode)) throw new Error('A class code has 4–10 letters or numbers, with no spaces.');
+  if (!joinCode) { await setDoc(doc(db, 'classrooms', code), classroom); return code; }
+  // The section and its code are saved together, so two sections can never get the same code.
+  await runTransaction(db, async transaction => {
+    const codeRef = doc(db, 'joinCodes', joinCode);
+    if ((await transaction.get(codeRef)).exists()) throw codeTakenError(joinCode);
+    transaction.set(doc(db, 'classrooms', code), { ...classroom, joinCode });
+    transaction.set(codeRef, { classCode: code, teacherUid: auth.currentUser.uid, grade, section, createdAt: serverTimestamp() });
+  });
   return code;
 }
 
 async function setClassroomActive(code, active) {
   if (currentProfile?.role !== 'teacher' || !auth.currentUser) throw new Error('Teacher access is required.');
   await updateDoc(doc(db, 'classrooms', code), { active: !!active, updatedAt: serverTimestamp() });
+}
+
+/* ---------- Class codes chosen by the teacher (one per section, unique across READwy) ---------- */
+const JOIN_CODE = /^[A-Z0-9]{4,10}$/;
+const normalizeJoinCode = value => normalize(value).toUpperCase().replace(/\s+/g, '');
+function codeTakenError(code) { const e = new Error(`The code ${code} is already in use. Try another.`); e.code = 'code-taken'; return e }
+// Set or change a section's code. The old code stops working at once; learners already in the section stay.
+async function setJoinCode(classCode, value) {
+  if (currentProfile?.role !== 'teacher' || !auth.currentUser) throw new Error('Teacher access is required.');
+  const code = normalizeJoinCode(value);
+  if (!JOIN_CODE.test(code)) throw new Error('A class code has 4–10 letters or numbers, with no spaces.');
+  await runTransaction(db, async transaction => {
+    const classRef = doc(db, 'classrooms', classCode), codeRef = doc(db, 'joinCodes', code);
+    const room = await transaction.get(classRef), taken = await transaction.get(codeRef);
+    if (!room.exists() || room.data().teacherUid !== auth.currentUser.uid) throw new Error('That section is not one of yours.');
+    const old = room.data().joinCode || '';
+    if (old === code) return;
+    if (taken.exists()) throw codeTakenError(code);
+    transaction.update(classRef, { joinCode: code, updatedAt: serverTimestamp() });
+    transaction.set(codeRef, { classCode, teacherUid: auth.currentUser.uid, grade: room.data().grade, section: room.data().section, createdAt: serverTimestamp() });
+    if (old) transaction.delete(doc(db, 'joinCodes', old));
+  });
+  return code;
+}
+// A learner's class code may be the teacher's short code or the older long code.
+async function resolveClassCode(value) {
+  const raw = normalize(value);
+  if (/^[a-f0-9]{24}$/i.test(raw)) return raw.toLowerCase();
+  const code = normalizeJoinCode(raw);
+  if (!JOIN_CODE.test(code)) return raw.toLowerCase();
+  const snapshot = await getDoc(doc(db, 'joinCodes', code)).catch(() => null);
+  return snapshot?.exists() ? snapshot.data().classCode : raw.toLowerCase();
 }
 
 /* ---------- Post-test date (teacher sets one date for all of their sections) ---------- */
@@ -564,7 +652,8 @@ async function handleAuthState(authUser) {
     if (auth.currentUser?.uid !== authUser.uid) return;
     if (!snapshot.exists()) {
       // A DepEd teacher who signed up on the start screen: create their teacher profile now.
-      const teacher = await provisionTeacher(authUser).catch(error => { window.readwyFirebaseAuthError = error.message; return null; });
+      const teacher = await provisionTeacher(authUser).catch(error => { window.readwyFirebaseAuthError = error.message; return null; })
+        || await provisionStudent(authUser).catch(error => { window.readwyFirebaseAuthError = error.message; return null; });
       if (teacher && auth.currentUser?.uid === authUser.uid) {
         window.readwySetFirebaseSession?.(authUser, teacher);
         return;
@@ -595,6 +684,7 @@ const api = {
   setClassroomActive,
   setPostTestDate,
   teacherPostTestDate,
+  setJoinCode,
   watchSectionPostTestDate,
   saveQuestProgress,
   loadQuestAwards,

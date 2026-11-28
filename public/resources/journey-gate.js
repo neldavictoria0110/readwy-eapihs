@@ -7,6 +7,8 @@
    Quests (resources/quests.js): that program is the learner's Main Quest. Finishing it opens the Post-Test and the
    other two programs as Side Quests. The Post-Test also opens when the section's post-test date arrives.
    The Post-Test opens only after every task in that program is finished.
+   Order (2026-11-28): after the Keypass, the Voice Station opens; Spellscript opens after the Voice Station; the
+   Main Quest destination opens after Spellscript (learners who had already started it keep it open).
    "Finished" uses each program's own completion rule:
      Catch-Up Express   – all 8 weeks done (aralWeekDone)
      Inkventure – all 25 station tasks complete (intervDashStats)
@@ -84,18 +86,30 @@
     const program = quest ? quest.program : programFor(score);
     const screened = gst && orst && wst;
     const programDone = !!(program && doneBy[program]);
+    // Order after the Keypass: Voice Station, then Spellscript, then the Main Quest destination.
+    // A learner who had already started their Main Quest before this order was set keeps it open.
+    const started = !!program && safe(() => (window.READwyQuests?.load()?.snap?.dest?.[program]?.pct || 0) > 0 || doneBy[program], false);
+    const destinationsOpen = screened || started;
     const open = {
       // The Keypass stays open after submission (results, profile and photo), but it cannot be retaken.
       gst: true,
       orst: gst,
-      wst: gst,
-      aral: gst && (quest ? quest.open.aral : program === 'aral'),
-      interv: gst && (quest ? quest.open.interv : program === 'interv'),
-      sra: gst && (quest ? quest.open.sra : program === 'sra'),
+      wst: gst && orst,
+      aral: gst && destinationsOpen && (quest ? quest.open.aral : program === 'aral'),
+      interv: gst && destinationsOpen && (quest ? quest.open.interv : program === 'interv'),
+      sra: gst && destinationsOpen && (quest ? quest.open.sra : program === 'sra'),
       reports: gst && (quest ? quest.open.reports : programDone)
     };
+    const questMessages = {...(quest?.messages || {})};
+    if (gst && !orst) questMessages.wst = 'Finish the Voice Station first. Spellscript opens after it.';
+    if (gst && !destinationsOpen) {
+      const next = !orst ? 'the Voice Station and Spellscript' : 'Spellscript';
+      for (const d of PROGRAMS) if (!open[d]) questMessages[d] = d === program
+        ? `Finish ${next} first. Your Main Quest (${NAMES[program]}) opens after ${!orst ? 'them' : 'it'}.`
+        : (quest?.messages?.[d] || `Finish ${next} and your Main Quest first.`);
+    }
     return {grade, gst, orst, wst, score, program, screened, programDone, open, doneBy,
-      kinds: quest?.kinds || null, questMessages: quest?.messages || null, postTestDate: quest?.postTestDate || null};
+      kinds: quest?.kinds || null, questMessages, postTestDate: quest?.postTestDate || null};
   }
   function message(mod, s = status()) {
     if (s.exploring) return mod === 'reports'
