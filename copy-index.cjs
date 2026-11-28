@@ -111,6 +111,21 @@ if (typeof pages.train === 'string') {
     pages.train = pages.train.slice(0, headClose) + titleTag + pages.train.slice(headClose);
   }
 }
+// READWY_TITLE_MOTION: the falling READwy title on the sign-in page plays on every phone, also when the phone asks
+// websites to reduce motion (Android "Remove animations", battery saver). Only the title's own reduced-motion rules
+// are changed; every other animation on the page still follows that setting.
+if (typeof pages.train === 'string') {
+  const before = pages.train;
+  pages.train = pages.train
+    // the title's "no fall, no banner, no glow" block
+    .replace(/@media\(prefers-reduced-motion:reduce\)\{(?:\\n|\s)*\.falling-letter,\.title-staged \.falling-letter,[\s\S]*?transform:none!important;(?:\\n|\s)*\}(?:\\n|\s)*\}/g, '')
+    // the title's "show the letters already settled" block
+    .replace('@media(prefers-reduced-motion:reduce){.title-staged .falling-letter,.title-staged .banner-entrance,.title-staged .settled-letter-glow{opacity:1}}', '')
+    // the page-wide "no animation" rule now leaves the title alone
+    .replace('@media(prefers-reduced-motion:reduce){*{animation:none!important}animate,animateTransform{display:none}.train{display:none}}',
+      '@media(prefers-reduced-motion:reduce){:not(.rs-login-title):not(.rs-login-title *){animation:none!important}.train{display:none}}');
+  if (before !== pages.train) console.log('sign-in title: reduced-motion rules adjusted');
+}
 // The app keeps clear of the phone's notch / Dynamic Island in portrait and landscape: no page asks to draw under
 // the cut-out (viewport-fit=cover), so the browser and the Android app place every button inside the safe area.
 for (const [pageName, pageSource] of Object.entries(pages)) {

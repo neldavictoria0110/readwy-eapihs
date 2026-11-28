@@ -1,10 +1,14 @@
 /* The falling READwy title on the sign-in (train) page.
    The letters are cut from one large picture. On phones that picture often arrives after the letters have already
    "fallen" (invisible), so the title just appears. Here the letters wait, unseen, until the picture is ready and the
-   page is visible, then the fall and the academy banner play from the start (at most 4 seconds of waiting). */
+   page is visible, then the fall and the academy banner play from the start (at most 4 seconds of waiting).
+   Many phones ask websites to reduce motion (Android "Remove animations", battery saver). The READwy title still
+   plays there, like on a laptop: the build removes the title's own "reduced motion" rules (copy-index.cjs,
+   READWY_TITLE_MOTION) and here the site-wide pause does not apply to it. Everything else on the page keeps following the phone setting. */
 (() => {
   const css = document.createElement('style');
-  css.textContent = `.rs-login-title svg.rt-wait .falling-letter,.rs-login-title svg.rt-wait .banner-entrance,.rs-login-title svg.rt-wait .settled-letter-glow{animation:none!important;opacity:0!important}`;
+  css.textContent = `@media (prefers-reduced-motion: reduce){.rs-login-title svg,.rs-login-title svg *{animation-play-state:running!important}}
+.rs-login-title svg.rt-wait .falling-letter,.rs-login-title svg.rt-wait .banner-entrance,.rs-login-title svg.rt-wait .settled-letter-glow{animation:none!important;opacity:0!important}`;
   (document.head || document.documentElement).append(css);
   const done = new WeakSet();
   function prepare(svg) {
