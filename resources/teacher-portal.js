@@ -507,7 +507,7 @@ function readwyTPDashboardView() {
   const stats = classes.map((item, index) => ({item, index, ...readwyTPSectionStats(item)}));
   const ranked = stats.slice().sort((a, b) => (b.average ?? -1) - (a.average ?? -1) || b.records.length - a.records.length);
   const stat = (art, value, label, note) => `<article class="tp-stat"><span class="tp-stat-icon" aria-hidden="true">${art}</span><span><strong>${value}</strong><b>${label}</b><small>${note}</small></span></article>`;
-  return `${readwyTPHead('READwy · Teacher', 'Dashboard', 'Here’s an overview of your handled sections and learner activity.', `<div class="tp-head-stack">${READWY_TP_YEAR}${readwyTPPostTestControl()}</div>
+  return `${readwyTPHead('READwy · Teacher', 'Dashboard', 'Here’s an overview of your handled sections and learner activity.', `${READWY_TP_YEAR}<div class="tp-head-stack">${readwyTPPostTestControl()}</div>
       <button class="tp-boarding-pass" type="button" data-tp-page="journeys" onclick="readwyTPNavigate(event,'journeys')" aria-label="Open your teacher boarding pass and learner journeys">
         <span class="tp-ticket-copy"><small>READwy RAIL · TEACHER LINE</small><strong>TEACHER BOARDING PASS</strong><span>Route: Reading Journeys</span></span>
         <span class="tp-ticket-status"><b>READY</b> TO BOARD</span>
@@ -656,10 +656,11 @@ function readwyTPMainQuestCell(uid) {
   const style = document.createElement('style');
   style.textContent = `
 /* School Year (white) and Set Post-Test Date (green): one stack in the top-right corner, both the same size. */
-.teacher-portal .tp-head-stack{position:relative;z-index:5;grid-column:1/-1;justify-self:end;display:grid;grid-template-columns:minmax(0,1fr);gap:6px;width:clamp(210px,19vw,250px)}
-.teacher-portal .tp-head-stack .tp-sec-pill.tp-year-top{position:static!important;width:100%;box-sizing:border-box;justify-content:center;height:38px!important;min-height:38px!important}
+/* School Year keeps its own pill in the top-right corner; Set Post-Test Date sits right under it, same width and height
+   (the width is copied from the School Year pill after each draw). */
+.teacher-portal .tp-head-stack{position:relative;z-index:5;grid-column:1/-1;justify-self:end;display:grid;grid-template-columns:minmax(0,1fr);gap:4px;width:var(--tp-year-w,220px);margin-top:calc(var(--tp-year-h,30px) + 6px)}
 .tp-ptd{position:relative;display:grid;gap:4px;width:100%}
-.teacher-portal .tp-ptd-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;box-sizing:border-box;height:38px;min-height:38px!important;margin:0;padding:4px 14px!important;border-radius:999px!important;white-space:nowrap;font-size:13.5px!important;font-weight:800;letter-spacing:.02em;box-shadow:0 4px 12px rgba(6,30,19,.3)!important}
+.teacher-portal .tp-ptd-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;box-sizing:border-box;height:var(--tp-year-h,30px);min-height:0!important;margin:0;padding:4px 14px!important;border-radius:999px!important;white-space:nowrap;font-size:13.5px!important;font-weight:800;letter-spacing:.02em;box-shadow:0 4px 12px rgba(6,30,19,.3)!important}
 .tp-ptd-status{margin:0;padding:3px 10px;border-radius:10px;background:rgba(255,248,230,.94);box-shadow:inset 0 0 0 1px #c9a14a;font:600 11px/1.3 system-ui,sans-serif;color:#3b2a10;text-align:center}
 .tp-ptd-pop{position:absolute;top:calc(100% + 6px);right:0;z-index:60;width:min(340px,calc(100vw - 24px));box-sizing:border-box;padding:12px;border-radius:16px;background:#fffdf6;color:#2b1d07;
  box-shadow:0 0 0 2px #c9a14a,0 18px 40px rgba(0,0,0,.35);animation:tpPtdIn .18s ease-out}
@@ -686,7 +687,7 @@ function readwyTPMainQuestCell(uid) {
 @keyframes tpEnter{from{opacity:0;transform:translateY(14px) scale(.992);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
 @media (prefers-reduced-motion:reduce){.teacher-portal .tp-scene-content.tp-enter{animation:none}}
 .tp-mq{display:block;margin-top:2px;font:700 11px/1.2 system-ui;color:#2f6b4a;white-space:nowrap}.tp-mq-none{color:#9a8a6a}
-@media (max-width:650px){.teacher-portal .tp-head-stack{width:100%;justify-self:stretch;grid-template-columns:1fr 1fr;align-items:start}.teacher-portal .tp-head-stack .tp-ptd-status{grid-column:1/-1}.teacher-portal .tp-head-stack .tp-sec-pill.tp-year-top,.teacher-portal .tp-head-stack .tp-ptd-btn{font-size:12px!important;padding:4px 8px!important;white-space:nowrap}.tp-ptd{display:contents}}
+@media (max-width:650px){.teacher-portal .tp-head-stack{margin-top:0}.teacher-portal .tp-ptd-btn{font-size:12px!important;padding:4px 8px!important}}
 @media (max-width:600px){.tp-ptd{max-width:100%}.tp-ptd-pop{position:fixed;left:12px;right:12px;top:auto;bottom:max(12px,env(safe-area-inset-bottom));width:auto;max-height:calc(100dvh - 24px);overflow:auto}}`;
   document.head.append(style);
 })();
@@ -874,6 +875,8 @@ function readwyTPDrawView() {
   workLayout(title, readwyTPOverview());
   const portal = document.querySelector('.teacher-portal');
   if (!portal) return;
+  requestAnimationFrame(() => readwyTPCover(false));
+  readwyTPSyncYearSize(portal);
   if (animate) readwyTPRunTrain(portal);
   requestAnimationFrame(() => readwyTPPaginate(portal));
   portal.querySelectorAll('img').forEach(image => {
@@ -889,6 +892,15 @@ function readwyTPNavigate(event, view) {
   readwyRenderTeacherPortal(view);
 }
 function readwyRenderTeacherPortal(view = 'dashboard') {
+  // A teacher account saved in this browser (real or developer) is used at once, even if the page still
+  // holds the student who was signed in before.
+  if (user?.role !== 'teacher') {
+    const saved = (() => { try { return load('user', null) } catch { return null } })();
+    if (saved?.role === 'teacher') {
+      user = {...saved, id: saved.id || (saved.dev ? 'readwy-dev-teacher' : undefined)};
+      if (saved.dev === true) window.readwyDeveloperTeacherPreview = true;
+    }
+  }
   const developerPreview = window.readwyDeveloperTeacherPreview &&
     user?.role === 'teacher' && user?.dev === true;
   if (developerPreview) {
@@ -907,8 +919,14 @@ function readwyRenderTeacherPortal(view = 'dashboard') {
       window.readwyFirebaseReady.then(() => readwyRenderTeacherPortal(view), () => readwyRenderTeacherPortal(view));
       return;
     }
-    const why = window.readwyFirebaseAuthError || 'Sign in with your verified DepEd (@deped.gov.ph) teacher account to view your learners’ records. New teachers: sign up on the READwy start screen with your DepEd email, open the verification email, then sign in.';
-    workLayout('Teacher access required', `<p class="notice">${readwyTPEscape(why)}</p><p><a class="tp-btn" href="index.html?view=startup">Go to teacher sign in</a></p>`);
+    // No "Teacher access required" page: developer mode opens the developer teacher dashboard; otherwise the
+    // teacher goes straight back to the start screen to sign in.
+    let developer = false;
+    try { developer = sessionStorage.getItem('readwy-dev-view') === '1' } catch {}
+    readwyTPLeave();
+    if (developer && typeof window.readwyOpenDeveloperTeacherPreview === 'function') { window.readwyOpenDeveloperTeacherPreview(); return }
+    try { sessionStorage.setItem('readwy-teacher-signin-note', window.readwyFirebaseAuthError || 'Sign in with your verified DepEd (@deped.gov.ph) teacher account.') } catch {}
+    location.replace('index.html?view=startup');
     return;
   }
   readwyTeacherView = ['dashboard','sections','assessments','journeys','reports','student'].includes(view) ? view : 'dashboard';
@@ -939,6 +957,52 @@ function readwyRenderTeacherPortal(view = 'dashboard') {
     if (user?.id === requestedUid) workLayout('Teacher records & reports', `<p class="notice" role="alert">${readwyTPEscape(error.message || 'Firebase is unavailable.')}</p>`);
   });
 }
+/* Clean hand-off: the teacher route shows only a plain green screen until the portal is drawn, and leaving the
+   portal fades to the same green first, so no other page or picture flashes in between. */
+// Set Post-Test Date takes exactly the size of the School Year pill above it.
+function readwyTPSyncYearSize(portal) {
+  const sync = () => {
+    const year = portal.querySelector('.tp-sec-pill.tp-year-top'), stack = portal.querySelector('.tp-head-stack');
+    if (!year || !stack || !year.offsetWidth) return;
+    stack.style.setProperty('--tp-year-w', year.offsetWidth + 'px');
+    stack.style.setProperty('--tp-year-h', year.offsetHeight + 'px');
+    // Sit 6px under the School Year pill (wherever the page layout puts the controls).
+    stack.style.marginTop = '0px';
+    const gap = year.getBoundingClientRect().bottom + 6 - stack.getBoundingClientRect().top;
+    stack.style.marginTop = Math.max(0, Math.round(gap)) + 'px';
+  };
+  sync(); requestAnimationFrame(sync); document.fonts?.ready.then(sync);
+}
+addEventListener('resize', () => { const p = document.querySelector('.teacher-portal'); if (p) readwyTPSyncYearSize(p) });
+function readwyTPCover(on) {
+  let c = document.getElementById('tpCover');
+  if (on) {
+    if (!c) { c = document.createElement('div'); c.id = 'tpCover'; c.setAttribute('aria-hidden', 'true'); (document.body || document.documentElement).append(c) }
+    c.classList.remove('out');
+  } else {
+    document.getElementById('tpBoot')?.remove();
+    if (c && !c.classList.contains('out')) { c.classList.add('out'); setTimeout(() => c.remove(), 420) }
+  }
+}
+function readwyTPLeave() { readwyTPCover(true) }
+(() => {
+  const style = document.createElement('style');
+  style.textContent = `#tpCover{position:fixed;inset:0;z-index:2147483000;background:radial-gradient(ellipse at 50% 30%,#1f5c40,#0b2f1f 70%);opacity:1;transition:opacity .4s ease;pointer-events:none}
+#tpCover.out{opacity:0}`;
+  (document.head || document.documentElement).append(style);
+  const route = new URLSearchParams(location.search);
+  if (route.get('view') === 'teacher-preview' || (route.get('journeyModule') === 'reports' && (() => { try { return JSON.parse(localStorage.getItem('READwy_new_2026_local_user') || 'null')?.role === 'teacher' } catch { return false } })())) {
+    readwyTPCover(true);
+    // Safety: never leave the cover up.
+    setTimeout(() => readwyTPCover(false), 6000);
+  }
+  // Leaving the portal (sign out, map, start screen): fade to green before the next page appears.
+  document.addEventListener('click', event => {
+    const out = event.target.closest?.('.teacher-portal a[href], .teacher-portal .tp-profile-out, .teacher-portal [data-tp-action="signout"]');
+    if (out) readwyTPCover(true);
+  }, true);
+  addEventListener('pageshow', e => { if (e.persisted) readwyTPCover(false) });
+})();
 /* Teacher records kept for this browser tab, so moving between portal pages never shows a loading screen. */
 const READWY_TP_CACHE = {};
 const readwyTPCacheKey = data => { try { return JSON.stringify(data) } catch { return String(Math.random()) } };
@@ -1449,8 +1513,13 @@ function readwyActivateFirebaseAccounts() {
         readwyTeacherData = null;
       }
       readwyRenderTeacherPortal('dashboard');
+    } else if (!readwyTPRouteHandled) {
+      // Not signed in as a teacher: developer mode opens the developer teacher; otherwise back to sign in.
+      readwyTPRouteHandled = true;
+      readwyRenderTeacherPortal('dashboard');
     }
   }
 }
+let readwyTPRouteHandled = false;
 readwyActivateFirebaseAccounts();
 if (document.readyState !== 'complete') window.addEventListener('load', readwyActivateFirebaseAccounts, {once:true});

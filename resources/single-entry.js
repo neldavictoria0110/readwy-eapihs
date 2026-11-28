@@ -31,5 +31,13 @@
  }catch{}
  const program=!teacherDeveloperRoute&&/^(gst|orst|wst|srst|aral|interv|sra|reports)$/.test(query.get('journeyModule')||'');
  const key=program||(requested==='startup'||requested==='launch'||requested==='login')?'application':Object.prototype.hasOwnProperty.call(pages,requested)?requested:'application';
- document.open();document.write(pages[key]);document.close();
+ // Teacher portal route: paint a plain green screen first (removed by teacher-portal.js once the portal is drawn),
+ // so no other page or picture flashes on the way in.
+ let html=pages[key];
+ if(requested==='teacher-preview'){
+  const boot='<style id="tpBoot">html,body{background:#0b2f1f!important}body>*{visibility:hidden!important}</style>';
+  const at=html.search(/<head[^>]*>/i);
+  html=at>=0?html.replace(/<head[^>]*>/i,m=>m+boot):boot+html;
+ }
+ document.open();document.write(html);document.close();
  })();

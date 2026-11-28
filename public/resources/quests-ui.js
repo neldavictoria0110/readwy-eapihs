@@ -29,58 +29,74 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
 
 /* ---------- game tabs ---------- */
 .rw-panel{container-type:size;color:#fff;font-family:${FONT}}
-.rwq-v{width:100%;height:100%;box-sizing:border-box;display:grid;gap:clamp(6px,1.6cqh,14px);min-height:0;animation:rwqIn .35s cubic-bezier(.2,1,.3,1)}
+.rwq-v{width:100%;height:100%;box-sizing:border-box;display:grid;gap:clamp(14px,3cqh,22px) clamp(8px,1.6cqh,14px);min-height:0;padding-top:12px;animation:rwqIn .35s cubic-bezier(.2,1,.3,1)}
 @keyframes rwqIn{from{opacity:0;transform:translateY(10px)}}
-.rwq-glass{border-radius:clamp(14px,3cqh,24px);background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 2px rgba(255,255,255,.18),0 6px 18px rgba(0,0,0,.22)}
+.rwq-glass{border-radius:clamp(14px,3cqh,24px);background:linear-gradient(180deg,rgba(31,92,64,.55),rgba(7,29,19,.6));box-shadow:inset 0 0 0 2px rgba(233,196,106,.42),0 6px 18px rgba(0,0,0,.28)}
 .rwq-pill{display:inline-flex;align-items:center;gap:.4em;padding:.25em .8em;border-radius:999px;font-weight:900;background:rgba(0,0,0,.25)}
 [data-t=Bronze]{--c1:#ffb070;--c2:#e0612a;--g:#ff8a3d}[data-t=Silver]{--c1:#a7e3ff;--c2:#3f7fe0;--g:#6cc4ff}
 [data-t=Gold]{--c1:#ffe36e;--c2:#f5a300;--g:#ffd23f}[data-t=Legendary]{--c1:#ff9ad5;--c2:#7c3aed;--g:#d18bff}
 
 .rwq-badges{grid-template-rows:auto minmax(0,1fr) auto}
 .rwq-bhead{display:flex;align-items:center;justify-content:center;gap:12px;font-weight:900;font-size:clamp(13px,3.2cqh,20px)}
-.rwq-bar{flex:1;max-width:460px;height:clamp(10px,2.4cqh,18px);border-radius:999px;background:rgba(0,0,0,.3);overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.2)}
-.rwq-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#3ee07f,#ffd23f,#ff5fa2);box-shadow:0 0 12px #ffd23f}
+.rwq-bar{flex:1;max-width:460px;height:clamp(10px,2.4cqh,18px);border-radius:999px;background:rgba(7,29,19,.7);overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.2)}
+.rwq-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2f8a5a,#7cf29c,#e9c46a,#fff3c8);box-shadow:0 0 12px #e9c46a}
+.rwq-hall{display:flex;flex-direction:column;min-height:0}.rwq-hall .rwq-bgrid{flex:1 1 0}
 .rwq-bgrid{--w:80px;display:grid;justify-content:center;align-content:center;gap:var(--gap,8px);min-height:0}
 .rwq-btile{position:relative;width:var(--w);height:calc(var(--w)*1.2);box-sizing:border-box;display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;align-items:center;padding:8% 4% 6%;border:0;border-radius:calc(var(--w)*.22);cursor:pointer;color:#fff;
  background:radial-gradient(110% 60% at 50% 0%,rgba(255,255,255,.5),transparent 60%),linear-gradient(170deg,var(--c1),var(--c2));box-shadow:inset 0 0 0 2px rgba(255,255,255,.4),0 4px 0 rgba(0,0,0,.25);transition:transform .15s;font-family:inherit;touch-action:manipulation}
 .rwq-btile:hover{transform:translateY(-3px) scale(1.04)}
 .rwq-btile .rwq-badge{--s:calc(var(--w)*.62)}
-.rwq-btile span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:900 calc(var(--w)*.125)/1.1 ${FONT};text-shadow:0 1px 0 rgba(0,0,0,.3)}
+.rwq-btile span{max-width:100%;overflow:hidden;white-space:nowrap;font:900 calc(var(--w)*.125)/1.1 ${FONT};text-shadow:0 1px 0 rgba(0,0,0,.3)}
 .rwq-bgrid.tiny .rwq-btile{height:var(--w);padding:8%}.rwq-bgrid.tiny .rwq-btile span{display:none}.rwq-bgrid.tiny .rwq-btile .rwq-badge{--s:calc(var(--w)*.74)}
-.rwq-btile.locked{background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 2px rgba(255,255,255,.14)}
+.rwq-btile.locked{background:linear-gradient(180deg,rgba(31,92,64,.45),rgba(7,29,19,.6));box-shadow:inset 0 0 0 2px rgba(233,196,106,.25)}
 .rwq-btile.locked span{opacity:.7}
 .rwq-btile.got[data-t=Legendary]::after,.rwq-btile.got[data-t=Gold]::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.6) 48%,transparent 60%) -150% 0/60% 100% no-repeat;animation:rwqShine 3.2s ease-in-out infinite}
 .rwq-btile.sel{outline:3px solid #fff;outline-offset:2px;transform:scale(1.07)}
-.rwq-binfo{display:flex;align-items:center;justify-content:center;gap:10px;min-height:clamp(34px,8cqh,54px);padding:4px 16px;border-radius:999px;background:rgba(0,0,0,.28);font-weight:800;font-size:clamp(12px,2.8cqh,16px);text-align:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.14)}
+.rwq-binfo{display:flex;align-items:center;justify-content:center;gap:10px;min-height:clamp(34px,8cqh,54px);padding:4px 16px;border-radius:999px;color:#ffe9a8;background:rgba(7,29,19,.7);font-weight:800;font-size:clamp(12px,2.8cqh,16px);text-align:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.14)}
 .rwq-binfo .rwq-badge{--s:clamp(26px,6cqh,40px);flex:none}
 .rwq-binfo b{font-weight:900}
 .rwq-tierpill{padding:.15em .7em;border-radius:999px;font-size:.78em;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#2b1300;background:linear-gradient(180deg,var(--c1),var(--c2))}
 
-.rwq-priv{grid-template-columns:minmax(0,.85fr) minmax(0,2fr);grid-template-rows:minmax(0,1fr) auto}
-.rwq-me{grid-row:1/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,2cqh,14px);padding:12px;text-align:center}
-.rwq-avatar{position:relative;flex:none;display:grid;place-items:center;width:var(--a,64px);aspect-ratio:1;border-radius:50%;background:linear-gradient(160deg,#36d1dc,#5b86e5);color:#fff;font:900 calc(var(--a,64px)*.38)/1 ${FONT};text-shadow:0 2px 0 rgba(0,0,0,.25);isolation:isolate}
-.rwq-me .rwq-avatar{--a:clamp(70px,min(30cqh,18cqw),150px)}
-.rwq-avatar[data-frame=bronze]{box-shadow:0 0 0 calc(var(--a,64px)*.07) #ff9a5a,0 0 0 calc(var(--a,64px)*.11) #b4501f}
-.rwq-avatar[data-frame=silver]{box-shadow:0 0 0 calc(var(--a,64px)*.07) #e6f6ff,0 0 0 calc(var(--a,64px)*.11) #6c9fe0,0 0 16px #a7e3ff}
-.rwq-avatar[data-frame=gold]{box-shadow:0 0 0 calc(var(--a,64px)*.07) #ffe36e,0 0 0 calc(var(--a,64px)*.11) #d48a00,0 0 20px #ffd23f}
-.rwq-avatar[data-frame=legend]::before{content:'';position:absolute;inset:calc(var(--a,64px)*-.1);border-radius:50%;z-index:-1;background:conic-gradient(#ff6f91,#ffd36b,#7cf29c,#5ee7df,#8b5cf6,#ff6f91);animation:rwqSpin 4s linear infinite}
+.rwq-priv{grid-template-columns:minmax(0,.85fr) minmax(0,2fr);grid-template-rows:auto auto;align-content:safe center}
+.rwq-me{grid-row:1/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.6cqh,18px);padding:clamp(12px,3cqh,22px);text-align:center;min-width:0}
+.rwq-who{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,2cqh,14px);min-width:0;max-width:100%}
+.rwq-me b{max-width:100%;overflow-wrap:break-word;text-wrap:balance}
+/* Avatars: a green-and-gold medallion; frames are polished metal rings with a jewel on top. The ring and jewel
+   sit inside a reserved margin (--fr), so a frame never covers the name or the next option. */
+.rwq-avatar{--fr:calc(var(--a,64px)*.17);position:relative;flex:none;display:grid;place-items:center;width:var(--a,64px);aspect-ratio:1;margin:var(--fr);border-radius:50%;color:#ffe9a8;font:900 calc(var(--a,64px)*.36)/1 Georgia,"Times New Roman",serif;text-shadow:0 2px 0 rgba(0,0,0,.4);isolation:isolate;
+ background:radial-gradient(circle at 35% 28%,#3fa877,#1f5c40 55%,#0b2f1f);box-shadow:inset 0 0 0 calc(var(--a,64px)*.035) rgba(233,196,106,.6),inset 0 -6px 12px rgba(0,0,0,.35)}
+.rwq-me .rwq-avatar{--a:clamp(66px,min(26cqh,15cqw),132px)}
+.rwq-avatar[data-frame]:not([data-frame=none])::before{content:'';position:absolute;inset:calc(var(--a,64px)*-.13);z-index:-1;border-radius:50%;background:conic-gradient(from 20deg,var(--m1),var(--m2),var(--m3),var(--m2),var(--m1),var(--m3),var(--m1));
+ -webkit-mask:radial-gradient(circle,transparent 63.5%,#000 64.5%);mask:radial-gradient(circle,transparent 63.5%,#000 64.5%);box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.rwq-avatar[data-frame]:not([data-frame=none])::after{content:'';position:absolute;left:50%;top:calc(var(--a,64px)*-.2);width:calc(var(--a,64px)*.2);aspect-ratio:1;translate:-50% 0;rotate:45deg;border-radius:22%;
+ background:radial-gradient(circle at 30% 30%,#fff,var(--j1) 35%,var(--j2) 80%);box-shadow:0 0 0 calc(var(--a,64px)*.025) var(--m2),0 2px 6px rgba(0,0,0,.45),0 0 10px var(--j1)}
+.rwq-avatar[data-frame=bronze]{--m1:#6b3a17;--m2:#e7a36b;--m3:#a65e2c;--j1:#7cf29c;--j2:#13804f}
+.rwq-avatar[data-frame=silver]{--m1:#7d8794;--m2:#ffffff;--m3:#c3ccd6;--j1:#8fd3ff;--j2:#2f6fe0}
+.rwq-avatar[data-frame=gold]{--m1:#8a5a0b;--m2:#fff3a6;--m3:#e9b93c;--j1:#ff7a8a;--j2:#b8303f}
+.rwq-avatar[data-frame=gold]::before{filter:drop-shadow(0 0 6px rgba(255,214,120,.7))}
+.rwq-avatar[data-frame=legend]{--m1:#ff6f91;--m2:#fff3c8;--m3:#8b5cf6;--j1:#e8f6ff;--j2:#7fb4d6}
+.rwq-avatar[data-frame=legend]::before{background:conic-gradient(#ff6f91,#ffd36b,#7cf29c,#5ee7df,#8b5cf6,#ff6f91);animation:rwqSpin 5s linear infinite;filter:drop-shadow(0 0 8px rgba(209,139,255,.8))}
 .rwq-me b{font:900 clamp(15px,4cqh,24px)/1.1 ${FONT}}
-.rwq-ribbon{padding:.3em 1.1em;border-radius:8px;font:900 clamp(12px,3cqh,17px)/1.2 ${FONT};color:#3d1d00;background:linear-gradient(180deg,#fff7c2,#ffd23f);box-shadow:0 3px 0 #c27c00;clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%,6% 50%)}
-.rwq-pick{display:grid;grid-template-rows:repeat(3,minmax(0,auto));align-content:center;gap:clamp(6px,1.6cqh,12px);min-height:0}
-.rwq-row{display:flex;align-items:center;gap:12px;padding:clamp(6px,1.6cqh,12px) 14px;min-height:0}
-.rwq-rl{flex:none;display:grid;place-items:center;width:clamp(34px,8cqh,50px);aspect-ratio:1;border-radius:14px;font-size:clamp(18px,4.4cqh,28px);background:rgba(0,0,0,.25)}
-.rwq-opts{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(6px,1.4cqh,10px);min-width:0}
+.rwq-ribbon{padding:.3em 1.3em;border-radius:8px;font:900 clamp(12px,3cqh,17px)/1.2 Georgia,serif;color:#2b1d07;background:linear-gradient(180deg,#fff3c8,#e9c46a);box-shadow:0 3px 0 #8a5a0b;clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%,6% 50%)}
+.rwq-pick{display:grid;grid-template-rows:repeat(3,auto);align-content:start;gap:clamp(8px,2cqh,14px)}
+.rwq-priv>.rwq-fr{min-height:auto}
+.rwq-row{display:flex;align-items:center;gap:clamp(12px,2cqw,18px);padding:clamp(6px,1.4cqh,10px) clamp(12px,2cqw,18px)}
+.rwq-rl{flex:none;display:grid;place-items:center;align-content:center;gap:2px;width:clamp(44px,9cqh,60px);aspect-ratio:1;border-radius:14px;font-size:clamp(18px,4.2cqh,26px);line-height:1;background:linear-gradient(180deg,#1f5c40,#0b2f1f);box-shadow:inset 0 0 0 1.5px #c9a14a}
+.rwq-rl small{font:900 clamp(7px,1.4cqh,9px)/1 "Nunito",system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#e9c46a}
+.rwq-opts{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(10px,1.8cqw,18px) clamp(12px,2.2cqw,22px);min-width:0}
 .rwq-opt{position:relative;display:grid;place-items:center;border:0;padding:0;background:none;cursor:pointer;font-family:inherit;touch-action:manipulation;transition:transform .15s}
 .rwq-opt:hover:not(:disabled){transform:scale(1.08)}
-.rwq-opt:disabled{cursor:not-allowed;filter:grayscale(.8) brightness(.6)}
-.rwq-opt:disabled::after{content:'🔒';position:absolute;right:-4px;bottom:-4px;font-size:12px}
+.rwq-opt:disabled{cursor:not-allowed}
+.rwq-opt:disabled>*{filter:grayscale(.75);opacity:.55}
+.rwq-opt.rwq-topt:disabled>*{opacity:.75;filter:none}.rwq-opt.rwq-topt:disabled::after{content:none;display:none}
+.rwq-opt:disabled::after{content:'🔒';position:absolute;z-index:3;left:50%;top:50%;translate:-50% -50%;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;font-size:12px;line-height:1;background:rgba(7,29,19,.88);box-shadow:0 0 0 1.5px #e9c46a,0 2px 5px rgba(0,0,0,.5)}
 .rwq-opt.on{transform:scale(1.1)}
-.rwq-fopt .rwq-avatar{--a:clamp(28px,7cqh,42px)}
-.rwq-fopt.on .rwq-avatar{outline:3px solid #fff;outline-offset:5px}
+.rwq-fopt .rwq-avatar{--a:clamp(30px,7cqh,44px)}
+.rwq-fopt.on{transform:none}.rwq-fopt.on .rwq-avatar{box-shadow:inset 0 0 0 2px #fff3c8,0 0 0 calc(var(--a)*.32) rgba(233,196,106,.22)}
 .rwq-sw{width:clamp(30px,7cqh,42px);aspect-ratio:1;border-radius:50%;background:var(--sw);box-shadow:inset 0 0 0 3px rgba(255,255,255,.6),0 3px 0 rgba(0,0,0,.3)}
-.rwq-sw.on{box-shadow:inset 0 0 0 3px #fff,0 0 0 3px #ffd23f,0 0 14px #ffd23f}
-.rwq-tchip{padding:clamp(4px,1.1cqh,8px) clamp(8px,1.6cqw,14px);border-radius:999px;color:#fff;font-weight:900;font-size:clamp(11px,2.5cqh,14px);background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 2px rgba(255,255,255,.22)}
-.rwq-tchip.on{color:#3d1d00;background:linear-gradient(180deg,#fff7c2,#ffd23f);box-shadow:0 3px 0 #c27c00}
+.rwq-sw.on{box-shadow:inset 0 0 0 3px #fff,0 0 0 3px #e9c46a,0 0 14px #e9c46a}
+.rwq-tchip{display:block;padding:clamp(5px,1.2cqh,8px) clamp(10px,1.8cqw,16px);border-radius:999px;color:#ffe9a8;font-weight:900;font-size:clamp(11px,2.5cqh,14px);background:rgba(7,29,19,.6);box-shadow:inset 0 0 0 1.5px rgba(233,196,106,.55)}
+.rwq-tchip.on{color:#2b1d07;background:linear-gradient(180deg,#fff3c8,#e9c46a);box-shadow:0 3px 0 #8a5a0b}
 .rwq-perks{display:grid;grid-template-columns:1fr 1fr;gap:clamp(6px,1.6cqh,12px)}
 .rwq-perk{display:flex;align-items:center;gap:12px;padding:clamp(6px,1.8cqh,12px) 14px;min-width:0}
 .rwq-perk>i{font-style:normal;font-size:clamp(24px,6cqh,38px);line-height:1}
@@ -89,8 +105,8 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
 .rwq-perk .rwq-opts{margin-top:4px}
 .rwq-mini{padding:.35em .8em;border:0;border-radius:999px;cursor:pointer;font:900 clamp(11px,2.3cqh,13px)/1.1 ${FONT};color:#053b1c;background:linear-gradient(180deg,#b8ffcf,#2ecc71);box-shadow:0 3px 0 #1a8a47}
 .rwq-mini.on{color:#3d1d00;background:linear-gradient(180deg,#fff7c2,#ffd23f);box-shadow:0 3px 0 #c27c00}
-.rwq-perk.hint{background:linear-gradient(160deg,rgba(255,210,63,.35),rgba(255,138,61,.25))}
-.rwq-perk.peek{background:linear-gradient(160deg,rgba(124,58,237,.4),rgba(62,198,255,.25))}
+.rwq-perk.hint{background:linear-gradient(160deg,rgba(233,196,106,.38),rgba(15,58,39,.65))}
+.rwq-perk.peek{background:linear-gradient(160deg,rgba(47,138,90,.6),rgba(7,29,19,.65))}
 
 .rwq-pts{grid-template-rows:auto minmax(0,1fr)}
 .rwq-stats4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(6px,1.6cqh,12px)}
@@ -100,8 +116,11 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
 .rwq-st small{font-weight:900;font-size:clamp(9px,2.2cqh,13px);letter-spacing:.08em;text-transform:uppercase;opacity:.95}
 .rwq-st.a{--c1:#ffe36e;--c2:#f5a300;color:#3d1d00}.rwq-st.b{--c1:#7cf29c;--c2:#13a37f}.rwq-st.c{--c1:#ffb070;--c2:#e0412a}.rwq-st.d{--c1:#a7e3ff;--c2:#3f7fe0}
 .rwq-lower{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(6px,1.6cqh,12px);min-height:0}
-.rwq-earn{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:clamp(5px,1.2cqh,10px);padding:clamp(6px,1.6cqh,12px);min-height:0}
-.rwq-e{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:0;border-radius:14px;background:rgba(255,255,255,.1);text-align:center;overflow:hidden}
+.rwq-earn{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:clamp(6px,1.4cqh,12px);min-height:0}
+.rwq-lootbox{display:flex;flex-direction:column;min-height:0}.rwq-lootbox .rwq-feed{flex:1 1 0;padding:0}.rwq-lootbox .rwq-wall{flex:1 1 0;padding:4px}
+.rwq-e{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:0;max-height:150px;align-self:center;padding:clamp(4px,1.2cqh,10px) 2px;border-radius:14px;text-align:center;overflow:hidden;
+ background:radial-gradient(circle at 50% 30%,rgba(233,196,106,.22),transparent 65%),rgba(7,29,19,.55);box-shadow:inset 0 0 0 1.5px rgba(233,196,106,.35);transition:transform .15s}
+.rwq-e:hover{transform:translateY(-3px) scale(1.04)}
 .rwq-e i{font-style:normal;font-size:clamp(16px,4.6cqh,28px);line-height:1}
 .rwq-e b{font:900 clamp(12px,3.4cqh,20px)/1.1 ${FONT};color:#ffe36e}
 .rwq-e small{font-weight:800;font-size:clamp(8px,1.9cqh,11px);line-height:1.1;opacity:.85;padding:0 3px}
@@ -114,8 +133,8 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
 
 .rwq-vault{grid-template-columns:minmax(0,.8fr) minmax(0,2fr)}
 .rwq-vhead{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(6px,2cqh,14px);padding:12px;text-align:center}
-.rwq-ring{--p:0;width:clamp(90px,min(40cqh,22cqw),190px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#ffd23f calc(var(--p)*1%),rgba(255,255,255,.15) 0);box-shadow:0 0 24px rgba(255,210,63,.35)}
-.rwq-ring>div{width:80%;aspect-ratio:1;border-radius:50%;display:grid;place-content:center;background:linear-gradient(160deg,#2a1a6e,#14103a);box-shadow:inset 0 0 0 3px rgba(255,255,255,.15)}
+.rwq-ring{--p:0;width:clamp(90px,min(40cqh,22cqw),190px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#e9c46a calc(var(--p)*1%),rgba(233,196,106,.15) 0);box-shadow:0 0 24px rgba(233,196,106,.35)}
+.rwq-ring>div{width:80%;aspect-ratio:1;border-radius:50%;display:grid;place-content:center;background:linear-gradient(160deg,#1f5c40,#0b2f1f);box-shadow:inset 0 0 0 3px rgba(233,196,106,.35)}
 .rwq-ring b{font:900 clamp(26px,9cqh,54px)/1 ${FONT}}.rwq-ring small{font-weight:900;font-size:clamp(10px,2.4cqh,14px);letter-spacing:.1em;text-transform:uppercase;opacity:.85}
 .rwq-vtip{font-weight:800;font-size:clamp(11px,2.6cqh,15px);line-height:1.4}
 .rwq-wall{display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:clamp(6px,1.4cqh,10px);padding:clamp(8px,2cqh,16px);min-height:0;overflow:hidden}
@@ -129,7 +148,9 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
 
 @container (orientation: portrait){
  .rwq-priv{grid-template-columns:1fr;grid-template-rows:auto auto auto}
- .rwq-me{grid-row:auto;flex-direction:row;justify-content:center;text-align:left}.rwq-me .rwq-avatar{--a:clamp(60px,12cqh,96px)}
+ .rwq-me{grid-row:auto;flex-direction:row;justify-content:center;gap:clamp(12px,4cqw,22px);text-align:left}.rwq-me .rwq-avatar{--a:clamp(54px,10cqh,90px)}
+ .rwq-who{align-items:flex-start}.rwq-fopt .rwq-avatar{--a:clamp(26px,5.4cqh,38px)}.rwq-sw{width:clamp(28px,6cqh,38px)}
+ .rwq-priv{grid-template-rows:auto auto auto;align-content:start}
  .rwq-stats4{grid-template-columns:repeat(2,minmax(0,1fr))}
  .rwq-lower{grid-template-columns:1fr;grid-template-rows:minmax(0,1.1fr) minmax(0,1fr)}
  .rwq-vault{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}
@@ -194,10 +215,10 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
     const list = Q.BADGES.slice().sort((a, b) => (!!s.badges[b.id]) - (!!s.badges[a.id]));
     return `<div class="rwq-v rwq-badges">
 <div class="rwq-bhead"><span>🏅</span><span class="rwq-bar" role="img" aria-label="${mine} of ${all} badges"><i style="width:${Math.round(100 * mine / all)}%"></i></span><span>${mine}/${all}</span></div>
-<div class="rwq-bgrid">${list.map(b => {
+<section class="rwq-fr rwq-hall" data-c="amethyst"><span class="rwq-plate">🏆 Trophy Hall</span><div class="rwq-bgrid">${list.map(b => {
       const got = !!s.badges[b.id], hidden = b.secret && !got;
       return `<button type="button" class="rwq-btile${got ? ' got' : ' locked'}${selected === b.id ? ' sel' : ''}" data-b="${b.id}" data-t="${b.tier}" aria-label="${hidden ? 'Secret badge' : esc(b.name)}, ${b.tier}${got ? ', earned' : ''}">${Q.badgeHTML(b, { locked: !got })}<span>${hidden ? '???' : esc(b.name)}</span></button>`;
-    }).join('')}</div>
+    }).join('')}</div></section>
 <div class="rwq-binfo" aria-live="polite">${infoHTML(Q.BADGES.find(b => b.id === selected), s)}</div></div>`;
   }
   function opts(list, kind, s, draw) {
@@ -216,13 +237,13 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
       : '<small>🔒 Any Gold badge</small>';
     const ini = esc(initials(u.name));
     return `<div class="rwq-v rwq-priv">
-<section class="rwq-me rwq-glass"><span class="rwq-avatar" data-frame="${frame.id}">${ini}</span><b>${esc(u.name || 'Passenger')}</b><span class="rwq-ribbon">${esc(title.name)}</span></section>
-<div class="rwq-pick">
- <div class="rwq-row rwq-glass"><span class="rwq-rl" title="Avatar frame">🖼️</span><div class="rwq-opts">${opts(Q.FRAMES, 'frame', s, { cls: 'rwq-fopt', html: f => `<span class="rwq-avatar" data-frame="${f.id}">${ini}</span>` })}</div></div>
- <div class="rwq-row rwq-glass"><span class="rwq-rl" title="Colour theme">🎨</span><div class="rwq-opts">${opts(Q.THEMES, 'theme', s, { cls: '', html: (t, on) => `<span class="rwq-sw${on ? ' on' : ''}" style="--sw:${t.swatch}"></span>` })}</div></div>
- <div class="rwq-row rwq-glass"><span class="rwq-rl" title="Profile title">🏷️</span><div class="rwq-opts">${opts(Q.TITLES, 'title', s, { cls: '', html: (t, on) => `<span class="rwq-tchip${on ? ' on' : ''}">${esc(t.name)}</span>` })}</div></div>
+<section class="rwq-me rwq-fr" data-c="sapphire"><span class="rwq-plate">🎫 Passenger Card</span><span class="rwq-avatar" data-frame="${frame.id}">${ini}</span><span class="rwq-who"><b>${esc(u.name || 'Passenger')}</b><span class="rwq-ribbon">${esc(title.name)}</span></span></section>
+<div class="rwq-pick rwq-fr" data-c="ruby"><span class="rwq-plate">👑 Wardrobe</span>
+ <div class="rwq-row rwq-glass"><span class="rwq-rl" title="Avatar frame">🖼️<small>Frame</small></span><div class="rwq-opts">${opts(Q.FRAMES, 'frame', s, { cls: 'rwq-fopt', html: f => `<span class="rwq-avatar" data-frame="${f.id}">${ini}</span>` })}</div></div>
+ <div class="rwq-row rwq-glass"><span class="rwq-rl" title="Colour theme">🎨<small>Theme</small></span><div class="rwq-opts">${opts(Q.THEMES, 'theme', s, { cls: '', html: (t, on) => `<span class="rwq-sw${on ? ' on' : ''}" style="--sw:${t.swatch}"></span>` })}</div></div>
+ <div class="rwq-row rwq-glass"><span class="rwq-rl" title="Profile title">🏷️<small>Title</small></span><div class="rwq-opts">${opts(Q.TITLES, 'title', s, { cls: 'rwq-topt', html: (t, on) => `<span class="rwq-tchip${on ? ' on' : ''}">${Q.needMet(s, t.need) ? '' : '🔒 '}${esc(t.name)}</span>` })}</div></div>
 </div>
-<div class="rwq-perks"><div class="rwq-perk rwq-glass hint" title="Used first when you ask for a hint in Inkventure"><i>💡</i><span><b>${tk.hint}</b><small>Hint tokens</small></span></div>
+<div class="rwq-perks rwq-fr" data-c="teal"><span class="rwq-plate">⚡ Power-Ups</span><div class="rwq-perk rwq-glass hint" title="Used first when you ask for a hint in Inkventure"><i>💡</i><span><b>${tk.hint}</b><small>Hint tokens</small></span></div>
 <div class="rwq-perk rwq-glass peek" title="Preview one Side Quest early (no points)"><i>🔭</i><span><small>Early access</small>${peek}</span></div></div></div>`;
   }
   function pointsPanel() {
@@ -234,17 +255,18 @@ body[data-rwq-theme=starlight]::after{background:radial-gradient(circle at 20% 2
     return `<div class="rwq-v rwq-pts">
 <div class="rwq-stats4">${st('a', '⭐', Q.total(s), 'Total')}${st('b', '📅', week, 'This week')}${st('c', '🔥', Q.streak(s), 'Day streak')}${st('d', '🛒', Math.max(0, Q.total(s) - spent), 'To spend')}</div>
 <div class="rwq-lower">
- <div class="rwq-earn rwq-glass">${e('✅', '+' + P.task, 'Task')}${e('🎯', '+' + P.accuracyBonus, '90%+')}${e('📅', '+' + P.dailyLogin, 'Daily')}${e('🔥', '+' + P.streakBonus[3] + '–' + P.streakBonus[30], 'Streak')}${e('🔑', '+' + P.keypass, 'Keypass')}${e('🏁', '+' + P.mainQuestFinished, 'Main Quest')}${e('📝', '+' + P.postTest, 'Post-Test')}${e('📒', '+' + P.readingLab.wordVaultWord, 'Word')}</div>
- <ul class="rwq-feed rwq-glass" data-trim data-total="${all.length}">${all.length ? all.slice(0, 30).map(a => `<li title="${esc(a.r)}"><span>${esc(a.r)}</span><b>+${a.a}</b></li>`).join('') : '<li class="rwq-empty">🚀 Finish a task to earn points!</li>'}</ul>
+ <div class="rwq-earn rwq-fr" data-c="sapphire"><span class="rwq-plate">🎯 How to Earn</span>${e('✅', '+' + P.task, 'Task')}${e('🎯', '+' + P.accuracyBonus, '90%+')}${e('📅', '+' + P.dailyLogin, 'Daily')}${e('🔥', '+' + P.streakBonus[3] + '–' + P.streakBonus[30], 'Streak')}${e('🔑', '+' + P.keypass, 'Keypass')}${e('🏁', '+' + P.mainQuestFinished, 'Main Quest')}${e('📝', '+' + P.postTest, 'Post-Test')}${e('📒', '+' + P.readingLab.wordVaultWord, 'Word')}</div>
+ <div class="rwq-fr rwq-lootbox" data-c="amber"><span class="rwq-plate">💰 Recent Loot</span><ul class="rwq-feed" data-trim data-total="${all.length}">${all.length ? all.slice(0, 30).map(a => `<li title="${esc(a.r)}"><span>${esc(a.r)}</span><b>+${a.a}</b></li>`).join('') : '<li class="rwq-empty">🚀 Finish a task to earn points!</li>'}</ul></div>
 </div></div>`;
   }
   function vaultPanel() {
     const v = readLS(Q.vaultKey(), []) || [], C = Q.POINTS.readingLab, pct = Math.min(100, Math.round(100 * v.length / C.wordVaultMax));
     return `<div class="rwq-v rwq-vault">
-<div class="rwq-vhead rwq-glass"><div class="rwq-ring" style="--p:${pct}" role="img" aria-label="${v.length} words"><div><b>${v.length}</b><small>words</small></div></div>
+<div class="rwq-vhead rwq-fr" data-c="amethyst"><span class="rwq-plate">🔐 The Vault</span><div class="rwq-ring" style="--p:${pct}" role="img" aria-label="${v.length} words"><div><b>${v.length}</b><small>words</small></div></div>
 <span class="rwq-vtip">👆👆 Double-tap a word<br>in the Reading Lab<br><span class="rwq-pill">+${C.wordVaultWord} ⭐ each</span></span></div>
-${v.length ? `<div class="rwq-wall rwq-glass" data-trim data-total="${v.length}">${v.slice(-80).reverse().map(x => `<span class="rwq-word" title="${esc(x.src || '')}">${esc(x.w)}</span>`).join('')}</div>`
-      : '<div class="rwq-wall rwq-glass rwq-vempty"><span><i>📖</i><br>Your vault is empty</span></div>'}</div>`;
+<div class="rwq-fr rwq-lootbox" data-c="teal"><span class="rwq-plate">📚 Word Collection</span>
+${v.length ? `<div class="rwq-wall" data-trim data-total="${v.length}">${v.slice(-80).reverse().map(x => `<span class="rwq-word" title="${esc(x.src || '')}">${esc(x.w)}</span>`).join('')}</div>`
+      : '<div class="rwq-wall rwq-vempty"><span><i>📖</i><br>Your vault is empty</span></div>'}</div></div>`;
   }
   const PANELS = { badges: badgesPanel, privileges: privilegesPanel, points: pointsPanel, vault: vaultPanel };
   function panel(name) { try { return (PANELS[name] || badgesPanel)() } catch (e) { return '<p>Could not show this page.</p>' } }
@@ -272,6 +294,11 @@ ${v.length ? `<div class="rwq-wall rwq-glass" data-trim data-total="${v.length}"
       const w = window.readwyFitGrid(grid, grid.children.length, 1.2, 8, 130);
       if (w < 64) { grid.classList.add('tiny'); window.readwyFitGrid(grid, grid.children.length, 1, 6, 130) }
     }
+    v.querySelectorAll('.rwq-btile span').forEach(label => {
+      label.style.fontSize = '';
+      let size = parseFloat(getComputedStyle(label).fontSize) || 12;
+      while (label.scrollWidth > label.clientWidth + 0.5 && size > 6.5) { size -= 0.5; label.style.fontSize = size + 'px' }
+    });
     v.querySelectorAll('[data-trim]').forEach(trim);
     // Last resort: shrink the whole tab a little so nothing is cut off and nothing scrolls.
     const H = panelEl.clientHeight, W = panelEl.clientWidth, need = v.scrollHeight, wide = v.scrollWidth;
